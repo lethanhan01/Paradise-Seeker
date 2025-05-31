@@ -70,7 +70,6 @@ public class GameMapManager {
         currentMapIndex = index;
         currentMap = maps.get(currentMapIndex);
         currentMap.setPlayer(player); 
-        player.setGameMap(currentMap);
         // Now, and ONLY now, load the spawn for the current map:
         currentMap.loadSpawnPoints(player);
     }

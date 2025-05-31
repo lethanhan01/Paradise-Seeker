@@ -101,7 +101,6 @@ public abstract class GameMap {
                     if (className != null) {
                         Monster monster = MonsterFactory.create(className, worldX, worldY);
                         if (monster != null) {
-                        	monster.setGameMap(this);
                             monsters.add(monster);
                             collidables.add(monster);
                         }
@@ -184,7 +183,7 @@ public abstract class GameMap {
 
     public void update(float deltaTime) {
         for (NPC1 npc : npcList) npc.update(deltaTime);
-        for (Monster m : monsters) m.update(deltaTime);
+        for (Monster m : monsters) m.update(deltaTime,player);
         hpItems.removeIf(item -> !item.isActive());
         mpItems.removeIf(item -> !item.isActive());
         atkItems.removeIf(item -> !item.isActive());

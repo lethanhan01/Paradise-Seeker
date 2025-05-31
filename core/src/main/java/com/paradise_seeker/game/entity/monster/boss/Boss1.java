@@ -6,55 +6,80 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.paradise_seeker.game.entity.Player;
 
-public class Boss1 extends Boss {
-	public Boss1(float x, float y) {
-		super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
-	    updateBounds(); // Đồng bộ lại bounds
-	    this.spawnX = x;
-	    this.spawnY = y;
-	    loadAnimations();
-	    this.currentFrame = walkRight.getKeyFrame(0f);
-	    this.cleaveRange = 5f;
-	    updateBounds();
 
-	}
-
+public class Boss1 extends Monster {
+    public Boss1(float x, float y) {
+    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);// Tùy chỉnh stats phù hợp
+        this.spriteWidth = 10f;
+        this.spriteHeight = 6f;
+        updateBounds();
+        this.spawnX = x;
+        this.spawnY = y;
+        loadAnimations();
+        this.currentFrame = walkRight.getKeyFrame(0f);
+        this.cleaveRange = 5f;
+        updateBounds();
+    }
 
     @Override
     protected void loadAnimations() {
-        walkLeft  = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/walk/trai/spritesheet_left.png", 12);
-        walkRight = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/walk/phai/spritesheet.png", 12);
+        // WALK
+        walkRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/phai/", "walk", 8, ".png", 0);
+        walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/trai/", "walk", 8, ".png", 0);
 
-        takeHitRight = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/take_hit/phai/spritesheet.png", 5);
-        takeHitLeft  = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/take_hit/trai/spritesheet.png", 5);
+        // IDLE
+        idleRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/idle/phai/", "idle", 8, ".png", 0);
+        idleLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/idle/trai/", "idle", 8, ".png", 0);
 
-        idleRight = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/idle/phai/spritesheet.png", 6);
-        idleLeft  = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/idle/trai/spritesheet.png", 6);
+        // CLEAVE (có 2 đòn, mỗi đòn 8 frame)
+        cleaveRight = loadComboAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/cleave/phai/", "atk", 2, 8, ".png");
+        cleaveLeft  = loadComboAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/cleave/trai/", "atk", 2, 8, ".png");
 
-        deathLeft = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/death/trai/spritesheet.png", 20);
-        deathRight = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/death/trai/spritesheet.png", 20);
+        // TAKE HIT
+        takeHitRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/takehit/phai/", "takehit", 3, ".png", 0);
+        takeHitLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/takehit/trai/", "takehit", 3, ".png", 0);
 
-        cleaveRight = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/cleave/phai/spritesheet.png", 15);
-        cleaveLeft  = loadSheetAnimation("images/Entity/characters/monsters/boss/boss_1/cleave/trai/spritesheet.png", 15);
+        // DEATH
+        deathRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/death/phai/", "death", 7, ".png", 0);
+        deathLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/death/trai/", "death", 7, ".png", 0);
     }
 
-
-    public Animation<TextureRegion> loadSheetAnimation(String sheetPath, int frameCols) {
-        float frameDuration = 0.1f; // Default duration per frame
-        Texture sheet = new Texture(Gdx.files.internal(sheetPath));
-        int frameWidth = sheet.getWidth() / frameCols;
-        int frameHeight = sheet.getHeight();
-        TextureRegion[][] tmp = TextureRegion.split(sheet, frameWidth, frameHeight);
-        TextureRegion[] frames = new TextureRegion[frameCols];
-        for (int i = 0; i < frameCols; i++) {
-            frames[i] = tmp[0][i];
+    // Load animation cơ bản (frame đặt tên liên tục: walk0.png, walk1.png, ...)
+    private Animation<TextureRegion> loadAnimation(String folder, String prefix, int frameCount, String suffix, int startIdx) {
+        TextureRegion[] frames = new TextureRegion[frameCount];
+        for (int i = 0; i < frameCount; i++) {
+            String filename = folder + prefix + (i + startIdx) + suffix;
+            Texture texture = new Texture(Gdx.files.internal(filename));
+            frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(frameDuration, frames);
+        return new Animation<>(0.1f, frames);
+    }
+
+    // Load animation cleave có nhiều đòn: .../atk0/atk0.png, .../atk1/atk0.png, ...
+    private Animation<TextureRegion> loadComboAnimation(String folder, String comboPrefix, int comboCount, int framesPerCombo, String suffix) {
+        TextureRegion[] frames = new TextureRegion[comboCount * framesPerCombo];
+        int idx = 0;
+        for (int combo = 0; combo < comboCount; combo++) {
+            String subFolder = folder + comboPrefix + combo + "/";
+            for (int frame = 0; frame < framesPerCombo; frame++) {
+                String filename = subFolder + comboPrefix + frame + suffix;
+                Texture texture = new Texture(Gdx.files.internal(filename));
+                frames[idx++] = new TextureRegion(texture);
+            }
+        }
+        return new Animation<>(0.1f, frames);
     }
 
     @Override
     protected float getScaleMultiplier() {
         return 10f;
     }
+    public void render(SpriteBatch batch,Player player) {
+        super.render(batch, null); // truyền null nếu không có player trong context này
+        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+    }
+
 }
