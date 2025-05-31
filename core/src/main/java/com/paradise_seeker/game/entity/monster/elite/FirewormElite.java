@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.entity.Player;
+
 
 public class FirewormElite extends Monster {
 
@@ -61,10 +63,15 @@ public class FirewormElite extends Monster {
         }
         return new Animation<>(0.1f, frames);
     }
-
     @Override
     public void render(SpriteBatch batch) {
-        if (isDead) return;
-        super.render(batch);
+        render(batch, null); // hoặc truyền player nếu có
     }
+
+    public void render(SpriteBatch batch, Player player) {
+        if (isDead) return;
+        super.render(batch, player);
+        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+    }
+
 }

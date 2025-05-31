@@ -13,52 +13,53 @@ import com.paradise_seeker.game.entity.monster.Monster;
 public class FlyingDemon extends Monster {
 
     private class Projectile {
-    Rectangle bounds;
-    TextureRegion texture;
-    float speed = 3.5f;
-    boolean active = true;
-    float velocityX;
-    float velocityY;
+        Rectangle bounds;
+        TextureRegion texture;
+        float speed = 3.5f;
+        boolean active = true;
+        float velocityX;
+        float velocityY;
 
-    Projectile(float x, float y, float targetX, float targetY, boolean facingRight) {
-        String path = facingRight ?
-            "images/Entity/characters/monsters/elite/map3/flying_demon/right/atk/projectile_right.png" :
-            "images/Entity/characters/monsters/elite/map3/flying_demon/left/atk/projectile.png";
-        texture = new TextureRegion(new Texture(Gdx.files.internal(path)));
-        bounds = new Rectangle(x, y, 0.5f, 0.5f);
+        Projectile(float x, float y, float targetX, float targetY, boolean facingRight) {
+            String path = facingRight ?
+                "images/Entity/characters/monsters/elite/map3/flying_demon/right/atk/projectile_right.png" :
+                "images/Entity/characters/monsters/elite/map3/flying_demon/left/atk/projectile.png";
+            texture = new TextureRegion(new Texture(Gdx.files.internal(path)));
+            bounds = new Rectangle(x, y, 0.5f, 0.5f);
 
-        // Tính hướng bay
-        float dx = targetX - x;
-        float dy = targetY - y;
-        float len = (float) Math.sqrt(dx * dx + dy * dy);
-        if (len != 0) {
-            velocityX = (dx / len) * speed;
-            velocityY = (dy / len) * speed;
-        } else {
-            velocityX = speed * (facingRight ? 1 : -1);
-            velocityY = 0;
+            // Tính hướng bay
+            float dx = targetX - x;
+            float dy = targetY - y;
+            float len = (float) Math.sqrt(dx * dx + dy * dy);
+            if (len != 0) {
+                velocityX = (dx / len) * speed;
+                velocityY = (dy / len) * speed;
+            } else {
+                velocityX = speed * (facingRight ? 1 : -1);
+                velocityY = 0;
+            }
+        }
+
+        void update(float deltaTime, Player player) {
+            if (!active) return;
+            bounds.x += velocityX * deltaTime;
+            bounds.y += velocityY * deltaTime;
+            if (player != null && bounds.overlaps(player.bounds)) {
+                player.takeDamage(15); // Sát thương đạn
+                active = false;
+            }
+        }
+
+        void render(SpriteBatch batch) {
+            if (active) batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
         }
     }
-
-    void update(float deltaTime, Player player) {
-        if (!active) return;
-        bounds.x += velocityX * deltaTime;
-        bounds.y += velocityY * deltaTime;
-        if (bounds.overlaps(player.bounds)) {
-            player.takeDamage(15); // Sát thương đạn
-            active = false;
-        }
-    }
-
-    void render(SpriteBatch batch) {
-        if (active) batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
-    }
-}
 
     private Array<Projectile> projectiles = new Array<>();
 
     public FlyingDemon(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);        this.spawnX = x;
+        super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+        this.spawnX = x;
         this.spawnY = y;
         this.spriteWidth = 2.5f;
         this.spriteHeight = 2.5f;
@@ -68,8 +69,8 @@ public class FlyingDemon extends Monster {
         this.currentFrame = walkRight.getKeyFrame(0f);
         this.cleaveRange = 2.5f;
         updateBounds();
-
     }
+
     @Override
     protected float getScaleMultiplier() {
         return 5f;
@@ -112,16 +113,18 @@ public class FlyingDemon extends Monster {
     public void update(float deltaTime, Player player) {
         super.update(deltaTime, player);
 
+        // Cập nhật các projectile với player
         for (Projectile p : projectiles) {
             p.update(deltaTime, player);
         }
-
+        // Xóa projectile không active
         for (int i = projectiles.size - 1; i >= 0; i--) {
             if (!projectiles.get(i).active) {
                 projectiles.removeIndex(i);
             }
         }
 
+        // Tạo projectile khi cleave
         if (isCleaving && cleaveTimer > 0 && !cleaveDamageDealt && stateTime >= cleaveDuration * 0.2f) {
             spawnProjectile(player);
             cleaveDamageDealt = true;
@@ -129,6 +132,7 @@ public class FlyingDemon extends Monster {
     }
 
     private void spawnProjectile(Player player) {
+        if (player == null) return; 
         float bulletX = facingRight ? bounds.x + bounds.width : bounds.x - 0.5f;
         float bulletY = bounds.y + bounds.height / 2 - 0.25f;
         float targetX = player.bounds.x + player.bounds.width / 2;
@@ -136,11 +140,9 @@ public class FlyingDemon extends Monster {
         projectiles.add(new Projectile(bulletX, bulletY, targetX, targetY, facingRight));
     }
 
-
-    @Override
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch);
+        super.render(batch, player);
         for (Projectile p : projectiles) {
             p.render(batch);
         }

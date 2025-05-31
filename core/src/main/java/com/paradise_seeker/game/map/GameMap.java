@@ -60,6 +60,8 @@ public abstract class GameMap {
     // Subclass must provide these
     protected abstract String getMapTmxPath();
     protected abstract String getMapBackgroundPath();
+    
+    private Player player; 
 
     public GameMap() {
         // 1. Load map and background
@@ -179,9 +181,9 @@ public abstract class GameMap {
         if (chest != null) chest.render(batch);
     }
 
-    public void update(float deltaTime, Player player) {
+    public void update(float deltaTime) {
         for (NPC1 npc : npcList) npc.update(deltaTime);
-        for (Monster m : monsters) m.update(deltaTime, player);
+        for (Monster m : monsters) m.update(deltaTime,player);
         hpItems.removeIf(item -> !item.isActive());
         mpItems.removeIf(item -> !item.isActive());
         atkItems.removeIf(item -> !item.isActive());
@@ -326,4 +328,13 @@ public abstract class GameMap {
             skill2Items.add(new Skill2item(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion13.png"));
         }
     }
+
+  public void setPlayer(Player player) {
+    this.player = player;
+}
+
+  public Player getPlayer() {
+    return player;
+}
+  
 }

@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
-
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -185,10 +185,20 @@ public class CyclopBoss extends Monster {
         }
     }
 
-    // --- Render boss ---
-    @Override
-    public void render(SpriteBatch batch) {
-        if (isDead) return;
-        super.render(batch);
-    }
+ // --- Render boss ---
+ // Duy nhất 1 hàm @Override từ Renderable
+ @Override
+ public void render(SpriteBatch batch) {
+     render(batch, null); // truyền null nếu không có player
+ }
+
+ // Nếu GameMap/GameScreen có thể truyền player, thì dùng hàm này!
+ public void render(SpriteBatch batch, Player player) {
+     if (isDead) return;
+     super.render(batch, player); // render ảnh boss (cha Monster đã xử lý facing, animation...)
+     renderSkillProjectiles(batch, stateTime); // vẽ skill projectile
+     batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+ }
+
+
 }

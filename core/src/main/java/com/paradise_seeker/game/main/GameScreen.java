@@ -31,7 +31,7 @@ import com.paradise_seeker.game.map.GameMap;
 
 public class GameScreen implements Screen {
     final Main game;
-    Player player;
+    Player player = new Player();;
     Music music;
     private float cameraLerp = 0.1f;
     private GameMapManager mapManager;
@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
     private boolean showDialogueOptions = false;
     private String pendingPotionToDrop = null;
     private boolean waitingForChestToOpen = false;
-
+    
     public GameScreen(final Main game) {
         this.game = game;
 
@@ -64,7 +64,6 @@ public class GameScreen implements Screen {
         Rectangle playerBounds = new Rectangle(0, 0, 1, 1); // Temporary
 		player = new Player();
         this.mapManager = new GameMapManager(player);
-        player.setGameMap(mapManager.getCurrentMap());
         this.hud = new HUD(player, game.font);
         this.shapeRenderer = new ShapeRenderer();
 
@@ -128,7 +127,7 @@ public class GameScreen implements Screen {
                 game.currentGame = null;
             }
 
-            player.update(delta);
+            player.update(delta,mapManager.getCurrentMap());
             mapManager.update(delta);
 
             Chest chest = mapManager.getCurrentMap().getChest();
@@ -205,13 +204,11 @@ public class GameScreen implements Screen {
         if (currentMap.portal != null && player.getBounds().overlaps(currentMap.portal.getBounds())) {
             currentMap.portal.onCollision(player);
             mapManager.switchToNextMap();
-            player.setGameMap(mapManager.getCurrentMap());
             switchMusicAndShowMap();
         }
         if (currentMap.getStartPortal() != null && player.getBounds().overlaps(currentMap.getStartPortal().getBounds())) {
             currentMap.getStartPortal().onCollision(player);
             mapManager.switchToPreviousMap();
-            player.setGameMap(mapManager.getCurrentMap());
             switchMusicAndShowMap();
         }
     }

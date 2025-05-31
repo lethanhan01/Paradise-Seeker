@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.entity.Player;
 
 public class CyanBat extends Monster {
     public CyanBat(float x, float y) {
@@ -46,11 +47,7 @@ public class CyanBat extends Monster {
         deathLeft  = idleLeft;
     }
 
-    @Override
-    public void render(SpriteBatch batch) {
-        if (isDead) return;
-        super.render(batch);
-    }
+  
 
     private Animation<TextureRegion> loadAnimationWithPadding(String folder, String prefix, int frameCount, String suffix, int startIndex) {
         TextureRegion[] frames = new TextureRegion[frameCount];
@@ -61,4 +58,16 @@ public class CyanBat extends Monster {
         }
         return new Animation<>(0.1f, frames);
     }
+    @Override
+    public void render(SpriteBatch batch) {
+        render(batch, null); // hoặc truyền player nếu có
+    }
+
+    public void render(SpriteBatch batch, Player player) {
+        if (isDead) return;
+        super.render(batch, player);
+        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+    }
+
+
 }

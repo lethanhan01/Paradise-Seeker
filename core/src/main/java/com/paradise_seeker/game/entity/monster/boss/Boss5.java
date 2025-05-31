@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.paradise_seeker.game.entity.Player;
 
 public class Boss5 extends Monster {
     public Boss5(float x, float y) {
@@ -87,4 +89,10 @@ public class Boss5 extends Monster {
     protected float getScaleMultiplier() {
         return 12f;
     }
+    @Override
+    public void render(SpriteBatch batch) {
+        super.render(batch, null); // truyền null nếu không có player trong context này
+        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+    }
+
 }

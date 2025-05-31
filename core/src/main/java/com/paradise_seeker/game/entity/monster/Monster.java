@@ -11,10 +11,11 @@ import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.render.Renderable;
+import com.paradise_seeker.game.map.GameMap;
+
 
 public abstract class Monster extends Character implements Renderable, Collidable {
-
-
+	
     public boolean isAggressive = false;
     public float aggroTimer = 0f;
     public final float AGGRO_DURATION = 5f;
@@ -54,7 +55,8 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     public static final float HP_BAR_WIDTH = 2.0f; // Độ dài cố định (ví dụ: 2 đơn vị game)
     public static final float HP_BAR_HEIGHT = 0.5f; // Độ dày thanh HP
     public static final float HP_BAR_Y_OFFSET = 0.5f;
-
+    
+    
     public Monster(Rectangle bounds,float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y ) {
     	super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
 		this.spriteWidth = bounds.width;
@@ -70,7 +72,6 @@ public abstract class Monster extends Character implements Renderable, Collidabl
             hpBarFrames[i] = new Texture(Gdx.files.internal(filename));
         }
         this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
-
     }
 
     public Rectangle getBounds() {
@@ -84,7 +85,7 @@ public abstract class Monster extends Character implements Renderable, Collidabl
         bounds.setSize(spriteWidth, spriteHeight);
     }
 
-    public void update(float deltaTime, Player player) {
+    public void update(float deltaTime,Player player) {
         if (player == null || player.isDead) return;
 
         if (isDead) {
@@ -107,7 +108,7 @@ public abstract class Monster extends Character implements Renderable, Collidabl
                     float dx = player.bounds.x + player.bounds.width / 2 - (bounds.x + bounds.width / 2);
                     float dy = player.bounds.y + player.bounds.height / 2 - (bounds.y + bounds.height / 2);
                     float dist = (float) Math.sqrt(dx * dx + dy * dy);
-                    if (dist <= cleaveRange) player.takeDamage(atk);
+                    if (dist <= cleaveRange)player.takeDamage(atk);
                 }
                 cleaveDamageDealt = true;
             }
@@ -124,7 +125,7 @@ public abstract class Monster extends Character implements Renderable, Collidabl
             if (aggroTimer <= 0f && !isNearPlayer(player)) isAggressive = false;
             else {
                 if (!isCleaving) {
-                    approachPlayer(deltaTime, player);
+                    approachPlayer(deltaTime,player);
                 }
                 if (isPlayerInCleaveRange(player) && cleaveTimer <= 0f) attackPlayer();
                 return;
@@ -135,6 +136,8 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     }
 
     private boolean isPlayerInCleaveRange(Player player) {
+    	if (player == null || player.isDead) return false;
+    	
         float bossCenterX = bounds.x + bounds.width / 2;
         float bossCenterY = bounds.y + bounds.height / 2;
         float playerCenterX = player.bounds.x + player.bounds.width / 2;
@@ -178,46 +181,7 @@ public abstract class Monster extends Character implements Renderable, Collidabl
             cleaveDamageDealt = false;
         }
     }
-    @Override
-    public void render(SpriteBatch batch) {
-    	Player player = null; //sửa chỗ này để tránh lỗi null
-        if (isDead) currentFrame = (facingRight ? deathRight : deathLeft).getKeyFrame(stateTime, false);
-        else if (isCleaving) currentFrame = (facingRight ? cleaveRight : cleaveLeft).getKeyFrame(stateTime, false);
-        else if (isTakingHit) currentFrame = (facingRight ? takeHitRight : takeHitLeft).getKeyFrame(stateTime, false);
-        else if (!isMoving) currentFrame = (facingRight ? idleRight : idleLeft).getKeyFrame(stateTime, true);
-        else currentFrame = (facingRight ? walkRight : walkLeft).getKeyFrame(stateTime, true);
-
-        if (player != null) facingRight = player.bounds.x > bounds.x;
-
-        // Tính kích thước vẽ
-        float scale = getScaleMultiplier();
-        float playerArea = player.bounds.width * player.bounds.height;
-
-        float frameAspect = currentFrame.getRegionWidth() / (float) currentFrame.getRegionHeight();
-
-        float drawWidth, drawHeight;
-        if (frameAspect >= 1f) { // Ngang
-            drawWidth = player.bounds.width * scale;
-            drawHeight = drawWidth / frameAspect;
-        } else { // Dọc
-            drawHeight = player.bounds.height * scale;
-            drawWidth = drawHeight * frameAspect;
-        }
-
-        // Căn giữa
-        float drawX = bounds.x + bounds.width / 2 - drawWidth / 2;
-        float drawY = bounds.y + bounds.height / 2 - drawHeight / 2 + OFFSET;
-
-        // HP bar
-        float hpPercent = Math.max(0, Math.min(hp / (float) maxHp, 1f));
-        int frameIndex = Math.round((1 - hpPercent) * 29);
-        float hpBarX = bounds.x + (bounds.width - HP_BAR_WIDTH) / 2f;
-        float hpBarY = bounds.y + bounds.height + HP_BAR_Y_OFFSET;
-
-        batch.draw(hpBarFrames[frameIndex], hpBarX, hpBarY, HP_BAR_WIDTH, HP_BAR_HEIGHT);
-        batch.draw(currentFrame, drawX, drawY, drawWidth, drawHeight);
-    }
-
+    
 
     protected float getScaleMultiplier() {
         return 1f; // Mặc định
@@ -247,10 +211,10 @@ public abstract class Monster extends Character implements Renderable, Collidabl
 
         // Cũng nên xử lý hiệu ứng bị hit
         if (player.isShielding) {
-            player.isShieldedHit = true;
+        	player.isShieldedHit = true;
         } else {
-            player.isHit = true;
-            player.stateTime = 0;
+        	player.isHit = true;
+        	player.stateTime = 0;
         }
     }
 
@@ -265,7 +229,7 @@ public abstract class Monster extends Character implements Renderable, Collidabl
         return Math.sqrt(dx * dx + dy * dy) < Math.max(bounds.width, bounds.height);
     }
 
-    private void approachPlayer(float deltaTime, Player player) {
+    private void approachPlayer(float deltaTime,Player player) {
         float dx = player.bounds.x - bounds.x;
         float dy = player.bounds.y - bounds.y;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
@@ -290,4 +254,15 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     }
 
     protected abstract void loadAnimations();
+    @Override
+    public void render(SpriteBatch batch) {
+        // Gọi hàm mở rộng nếu cần, truyền null nếu không có Player
+        render(batch, null);
+    }
+
+    // Hàm mở rộng cho các class con nếu muốn vẽ phụ thuộc Player
+    public void render(SpriteBatch batch, Player player) {
+        // Logic mặc định (hoặc rỗng, hoặc super.render như hiện tại)
+        // Nếu class con không cần dùng player thì không override
+    }
 }

@@ -104,11 +104,6 @@ public class Player extends Character implements PlayerRender,  Collidable {
     private Animation<TextureRegion> hitUp, hitDown, hitLeft, hitRight;
     private int collectAllfragments [] = {0, 0, 0}; // Biến để theo dõi số lượng mảnh ghép đã thu thập
 
-    private GameMap gameMap;
-
-    public void setGameMap(GameMap map) {
-        this.gameMap = map;
-    }
 
     // Hàm khởi tạo nhân vật với tọa độ khởi đầu
     private BitmapFont font;
@@ -219,11 +214,11 @@ public class Player extends Character implements PlayerRender,  Collidable {
 
     // Cập nhật logic nhân vật mỗi frame
  // Trong update()
-    public void update(float deltaTime) {
+    public void update(float deltaTime,GameMap gameMap) {
         if (isDead) return; // ✅ Không update nếu đã chết
 
         lastPosition.set(bounds.x, bounds.y);
-        handleInput(deltaTime);
+        handleInput(deltaTime,gameMap);
         regenMana(deltaTime);
         dashTimer -= deltaTime;
         speedMultiplier = 1f;
@@ -281,12 +276,12 @@ public class Player extends Character implements PlayerRender,  Collidable {
 
 
     // Xử lý tất cả hành vi người chơi dựa trên phím bấm
-    private void handleInput(float deltaTime) {
+    private void handleInput(float deltaTime,GameMap gameMap) {
         if (isPaused || isAttacking|| isDead) return; // Nếu đang pause hoặc tấn công thì bỏ qua
 
-        handleMovement(deltaTime); // Xử lý di chuyển
-        handleDash();              // Xử lý dash
-        handleAttack();           // Xử lý tấn công
+        handleMovement(deltaTime,gameMap); // Xử lý di chuyển
+        handleDash(gameMap);              // Xử lý dash
+        handleAttack(gameMap);           // Xử lý tấn công
         handleShield();           // Xử lý giơ khiên
         handleSkills();           // Xử lý kỹ năng
      // ✅ Hồi đầy máu và mana khi nhấn phím R
@@ -297,7 +292,7 @@ public class Player extends Character implements PlayerRender,  Collidable {
     }
 
     // Xử lý di chuyển nhân vật bằng phím WASD hoặc phím mũi tên
-    private void handleMovement(float deltaTime) {
+    private void handleMovement(float deltaTime,GameMap gameMap) {
         float dx = 0, dy = 0; // Hướng di chuyển
         if (Gdx.input.isKeyJustPressed(Input.Keys.F) && nearestNPC != null) {
             nearestNPC.openChest();
@@ -333,13 +328,13 @@ public class Player extends Character implements PlayerRender,  Collidable {
                 bounds.x = nextX;
                 bounds.y = nextY;
             }
-            clampToMapBounds();
+            clampToMapBounds(gameMap);
 
         }
     }
 
 
-    private void handleDash() {
+    private void handleDash(GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) && dashTimer <= 0 && isMoving) {
             float dx = 0, dy = 0;
 
@@ -376,12 +371,12 @@ public class Player extends Character implements PlayerRender,  Collidable {
                 dashTimer = dashCooldown;
                 smokes.add(new Smoke(prevX, prevY));
             }
-            clampToMapBounds();
+            clampToMapBounds(gameMap);
 
         }
     }
 
-    private void clampToMapBounds() {
+    private void clampToMapBounds(GameMap gameMap) {
         // Ensure the player's rectangle stays inside the map boundaries
         if (gameMap == null) return;
         float minX = 0;
@@ -395,7 +390,7 @@ public class Player extends Character implements PlayerRender,  Collidable {
 
 
     // Bắt đầu tấn công nếu nhấn phím Space
-    private void handleAttack() {
+    private void handleAttack(GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             isAttacking = true;
             stateTime = 0;
