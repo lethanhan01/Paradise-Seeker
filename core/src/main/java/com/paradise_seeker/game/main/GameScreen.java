@@ -31,7 +31,7 @@ import com.paradise_seeker.game.map.GameMap;
 
 public class GameScreen implements Screen {
     final Main game;
-    Player player;
+    Player player = new Player();;
     Music music;
     private float cameraLerp = 0.1f;
     private GameMapManager mapManager;
@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
     private boolean showDialogueOptions = false;
     private String pendingPotionToDrop = null;
     private boolean waitingForChestToOpen = false;
-
+    
     public GameScreen(final Main game) {
         this.game = game;
 

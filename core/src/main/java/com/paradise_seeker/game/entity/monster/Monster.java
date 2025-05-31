@@ -11,10 +11,13 @@ import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.render.Renderable;
+import com.paradise_seeker.game.map.GameMap;
+
 
 public abstract class Monster extends Character implements Renderable, Collidable {
-
-
+	
+	protected GameMap gameMap;
+	
     public boolean isAggressive = false;
     public float aggroTimer = 0f;
     public final float AGGRO_DURATION = 5f;
@@ -54,6 +57,8 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     public static final float HP_BAR_WIDTH = 2.0f; // Độ dài cố định (ví dụ: 2 đơn vị game)
     public static final float HP_BAR_HEIGHT = 0.5f; // Độ dày thanh HP
     public static final float HP_BAR_Y_OFFSET = 0.5f;
+    
+    
 
     public Monster(Rectangle bounds,float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y ) {
     	super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
@@ -70,7 +75,6 @@ public abstract class Monster extends Character implements Renderable, Collidabl
             hpBarFrames[i] = new Texture(Gdx.files.internal(filename));
         }
         this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
-
     }
 
     public Rectangle getBounds() {
@@ -84,8 +88,8 @@ public abstract class Monster extends Character implements Renderable, Collidabl
         bounds.setSize(spriteWidth, spriteHeight);
     }
 
-    public void update(float deltaTime, Player player) {
-        if (player == null || player.isDead) return;
+    public void update(float deltaTime) {
+        if (gameMap.getPlayer() == null || gameMap.getPlayer().isDead) return;
 
         if (isDead) {
             stateTime += deltaTime;
@@ -103,11 +107,11 @@ public abstract class Monster extends Character implements Renderable, Collidabl
 
         if (isCleaving) {
             if (pendingCleaveHit && !cleaveDamageDealt && stateTime >= cleaveDuration * 0.8f) {
-                if (player != null && !player.isDead) {
-                    float dx = player.bounds.x + player.bounds.width / 2 - (bounds.x + bounds.width / 2);
-                    float dy = player.bounds.y + player.bounds.height / 2 - (bounds.y + bounds.height / 2);
+                if (gameMap.getPlayer() != null && !gameMap.getPlayer().isDead) {
+                    float dx = gameMap.getPlayer().bounds.x + gameMap.getPlayer().bounds.width / 2 - (bounds.x + bounds.width / 2);
+                    float dy = gameMap.getPlayer().bounds.y + gameMap.getPlayer().bounds.height / 2 - (bounds.y + bounds.height / 2);
                     float dist = (float) Math.sqrt(dx * dx + dy * dy);
-                    if (dist <= cleaveRange) player.takeDamage(atk);
+                    if (dist <= cleaveRange)gameMap.getPlayer().takeDamage(atk);
                 }
                 cleaveDamageDealt = true;
             }
@@ -121,12 +125,12 @@ public abstract class Monster extends Character implements Renderable, Collidabl
 
         if (isAggressive) {
             aggroTimer -= deltaTime;
-            if (aggroTimer <= 0f && !isNearPlayer(player)) isAggressive = false;
+            if (aggroTimer <= 0f && !isNearPlayer()) isAggressive = false;
             else {
                 if (!isCleaving) {
-                    approachPlayer(deltaTime, player);
+                    approachPlayer(deltaTime);
                 }
-                if (isPlayerInCleaveRange(player) && cleaveTimer <= 0f) attackPlayer();
+                if (isPlayerInCleaveRange() && cleaveTimer <= 0f) attackPlayer();
                 return;
             }
         }
@@ -134,11 +138,13 @@ public abstract class Monster extends Character implements Renderable, Collidabl
         returnToSpawn(deltaTime);
     }
 
-    private boolean isPlayerInCleaveRange(Player player) {
+    private boolean isPlayerInCleaveRange() {
+    	if (gameMap.getPlayer() == null || gameMap.getPlayer().isDead) return false;
+    	
         float bossCenterX = bounds.x + bounds.width / 2;
         float bossCenterY = bounds.y + bounds.height / 2;
-        float playerCenterX = player.bounds.x + player.bounds.width / 2;
-        float playerCenterY = player.bounds.y + player.bounds.height / 2;
+        float playerCenterX = gameMap.getPlayer().bounds.x + gameMap.getPlayer().bounds.width / 2;
+        float playerCenterY = gameMap.getPlayer().bounds.y + gameMap.getPlayer().bounds.height / 2;
 
         float dx = bossCenterX - playerCenterX;
         float dy = bossCenterY - playerCenterY;
@@ -180,27 +186,27 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     }
     @Override
     public void render(SpriteBatch batch) {
-    	Player player = null; //sửa chỗ này để tránh lỗi null
+    	if (gameMap.getPlayer() != null) facingRight = gameMap.getPlayer().getBounds().x > bounds.x; //sửa chỗ này để tránh lỗi null
         if (isDead) currentFrame = (facingRight ? deathRight : deathLeft).getKeyFrame(stateTime, false);
         else if (isCleaving) currentFrame = (facingRight ? cleaveRight : cleaveLeft).getKeyFrame(stateTime, false);
         else if (isTakingHit) currentFrame = (facingRight ? takeHitRight : takeHitLeft).getKeyFrame(stateTime, false);
         else if (!isMoving) currentFrame = (facingRight ? idleRight : idleLeft).getKeyFrame(stateTime, true);
         else currentFrame = (facingRight ? walkRight : walkLeft).getKeyFrame(stateTime, true);
 
-        if (player != null) facingRight = player.bounds.x > bounds.x;
+        if (gameMap.getPlayer() != null) facingRight = gameMap.getPlayer().bounds.x > bounds.x;
 
         // Tính kích thước vẽ
         float scale = getScaleMultiplier();
-        float playerArea = player.bounds.width * player.bounds.height;
+        float playerArea = gameMap.getPlayer().bounds.width * gameMap.getPlayer().bounds.height;
 
         float frameAspect = currentFrame.getRegionWidth() / (float) currentFrame.getRegionHeight();
 
         float drawWidth, drawHeight;
         if (frameAspect >= 1f) { // Ngang
-            drawWidth = player.bounds.width * scale;
+            drawWidth = gameMap.getPlayer().bounds.width * scale;
             drawHeight = drawWidth / frameAspect;
         } else { // Dọc
-            drawHeight = player.bounds.height * scale;
+            drawHeight = gameMap.getPlayer().bounds.height * scale;
             drawWidth = drawHeight * frameAspect;
         }
 
@@ -235,39 +241,39 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     @Override
     public void onCollision(Player player) {
         // Đẩy player ra xa khỏi monster
-        float dx = player.bounds.x + player.bounds.width / 2 - (bounds.x + bounds.width / 2);
-        float dy = player.bounds.y + player.bounds.height / 2 - (bounds.y + bounds.height / 2);
+        float dx = gameMap.getPlayer().bounds.x + gameMap.getPlayer().bounds.width / 2 - (bounds.x + bounds.width / 2);
+        float dy = gameMap.getPlayer().bounds.y + gameMap.getPlayer().bounds.height / 2 - (bounds.y + bounds.height / 2);
         float dist = (float) Math.sqrt(dx * dx + dy * dy);
 
         if (dist == 0) return;
 
         float pushAmount = 1f;
-        player.bounds.x += (dx / dist) * pushAmount;
-        player.bounds.y += (dy / dist) * pushAmount;
+        gameMap.getPlayer().bounds.x += (dx / dist) * pushAmount;
+        gameMap.getPlayer().bounds.y += (dy / dist) * pushAmount;
 
         // Cũng nên xử lý hiệu ứng bị hit
-        if (player.isShielding) {
-            player.isShieldedHit = true;
+        if (gameMap.getPlayer().isShielding) {
+        	gameMap.getPlayer().isShieldedHit = true;
         } else {
-            player.isHit = true;
-            player.stateTime = 0;
+        	gameMap.getPlayer().isHit = true;
+        	gameMap.getPlayer().stateTime = 0;
         }
     }
 
 
-    private boolean isNearPlayer(Player player) {
+    private boolean isNearPlayer() {
         float thisCenterX = bounds.x + bounds.width / 2;
         float thisCenterY = bounds.y + bounds.height / 2;
-        float playerCenterX = player.bounds.x + player.bounds.width / 2;
-        float playerCenterY = player.bounds.y + player.bounds.height / 2;
+        float playerCenterX = gameMap.getPlayer().bounds.x + gameMap.getPlayer().bounds.width / 2;
+        float playerCenterY = gameMap.getPlayer().bounds.y + gameMap.getPlayer().bounds.height / 2;
         float dx = thisCenterX - playerCenterX;
         float dy = thisCenterY - playerCenterY;
         return Math.sqrt(dx * dx + dy * dy) < Math.max(bounds.width, bounds.height);
     }
 
-    private void approachPlayer(float deltaTime, Player player) {
-        float dx = player.bounds.x - bounds.x;
-        float dy = player.bounds.y - bounds.y;
+    private void approachPlayer(float deltaTime) {
+        float dx = gameMap.getPlayer().bounds.x - bounds.x;
+        float dy = gameMap.getPlayer().bounds.y - bounds.y;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
         if (distance > 0.1f) {
             float moveX = (dx / distance) * speed * deltaTime;
@@ -290,4 +296,8 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     }
 
     protected abstract void loadAnimations();
+    public void setGameMap(GameMap map) {
+        this.gameMap = map;
+    }
+
 }

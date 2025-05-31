@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.map.GameMap;
+
 
 public class FlyingDemon extends Monster {
 
@@ -19,8 +21,9 @@ public class FlyingDemon extends Monster {
     boolean active = true;
     float velocityX;
     float velocityY;
-
-    Projectile(float x, float y, float targetX, float targetY, boolean facingRight) {
+    private GameMap gameMap;
+    Projectile(float x, float y, float targetX, float targetY, boolean facingRight, GameMap gameMap) {
+    	this.gameMap = gameMap;
         String path = facingRight ?
             "images/Entity/characters/monsters/elite/map3/flying_demon/right/atk/projectile_right.png" :
             "images/Entity/characters/monsters/elite/map3/flying_demon/left/atk/projectile.png";
@@ -40,12 +43,12 @@ public class FlyingDemon extends Monster {
         }
     }
 
-    void update(float deltaTime, Player player) {
+    void update(float deltaTime) {
         if (!active) return;
         bounds.x += velocityX * deltaTime;
         bounds.y += velocityY * deltaTime;
-        if (bounds.overlaps(player.bounds)) {
-            player.takeDamage(15); // Sát thương đạn
+        if (bounds.overlaps(gameMap.getPlayer().bounds)) {
+        	gameMap.getPlayer().takeDamage(15); // Sát thương đạn
             active = false;
         }
     }
@@ -109,11 +112,11 @@ public class FlyingDemon extends Monster {
     }
 
     @Override
-    public void update(float deltaTime, Player player) {
-        super.update(deltaTime, player);
+    public void update(float deltaTime) {
+        super.update(deltaTime);
 
         for (Projectile p : projectiles) {
-            p.update(deltaTime, player);
+            p.update(deltaTime);
         }
 
         for (int i = projectiles.size - 1; i >= 0; i--) {
@@ -123,17 +126,18 @@ public class FlyingDemon extends Monster {
         }
 
         if (isCleaving && cleaveTimer > 0 && !cleaveDamageDealt && stateTime >= cleaveDuration * 0.2f) {
-            spawnProjectile(player);
+            spawnProjectile();
             cleaveDamageDealt = true;
         }
     }
 
-    private void spawnProjectile(Player player) {
+    private void spawnProjectile() {
+    	if (gameMap == null || gameMap.getPlayer() == null) return; 
         float bulletX = facingRight ? bounds.x + bounds.width : bounds.x - 0.5f;
         float bulletY = bounds.y + bounds.height / 2 - 0.25f;
-        float targetX = player.bounds.x + player.bounds.width / 2;
-        float targetY = player.bounds.y + player.bounds.height / 2;
-        projectiles.add(new Projectile(bulletX, bulletY, targetX, targetY, facingRight));
+        float targetX = gameMap.getPlayer().bounds.x + gameMap.getPlayer().bounds.width / 2;
+        float targetY = gameMap.getPlayer().bounds.y + gameMap.getPlayer().bounds.height / 2;
+        projectiles.add(new Projectile(bulletX, bulletY, targetX, targetY, facingRight, gameMap));
     }
 
 

@@ -43,7 +43,7 @@ public class GameMapManager {
 
     public GameMap getCurrentMap() { return currentMap; }
 
-    public void update(float delta) { currentMap.update(delta, player); }
+    public void update(float delta) { currentMap.update(delta); }
 
     public void render(SpriteBatch batch) { currentMap.render(batch); }
 
@@ -69,6 +69,7 @@ public class GameMapManager {
     private void setCurrentMap(int index) {
         currentMapIndex = index;
         currentMap = maps.get(currentMapIndex);
+        currentMap.setPlayer(player); 
         player.setGameMap(currentMap);
         // Now, and ONLY now, load the spawn for the current map:
         currentMap.loadSpawnPoints(player);
