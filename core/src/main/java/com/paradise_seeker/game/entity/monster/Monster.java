@@ -57,7 +57,6 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     public static final float HP_BAR_Y_OFFSET = 0.5f;
     
     
-
     public Monster(Rectangle bounds,float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y ) {
     	super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
 		this.spriteWidth = bounds.width;
