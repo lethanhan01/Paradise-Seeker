@@ -1,0 +1,27 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+    },
+    "last.exportedFilePath": "C:/Users/NAME/Documents/GitHub/ParadiseSeeker/assets/tilemaps/TileMaps",
+    "last.externalTilesetPath": "C:/Users/An/Documents/Project/assets/tilemaps/TileMaps/map2-tilesets",
+    "last.imagePath": "C:/Users/NAME/Documents/GitHub/ParadiseSeeker/assets/GameGraphics/assetpack",
+    "map.height": 50,
+    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 50,
+    "openFiles": [
+    ],
+    "project": "",
+    "property.type": "string",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx"
+}
