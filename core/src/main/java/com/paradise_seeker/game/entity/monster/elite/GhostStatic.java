@@ -26,13 +26,12 @@ public class GhostStatic extends Monster {
         updateBounds();
     }
 
-    @Override
-    protected float getScaleMultiplier() {
+    public float getScaleMultiplier() {
         return 2.0f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // Dùng chung 1 animation cho tất cả trạng thái
         Animation<TextureRegion> ghostAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/ghost_static/Dark VFX 2 (48x64)", 16);
 
@@ -60,14 +59,23 @@ public class GhostStatic extends Monster {
     }
 
     @Override
+    public void onDeath() {
+
+    }
+
+    @Override
     public void render(SpriteBatch batch) {
         render(batch, null); // hoặc truyền player nếu có
     }
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch);
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
 }

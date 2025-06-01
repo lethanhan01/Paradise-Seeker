@@ -26,13 +26,13 @@ public class RatCreep extends Monster {
         updateBounds();
 
     }
-    @Override
-    protected float getScaleMultiplier() {
+
+    public float getScaleMultiplier() {
         return 2f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // Run (walk) animation
         walkRight = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/run/rat_run", 6);
         walkLeft  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/run/rat_run", 6);
@@ -70,14 +70,23 @@ public class RatCreep extends Monster {
     }
 
     @Override
+    public void onDeath() {
+        this.isDead = true;
+    }
+
+    @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
+        render(batch, null);
     }
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch);
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
 }

@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -36,13 +35,13 @@ public class CyclopBoss extends Monster {
         updateBounds();
     }
 
-    @Override
-    protected float getScaleMultiplier() {
+
+    public float getScaleMultiplier() {
         return 8f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // WALK
         walkRight = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/walk/phai/cyclop", 15, 26);
         walkLeft = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/walk/trai/cyclop", 165, 176);
@@ -153,6 +152,11 @@ public class CyclopBoss extends Monster {
         return new Animation<>(0.14f, frames);
     }
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
+
     // --- Nội bộ: class skill projectile ---
     private class SkillProjectile {
         private Vector2 pos;
@@ -185,20 +189,26 @@ public class CyclopBoss extends Monster {
         }
     }
 
- // --- Render boss ---
- // Duy nhất 1 hàm @Override từ Renderable
- @Override
- public void render(SpriteBatch batch) {
-     render(batch, null); // truyền null nếu không có player
- }
+    // Implement the required abstract onDeath() method from Character class
+    @Override
+    public void onDeath() {
+        this.isDead = true;
+        // Clear any active projectiles when boss dies
+        skillProjectiles.clear();
+    }
 
- // Nếu GameMap/GameScreen có thể truyền player, thì dùng hàm này!
- public void render(SpriteBatch batch, Player player) {
-     if (isDead) return;
-     super.render(batch, player); // render ảnh boss (cha Monster đã xử lý facing, animation...)
-     renderSkillProjectiles(batch, stateTime); // vẽ skill projectile
-     batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
- }
+    // --- Render boss ---
+    // Duy nhất 1 hàm @Override từ Renderable
+    @Override
+    public void render(SpriteBatch batch) {
+        render(batch, null); // truyền null nếu không có player
+    }
 
+    // Nếu GameMap/GameScreen có thể truyền player, thì dùng hàm này!
+    public void render(SpriteBatch batch, Player player) {
+        if (isDead) return;
+        super.render(batch); // Fix: call the parent's render with only the batch parameter
+        renderSkillProjectiles(batch, stateTime); // vẽ skill projectile
+    }
 
 }

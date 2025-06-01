@@ -37,31 +37,37 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
 
         float len = (float) Math.sqrt(dx * dx + dy * dy);
         player.setMoving(len > 0);
-
-        // Always update direction if input is held
         if (len > 0) {
-            if (Math.abs(dx) > Math.abs(dy)) {
-                player.setDirection(dx > 0 ? "right" : "left");
-            } else if (Math.abs(dy) > 0) {
-                player.setDirection(dy > 0 ? "up" : "down");
-            }
-        }
-
-        // Only move if not blocked
-        if (player.isMoving()) {
-            float moveX = (dx / len) * player.getSpeed() * player.getSpeedMultiplier() * deltaTime;
-            float moveY = (dy / len) * player.getSpeed() * player.getSpeedMultiplier() * deltaTime;
-
+            dx /= len;
+            dy /= len;
+            float moveX = dx * player.speed * deltaTime;
+            float moveY = dy * player.speed * deltaTime;
             float nextX = player.getBounds().x + moveX;
             float nextY = player.getBounds().y + moveY;
-            Rectangle nextBounds = new Rectangle(nextX, nextY, player.getBounds().width, player.getBounds().height);
-
-            if (gameMap == null || !gameMap.isBlocked(nextBounds)) {
+            com.badlogic.gdx.math.Rectangle nextBounds = new com.badlogic.gdx.math.Rectangle(nextX, nextY, player.getBounds().width, player.getBounds().height);
+            boolean blocked = false;
+            if (gameMap != null && gameMap.collidables != null) {
+                for (com.paradise_seeker.game.collision.Collidable c : gameMap.collidables) {
+                    if (c != player && nextBounds.overlaps(c.getBounds())) {
+                        blocked = true;
+                        break;
+                    }
+                }
+            }
+            if (!blocked) {
                 player.getBounds().x = nextX;
                 player.getBounds().y = nextY;
+                // Cập nhật hướng di chuyển
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    player.setDirection(dx > 0 ? "right" : "left");
+                } else {
+                    player.setDirection(dy > 0 ? "up" : "down");
+                }
+            } else {
+                player.setMoving(false);
             }
-            clampToMapBounds(player, gameMap);
         }
+        clampToMapBounds(player, gameMap);
     }
 
     @Override

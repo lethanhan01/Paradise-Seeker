@@ -26,13 +26,14 @@ public class DevilCreep extends Monster {
         updateBounds();
 
     }
-    @Override
-    protected float getScaleMultiplier() {
+
+    public float getScaleMultiplier() {
         return 2f;
     }
 
 
-    protected void loadAnimations() {
+    @Override
+    public void loadAnimations() {
         // Cleave (attack) - 16 frame (đúng)
         cleaveRight = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_atk_", 16, ".png");
         cleaveLeft  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_atk_", 16, ".png");
@@ -67,15 +68,24 @@ public class DevilCreep extends Monster {
     }
 
     @Override
+    public void onDeath() {
+
+    }
+
+    @Override
     public void render(SpriteBatch batch) {
         render(batch, null); // hoặc truyền player nếu có
     }
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch); // Fix: call the parent's render with only the batch parameter
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
 }

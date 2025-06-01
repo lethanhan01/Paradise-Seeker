@@ -24,13 +24,12 @@ public class EvilPlant extends Monster {
         updateBounds();
 
     }
-    @Override
-    protected float getScaleMultiplier() {
+    public float getScaleMultiplier() {
         return 2f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         walkLeft = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/idle/", "idle", 8, ".png", 1);
         walkRight = walkLeft; // Không có ảnh walk riêng nên dùng idle
 
@@ -53,7 +52,7 @@ public class EvilPlant extends Monster {
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch); // Fix: call the parent's render with only the batch parameter
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
@@ -66,5 +65,15 @@ public class EvilPlant extends Monster {
             frames[i] = new TextureRegion(texture);
         }
         return new Animation<>(0.1f, frames);
+    }
+
+    @Override
+    public void onDeath() {
+        this.isDead = true;
+    }
+
+    @Override
+    public void onCollision(Player player) {
+
     }
 }

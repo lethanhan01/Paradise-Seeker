@@ -12,6 +12,11 @@ import com.paradise_seeker.game.entity.monster.Monster;
 
 public class FlyingDemon extends Monster {
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
+
     private class Projectile {
         Rectangle bounds;
         TextureRegion texture;
@@ -71,13 +76,12 @@ public class FlyingDemon extends Monster {
         updateBounds();
     }
 
-    @Override
     protected float getScaleMultiplier() {
         return 5f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // Fly (walk)
         walkRight = loadAnimation("images/Entity/characters/monsters/elite/map3/flying_demon/right/fly/flyingdemon_fly", 4);
         walkLeft  = loadAnimation("images/Entity/characters/monsters/elite/map3/flying_demon/left/fly/flyingdemon_fly", 4);
@@ -109,9 +113,10 @@ public class FlyingDemon extends Monster {
         return new Animation<>(0.1f, frames);
     }
 
-    @Override
+    // Remove the @Override annotation since this method is not overriding a parent method with the same signature
     public void update(float deltaTime, Player player) {
-        super.update(deltaTime, player);
+        // Fix: Adding null as the third parameter (GameMap) to match the parent class method signature
+        super.update(deltaTime, player, null);
 
         // Cập nhật các projectile với player
         for (Projectile p : projectiles) {
@@ -132,7 +137,7 @@ public class FlyingDemon extends Monster {
     }
 
     private void spawnProjectile(Player player) {
-        if (player == null) return; 
+        if (player == null) return;
         float bulletX = facingRight ? bounds.x + bounds.width : bounds.x - 0.5f;
         float bulletY = bounds.y + bounds.height / 2 - 0.25f;
         float targetX = player.bounds.x + player.bounds.width / 2;
@@ -140,9 +145,16 @@ public class FlyingDemon extends Monster {
         projectiles.add(new Projectile(bulletX, bulletY, targetX, targetY, facingRight));
     }
 
+    @Override
+    public void onDeath() {
+        this.isDead = true;
+        // Clear projectiles when the demon dies
+        projectiles.clear();
+    }
+
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch); // Fix: call the parent's render with only the batch parameter
         for (Projectile p : projectiles) {
             p.render(batch);
         }

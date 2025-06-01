@@ -60,8 +60,8 @@ public abstract class GameMap {
     // Subclass must provide these
     protected abstract String getMapTmxPath();
     protected abstract String getMapBackgroundPath();
-    
-    private Player player; 
+
+    private Player player;
 
     public GameMap() {
         // 1. Load map and background
@@ -183,7 +183,7 @@ public abstract class GameMap {
 
     public void update(float deltaTime) {
         for (NPC1 npc : npcList) npc.update(deltaTime);
-        for (Monster m : monsters) m.update(deltaTime,player);
+        for (Monster m : monsters) m.update(deltaTime, player, this);
         hpItems.removeIf(item -> !item.isActive());
         mpItems.removeIf(item -> !item.isActive());
         atkItems.removeIf(item -> !item.isActive());
@@ -336,5 +336,5 @@ public abstract class GameMap {
   public Player getPlayer() {
     return player;
 }
-  
+
 }

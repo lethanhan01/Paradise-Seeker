@@ -38,13 +38,12 @@ public class TitanKnight extends Monster {
         updateBounds();
     }
 
-    @Override
-    protected float getScaleMultiplier() {
+    public float getScaleMultiplier() {
         return 2.4f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // WALK (RUN)
         walkRight = loadAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/run/run", 8);
         walkLeft = walkRight;
@@ -165,6 +164,11 @@ public class TitanKnight extends Monster {
         return new Animation<>(0.08f, frames);
     }
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
+
     // --- Nội bộ: class spell ---
     private class FireSpell {
         private Vector2 pos;
@@ -196,13 +200,18 @@ public class TitanKnight extends Monster {
     }
 
     @Override
+    public void onDeath() {
+
+    }
+
+    @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
+        render(batch, null);
     }
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch);
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 

@@ -15,7 +15,7 @@ import com.paradise_seeker.game.map.GameMap;
 
 
 public abstract class Monster extends Character implements Renderable, Collidable {
-	
+
     public boolean isAggressive = false;
     public float aggroTimer = 0f;
     public final float AGGRO_DURATION = 5f;
@@ -36,11 +36,13 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     protected float cleaveRange; // ❗Không gán = 4f
 
     public Animation<TextureRegion> deathLeft, deathRight;
-    public boolean deathPlayed = false;
+
+    private MonsterRenderer renderer;
+    private MonsterAI ai;
+
     public Animation<TextureRegion> idleLeft, idleRight;
     public Animation<TextureRegion> walkLeft, walkRight;
     public Animation<TextureRegion> takeHitLeft, takeHitRight;
-
     public TextureRegion currentFrame;
     public boolean facingRight = true;
     public boolean isTakingHit = false;
@@ -50,21 +52,19 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     public Vector2 lastPosition = new Vector2();
     public boolean isMoving = false;
     public float OFFSET;
-
     public Texture[] hpBarFrames;
-    public static final float HP_BAR_WIDTH = 2.0f; // Độ dài cố định (ví dụ: 2 đơn vị game)
-    public static final float HP_BAR_HEIGHT = 0.5f; // Độ dày thanh HP
+    public static final float HP_BAR_WIDTH = 2.0f;
+    public static final float HP_BAR_HEIGHT = 0.5f;
     public static final float HP_BAR_Y_OFFSET = 0.5f;
-    
-    
+
     public Monster(Rectangle bounds,float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y ) {
-    	super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
-		this.spriteWidth = bounds.width;
-		this.spriteHeight = bounds.height;
-		this.spawnX = x;
-		this.spawnY = y;
-		loadAnimations();
-		this.lastPosition.set(x, y);
+        super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
+        this.spriteWidth = bounds.width;
+        this.spriteHeight = bounds.height;
+        this.spawnX = x;
+        this.spawnY = y;
+        loadAnimations();
+        this.lastPosition.set(x, y);
         this.currentFrame = null;
         hpBarFrames = new Texture[30];
         for (int i = 0; i < 30; i++) {
@@ -72,6 +72,33 @@ public abstract class Monster extends Character implements Renderable, Collidabl
             hpBarFrames[i] = new Texture(Gdx.files.internal(filename));
         }
         this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
+        this.renderer = new MonsterRenderer();
+        this.ai = new MonsterAI(this);
+    }
+
+    public void update(float deltaTime, Player player, GameMap map) {
+        if (player == null || player.isDead) return;
+        if (isDead) {
+            stateTime += deltaTime;
+            return;
+        }
+        ai.update(deltaTime, player, map);
+        isMoving = lastPosition.dst(bounds.x, bounds.y) > 0.0001f;
+        lastPosition.set(bounds.x, bounds.y);
+        stateTime += deltaTime;
+        if (isTakingHit) {
+            takeHitTimer -= deltaTime;
+            if (takeHitTimer <= 0f) isTakingHit = false;
+        }
+        // ...existing code...
+    }
+
+    public void render(SpriteBatch batch) {
+        renderer.render(this, batch);
+    }
+
+    public TextureRegion getCurrentFrame() {
+        return currentFrame;
     }
 
     public Rectangle getBounds() {
@@ -81,188 +108,76 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     public boolean isDead() {
         return isDead;
     }
+
     public void updateBounds() {
         bounds.setSize(spriteWidth, spriteHeight);
     }
 
-    public void update(float deltaTime,Player player) {
-        if (player == null || player.isDead) return;
-
-        if (isDead) {
-            stateTime += deltaTime;
-            return;
-        }
-
-        isMoving = lastPosition.dst(bounds.x, bounds.y) > 0.0001f;
-        lastPosition.set(bounds.x, bounds.y);
-
-        stateTime += deltaTime;
-        if (isTakingHit) {
-            takeHitTimer -= deltaTime;
-            if (takeHitTimer <= 0f) isTakingHit = false;
-        }
-
-        if (isCleaving) {
-            if (pendingCleaveHit && !cleaveDamageDealt && stateTime >= cleaveDuration * 0.8f) {
-                if (player != null && !player.isDead) {
-                    float dx = player.bounds.x + player.bounds.width / 2 - (bounds.x + bounds.width / 2);
-                    float dy = player.bounds.y + player.bounds.height / 2 - (bounds.y + bounds.height / 2);
-                    float dist = (float) Math.sqrt(dx * dx + dy * dy);
-                    if (dist <= cleaveRange)player.takeDamage(atk);
-                }
-                cleaveDamageDealt = true;
-            }
-            cleaveTimer -= deltaTime;
-            if (cleaveTimer <= 0f) {
-                isCleaving = false;
-                pendingCleaveHit = false;
-                cleaveDamageDealt = false;
-            }
-        }
-
-        if (isAggressive) {
-            aggroTimer -= deltaTime;
-            if (aggroTimer <= 0f && !isNearPlayer(player)) isAggressive = false;
-            else {
-                if (!isCleaving) {
-                    approachPlayer(deltaTime,player);
-                }
-                if (isPlayerInCleaveRange(player) && cleaveTimer <= 0f) attackPlayer();
-                return;
-            }
-        }
-
-        returnToSpawn(deltaTime);
+    public float getHp() {
+        return hp;
     }
 
-    private boolean isPlayerInCleaveRange(Player player) {
-    	if (player == null || player.isDead) return false;
-    	
-        float bossCenterX = bounds.x + bounds.width / 2;
-        float bossCenterY = bounds.y + bounds.height / 2;
-        float playerCenterX = player.bounds.x + player.bounds.width / 2;
-        float playerCenterY = player.bounds.y + player.bounds.height / 2;
-
-        float dx = bossCenterX - playerCenterX;
-        float dy = bossCenterY - playerCenterY;
-
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
-        return distance <= cleaveRange;
+    public float getMaxHp() {
+        return maxHp;
     }
 
-    public void attackPlayer() {
-        useCleaveSkill();
+    public float getAtk() {
+        return atk;
+    }
+
+    public float getSpeed() {
+        return speed;
     }
 
     public void takeDamage(float damage) {
-        if (damage > 0) {
-            isAggressive = true;
-            aggroTimer = AGGRO_DURATION;
-            hp = Math.max(0, hp - damage);
-            if (hp == 0 && !isDead) onDeath();
-            else {
-                isTakingHit = true;
-                takeHitTimer = takeHitDuration;
-                if (!isCleaving) {
-                    stateTime = 0f;
+        if (isDead) return;
+        this.hp = Math.max(0, this.hp - damage);
+        this.isTakingHit = true;
+        this.takeHitTimer = this.takeHitDuration;
+        if (this.hp == 0) {
+            this.isDead = true;
+            // Optionally, trigger death animation or logic here
+        }
+    }
+
+    /**
+     * Handle collision with a player. This applies damage to the player when they
+     * collide with this monster, unless the player is invulnerable or shielding.
+     */
+    @Override
+    public void onCollision(Collidable other) {
+        if (other instanceof Player) {
+            Player player = (Player) other;
+            if (!isDead && !player.isInvulnerable()) {
+                // Calculate damage based on monster's attack value
+                int damage = (int) this.atk;
+
+                // If player is shielding, reduce damage and handle shield effects
+                if (player.isShielding) {
+                    player.isShieldedHit = true;
+                    damage = Math.max(1, damage / 2); // Reduce damage if shielding
+                } else {
+                    player.isHit = true;
+                    player.stateTime = 0;
+                }
+
+                // Apply damage to player unless they're invulnerable from a recent hit
+                if (!player.isInvulnerable()) {
+                    player.takeDamage(damage);
                 }
             }
         }
     }
 
-    public void useCleaveSkill() {
-        if (!isCleaving && !isDead) {
-            isCleaving = true;
-            cleaveTimer = cleaveDuration;
-            stateTime = 0f;
-            isAggressive = true;
-            aggroTimer = AGGRO_DURATION;
-            pendingCleaveHit = true;
-            cleaveDamageDealt = false;
-        }
-    }
-    
-
-    protected float getScaleMultiplier() {
-        return 1f; // Mặc định
-    }
-
-
-    public void onDeath() {
-        isDead = true;
-        stateTime = 0f;
-        deathPlayed = true;
-        bounds.set(0, 0, 0, 0); // Reset bounds để không va chạm nữa
-    }
-
-
-    @Override
+    /**
+     * Handle specific collision logic with player.
+     * Subclasses can override this for custom behavior.
+     */
     public void onCollision(Player player) {
-        // Đẩy player ra xa khỏi monster
-        float dx = player.bounds.x + player.bounds.width / 2 - (bounds.x + bounds.width / 2);
-        float dy = player.bounds.y + player.bounds.height / 2 - (bounds.y + bounds.height / 2);
-        float dist = (float) Math.sqrt(dx * dx + dy * dy);
-
-        if (dist == 0) return;
-
-        float pushAmount = 1f;
-        player.bounds.x += (dx / dist) * pushAmount;
-        player.bounds.y += (dy / dist) * pushAmount;
-
-        // Cũng nên xử lý hiệu ứng bị hit
-        if (player.isShielding) {
-        	player.isShieldedHit = true;
-        } else {
-        	player.isHit = true;
-        	player.stateTime = 0;
-        }
+        // Default implementation uses the Collidable version
+        onCollision((Collidable)player);
     }
 
-
-    private boolean isNearPlayer(Player player) {
-        float thisCenterX = bounds.x + bounds.width / 2;
-        float thisCenterY = bounds.y + bounds.height / 2;
-        float playerCenterX = player.bounds.x + player.bounds.width / 2;
-        float playerCenterY = player.bounds.y + player.bounds.height / 2;
-        float dx = thisCenterX - playerCenterX;
-        float dy = thisCenterY - playerCenterY;
-        return Math.sqrt(dx * dx + dy * dy) < Math.max(bounds.width, bounds.height);
-    }
-
-    private void approachPlayer(float deltaTime,Player player) {
-        float dx = player.bounds.x - bounds.x;
-        float dy = player.bounds.y - bounds.y;
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
-        if (distance > 0.1f) {
-            float moveX = (dx / distance) * speed * deltaTime;
-            float moveY = (dy / distance) * speed * deltaTime;
-            bounds.x += moveX;
-            bounds.y += moveY;
-        }
-    }
-
-    private void returnToSpawn(float deltaTime) {
-        float dx = spawnX - bounds.x;
-        float dy = spawnY - bounds.y;
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
-        if (distance > 0.1f) {
-            float moveX = (dx / distance) * speed * deltaTime;
-            float moveY = (dy / distance) * speed * deltaTime;
-            bounds.x += moveX;
-            bounds.y += moveY;
-        }
-    }
-
-    protected abstract void loadAnimations();
-    @Override
-    public void render(SpriteBatch batch) {
-        // Gọi hàm mở rộng nếu cần, truyền null nếu không có Player
-        render(batch, null);
-    }
-
-    // Hàm mở rộng cho các class con nếu muốn vẽ phụ thuộc Player
-    public void render(SpriteBatch batch, Player player) {
-        // Logic mặc định (hoặc rỗng, hoặc super.render như hiện tại)
-        // Nếu class con không cần dùng player thì không override
-    }
+    // Add abstract method for animation loading
+    public abstract void loadAnimations();
 }

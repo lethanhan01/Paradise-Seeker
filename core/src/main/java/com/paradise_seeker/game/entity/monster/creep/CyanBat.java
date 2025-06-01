@@ -24,13 +24,13 @@ public class CyanBat extends Monster {
         updateBounds();
 
     }
-    @Override
-    protected float getScaleMultiplier() {
+
+    public float getScaleMultiplier() {
         return 2f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         walkRight = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/walk/", "walk", 8, ".png", 1);
         walkLeft  = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/walk/", "walk", 8, ".png", 1);
 
@@ -47,7 +47,7 @@ public class CyanBat extends Monster {
         deathLeft  = idleLeft;
     }
 
-  
+
 
     private Animation<TextureRegion> loadAnimationWithPadding(String folder, String prefix, int frameCount, String suffix, int startIndex) {
         TextureRegion[] frames = new TextureRegion[frameCount];
@@ -58,6 +58,13 @@ public class CyanBat extends Monster {
         }
         return new Animation<>(0.1f, frames);
     }
+
+    // Implement the required abstract onDeath() method from Character class
+    @Override
+    public void onDeath() {
+        this.isDead = true;
+    }
+
     @Override
     public void render(SpriteBatch batch) {
         render(batch, null); // hoặc truyền player nếu có
@@ -65,9 +72,14 @@ public class CyanBat extends Monster {
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch); // Fix: call the parent's render with only the batch parameter
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
 }
+

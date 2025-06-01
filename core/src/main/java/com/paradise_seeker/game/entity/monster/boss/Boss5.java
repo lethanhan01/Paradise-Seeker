@@ -24,7 +24,7 @@ public class Boss5 extends Monster {
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // WALK (tên file là run0.png, run1.png, ...)
         walkRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/walk/phai/", "run", 8, ".png", 0);
         walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/walk/trai/", "run", 8, ".png", 0);
@@ -85,14 +85,27 @@ public class Boss5 extends Monster {
         return new Animation<>(0.1f, frames);
     }
 
-    @Override
-    protected float getScaleMultiplier() {
+    public float getScaleMultiplier() {
         return 12f;
     }
+
     @Override
     public void render(SpriteBatch batch) {
-        super.render(batch, null); // truyền null nếu không có player trong context này
+        super.render(batch); // Fixed by removing the incorrect parameter
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
+    @Override
+    public void onDeath() {
+        isDead = true;
+        stateTime = 0;
+    }
+
+    @Override
+    public void onCollision(Player player) {
+        // Implement collision behavior with the player
+        if (!isDead) {
+            player.takeDamage(25); // Deal damage to the player on collision
+        }
+    }
 }

@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.paradise_seeker.game.animation.PlayerAnimationManager;
 import com.paradise_seeker.game.entity.Player;
-import com.paradise_seeker.game.entity.Player.Smoke;
-
 
 public class PlayerRendererImpl implements PlayerRenderer{
     private PlayerAnimationManager animationManager;

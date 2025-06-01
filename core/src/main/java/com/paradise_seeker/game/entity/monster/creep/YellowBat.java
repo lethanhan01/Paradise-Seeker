@@ -23,13 +23,13 @@ public class YellowBat extends Monster {
         updateBounds();
 
     }
-    @Override
-    protected float getScaleMultiplier() {
+
+    public float getScaleMultiplier() {
         return 2f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         walkRight = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/right/fly/", "fly", 7, ".png", 1);
         walkLeft  = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/left/fly/", "fly", 7, ".png", 1);
 
@@ -47,13 +47,18 @@ public class YellowBat extends Monster {
     }
 
     @Override
+    public void onDeath() {
+
+    }
+
+    @Override
     public void render(SpriteBatch batch) {
         render(batch, null); // hoặc truyền player nếu có
     }
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch);
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
@@ -65,5 +70,10 @@ public class YellowBat extends Monster {
             frames[i] = new TextureRegion(texture);
         }
         return new Animation<>(0.1f, frames);
+    }
+
+    @Override
+    public void onCollision(Player player) {
+
     }
 }

@@ -38,19 +38,9 @@ public class Player extends Character implements Collidable {
     public Weapon weapon;
     private boolean isClimbing = false;
 
-    // Smoke effect for dash
-    public static class Smoke {
-        public float x, y;
-        public float stateTime;
+    // Quản lý hiệu ứng smoke
+    private com.paradise_seeker.game.entity.SmokeManager smokeManager = new com.paradise_seeker.game.entity.SmokeManager();
 
-        public Smoke(float x, float y) {
-            this.x = x;
-            this.y = y;
-            this.stateTime = 0;
-        }
-    }
-
-    private List<Smoke> smokes = new ArrayList<>();
     public boolean showInteractMessage = false;
 
     private float speedMultiplier = 1f;
@@ -85,6 +75,11 @@ public class Player extends Character implements Collidable {
     public boolean isHit = false;
     public boolean isShieldedHit = true;
     private boolean isPushing = false;
+
+    // Invulnerability system
+    private boolean isInvulnerable = false;
+    private float invulnerabilityTimer = 0f;
+    private static final float INVULNERABILITY_DURATION = 0.5f; // Half second of invulnerability after getting hit
 
     private int collectAllFragments[] = {0, 0, 0};
 
@@ -136,6 +131,14 @@ public class Player extends Character implements Collidable {
         // Use InputHandler instead of direct handling
         inputHandler.handleInput(this, deltaTime, gameMap);
 
+        // Update invulnerability timer
+        if (isInvulnerable) {
+            invulnerabilityTimer -= deltaTime;
+            if (invulnerabilityTimer <= 0) {
+                isInvulnerable = false;
+            }
+        }
+
         regenMana(deltaTime);
         dashTimer -= deltaTime;
         speedMultiplier = 1f;
@@ -157,12 +160,7 @@ public class Player extends Character implements Collidable {
         isClimbing = false;
 
         // Update smoke effects
-        Iterator<Smoke> iter = smokes.iterator();
-        while (iter.hasNext()) {
-            Smoke s = iter.next();
-            s.stateTime += deltaTime;
-            if (animationManager.getSmokeAnimation().isAnimationFinished(s.stateTime)) iter.remove();
-        }
+        smokeManager.update(deltaTime, animationManager);
 
         updateNpcInteraction(gameMap);
     }
@@ -196,8 +194,9 @@ public class Player extends Character implements Collidable {
         return false;
     }
 
+    // Khi cần thêm smoke:
     public void addSmoke(float x, float y) {
-        smokes.add(new Smoke(x, y));
+        smokeManager.addSmoke(x, y);
     }
 
     // Render method now delegates to PlayerRenderer
@@ -206,9 +205,13 @@ public class Player extends Character implements Collidable {
         if (playerRenderer != null) {
             playerRenderer.render(this, batch);
         }
+        smokeManager.render(batch, animationManager);
     }
 
     public void takeDamage(float damage) {
+        // If player is invulnerable, don't take damage
+        if (isInvulnerable) return;
+
         if (isShielding) {
             damage /= 2;
         }
@@ -220,6 +223,10 @@ public class Player extends Character implements Collidable {
         } else {
             isHit = true;
             stateTime = 0;
+
+            // Set invulnerability after taking damage
+            isInvulnerable = true;
+            invulnerabilityTimer = INVULNERABILITY_DURATION;
         }
     }
 
@@ -371,10 +378,6 @@ public class Player extends Character implements Collidable {
         return isPaused;
     }
 
-    public List<Smoke> getSmokes() {
-        return smokes;
-    }
-
     public float getSpeedMultiplier() {
         return speedMultiplier;
     }
@@ -389,6 +392,25 @@ public class Player extends Character implements Collidable {
 
     public PlayerAnimationManager getAnimationManager() {
         return animationManager;
+    }
+
+    // Thêm getter cho smokeManager
+    public com.paradise_seeker.game.entity.SmokeManager getSmokeManager() {
+        return smokeManager;
+    }
+
+    // Getter and setter for atk
+    public float getAtk() {
+        return this.atk;
+    }
+
+    // Getter and setter for mp
+    public float getMp() {
+        return this.mp;
+    }
+
+    public void setMp(float mp) {
+        this.mp = Math.max(0, Math.min(mp, MAX_MP));
     }
 
     @Override
@@ -410,5 +432,10 @@ public class Player extends Character implements Collidable {
     @Override
     public void onCollision(Player player) {
         // Not needed since player can't collide with itself
+    }
+
+    // Added method to check if player is currently invulnerable
+    public boolean isInvulnerable() {
+        return isInvulnerable;
     }
 }

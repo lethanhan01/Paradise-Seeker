@@ -24,7 +24,7 @@ public class Boss3 extends Monster {
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // WALK
         walkRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/phai/", "walk", 8, ".png", 0);
         walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/trai/", "walk", 8, ".png", 0);
@@ -72,14 +72,29 @@ public class Boss3 extends Monster {
         return new Animation<>(0.1f, frames);
     }
 
-    @Override
-    protected float getScaleMultiplier() {
+    // Remove @Override from getScaleMultiplier if not in base class, or add to base if needed
+    public float getScaleMultiplier() {
         return 10f;
     }
+
     @Override
     public void render(SpriteBatch batch) {
-        super.render(batch, null); // truyền null nếu không có player trong context này
+        super.render(batch); // truyền null nếu không có player trong context này
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
+    @Override
+    public void onDeath() {
+        isDead = true;
+        stateTime = 0;
+    }
+
+    @Override
+    public void onCollision(Player player) {
+        // Implement collision behavior with the player
+        // For example, deal damage to the player when they collide with the boss
+        if (!isDead) {
+            player.takeDamage(20); // Assume 20 damage on collision
+        }
+    }
 }

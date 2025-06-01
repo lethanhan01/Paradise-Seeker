@@ -150,6 +150,11 @@ public class GameScreen implements Screen {
                 }
                 if (!projectile.isActive()) activeProjectiles.remove(i);
             }
+
+            // Update all monsters (AI, attack, movement)
+            for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
+                monster.update(delta, player, mapManager.getCurrentMap());
+            }
         } else {
             mapManager.update(delta);
         }
@@ -175,6 +180,10 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(gameCamera.combined);
         game.batch.begin();
         mapManager.render(game.batch);
+        // Render all monsters
+        for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
+            monster.render(game.batch);
+        }
         player.render(game.batch);
         player.playerSkill1.render(game.batch);
         player.playerSkill2.render(game.batch);

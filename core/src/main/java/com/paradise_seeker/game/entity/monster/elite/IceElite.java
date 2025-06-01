@@ -26,13 +26,13 @@ public class IceElite extends Monster {
         updateBounds();
 
     }
-    @Override
-    protected float getScaleMultiplier() {
+
+    public float getScaleMultiplier() {
         return 5f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // Cleave (attack) - 14 frames, bắt đầu từ 1
         cleaveRight = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/cleave/phai/1_atk_", 14);
         cleaveLeft  = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/cleave/trai/1_atk_", 14);
@@ -63,6 +63,12 @@ public class IceElite extends Monster {
         }
         return new Animation<>(0.1f, frames);
     }
+
+    @Override
+    public void onDeath() {
+
+    }
+
     @Override
     public void render(SpriteBatch batch) {
         render(batch, null); // hoặc truyền player nếu có
@@ -70,8 +76,12 @@ public class IceElite extends Monster {
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch);
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
 }

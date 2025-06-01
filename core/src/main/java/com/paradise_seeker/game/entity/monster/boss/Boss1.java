@@ -6,9 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.paradise_seeker.game.entity.Player;
-
 
 public class Boss1 extends Monster {
     public Boss1(float x, float y) {
@@ -25,7 +22,7 @@ public class Boss1 extends Monster {
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // WALK
         walkRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/phai/", "walk", 8, ".png", 0);
         walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/trai/", "walk", 8, ".png", 0);
@@ -73,13 +70,18 @@ public class Boss1 extends Monster {
         return new Animation<>(0.1f, frames);
     }
 
-    @Override
     protected float getScaleMultiplier() {
         return 10f;
     }
-    public void render(SpriteBatch batch,Player player) {
-        super.render(batch, null); // truyền null nếu không có player trong context này
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+
+    @Override
+    public void onCollision(com.paradise_seeker.game.entity.Player player) {
+        // Implement boss-specific collision logic here, or leave empty if not needed
+    }
+
+    @Override
+    public void onDeath() {
+        // Implement boss-specific death logic here, or leave empty if not needed
     }
 
 }

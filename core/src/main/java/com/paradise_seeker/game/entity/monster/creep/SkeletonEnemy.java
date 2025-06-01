@@ -24,13 +24,12 @@ public class SkeletonEnemy extends Monster {
         updateBounds();
     }
 
-    @Override
     protected float getScaleMultiplier() {
         return 2.1f;
     }
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // WALK (chạy): skel_enemy_run1.png ... skel_enemy_run12.png
         walkRight = loadRunAnimation();
         walkLeft  = walkRight;
@@ -110,6 +109,12 @@ public class SkeletonEnemy extends Monster {
         }
         return new Animation<>(0.11f, frames);
     }
+
+    @Override
+    public void onDeath() {
+        this.isDead = true;
+    }
+
     @Override
     public void render(SpriteBatch batch) {
         render(batch, null); // hoặc truyền player nếu có
@@ -117,8 +122,12 @@ public class SkeletonEnemy extends Monster {
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch); // Fix: call the parent's render with only the batch parameter
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
 }

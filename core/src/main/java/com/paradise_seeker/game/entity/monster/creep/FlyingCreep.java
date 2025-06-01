@@ -26,14 +26,13 @@ public class FlyingCreep extends Monster {
         updateBounds();
 
     }
-    @Override
-    protected float getScaleMultiplier() {
+
+    public float getScaleMultiplier() {
         return 2f;
     }
 
-
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // Walk (move) animation - 10 frames, start from 1
         walkRight = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/right/ball_monster_", 10);
         walkLeft  = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/left/walk/ball_monster_", 10);
@@ -66,14 +65,23 @@ public class FlyingCreep extends Monster {
     }
 
     @Override
+    public void onDeath() {
+        this.isDead = true;
+    }
+
+    @Override
     public void render(SpriteBatch batch) {
         render(batch, null); // hoặc truyền player nếu có
     }
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch); // Fix: call the parent's render with only the batch parameter
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
 }

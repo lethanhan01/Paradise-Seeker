@@ -25,14 +25,14 @@ public class FirewormElite extends Monster {
         updateBounds();
 
     }
-    @Override
-    protected float getScaleMultiplier() {
-        return 5f;
+
+    public float getScaleMultiplier() {
+        return 3.0f;
     }
 
 
     @Override
-    protected void loadAnimations() {
+    public void loadAnimations() {
         // Walk (9 frame, index 0)
         walkRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_walk/right/walk", 9);
         walkLeft  = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_walk/left/walk", 9);
@@ -63,6 +63,12 @@ public class FirewormElite extends Monster {
         }
         return new Animation<>(0.1f, frames);
     }
+
+    @Override
+    public void onDeath() {
+
+    }
+
     @Override
     public void render(SpriteBatch batch) {
         render(batch, null); // hoặc truyền player nếu có
@@ -70,8 +76,12 @@ public class FirewormElite extends Monster {
 
     public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch, player);
+        super.render(batch);
         batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
+    @Override
+    public void onCollision(Player player) {
+
+    }
 }

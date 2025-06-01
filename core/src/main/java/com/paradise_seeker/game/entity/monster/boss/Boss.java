@@ -27,12 +27,25 @@ public class Boss extends Monster {
 		return cleaveLeft;
     }
 
-	@Override
-	protected void loadAnimations() {}
-	@Override
-	public void render(SpriteBatch batch,Player player) {
-	    super.render(batch, null); // truyền null nếu không có player trong context này
-	    batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
-	}
+    @Override
+    public void onDeath() {
+        // Implement boss-specific death logic here, or leave empty if not needed
+    }
+
+    @Override
+    public void loadAnimations() {
+        // Implement boss-specific animation loading here
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        super.render(batch);
+        // Optionally draw additional boss-specific effects here
+    }
+
+    @Override
+    public void onCollision(com.paradise_seeker.game.entity.Player player) {
+        // Implement boss-specific collision logic here, or leave empty if not needed
+    }
 
 }
