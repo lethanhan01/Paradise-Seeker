@@ -208,7 +208,7 @@ public abstract class GameMap {
                     boolean canStack = false;
                     boolean hasStackWithSpace = false;
                     if (item.isStackable()) {
-                        for (Item invItem : player.inventory) {
+                        for (Item invItem : player.getInventory()) {
                             if (invItem.canStackWith(item) && invItem.getCount() < invItem.getMaxStackSize()) {
                                 hasStackWithSpace = true;
                                 break;
@@ -216,7 +216,7 @@ public abstract class GameMap {
                         }
                         canStack = hasStackWithSpace;
                     }
-                    boolean isFull = player.inventory.size() >= 18;
+                    boolean isFull = player.getInventory().size() >= player.getInventorySize();
                     if (!canStack && isFull) {
                         if (hud != null) hud.showNotification("> Inventory is full!");
                     } else {

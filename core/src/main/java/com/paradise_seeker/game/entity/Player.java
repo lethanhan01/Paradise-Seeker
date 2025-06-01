@@ -1,15 +1,9 @@
 package com.paradise_seeker.game.entity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -24,61 +18,52 @@ import com.paradise_seeker.game.animation.PlayerAnimationManager;
 import com.paradise_seeker.game.animation.PlayerAnimationManagerImpl;
 import com.paradise_seeker.game.input.PlayerInputHandler;
 import com.paradise_seeker.game.input.PlayerInputHandlerImpl;
-import com.paradise_seeker.game.entity.SmokeManager;
+import com.paradise_seeker.game.inventory.PlayerInventoryManager;
 
 public class Player extends Character implements Collidable {
     public static final int MAX_HP = 1000;
     public static final int MAX_MP = 100;
-
-    public float atk = 20;
-    public float speed = 5f;
+    private final float dashCooldown = 0f;
+    private final float dashDistance = 2f;
 
     public PlayerSkill playerSkill1 = new PlayerSkill();
     public PlayerSkill playerSkill2 = new PlayerSkill();
 
     // Quản lý hiệu ứng smoke
-    private SmokeManager smokeManager = new com.paradise_seeker.game.entity.SmokeManager();
+    public SmokeManager smokeManager = new SmokeManager();
 
     public boolean showInteractMessage = false;
 
-    private float speedMultiplier = 1f;
+    public float speedMultiplier = 1f;
     private Vector2 lastPosition = new Vector2();
 
-
-    public ArrayList<Item> inventory = new ArrayList<>();
-    public int inventorySize = 18;
+    // Quản lý inventory thông qua PlayerInventoryManager
+    public PlayerInventoryManager inventoryManager;
 
     public float stateTime = 0f;
     public String direction = "down";
     public boolean isMoving = false;
     public boolean isAttacking = false;
 
-    private boolean isDashing = false;
-    private float dashCooldown = 0f;
-    private float dashTimer = 0f;
-    private float dashDistance = 2f;
+    public float dashTimer = 0f;
 
     public boolean isShielding = false;
-    private boolean menuOpen = false;
-    private boolean isPaused = false;
+    public boolean isPaused = false;
 
     // New fields for MVC pattern
-    private PlayerAnimationManager animationManager;
-    private PlayerInputHandler inputHandler;
-    private PlayerRenderer playerRenderer;
+    public PlayerAnimationManager animationManager;
+    public PlayerInputHandler inputHandler;
+    public PlayerRenderer playerRenderer;
 
     // Tracking death state
     public boolean isDead = false;
     public boolean isHit = false;
     public boolean isShieldedHit = true;
-    private boolean isPushing = false;
 
     // Invulnerability system
-    private boolean isInvulnerable = false;
-    private float invulnerabilityTimer = 0f;
-    private static final float INVULNERABILITY_DURATION = 0.5f; // Half second of invulnerability after getting hit
-
-    private int collectAllFragments[] = {0, 0, 0};
+    public boolean isInvulnerable = false;
+    public float invulnerabilityTimer = 0f;
+    public static final float INVULNERABILITY_DURATION = 0.5f; // Half second of invulnerability after getting hit
 
     public Player() {
         this.bounds = new Rectangle(0, 0, 1, 1);
@@ -88,6 +73,9 @@ public class Player extends Character implements Collidable {
         this.speed = 5f;
         this.x = 0;
         this.y = 0;
+
+        // Khởi tạo PlayerInventoryManager
+        this.inventoryManager = new PlayerInventoryManager();
 
         // Initialize the dependencies
         this.animationManager = new PlayerAnimationManagerImpl();
@@ -99,6 +87,9 @@ public class Player extends Character implements Collidable {
         super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
         this.playerSkill1 = playerSkill1;
         this.playerSkill2 = playerSkill2;
+
+        // Khởi tạo PlayerInventoryManager
+        this.inventoryManager = new PlayerInventoryManager();
 
         // Initialize the dependencies
         this.animationManager = new PlayerAnimationManagerImpl();
@@ -154,16 +145,13 @@ public class Player extends Character implements Collidable {
             }
         }
 
-
         // Update smoke effects
         smokeManager.update(deltaTime, animationManager);
-        NPC1 nearestNPC = null;
-        updateNpcInteraction(gameMap, nearestNPC);
+        updateNpcInteraction(gameMap);
     }
 
-    private void updateNpcInteraction(GameMap gameMap, NPC1 nearestNPC) {
+    private void updateNpcInteraction(GameMap gameMap) {
         if (gameMap != null) {
-            nearestNPC = null;
             showInteractMessage = false;
             for (NPC1 npc : gameMap.getNPCs()) {
                 float distance = Vector2.dst(
@@ -171,7 +159,6 @@ public class Player extends Character implements Collidable {
                     npc.getBounds().x + npc.getBounds().width / 2, npc.getBounds().y + npc.getBounds().height / 2
                 );
                 if (distance <= 2.5f) {
-                    nearestNPC = npc;
                     npc.setTalking(true);
                     showInteractMessage = true;
                 } else {
@@ -179,15 +166,6 @@ public class Player extends Character implements Collidable {
                 }
             }
         }
-    }
-
-    public boolean hasItem(Item item) {
-        for (Item invItem : inventory) {
-            if (invItem.isStackable() && invItem.getName().equals(item.getName())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     // Khi cần thêm smoke:
@@ -226,74 +204,20 @@ public class Player extends Character implements Collidable {
         }
     }
 
-    public void setSpeedMultiplier(float multiplier) {
-        this.speedMultiplier = multiplier;
-    }
-
     public void blockMovement() {
         bounds.x = lastPosition.x;
         bounds.y = lastPosition.y;
     }
 
-
+    // Phương thức chuyển tiếp để thêm vật phẩm vào kho đồ
     public void addItemToInventory(Item newItem) {
-        if (newItem == null || !newItem.isActive()) return;
-
-        if (newItem.isStackable()) {
-            for (Item existingItem : inventory) {
-                if (existingItem.canStackWith(newItem)) {
-                    int total = existingItem.getCount() + newItem.getCount();
-                    if (total <= existingItem.getMaxStackSize()) {
-                        existingItem.setCount(total);
-                        newItem.setActive(false);
-                        return;
-                    } else {
-                        int remaining = total - existingItem.getMaxStackSize();
-                        existingItem.setCount(existingItem.getMaxStackSize());
-                        newItem.setCount(remaining);
-                    }
-                }
-            }
-        }
-
-        if (inventory.size() < inventorySize && !(newItem instanceof Fragment)) {
-            inventory.add(newItem);
-            newItem.setActive(false);
-        } else if (inventory.size() < inventorySize && newItem instanceof Fragment) {
-            Fragment newFragment = (Fragment) newItem;
-            inventory.add(newFragment);
-            collectAllFragments[newFragment.getFragmentIndex() - 1] = 1;
-
-            if (collectAllFragments[0] == 1 && collectAllFragments[1] == 1 && collectAllFragments[2] == 1) {
-                Fragment frag = new Fragment(bounds.x, bounds.y, bounds.width, "items/fragment/frag4.png", 4);
-
-                Iterator<Item> iterator = inventory.iterator();
-                while (iterator.hasNext()) {
-                    Item item = iterator.next();
-                    if (item instanceof Fragment) {
-                        iterator.remove();
-                    }
-                }
-
-                inventory.add(frag);
-            }
-        } else {
-            System.out.println("Inventory is full!");
-        }
+        inventoryManager.addItemToInventory(newItem, this.bounds);
     }
 
     // Getters and setters needed by interfaces
 
     public boolean isDead() {
         return isDead;
-    }
-
-    public boolean isPushing() {
-        return isPushing;
-    }
-
-    public void setPushing(boolean pushing) {
-        this.isPushing = pushing;
     }
 
     public float getStateTime() {
@@ -360,7 +284,6 @@ public class Player extends Character implements Collidable {
         return dashDistance;
     }
 
-
     public boolean isPaused() {
         return isPaused;
     }
@@ -373,17 +296,25 @@ public class Player extends Character implements Collidable {
         this.isAttacking = attacking;
     }
 
+    // Cập nhật các phương thức làm việc với inventory thông qua inventoryManager
     public int[] getCollectAllFragments() {
-        return collectAllFragments;
+        return inventoryManager.getCollectAllFragments();
+    }
+
+    public ArrayList<Item> getInventory() {
+        return inventoryManager.getInventory();
+    }
+
+    public int getInventorySize() {
+        return inventoryManager.getInventorySize();
+    }
+
+    public PlayerInventoryManager getInventoryManager() {
+        return inventoryManager;
     }
 
     public PlayerAnimationManager getAnimationManager() {
         return animationManager;
-    }
-
-    // Thêm getter cho smokeManager
-    public com.paradise_seeker.game.entity.SmokeManager getSmokeManager() {
-        return smokeManager;
     }
 
     // Getter and setter for atk
@@ -416,13 +347,19 @@ public class Player extends Character implements Collidable {
         }
     }
 
-    @Override
-    public void onCollision(Player player) {
-        // Not needed since player can't collide with itself
-    }
+	@Override
+	public Rectangle getBounds() {
+		// TODO Auto-generated method stub
+		return this.bounds;
+	}
 
-    // Added method to check if player is currently invulnerable
-    public boolean isInvulnerable() {
-        return isInvulnerable;
-    }
+	@Override
+	public void onCollision(Player player) {
+		// TODO Auto-generated method stub
+	}
+
+	public boolean isInvulnerable() {
+		// TODO Auto-generated method stub
+		return this.isInvulnerable;
+	}
 }

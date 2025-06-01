@@ -52,8 +52,6 @@ public class PlayerRendererImpl implements PlayerRenderer{
 
         if (player.isAttacking) {
             renderAttack(player, batch);
-        } else if (player.isPushing()) {
-            renderPushing(player, batch);
         } else if (player.isMoving()) {
             renderMovement(player, batch);
         } else {
@@ -106,11 +104,6 @@ public class PlayerRendererImpl implements PlayerRenderer{
         batch.draw(currentFrame, drawX, drawY, scaledWidth, scaledHeight);
     }
 
-
-    @Override
-    public void renderPushing(Player player, SpriteBatch batch) {
-
-    }
 
     @Override
     public void renderHit(Player player, SpriteBatch batch) {

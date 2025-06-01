@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.npc.NPC1;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.collision.*;
 
 /**
  * Implementation của PlayerInputHandler
@@ -22,8 +23,7 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
         handleAttack(player, gameMap);
         handleShield(player);
         handleSkills(player);
-        handleNPCInteraction(player);
-        handleCheat(player);
+        handleNPCInteraction(player, gameMap);
     }
 
     @Override
@@ -44,10 +44,10 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
             float moveY = dy * player.speed * deltaTime;
             float nextX = player.getBounds().x + moveX;
             float nextY = player.getBounds().y + moveY;
-            com.badlogic.gdx.math.Rectangle nextBounds = new com.badlogic.gdx.math.Rectangle(nextX, nextY, player.getBounds().width, player.getBounds().height);
+            Rectangle nextBounds = new Rectangle(nextX, nextY, player.getBounds().width, player.getBounds().height);
             boolean blocked = false;
             if (gameMap != null && gameMap.collidables != null) {
-                for (com.paradise_seeker.game.collision.Collidable c : gameMap.collidables) {
+                for (Collidable c : gameMap.collidables) {
                     if (c != player && nextBounds.overlaps(c.getBounds())) {
                         blocked = true;
                         break;
@@ -154,19 +154,35 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
     }
 
     @Override
-    public void handleNPCInteraction(Player player) {
-    	NPC1 npc = new NPC1();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F) && npc != null) {
-            npc.openChest();
+    public void handleNPCInteraction(Player player, GameMap gameMap) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F) && player.showInteractMessage && gameMap != null) {
+            // Tìm NPC gần nhất để tương tác
+            NPC1 nearestNPC = null;
+            float minDistance = Float.MAX_VALUE;
+
+            for (NPC1 npc : gameMap.getNPCs()) {
+                float distance = calculateDistance(player, npc);
+                if (distance <= 2.5f && distance < minDistance) {
+                    minDistance = distance;
+                    nearestNPC = npc;
+                }
+            }
+
+            if (nearestNPC != null) {
+                nearestNPC.openChest();
+                // Có thể thêm các logic tương tác khác ở đây
+            }
         }
     }
 
-    @Override
-    public void handleCheat(Player player) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-            player.setHp(Player.MAX_HP);
-            player.setMp(Player.MAX_MP);
-        }
+    /**
+     * Tính khoảng cách giữa player và NPC
+     */
+    private float calculateDistance(Player player, NPC1 npc) {
+        return (float) Math.sqrt(
+            Math.pow(player.getBounds().x + player.getBounds().width/2 - (npc.getBounds().x + npc.getBounds().width/2), 2) +
+            Math.pow(player.getBounds().y + player.getBounds().height/2 - (npc.getBounds().y + npc.getBounds().height/2), 2)
+        );
     }
 
     private void clampToMapBounds(Player player, GameMap gameMap) {
