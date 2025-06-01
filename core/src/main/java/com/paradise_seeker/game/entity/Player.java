@@ -36,8 +36,6 @@ public class Player extends Character implements Collidable {
     public PlayerSkill playerSkill1 = new PlayerSkill();
     public PlayerSkill playerSkill2 = new PlayerSkill();
 
-    private boolean isClimbing = false;
-
     // Quản lý hiệu ứng smoke
     private SmokeManager smokeManager = new com.paradise_seeker.game.entity.SmokeManager();
 
@@ -156,7 +154,6 @@ public class Player extends Character implements Collidable {
             }
         }
 
-        isClimbing = false;
 
         // Update smoke effects
         smokeManager.update(deltaTime, animationManager);
@@ -238,9 +235,6 @@ public class Player extends Character implements Collidable {
         bounds.y = lastPosition.y;
     }
 
-    public void setClimbing(boolean climbing) {
-        this.isClimbing = climbing;
-    }
 
     public void addItemToInventory(Item newItem) {
         if (newItem == null || !newItem.isActive()) return;
@@ -289,9 +283,6 @@ public class Player extends Character implements Collidable {
     }
 
     // Getters and setters needed by interfaces
-    public boolean isClimbing() {
-        return isClimbing;
-    }
 
     public boolean isDead() {
         return isDead;

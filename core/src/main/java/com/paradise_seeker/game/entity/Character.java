@@ -36,20 +36,15 @@ public abstract class Character implements Collidable {
         hp = Math.max(0, hp - dmg);
         if (hp == 0) onDeath();
     }
- // Kiểm tra còn sống
+    // Kiểm tra còn sống
     public boolean isAlive() {
         return hp > 0;
     }
     // Cập nhật trạng thái nhân vật
     public abstract void render(SpriteBatch batch);
 
-    // Collidable
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
     public void onCollision(Collidable other) {
-        // xử lý va chạm mặc định (vd: đạn bắn trúng)
+        // xử lý va chạm mặc định (vd: đạn bắn trúng)??
     }
 
     public Rectangle getHitbox() {
@@ -57,6 +52,11 @@ public abstract class Character implements Collidable {
 	}
 
     public abstract void onDeath();
+
+    // Collidable
+    public Rectangle getBounds() {
+        return bounds;
+    }
 
     public float getHp() {
         return hp;

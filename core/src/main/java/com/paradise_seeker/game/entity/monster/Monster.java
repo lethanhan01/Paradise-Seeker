@@ -37,8 +37,8 @@ public abstract class Monster extends Character implements Renderable, Collidabl
 
     public Animation<TextureRegion> deathLeft, deathRight;
 
-    private MonsterRenderer renderer;
-    private MonsterAI ai;
+    public MonsterRenderer renderer;
+    public MonsterAI ai;
 
     public Animation<TextureRegion> idleLeft, idleRight;
     public Animation<TextureRegion> walkLeft, walkRight;
@@ -94,7 +94,8 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     }
 
     public void render(SpriteBatch batch) {
-        renderer.render(this, batch);
+        // Call the updated renderer with the appropriate parameters
+        renderer.render(batch, bounds, currentFrame, hp, maxHp, isDead);
     }
 
     public TextureRegion getCurrentFrame() {

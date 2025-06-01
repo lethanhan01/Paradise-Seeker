@@ -35,11 +35,6 @@ public interface PlayerRenderer {
     void renderShield(Player player, SpriteBatch batch);
 
     /**
-     * Render khi player leo trèo
-     */
-    void renderClimbing(Player player, SpriteBatch batch);
-
-    /**
      * Render khi player đẩy
      */
     void renderPushing(Player player, SpriteBatch batch);
