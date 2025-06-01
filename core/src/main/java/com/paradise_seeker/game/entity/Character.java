@@ -37,6 +37,36 @@ public abstract class Character implements Collidable {
     }
 
     public abstract void onDeath();
+
+    public float getHp() {
+        return hp;
+    }
+    public float getMaxHp() {
+        return maxHp;
+    }
+    public float getMp() {
+        return mp;
+    }
+    public float getMaxMp() {
+        return maxMp;
+    }
+    public float getAtk() {
+        return atk;
+    }
+    public float getSpeed() {
+        return speed;
+    }
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public void setHp(float hp) {
+        this.hp = hp;
+    }
+    public void setMp(float mp) {
+        this.mp = mp;
+    }
+
     // Kiểm tra còn sống
     public boolean isAlive() {
         return hp > 0;

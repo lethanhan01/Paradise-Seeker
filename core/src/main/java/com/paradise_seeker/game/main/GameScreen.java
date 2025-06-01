@@ -56,13 +56,14 @@ public class GameScreen implements Screen {
     private boolean showDialogueOptions = false;
     private String pendingPotionToDrop = null;
     private boolean waitingForChestToOpen = false;
-    
+
     public GameScreen(final Main game) {
         this.game = game;
 
         // Create player, initial position will be set from Tiled data by mapManager!
         Rectangle playerBounds = new Rectangle(0, 0, 1, 1); // Temporary
 		player = new Player();
+        player.setRenderer(new com.paradise_seeker.game.render.PlayerRendererImpl(player.getAnimationManager()));
         this.mapManager = new GameMapManager(player);
         this.hud = new HUD(player, game.font);
         this.shapeRenderer = new ShapeRenderer();
