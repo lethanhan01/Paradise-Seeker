@@ -16,6 +16,7 @@ public abstract class Character implements Collidable {
     public float x, y;
 
     public Character() {
+
     }
 
     public Character(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y) {
@@ -35,6 +36,25 @@ public abstract class Character implements Collidable {
         hp = Math.max(0, hp - dmg);
         if (hp == 0) onDeath();
     }
+ // Kiểm tra còn sống
+    public boolean isAlive() {
+        return hp > 0;
+    }
+    // Cập nhật trạng thái nhân vật
+    public abstract void render(SpriteBatch batch);
+
+    // Collidable
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public void onCollision(Collidable other) {
+        // xử lý va chạm mặc định (vd: đạn bắn trúng)
+    }
+
+    public Rectangle getHitbox() {
+		return bounds; // Trả về hitbox của nhân vật
+	}
 
     public abstract void onDeath();
 
@@ -67,24 +87,6 @@ public abstract class Character implements Collidable {
         this.mp = mp;
     }
 
-    // Kiểm tra còn sống
-    public boolean isAlive() {
-        return hp > 0;
-    }
-    // Cập nhật trạng thái nhân vật
-    public abstract void render(SpriteBatch batch);
 
-    // Collidable
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
-    public void onCollision(Collidable other) {
-        // xử lý va chạm mặc định (vd: đạn bắn trúng)
-    }
-
-    public Rectangle getHitbox() {
-		return bounds; // Trả về hitbox của nhân vật
-	}
 
 }

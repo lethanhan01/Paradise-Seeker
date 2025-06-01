@@ -155,8 +155,9 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
 
     @Override
     public void handleNPCInteraction(Player player) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F) && player.getNearestNPC() != null) {
-            player.getNearestNPC().openChest();
+    	NPC1 npc = new NPC1();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F) && npc != null) {
+            npc.openChest();
         }
     }
 

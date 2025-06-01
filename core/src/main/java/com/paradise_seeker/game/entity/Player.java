@@ -24,6 +24,7 @@ import com.paradise_seeker.game.animation.PlayerAnimationManager;
 import com.paradise_seeker.game.animation.PlayerAnimationManagerImpl;
 import com.paradise_seeker.game.input.PlayerInputHandler;
 import com.paradise_seeker.game.input.PlayerInputHandlerImpl;
+import com.paradise_seeker.game.entity.SmokeManager;
 
 public class Player extends Character implements Collidable {
     public static final int MAX_HP = 1000;
@@ -35,18 +36,16 @@ public class Player extends Character implements Collidable {
     public PlayerSkill playerSkill1 = new PlayerSkill();
     public PlayerSkill playerSkill2 = new PlayerSkill();
 
-    public Weapon weapon;
     private boolean isClimbing = false;
 
     // Quản lý hiệu ứng smoke
-    private com.paradise_seeker.game.entity.SmokeManager smokeManager = new com.paradise_seeker.game.entity.SmokeManager();
+    private SmokeManager smokeManager = new com.paradise_seeker.game.entity.SmokeManager();
 
     public boolean showInteractMessage = false;
 
     private float speedMultiplier = 1f;
     private Vector2 lastPosition = new Vector2();
 
-    private NPC1 nearestNPC = null;
 
     public ArrayList<Item> inventory = new ArrayList<>();
     public int inventorySize = 18;
@@ -161,11 +160,11 @@ public class Player extends Character implements Collidable {
 
         // Update smoke effects
         smokeManager.update(deltaTime, animationManager);
-
-        updateNpcInteraction(gameMap);
+        NPC1 nearestNPC = null;
+        updateNpcInteraction(gameMap, nearestNPC);
     }
 
-    private void updateNpcInteraction(GameMap gameMap) {
+    private void updateNpcInteraction(GameMap gameMap, NPC1 nearestNPC) {
         if (gameMap != null) {
             nearestNPC = null;
             showInteractMessage = false;
@@ -370,9 +369,6 @@ public class Player extends Character implements Collidable {
         return dashDistance;
     }
 
-    public NPC1 getNearestNPC() {
-        return nearestNPC;
-    }
 
     public boolean isPaused() {
         return isPaused;
