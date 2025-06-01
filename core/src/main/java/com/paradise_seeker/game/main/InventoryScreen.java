@@ -12,23 +12,25 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.object.item.Fragment;
 import com.paradise_seeker.game.entity.object.item.Item;
+import com.paradise_seeker.game.inventory.PlayerInventoryManager;
 
 public class InventoryScreen implements Screen {
     private final Player player;
+    private final PlayerInventoryManager inventoryManager;
     private final Main game;
     private final GlyphLayout layout;
     private final ShapeRenderer shapeRenderer;
     private Texture backgroundTexture;
     // Flag to collect all fragments
-    
+
     // Changed to use grid coordinates (0-2, 0-2) instead of screen coordinates
     private int selectedCol = 0;
     private int selectedRow = 0;
-    
+
     private boolean inDescriptionArea = false;
     private static final float BASE_HEIGHT = 1400f;
     private float fontScale = 0.2f;
-    
+
     // Grid constants
     private static final int GRID_ROWS = 3;
     private static final int GRID_COLS = 3;
@@ -36,6 +38,7 @@ public class InventoryScreen implements Screen {
     public InventoryScreen(Main game, Player player) {
         this.game = game;
         this.player = player;
+        this.inventoryManager = player.getInventoryManager();
         this.layout = new GlyphLayout();
         this.shapeRenderer = new ShapeRenderer();
         this.backgroundTexture = new Texture(Gdx.files.internal("menu/inventory_menu/inventoryscreen1.png"));
@@ -111,12 +114,12 @@ public class InventoryScreen implements Screen {
         for (int row = 0; row < GRID_ROWS; row++) {
             for (int col = 0; col < GRID_COLS; col++) {
                 int index = row * GRID_COLS + col;
-                
+
                 float x = gridStartX + col * (slotSize + slotSpacing);
                 float y = gridStartY + (GRID_ROWS - 1 - row) * (slotSize + slotSpacing);
 
-                if (index < player.inventory.size()) {
-                    Item item = player.inventory.get(index);
+                if (index < inventoryManager.getInventory().size()) {
+                    Item item = inventoryManager.getInventory().get(index);
                     game.batch.draw(item.getTexture(), x, y, slotSize, slotSize);
 
                     // Draw stack count if applicable
@@ -128,16 +131,16 @@ public class InventoryScreen implements Screen {
                 // Highlight selected slot (draw on top of item)
                 if (selectedCol == col && selectedRow == row) {
                     game.batch.end(); // End batch to draw shape
-                    
+
                     shapeRenderer.setProjectionMatrix(game.camera.combined);
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                     shapeRenderer.setColor(Color.WHITE);
                     shapeRenderer.rect(x, y, slotSize, slotSize);
                     shapeRenderer.end();
-                    
+
                     game.batch.begin(); // Resume batch
                 }
-                
+
             }
         }
 
@@ -197,8 +200,8 @@ public class InventoryScreen implements Screen {
 
     private Item getSelectedItem() {
         int index = selectedRow * GRID_COLS + selectedCol;
-        if (index >= 0 && index < player.inventory.size()) {
-            return player.inventory.get(index);
+        if (index >= 0 && index < inventoryManager.getInventory().size()) {
+            return inventoryManager.getInventory().get(index);
         }
         return null;
     }
@@ -210,10 +213,10 @@ public class InventoryScreen implements Screen {
             if (item.isStackable()) {
                 item.setCount(item.getCount() - 1);
                 if (item.getCount() <= 0) {
-                    player.inventory.remove(item);
+                    inventoryManager.removeItem(item);
                 }
             } else {
-                player.inventory.remove(item);
+                inventoryManager.removeItem(item);
             }
         }
     }
@@ -222,7 +225,7 @@ public class InventoryScreen implements Screen {
         Item item = getSelectedItem();
         if (item != null && !(item instanceof Fragment)) {
             // TODO: Add logic to drop item to the map
-            player.inventory.remove(item);
+            inventoryManager.removeItem(item);
         }
     }
 
@@ -236,8 +239,8 @@ public class InventoryScreen implements Screen {
         float x = (game.viewport.getWorldWidth() - layout.width) / 2;
         game.font.draw(game.batch, layout, x, y);
     }
-    
-    
+
+
 
     @Override
     public void resize(int width, int height) {
@@ -260,3 +263,4 @@ public class InventoryScreen implements Screen {
         backgroundTexture.dispose();
     }
 }
+

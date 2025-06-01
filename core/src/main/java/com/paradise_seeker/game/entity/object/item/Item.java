@@ -17,6 +17,7 @@ public abstract class Item implements Collidable {
     protected int maxStackSize = 1;
     protected int count = 1;
 
+
     public Item(float x, float y, float size, String texturePath) {
         this.bounds = new Rectangle(x, y, size, size);
         this.texture = new Texture(texturePath);
@@ -44,7 +45,7 @@ public abstract class Item implements Collidable {
         }
     }
     public abstract void use(Player player);
-    
+
     public Texture getTexture() { return texture; }
     public String getName() { return name; }
     public String getDescription() { return description; }
@@ -67,12 +68,15 @@ public abstract class Item implements Collidable {
     public void setCount(int count) {
         this.count = Math.min(count, maxStackSize);
     }
+    public String getName1() {
+		return name;
+	}
 
     public boolean canStackWith(Item other) {
-        return this.stackable && 
-               other != null && 
-               this.getClass() == other.getClass() && 
+        return this.stackable &&
+               other != null &&
+               this.getClass() == other.getClass() &&
                this.count < this.maxStackSize;
     }
-	
+
 }

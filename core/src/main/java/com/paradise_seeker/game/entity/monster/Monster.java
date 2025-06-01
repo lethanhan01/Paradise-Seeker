@@ -170,6 +170,11 @@ public abstract class Monster extends Character implements Renderable, Collidabl
         }
     }
 
+    @Override
+    public void onDeath() {
+
+    }
+
     /**
      * Handle specific collision logic with player.
      * Subclasses can override this for custom behavior.

@@ -46,47 +46,10 @@ public abstract class Character implements Collidable {
     public void onCollision(Collidable other) {
         // xử lý va chạm mặc định (vd: đạn bắn trúng)??
     }
-
-    public Rectangle getHitbox() {
+    public Rectangle getbounds() {
 		return bounds; // Trả về hitbox của nhân vật
 	}
 
     public abstract void onDeath();
-
-    // Collidable
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
-    public float getHp() {
-        return hp;
-    }
-    public float getMaxHp() {
-        return maxHp;
-    }
-    public float getMp() {
-        return mp;
-    }
-    public float getMaxMp() {
-        return maxMp;
-    }
-    public float getAtk() {
-        return atk;
-    }
-    public float getSpeed() {
-        return speed;
-    }
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
-    public void setHp(float hp) {
-        this.hp = hp;
-    }
-    public void setMp(float mp) {
-        this.mp = mp;
-    }
-
-
 
 }
