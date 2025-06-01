@@ -1,37 +1,77 @@
 package com.paradise_seeker.game.entity.monster;
-
+import com.badlogic.gdx.math.Vector2;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.map.GameMap;
 
 public class MonsterAI {
     private final Monster monster;
-    private float attackCooldown = 1.0f;
+
+    // Trạng thái aggro
+    private boolean isAggro = false;
+    private float aggroTimer = 0f;
+    private Vector2 originalPosition;
+
+    private float attackCooldown = 5.0f;
     private float attackTimer = 0f;
-    private float attackRange = 1.2f;
+    private float stopDistance = 5.0f;
 
     public MonsterAI(Monster monster) {
         this.monster = monster;
+        // Lưu vị trí ban đầu
+        this.originalPosition = new Vector2(monster.getBounds().x, monster.getBounds().y);
+    }
+
+    // Gọi hàm này mỗi lần bị player tấn công
+    public void onAggro() {
+        isAggro = true;
+        aggroTimer = 10f;
     }
 
     public void update(float deltaTime, Player player, GameMap map) {
-        if (monster.isDead()) return;
+        if (monster.isDead() || player == null || player.isDead()) return;
+
         attackTimer -= deltaTime;
-        if (player == null || player.isDead()) return;
-        float dx = player.getBounds().x - monster.getBounds().x;
-        float dy = player.getBounds().y - monster.getBounds().y;
-        float dist = (float)Math.sqrt(dx*dx + dy*dy);
-        // Đuổi theo player nếu còn sống
-        if (dist > attackRange) {
-            float speed = monster.getSpeed() * deltaTime;
-            float moveX = (dx / dist) * speed;
-            float moveY = (dy / dist) * speed;
-            monster.getBounds().x += moveX;
-            monster.getBounds().y += moveY;
-        } else if (attackTimer <= 0f) {
-            // Tấn công nếu trong tầm
-            player.takeDamage(monster.getAtk());
-            attackTimer = attackCooldown;
+
+        // Đang aggro
+        if (isAggro) {
+            aggroTimer -= deltaTime;
+
+            float dx = player.getBounds().x - monster.getBounds().x;
+            float dy = player.getBounds().y - monster.getBounds().y;
+            float dist = (float) Math.sqrt(dx * dx + dy * dy);
+
+            // Hết thời gian mà chưa tiếp cận thì quay về
+            if (aggroTimer <= 0f) {
+                isAggro = false;
+                return;
+            }
+
+            // Đuổi theo player, dừng khi cách <= stopDistance
+            if (dist > stopDistance) {
+                float speed = monster.getSpeed() * deltaTime;
+                float moveX = (dx / dist) * speed;
+                float moveY = (dy / dist) * speed;
+                monster.getBounds().x += moveX;
+                monster.getBounds().y += moveY;
+            }
+
+            // Nếu tiếp cận rồi thì tấn công
+            if (dist <= stopDistance && attackTimer <= 0f) {
+                player.takeDamage(monster.getAtk());
+                attackTimer = attackCooldown;
+            }
+        } else {
+            // Quay về vị trí gốc
+            float dx = originalPosition.x - monster.getBounds().x;
+            float dy = originalPosition.y - monster.getBounds().y;
+            float dist = (float) Math.sqrt(dx * dx + dy * dy);
+            if (dist > 0.1f) {
+                float speed = monster.getSpeed() * deltaTime;
+                float moveX = (dx / dist) * speed;
+                float moveY = (dy / dist) * speed;
+                monster.getBounds().x += moveX;
+                monster.getBounds().y += moveY;
+            }
         }
     }
 }
-

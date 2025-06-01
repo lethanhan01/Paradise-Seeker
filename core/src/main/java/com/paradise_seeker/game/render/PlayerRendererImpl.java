@@ -107,13 +107,32 @@ public class PlayerRendererImpl implements PlayerRenderer{
 
     @Override
     public void renderHit(Player player, SpriteBatch batch) {
-
+        Animation<TextureRegion> hitAnimation = animationManager.getHitAnimation(player.getDirection());
+        TextureRegion currentFrame = hitAnimation != null
+            ? hitAnimation.getKeyFrame(player.getStateTime(), false)
+            : null;
+        if (currentFrame == null) {
+            System.out.println("WARNING: Player renderHit frame NULL! Using idle frame.");
+            currentFrame = animationManager.getIdleAnimation(player.getDirection()).getKeyFrame(0, true);
+        }
+        batch.draw(currentFrame, player.getBounds().x, player.getBounds().y,
+            player.getBounds().width, player.getBounds().height);
     }
 
     @Override
     public void renderShieldedHit(Player player, SpriteBatch batch) {
-
+        Animation<TextureRegion> shieldedHitAnimation = animationManager.getShieldedHitAnimation(player.getDirection());
+        TextureRegion currentFrame = shieldedHitAnimation != null
+            ? shieldedHitAnimation.getKeyFrame(player.getStateTime(), false)
+            : null;
+        if (currentFrame == null) {
+            System.out.println("WARNING: Player renderShieldedHit frame NULL! Using idle frame.");
+            currentFrame = animationManager.getIdleAnimation(player.getDirection()).getKeyFrame(0, true);
+        }
+        batch.draw(currentFrame, player.getBounds().x, player.getBounds().y,
+            player.getBounds().width, player.getBounds().height);
     }
+
 
     @Override
     public void renderDeath(Player player, SpriteBatch batch) {

@@ -139,6 +139,8 @@ public abstract class Monster extends Character implements Renderable, Collidabl
             this.isDead = true;
             // Optionally, trigger death animation or logic here
         }
+
+        ai.onAggro();
     }
 
     /**
