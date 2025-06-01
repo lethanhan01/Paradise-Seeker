@@ -33,8 +33,8 @@ public class NPC1 implements Collidable {
 
     // Getters and setters for state
     public boolean hasTalked() { return hasTalked; }
-    public void setHasTalked(boolean value) { 
-        this.hasTalked = value; 
+    public void setHasTalked(boolean value) {
+        this.hasTalked = value;
     }
     public boolean isChestOpened() { return isChestOpened; }
     public boolean isOpeningChest() { return isOpeningChest; }
@@ -56,7 +56,10 @@ public class NPC1 implements Collidable {
     }
 
 
-    private void loadIdleAnimation() {
+    public NPC1() {
+		// TODO Auto-generated constructor stub
+	}
+	private void loadIdleAnimation() {
         List<TextureRegion> frames = new ArrayList<>();
         for (int i = 120; i <= 130; i++) {
             String path = "images/Entity/characters/NPCs/npc1/act3/npc" + i + ".png";
@@ -143,7 +146,7 @@ public class NPC1 implements Collidable {
     public void setTalking(boolean talking) {
         if (isTalking != talking) {
             isTalking = talking;
-            
+
             // Don't change animation if currently opening chest
             if (!isOpeningChest) {
                 if (talking) {
@@ -162,7 +165,7 @@ public class NPC1 implements Collidable {
         if (isChestOpened || isOpeningChest) {
             return;
         }
-        
+
         currentAnimation = openChestAnimation;
         stateTime = 0f;
         isOpeningChest = true;
@@ -179,8 +182,8 @@ public class NPC1 implements Collidable {
         }
     }
 
-    public Rectangle getBounds() { 
-        return bounds; 
+    public Rectangle getBounds() {
+        return bounds;
     }
 
     // ======= Dialogue Logic =======
@@ -213,8 +216,8 @@ public class NPC1 implements Collidable {
         currentLineIndex = 0;
     }
 
-    public int getCurrentLineIndex() { 
-        return currentLineIndex; 
+    public int getCurrentLineIndex() {
+        return currentLineIndex;
     }
 
     public boolean shouldShowOptions() {

@@ -1,6 +1,7 @@
 package com.paradise_seeker.game.input;
 
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.entity.npc.NPC1;
 import com.paradise_seeker.game.map.GameMap;
 
 public interface PlayerInputHandler {
@@ -39,9 +40,10 @@ public interface PlayerInputHandler {
      * Xử lý tương tác với NPC
      */
     void handleNPCInteraction(Player player);
-
     /**
      * Xử lý phím cheat (R - hồi máu mana)
      */
     void handleCheat(Player player);
+
+
 }
