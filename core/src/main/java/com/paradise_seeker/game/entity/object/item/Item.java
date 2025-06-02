@@ -53,7 +53,15 @@ public abstract class Item implements Collidable {
 
     // Phương thức trừu tượng để các lớp con triển khai
     @Override
-    public abstract void onCollision(Player player);
+    public void onCollision(Collidable other) {
+        //
+    }
+    public void onCollision(Player player) {
+		if (active) {
+			player.addItemToInventory(this);
+			active = false; // Đánh dấu item đã được lấy
+		}
+	}
 
 	public void setActive(boolean active) {
 		this.active = active;

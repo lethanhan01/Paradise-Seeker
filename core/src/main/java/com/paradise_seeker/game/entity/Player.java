@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.npc.NPC1;
-import com.paradise_seeker.game.entity.object.item.Fragment;
 import com.paradise_seeker.game.entity.object.item.Item;
 import com.paradise_seeker.game.entity.skill.*;
 import com.paradise_seeker.game.map.GameMap;
@@ -20,7 +19,7 @@ import com.paradise_seeker.game.input.PlayerInputHandler;
 import com.paradise_seeker.game.input.PlayerInputHandlerImpl;
 import com.paradise_seeker.game.inventory.PlayerInventoryManager;
 
-public class Player extends Character implements Collidable {
+public class Player extends Character {
     public static final int MAX_HP = 1000;
     public static final int MAX_MP = 100;
     private final float dashCooldown = 0f;
@@ -288,10 +287,6 @@ public class Player extends Character implements Collidable {
         return isPaused;
     }
 
-    public float getSpeedMultiplier() {
-        return speedMultiplier;
-    }
-
     public void setAttacking(boolean attacking) {
         this.isAttacking = attacking;
     }
@@ -353,13 +348,9 @@ public class Player extends Character implements Collidable {
 		return this.bounds;
 	}
 
-	@Override
-	public void onCollision(Player player) {
-		// TODO Auto-generated method stub
-	}
-
 	public boolean isInvulnerable() {
 		// TODO Auto-generated method stub
 		return this.isInvulnerable;
 	}
+
 }

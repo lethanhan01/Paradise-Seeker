@@ -24,6 +24,12 @@ public class HazardObject implements Collidable {
     }
 
     @Override
+    public void onCollision(Collidable other) {
+		if (other instanceof Player) {
+			onCollision((Player) other);
+		}
+	}
+
     public void onCollision(Player player) {
     	player.takeDamage((int)(damagePerSecond * Gdx.graphics.getDeltaTime()));
     }

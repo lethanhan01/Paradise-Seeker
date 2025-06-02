@@ -225,7 +225,7 @@ public class NPC1 implements Collidable {
     }
 
     @Override
-    public void onCollision(Player player) {
-        // Interaction handled in GameScreen
+    public void onCollision(Collidable other) {
+        //
     }
 }

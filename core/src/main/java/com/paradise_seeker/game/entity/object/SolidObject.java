@@ -18,6 +18,9 @@ public class SolidObject implements Collidable {
     }
 
     @Override
+    public void onCollision(Collidable other) {
+        //
+    }
     public void onCollision(Player player) {
         // No-op: Collision logic handled during movement, not here.
 

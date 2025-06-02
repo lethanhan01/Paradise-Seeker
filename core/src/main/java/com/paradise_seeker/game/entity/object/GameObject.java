@@ -26,9 +26,10 @@ public abstract class GameObject implements Collidable {
     public abstract void onPlayerCollision(Player player);
 
     @Override
-    public void onCollision(Player player) {
-        onPlayerCollision(player);
+    public void onCollision(Collidable other) {
+        //
     }
+
 
     public void dispose() {
         texture.dispose();
