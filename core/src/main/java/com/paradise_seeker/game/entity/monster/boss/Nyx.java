@@ -10,11 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.map.GameMap;
 
-public class Boss3 extends Monster {
+public class Nyx extends Monster {
     // Boss-specific properties
     private float scaleMultiplier = 10f;
 
-    public Boss3(float x, float y) {
+    public Nyx(float x, float y) {
         super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // Tùy chỉnh stats phù hợp
         // Note: loadAnimations is already called in Monster constructor
         // No need to set spawnX, spawnY as they're now set in the parent constructor

@@ -3,7 +3,6 @@ package com.paradise_seeker.game.entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.collision.Collidable;
-import com.paradise_seeker.game.entity.skill.Skill;
 
 public abstract class Character implements Collidable {
     public float hp;
@@ -35,10 +34,6 @@ public abstract class Character implements Collidable {
     public void receiveDamage(float dmg) {
         hp = Math.max(0, hp - dmg);
         if (hp == 0) onDeath();
-    }
-    // Kiểm tra còn sống
-    public boolean isAlive() {
-        return hp > 0;
     }
     // Cập nhật trạng thái nhân vật
     public abstract void render(SpriteBatch batch);

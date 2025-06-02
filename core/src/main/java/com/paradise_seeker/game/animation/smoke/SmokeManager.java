@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity;
+package com.paradise_seeker.game.animation.smoke;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Animation;
