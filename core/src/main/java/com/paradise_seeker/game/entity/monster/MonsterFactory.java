@@ -1,6 +1,5 @@
 package com.paradise_seeker.game.entity.monster;
 
-import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.boss.*;
 import com.paradise_seeker.game.entity.monster.creep.*;
 import com.paradise_seeker.game.entity.monster.elite.*;

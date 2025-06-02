@@ -15,6 +15,7 @@ import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.render.PlayerRenderer;
 import com.paradise_seeker.game.animation.PlayerAnimationManager;
 import com.paradise_seeker.game.animation.PlayerAnimationManagerImpl;
+import com.paradise_seeker.game.animation.smoke.SmokeManager;
 import com.paradise_seeker.game.input.PlayerInputHandler;
 import com.paradise_seeker.game.input.PlayerInputHandlerImpl;
 import com.paradise_seeker.game.inventory.PlayerInventoryManager;

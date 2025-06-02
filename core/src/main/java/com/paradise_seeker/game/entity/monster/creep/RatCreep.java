@@ -15,7 +15,7 @@ public class RatCreep extends Monster {
     private float scaleMultiplier = 2f;
 
     public RatCreep(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
+    	super(new Rectangle(x, y, 2f, 2f), 100f, 50f, 100f, 50f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
         // Note: spawnX and spawnY are now set in the parent constructor
         // Note: loadAnimations is already called in Monster constructor
 

@@ -14,7 +14,7 @@ public class YellowBat extends Monster {
     private float scaleMultiplier = 2f;
 
     public YellowBat(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+    	super(new Rectangle(x, y, 5f, 5f), 100f, 50f, 100f, 50f, 50f, 2f, x, y);
         // Note: spawnX and spawnY are now set in the parent constructor
         // Note: loadAnimations is already called in Monster constructor
 
