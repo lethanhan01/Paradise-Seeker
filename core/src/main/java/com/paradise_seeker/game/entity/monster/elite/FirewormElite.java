@@ -8,50 +8,54 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
-
+import com.paradise_seeker.game.map.GameMap;
 
 public class FirewormElite extends Monster {
+    private float scaleMultiplier = 3.0f;
 
     public FirewormElite(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 3.0f;
-        this.spriteHeight = 3.0f;
-        updateBounds(); // Đồng bộ lại bounds
+        super(new Rectangle(x, y, 3.0f, 3.0f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 3.0f;
-        updateBounds();
-
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(3.0f);
     }
 
     public float getScaleMultiplier() {
-        return 3.0f;
+        return scaleMultiplier;
     }
-
 
     @Override
     public void loadAnimations() {
         // Walk (9 frame, index 0)
-        walkRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_walk/right/walk", 9);
-        walkLeft  = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_walk/left/walk", 9);
+        Animation<TextureRegion> walkRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_walk/right/walk", 9);
+        Animation<TextureRegion> walkLeft = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_walk/left/walk", 9);
 
         // Idle (9 frame)
-        idleRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_idle/right/idle", 9);
-        idleLeft  = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_idle/left/idle", 9);
+        Animation<TextureRegion> idleRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_idle/right/idle", 9);
+        Animation<TextureRegion> idleLeft = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_idle/left/idle", 9);
 
         // Attack (16 frame)
-        cleaveRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_atk/right/fireworm", 16);
-        cleaveLeft  = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_atk/left/fireworm-left/fireworm", 16);
+        Animation<TextureRegion> cleaveRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_atk/right/fireworm", 16);
+        Animation<TextureRegion> cleaveLeft = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_atk/left/fireworm-left/fireworm", 16);
 
         // Take Hit (3 frame)
-        takeHitRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_hit/right/hit", 3);
-        takeHitLeft  = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_hit/left/hit", 3);
+        Animation<TextureRegion> takeHitRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_hit/right/hit", 3);
+        Animation<TextureRegion> takeHitLeft = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_hit/left/hit", 3);
 
         // Death (8 frame)
-        deathRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_death/right/death", 8);
-        deathLeft  = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_death/left/death", 8);
+        Animation<TextureRegion> deathRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_death/right/death", 8);
+        Animation<TextureRegion> deathLeft = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_death/left/death", 8);
+
+        // Set all animations in the animation manager
+        setupAnimations(
+            idleLeft, idleRight,
+            walkLeft, walkRight,
+            takeHitLeft, takeHitRight,
+            cleaveLeft, cleaveRight,
+            deathLeft, deathRight
+        );
     }
 
     private Animation<TextureRegion> loadAnimation(String basePath, int frameCount) {
@@ -66,22 +70,31 @@ public class FirewormElite extends Monster {
 
     @Override
     public void onDeath() {
-
+        super.onDeath();
+        // Death effect can be implemented here
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
-    }
-
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
+        // Use parent class's render method
         super.render(batch);
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
     @Override
     public void onCollision(Player player) {
+        // Use parent class's collision handling
+        super.onCollision(player);
 
+        // Add FirewormElite-specific collision behavior here if needed
+        if (!isDead) {
+            // Additional damage or effects when colliding with player
+            player.takeDamage(15); // Example: extra fire damage
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add FirewormElite-specific update behavior here if needed
     }
 }

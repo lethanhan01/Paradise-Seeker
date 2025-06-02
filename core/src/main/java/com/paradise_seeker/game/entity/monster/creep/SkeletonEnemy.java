@@ -8,47 +8,53 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 
 public class SkeletonEnemy extends Monster {
+    private float scaleMultiplier = 2.1f;
+
     public SkeletonEnemy(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage tuỳ chỉnh
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 1.4f;
-        this.spriteHeight = 1.4f;
-        updateBounds();
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 1.6f;
-        updateBounds();
+    	super(new Rectangle(x, y, 1.4f, 1.4f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage tuỳ chỉnh
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
+
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(1.6f);
     }
 
-    protected float getScaleMultiplier() {
-        return 2.1f;
+    public float getScaleMultiplier() {
+        return scaleMultiplier;
     }
 
     @Override
     public void loadAnimations() {
-        // WALK (chạy): skel_enemy_run1.png ... skel_enemy_run12.png
-        walkRight = loadRunAnimation();
-        walkLeft  = walkRight;
+        // Load all required animations
+        Animation<TextureRegion> walkRightAnim = loadRunAnimation();
+        Animation<TextureRegion> walkLeftAnim = walkRightAnim;  // Same animation for both directions
 
-        // IDLE: skel_enemy1.png ... skel_enemy4.png hoặc skel_enemy_1.png ... skel_enemy_4.png
-        idleRight = loadIdleAnimation();
-        idleLeft  = idleRight;
+        Animation<TextureRegion> idleRightAnim = loadIdleAnimation();
+        Animation<TextureRegion> idleLeftAnim = idleRightAnim;  // Same animation for both directions
 
-        // CLEAVE (tấn công): không có file, dùng idle hoặc run lại
-        cleaveRight = walkRight;
-        cleaveLeft  = walkLeft;
+        Animation<TextureRegion> takeHitRightAnim = loadHitAnimation();
+        Animation<TextureRegion> takeHitLeftAnim = takeHitRightAnim;  // Same animation for both directions
 
-        // TAKE HIT: skel_enemy_hit1.png ... skel_enemy_hit3.png
-        takeHitRight = loadHitAnimation();
-        takeHitLeft  = takeHitRight;
+        Animation<TextureRegion> cleaveRightAnim = walkRightAnim;  // Using walk for cleave since cleave isn't available
+        Animation<TextureRegion> cleaveLeftAnim = walkLeftAnim;
 
-        // DEATH: skel_enemy_death1.png ... skel_enemy_death13.png
-        deathRight = loadDeathAnimation();
-        deathLeft  = deathRight;
+        Animation<TextureRegion> deathRightAnim = loadDeathAnimation();
+        Animation<TextureRegion> deathLeftAnim = deathRightAnim;  // Same animation for both directions
+
+        // Set all animations in the animation manager
+        // The order needs to match the parameter list in setupAnimations:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight, cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            idleLeftAnim, idleRightAnim,
+            walkLeftAnim, walkRightAnim,
+            takeHitLeftAnim, takeHitRightAnim,
+            cleaveLeftAnim, cleaveRightAnim,
+            deathLeftAnim, deathRightAnim
+        );
     }
 
     // WALK (RUN) - 12 frames: skel_enemy_run1.png ... skel_enemy_run12.png
@@ -112,22 +118,30 @@ public class SkeletonEnemy extends Monster {
 
     @Override
     public void onDeath() {
+        super.onDeath();
         this.isDead = true;
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
-    }
-
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
-        super.render(batch); // Fix: call the parent's render with only the batch parameter
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+        // Use parent class's render method
+        super.render(batch);
     }
 
     @Override
     public void onCollision(Player player) {
+        // Use parent class's collision handling
+        super.onCollision(player);
 
+        // Add skeleton-specific collision behavior if needed
+        if (!isDead) {
+            player.takeDamage(6); // Apply small damage on collision
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add SkeletonEnemy-specific update behavior here if needed
     }
 }

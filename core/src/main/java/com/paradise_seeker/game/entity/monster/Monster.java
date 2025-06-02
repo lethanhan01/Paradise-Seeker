@@ -1,12 +1,10 @@
 package com.paradise_seeker.game.entity.monster;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Player;
@@ -16,90 +14,73 @@ import com.paradise_seeker.game.map.GameMap;
 
 public abstract class Monster extends Character implements Renderable, Collidable {
 
-    public boolean isAggressive = false;
-    public float aggroTimer = 0f;
-    public final float AGGRO_DURATION = 5f;
     public boolean isDead = false;
-
-    public float spriteWidth;
-    public float spriteHeight;
-
     public float spawnX;
     public float spawnY;
 
-    public boolean pendingCleaveHit = false;
-    public boolean cleaveDamageDealt = false;
-    public Animation<TextureRegion> cleaveLeft, cleaveRight;
-    public boolean isCleaving = false;
-    public float cleaveDuration = 1.2f;
-    public float cleaveTimer = 0f;
-    protected float cleaveRange; // ❗Không gán = 4f
-
-    public Animation<TextureRegion> deathLeft, deathRight;
-
+    // Manager classes for separation of concerns
+    public MonsterAnimationManager animationManager;
+    public MonsterCollisionHandler collisionHandler;
     public MonsterRenderer renderer;
     public MonsterAI ai;
 
-    public Animation<TextureRegion> idleLeft, idleRight;
-    public Animation<TextureRegion> walkLeft, walkRight;
-    public Animation<TextureRegion> takeHitLeft, takeHitRight;
-    public TextureRegion currentFrame;
-    public boolean facingRight = true;
-    public boolean isTakingHit = false;
-    public float takeHitDuration = 0.5f;
-    public float takeHitTimer = 0f;
-    public float stateTime = 0f;
+    // Store the last position to determine if monster is moving
     public Vector2 lastPosition = new Vector2();
     public boolean isMoving = false;
-    public float OFFSET;
-    public Texture[] hpBarFrames;
-    public static final float HP_BAR_WIDTH = 2.0f;
-    public static final float HP_BAR_HEIGHT = 0.5f;
-    public static final float HP_BAR_Y_OFFSET = 0.5f;
 
-    public Monster(Rectangle bounds,float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y ) {
+    public Monster(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y) {
         super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
-        this.spriteWidth = bounds.width;
-        this.spriteHeight = bounds.height;
         this.spawnX = x;
         this.spawnY = y;
-        loadAnimations();
-        this.lastPosition.set(x, y);
-        this.currentFrame = null;
-        hpBarFrames = new Texture[30];
-        for (int i = 0; i < 30; i++) {
-            String filename = String.format("ui/HP_bar_monster/hpm/Hp_monster%02d.png", i);
-            hpBarFrames[i] = new Texture(Gdx.files.internal(filename));
-        }
-        this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
+
+        // Initialize managers
         this.renderer = new MonsterRenderer();
+        this.animationManager = new MonsterAnimationManager(this);
+        this.collisionHandler = new MonsterCollisionHandler(this);
         this.ai = new MonsterAI(this);
+
+        // Set initial position
+        this.lastPosition.set(x, y);
+        this.bounds = new Rectangle(x, y, bounds.width, bounds.height);
+
+        // Load animations (to be implemented by subclasses)
+        loadAnimations();
     }
 
+    /**
+     * Updates the monster's state.
+     */
     public void update(float deltaTime, Player player, GameMap map) {
         if (player == null || player.isDead) return;
-        if (isDead) {
-            stateTime += deltaTime;
-            return;
-        }
+
+        // Update AI first
         ai.update(deltaTime, player, map);
+
+        // Track movement
         isMoving = lastPosition.dst(bounds.x, bounds.y) > 0.0001f;
         lastPosition.set(bounds.x, bounds.y);
-        stateTime += deltaTime;
-        if (isTakingHit) {
-            takeHitTimer -= deltaTime;
-            if (takeHitTimer <= 0f) isTakingHit = false;
-        }
-        // ...existing code...
+
+        // Update animation state
+        animationManager.update(deltaTime, isMoving, isFacingRight(), isDead, false);
     }
 
+    /**
+     * Renders the monster using its renderer.
+     */
     public void render(SpriteBatch batch) {
-        // Call the updated renderer with the appropriate parameters
-        renderer.render(batch, bounds, currentFrame, hp, maxHp, isDead);
+        renderer.render(batch, bounds, animationManager.getCurrentFrame(), hp, maxHp, isDead);
     }
-
+    /**
+     * @return whether the monster is facing right
+     */
+    public boolean isFacingRight() {
+        return animationManager.isFacingRight();
+    }
+    /**
+     * @return the monster's current animation frame
+     */
     public TextureRegion getCurrentFrame() {
-        return currentFrame;
+        return animationManager.getCurrentFrame();
     }
 
     public Rectangle getBounds() {
@@ -111,15 +92,11 @@ public abstract class Monster extends Character implements Renderable, Collidabl
     }
 
     public void updateBounds() {
-        bounds.setSize(spriteWidth, spriteHeight);
+        bounds.setSize(bounds.width, bounds.height);
     }
 
     public float getHp() {
         return hp;
-    }
-
-    public float getMaxHp() {
-        return maxHp;
     }
 
     public float getAtk() {
@@ -130,62 +107,94 @@ public abstract class Monster extends Character implements Renderable, Collidabl
         return speed;
     }
 
+    /**
+     * Handles the monster taking damage.
+     */
     public void takeDamage(float damage) {
         if (isDead) return;
+
         this.hp = Math.max(0, this.hp - damage);
-        this.isTakingHit = true;
-        this.takeHitTimer = this.takeHitDuration;
+
+        // Trigger hit animation
+        animationManager.startTakeHitAnimation();
+
+        // Check for death
         if (this.hp == 0) {
             this.isDead = true;
-            // Optionally, trigger death animation or logic here
+            onDeath();
         }
 
+        // Alert AI that monster was hit
         ai.onAggro();
     }
 
     /**
-     * Handle collision with a player. This applies damage to the player when they
-     * collide with this monster, unless the player is invulnerable or shielding.
+     * Performs a cleave attack.
      */
-    @Override
-    public void onCollision(Collidable other) {
-        if (other instanceof Player) {
-            Player player = (Player) other;
-            if (!isDead && !player.isInvulnerable()) {
-                // Calculate damage based on monster's attack value
-                int damage = (int) this.atk;
+    public void cleave(Player player) {
+        // Start cleave animation
+        animationManager.startCleaveAnimation();
 
-                // If player is shielding, reduce damage and handle shield effects
-                if (player.isShielding) {
-                    player.isShieldedHit = true;
-                    damage = Math.max(1, damage / 2); // Reduce damage if shielding
-                } else {
-                    player.isHit = true;
-                    player.stateTime = 0;
-                }
+        // Set pending cleave hit in collision handler
+        collisionHandler.setPendingCleaveHit(true);
 
-                // Apply damage to player unless they're invulnerable from a recent hit
-                if (!player.isInvulnerable()) {
-                    player.takeDamage(damage);
-                }
-            }
+        // If player is in range, apply damage
+        if (collisionHandler.isPlayerInCleaveRange(player)) {
+            collisionHandler.applyCleaveHitToPlayer(player);
         }
     }
 
+    /**
+     * Handle collision with another entity.
+     */
     @Override
-    public void onDeath() {
-
+    public void onCollision(Collidable other) {
+        collisionHandler.handleCollision(other);
     }
 
     /**
-     * Handle specific collision logic with player.
-     * Subclasses can override this for custom behavior.
+     * Handle specific collision with player.
      */
     public void onCollision(Player player) {
-        // Default implementation uses the Collidable version
-        onCollision((Collidable)player);
+        collisionHandler.handlePlayerCollision(player);
     }
 
-    // Add abstract method for animation loading
+    /**
+     * Called when the monster dies.
+     */
+    @Override
+    public void onDeath() {
+        // Base implementation is empty, subclasses can override
+    }
+
+    /**
+     * Called to set up all animations for this monster.
+     * Must be implemented by subclasses.
+     */
     public abstract void loadAnimations();
+
+    /**
+     * Sets all animations in the animation manager after they've been loaded.
+     */
+    protected void setupAnimations(
+            Animation<TextureRegion> idleLeft, Animation<TextureRegion> idleRight,
+            Animation<TextureRegion> walkLeft, Animation<TextureRegion> walkRight,
+            Animation<TextureRegion> takeHitLeft, Animation<TextureRegion> takeHitRight,
+            Animation<TextureRegion> cleaveLeft, Animation<TextureRegion> cleaveRight,
+            Animation<TextureRegion> deathLeft, Animation<TextureRegion> deathRight) {
+
+        animationManager.setAnimations(
+            idleLeft, idleRight,
+            walkLeft, walkRight,
+            takeHitLeft, takeHitRight,
+            cleaveLeft, cleaveRight,
+            deathLeft, deathRight
+        );
+    }
+    //Disposes of resources.
+    public void dispose() {
+        if (renderer != null) {
+            renderer.dispose();
+        }
+    }
 }

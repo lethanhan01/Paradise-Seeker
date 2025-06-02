@@ -8,26 +8,23 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 
 public class GhostStatic extends Monster {
+    private float scaleMultiplier = 2.0f;
 
     public GhostStatic(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 1.2f;
-        this.spriteHeight = 1.6f;
-        updateBounds();
+    	super(new Rectangle(x, y, 1.2f, 1.6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 1.2f;
-        updateBounds();
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(1.2f);
     }
 
     public float getScaleMultiplier() {
-        return 2.0f;
+        return scaleMultiplier;
     }
 
     @Override
@@ -35,16 +32,17 @@ public class GhostStatic extends Monster {
         // Dùng chung 1 animation cho tất cả trạng thái
         Animation<TextureRegion> ghostAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/ghost_static/Dark VFX 2 (48x64)", 16);
 
-        walkRight = ghostAnim;
-        walkLeft  = ghostAnim;
-        idleRight = ghostAnim;
-        idleLeft  = ghostAnim;
-        cleaveRight = ghostAnim;
-        cleaveLeft  = ghostAnim;
-        deathRight = ghostAnim;
-        deathLeft  = ghostAnim;
-        takeHitRight = ghostAnim;
-        takeHitLeft  = ghostAnim;
+        // Set up all animations using the helper method from Monster
+        // The order needs to match the parameter list in the setupAnimations method:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight,
+        // cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            ghostAnim, ghostAnim,   // idleLeft, idleRight
+            ghostAnim, ghostAnim,   // walkLeft, walkRight
+            ghostAnim, ghostAnim,   // takeHitLeft, takeHitRight
+            ghostAnim, ghostAnim,   // cleaveLeft, cleaveRight
+            ghostAnim, ghostAnim    // deathLeft, deathRight
+        );
     }
 
     // Load animation: basePath + số thứ tự từ 1 đến frameCount + ".png"
@@ -60,22 +58,32 @@ public class GhostStatic extends Monster {
 
     @Override
     public void onDeath() {
-
+        super.onDeath();
+        // Optional implementation for death effects
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
-    }
-
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
+        // Use parent class's render method
         super.render(batch);
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
     @Override
     public void onCollision(Player player) {
+        // Use parent class's collision handling
+        super.onCollision(player);
 
+        // Add ghost-specific collision behavior if needed
+        if (!isDead) {
+            // For example, apply some special effect when ghost touches player
+            player.takeDamage(10); // Apply additional ghost damage
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add GhostStatic-specific update behavior here if needed
+        // Since this is a static ghost, we might not need additional behavior
     }
 }

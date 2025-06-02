@@ -8,50 +8,53 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 
 public class FlyingCreep extends Monster {
+    private float scaleMultiplier = 2f;
 
     public FlyingCreep(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 1.8f;
-        this.spriteHeight = 1.8f;
-        updateBounds(); // Đồng bộ lại bounds
+    	super(new Rectangle(x, y, 1.8f, 1.8f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 2.0f;
-        updateBounds();
-
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(2.0f);
     }
 
     public float getScaleMultiplier() {
-        return 2f;
+        return scaleMultiplier;
     }
 
     @Override
     public void loadAnimations() {
         // Walk (move) animation - 10 frames, start from 1
-        walkRight = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/right/ball_monster_", 10);
-        walkLeft  = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/left/walk/ball_monster_", 10);
-
-        // Idle animation = reuse walk
-        idleRight = walkRight;
-        idleLeft  = walkLeft;
-
-        // Cleave (attack) = reuse walk
-        cleaveRight = walkRight;
-        cleaveLeft  = walkLeft;
+        Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/right/ball_monster_", 10);
+        Animation<TextureRegion> walkLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/left/walk/ball_monster_", 10);
 
         // Death animation - 7 frames, start from 1
-        deathRight = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/right/ball_monster_death_", 7);
-        deathLeft  = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/left/death/ball_monster_death_", 7);
+        Animation<TextureRegion> deathRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/right/ball_monster_death_", 7);
+        Animation<TextureRegion> deathLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map4/flying_creep/left/death/ball_monster_death_", 7);
 
-        // Take Hit = reuse walk
-        takeHitRight = walkRight;
-        takeHitLeft = walkLeft;
+        // Reuse walk animation for idle, cleave, and takehit since they're not available
+        Animation<TextureRegion> idleRightAnim = walkRightAnim;
+        Animation<TextureRegion> idleLeftAnim = walkLeftAnim;
+        Animation<TextureRegion> takeHitRightAnim = walkRightAnim;
+        Animation<TextureRegion> takeHitLeftAnim = walkLeftAnim;
+        Animation<TextureRegion> cleaveRightAnim = walkRightAnim;
+        Animation<TextureRegion> cleaveLeftAnim = walkLeftAnim;
+
+        // Set all animations in the animation manager
+        // The order needs to match the parameter list in setupAnimations:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight, cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            idleLeftAnim, idleRightAnim,
+            walkLeftAnim, walkRightAnim,
+            takeHitLeftAnim, takeHitRightAnim,
+            cleaveLeftAnim, cleaveRightAnim,
+            deathLeftAnim, deathRightAnim
+        );
     }
 
     private Animation<TextureRegion> loadAnimation(String basePath, int frameCount) {
@@ -66,22 +69,30 @@ public class FlyingCreep extends Monster {
 
     @Override
     public void onDeath() {
+        super.onDeath();
         this.isDead = true;
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
-    }
-
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
-        super.render(batch); // Fix: call the parent's render with only the batch parameter
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+        // Use parent class's render method
+        super.render(batch);
     }
 
     @Override
     public void onCollision(Player player) {
+        // Use parent class's collision handling
+        super.onCollision(player);
 
+        // Add flying-specific collision behavior if needed
+        if (!isDead) {
+            player.takeDamage(8); // Apply additional damage on collision
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add FlyingCreep-specific update behavior here if needed
     }
 }

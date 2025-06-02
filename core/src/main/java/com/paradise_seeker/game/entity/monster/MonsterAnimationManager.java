@@ -8,28 +8,28 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Handles animation states, timers, and provides the appropriate animation frame based on monster state.
  */
 public class MonsterAnimationManager {
-    private Monster owner;
+    public Monster owner;
 
     // Animation sets
-    private Animation<TextureRegion> idleLeft, idleRight;
-    private Animation<TextureRegion> walkLeft, walkRight;
-    private Animation<TextureRegion> takeHitLeft, takeHitRight;
-    private Animation<TextureRegion> cleaveLeft, cleaveRight;
-    private Animation<TextureRegion> deathLeft, deathRight;
+    public Animation<TextureRegion> idleLeft, idleRight;
+    public Animation<TextureRegion> walkLeft, walkRight;
+    public Animation<TextureRegion> takeHitLeft, takeHitRight;
+    public Animation<TextureRegion> cleaveLeft, cleaveRight;
+    public Animation<TextureRegion> deathLeft, deathRight;
 
     // Animation state
-    private TextureRegion currentFrame;
-    private float stateTime = 0f;
-    private boolean facingRight = true;
+    public TextureRegion currentFrame;
+    public float stateTime = 0f;
+    public boolean facingRight = true;
 
     // Animation timers
-    private boolean isTakingHit = false;
-    private float takeHitTimer = 0f;
-    private float takeHitDuration = 0.5f;
+    public boolean isTakingHit = false;
+    public float takeHitTimer = 0f;
+    public float takeHitDuration = 0.5f;
 
-    private boolean isCleaving = false;
-    private float cleaveTimer = 0f;
-    private float cleaveDuration = 1.2f;
+    public boolean isCleaving = false;
+    public float cleaveTimer = 0f;
+    public float cleaveDuration = 1.2f;
 
     public MonsterAnimationManager(Monster monster) {
         this.owner = monster;
@@ -202,5 +202,9 @@ public class MonsterAnimationManager {
      */
     public boolean isTakingHit() {
         return isTakingHit;
+    }
+    public void setCleaveAnimations(Animation<TextureRegion> left, Animation<TextureRegion> right) {
+        this.cleaveLeft = left;
+        this.cleaveRight = right;
     }
 }

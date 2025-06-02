@@ -8,58 +8,64 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 public class YellowBat extends Monster {
+    private float scaleMultiplier = 2f;
+
     public YellowBat(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 2f;
-        this.spriteHeight = 2f;
-        updateBounds(); // Đồng bộ lại bounds
+    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 2f; // Nhỏ hơn Boss
-        updateBounds();
-
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(2f);
     }
 
     public float getScaleMultiplier() {
-        return 2f;
+        return scaleMultiplier;
     }
 
     @Override
     public void loadAnimations() {
-        walkRight = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/right/fly/", "fly", 7, ".png", 1);
-        walkLeft  = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/left/fly/", "fly", 7, ".png", 1);
+        // Load all required animations
+        Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/right/fly/", "fly", 7, ".png", 1);
+        Animation<TextureRegion> walkLeftAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/left/fly/", "fly", 7, ".png", 1);
 
-        idleRight = walkRight;
-        idleLeft  = walkLeft;
+        Animation<TextureRegion> cleaveRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/right/atk/", "attack", 10, ".png", 1);
+        Animation<TextureRegion> cleaveLeftAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/left/atk/", "attack", 10, ".png", 1);
 
-        cleaveRight = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/right/atk/", "attack", 10, ".png", 1);
-        cleaveLeft  = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/left/atk/", "attack", 10, ".png", 1);
+        Animation<TextureRegion> takeHitRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/right/hit/", "hit", 3, ".png", 1);
+        Animation<TextureRegion> takeHitLeftAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/left/hit/", "hit", 3, ".png", 1);
 
-        takeHitRight = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/right/hit/", "hit", 3, ".png", 1);
-        takeHitLeft  = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/left/hit/", "hit", 3, ".png", 1);
+        // Use fly animation for idle and death since they're not available
+        Animation<TextureRegion> idleRightAnim = walkRightAnim;
+        Animation<TextureRegion> idleLeftAnim = walkLeftAnim;
+        Animation<TextureRegion> deathRightAnim = idleRightAnim;
+        Animation<TextureRegion> deathLeftAnim = idleLeftAnim;
 
-        deathRight = idleRight;
-        deathLeft  = idleLeft;
+        // Setup all animations in the animation manager
+        // The order needs to match the parameter list in setupAnimations:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight, cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            idleLeftAnim, idleRightAnim,
+            walkLeftAnim, walkRightAnim,
+            takeHitLeftAnim, takeHitRightAnim,
+            cleaveLeftAnim, cleaveRightAnim,
+            deathLeftAnim, deathRightAnim
+        );
     }
 
     @Override
     public void onDeath() {
-
+        super.onDeath();
+        this.isDead = true;
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
-    }
-
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
+        // Use parent class's render method
         super.render(batch);
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
     private Animation<TextureRegion> loadAnimation(String folder, String prefix, int frameCount, String suffix, int startIndex) {
@@ -74,6 +80,18 @@ public class YellowBat extends Monster {
 
     @Override
     public void onCollision(Player player) {
+        // Use parent class's collision handling
+        super.onCollision(player);
 
+        // Add bat-specific collision behavior if needed
+        if (!isDead) {
+            player.takeDamage(5); // Apply small damage on collision
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add YellowBat-specific update behavior here if needed
     }
 }
