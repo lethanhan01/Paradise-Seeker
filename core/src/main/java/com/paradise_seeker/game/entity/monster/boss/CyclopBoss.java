@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.map.GameMap;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -22,19 +23,10 @@ public class CyclopBoss extends Monster {
     private float skillProjectileSpeed = 5.2f;
 
     public CyclopBoss(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 6f;
-        this.spriteHeight = 6f;
-        updateBounds();
-
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 4.0f;
-        updateBounds();
+        super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+        this.collisionHandler.setCleaveRange(4.0f);
+        // Note: loadAnimations is already called in Monster constructor
     }
-
 
     public float getScaleMultiplier() {
         return 8f;
@@ -43,20 +35,20 @@ public class CyclopBoss extends Monster {
     @Override
     public void loadAnimations() {
         // WALK
-        walkRight = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/walk/phai/cyclop", 15, 26);
-        walkLeft = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/walk/trai/cyclop", 165, 176);
+        Animation<TextureRegion> walkRight = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/walk/phai/cyclop", 15, 26);
+        Animation<TextureRegion> walkLeft = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/walk/trai/cyclop", 165, 176);
 
         // IDLE
-        idleRight = loadIdleAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/idle/phai/");
-        idleLeft = loadIdleAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/idle/trai/");
+        Animation<TextureRegion> idleRight = loadIdleAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/idle/phai/");
+        Animation<TextureRegion> idleLeft = loadIdleAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/idle/trai/");
 
         // TAKE HIT
-        takeHitRight = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/takehit/phai/cyclop", 75, 79);
-        takeHitLeft = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/takehit/trai/cyclop", 225, 229);
+        Animation<TextureRegion> takeHitRight = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/takehit/phai/cyclop", 75, 79);
+        Animation<TextureRegion> takeHitLeft = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/takehit/trai/cyclop", 225, 229);
 
         // DEATH
-        deathRight = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/death/phai/cyclop", 90, 98);
-        deathLeft = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/death/trai/cyclop", 240, 248);
+        Animation<TextureRegion> deathRight = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/death/phai/cyclop", 90, 98);
+        Animation<TextureRegion> deathLeft = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/death/trai/cyclop", 240, 248);
 
         // CLEAVE
         cleaveRightAnim = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/cleave/phai/cyclop", 45, 57);
@@ -69,24 +61,45 @@ public class CyclopBoss extends Monster {
         // SKILL PROJECTILE
         skillProjectileRightAnim = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/skill/phai/projectile/cyclop", 135, 142);
         skillProjectileLeftAnim = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/skill/trai/projectile/cyclop", 285, 292);
+
+        // Initialize with cleave animation as default attack
+        Animation<TextureRegion> cleaveRight = cleaveRightAnim;
+        Animation<TextureRegion> cleaveLeft = cleaveLeftAnim;
+
+        // Set up all animations using the helper method from Monster
+        setupAnimations(
+            idleLeft, idleRight,
+            walkLeft, walkRight,
+            takeHitLeft, takeHitRight,
+            cleaveLeft, cleaveRight,
+            deathLeft, deathRight
+        );
     }
 
     // Hàm chuyển cleave xen kẽ cleave và skill. Nếu skill thì bắn projectile về phía player.
     public void switchCleaveTypeAndCastSkill(Player player) {
         cleaveTurn = !cleaveTurn;
+
+        // Update animation in the animation manager
+        Animation<TextureRegion> newCleaveLeft;
+        Animation<TextureRegion> newCleaveRight;
+
         if (cleaveTurn) {
-            cleaveRight = cleaveRightAnim;
-            cleaveLeft = cleaveLeftAnim;
+            newCleaveRight = cleaveRightAnim;
+            newCleaveLeft = cleaveLeftAnim;
         } else {
-            cleaveRight = skillRightAnim;
-            cleaveLeft = skillLeftAnim;
+            newCleaveRight = skillRightAnim;
+            newCleaveLeft = skillLeftAnim;
             castSkillProjectile(player);
         }
+
+        // Update animations in the animation manager
+        animationManager.setCleaveAnimations(newCleaveLeft, newCleaveRight);
     }
 
     // Bắn skill projectile về phía player
     private void castSkillProjectile(Player player) {
-        boolean facingRight = this.facingRight;
+        boolean facingRight = isFacingRight();
         Vector2 start = new Vector2(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
         Vector2 target = new Vector2(player.getBounds().x + player.getBounds().width / 2, player.getBounds().y + player.getBounds().height / 2);
         skillProjectiles.add(new SkillProjectile(start, target, facingRight));
@@ -154,7 +167,8 @@ public class CyclopBoss extends Monster {
 
     @Override
     public void onCollision(Player player) {
-
+        super.onCollision(player);
+        // Add specific collision behavior if needed
     }
 
     // --- Nội bộ: class skill projectile ---
@@ -189,26 +203,28 @@ public class CyclopBoss extends Monster {
         }
     }
 
-    // Implement the required abstract onDeath() method from Character class
     @Override
     public void onDeath() {
+        super.onDeath();
         this.isDead = true;
         // Clear any active projectiles when boss dies
         skillProjectiles.clear();
     }
 
-    // --- Render boss ---
-    // Duy nhất 1 hàm @Override từ Renderable
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+
+        // Update projectiles if player exists
+        if (player != null) {
+            updateSkillProjectiles(player, deltaTime);
+        }
+    }
+
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // truyền null nếu không có player
-    }
-
-    // Nếu GameMap/GameScreen có thể truyền player, thì dùng hàm này!
-    public void render(SpriteBatch batch, Player player) {
         if (isDead) return;
-        super.render(batch); // Fix: call the parent's render with only the batch parameter
-        renderSkillProjectiles(batch, stateTime); // vẽ skill projectile
+        super.render(batch);
+        renderSkillProjectiles(batch, animationManager.getStateTime());
     }
-
 }

@@ -8,54 +8,59 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 
 public class DevilCreep extends Monster {
+    private float scaleMultiplier = 2f;
 
     public DevilCreep(float x, float y) {
     	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 2.2f;
-        this.spriteHeight = 2.2f;
-        updateBounds(); // Đồng bộ lại bounds
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 2.5f;
-        updateBounds();
-
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(2.5f);
     }
 
     public float getScaleMultiplier() {
-        return 2f;
+        return scaleMultiplier;
     }
-
 
     @Override
     public void loadAnimations() {
-        // Cleave (attack) - 16 frame (đúng)
-        cleaveRight = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_atk_", 16, ".png");
-        cleaveLeft  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_atk_", 16, ".png");
+        // Cleave (attack) - 16 frame
+        Animation<TextureRegion> cleaveRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_atk_", 16, ".png");
+        Animation<TextureRegion> cleaveLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_atk_", 16, ".png");
 
-        // Death - 13 frame (đúng)
-        deathRight = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_death_", 13, ".png");
-        deathLeft  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_death_", 13, ".png");
+        // Death - 13 frame
+        Animation<TextureRegion> deathRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_death_", 13, ".png");
+        Animation<TextureRegion> deathLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_death_", 13, ".png");
 
-        // Idle - 5 frame (đúng)
-        idleRight = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_idle_", 5, ".png");
-        idleLeft  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_idle_", 5, ".png");
+        // Idle - 5 frame
+        Animation<TextureRegion> idleRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_idle_", 5, ".png");
+        Animation<TextureRegion> idleLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_idle_", 5, ".png");
 
-        // Move - 7 frame (đã sửa)
-        walkRight = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_move_", 7, ".png");
-        walkLeft  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_move_", 7, ".png");
+        // Move - 7 frame
+        Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_move_", 7, ".png");
+        Animation<TextureRegion> walkLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_move_", 7, ".png");
 
-        // Take Hit - 4 frame (đã sửa)
-        takeHitRight = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_takeDamage_", 4, ".png");
-        takeHitLeft  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_takeDamage_", 4, ".png");
+        // Take Hit - 4 frame
+        Animation<TextureRegion> takeHitRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_takeDamage_", 4, ".png");
+        Animation<TextureRegion> takeHitLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_takeDamage_", 4, ".png");
+
+        // Set all animations in the animation manager
+        // The order needs to match the parameter list in setupAnimations:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight,
+        // cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            idleLeftAnim, idleRightAnim,
+            walkLeftAnim, walkRightAnim,
+            takeHitLeftAnim, takeHitRightAnim,
+            cleaveLeftAnim, cleaveRightAnim,
+            deathLeftAnim, deathRightAnim
+        );
     }
-
-
 
     private Animation<TextureRegion> loadAnimation(String basePath, int frameCount, String suffix) {
         TextureRegion[] frames = new TextureRegion[frameCount];
@@ -69,23 +74,32 @@ public class DevilCreep extends Monster {
 
     @Override
     public void onDeath() {
-
+        super.onDeath();
+        // Mark as dead
+        this.isDead = true;
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
+        // Use parent class's render method
+        super.render(batch);
     }
-
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
-        super.render(batch); // Fix: call the parent's render with only the batch parameter
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
-    }
-
 
     @Override
     public void onCollision(Player player) {
+        // Use parent class's collision handling
+        super.onCollision(player);
 
+        // Add devil-specific collision behavior if needed
+        if (!isDead) {
+            // For example, apply some effect when devil touches player
+            player.takeDamage(10); // Apply additional damage
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add DevilCreep-specific update behavior here if needed
     }
 }

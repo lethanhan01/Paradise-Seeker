@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.map.GameMap;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,23 +20,18 @@ public class TitanKnight extends Monster {
     private boolean cleaveTurn = true;
     private Animation<TextureRegion> cleaveAnim, spellAnim;
     private Animation<TextureRegion> fireSpellAnim;
-    private ArrayList<FireSpell> fireSpells = new ArrayList<>();
+    private final ArrayList<FireSpell> fireSpells = new ArrayList<>();
 
-    private float spellDamage = 20f; // Damage khi spell trúng player
-    private float fireSpellSpeed = 5f; // Tốc độ spell bay
+    private final float spellDamage = 20f; // Damage khi spell trúng player
+    private final float fireSpellSpeed = 5f; // Tốc độ spell bay
 
     public TitanKnight(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 2.5f;
-        this.spriteHeight = 2.5f;
-        updateBounds();
+        super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 2.5f;
-        updateBounds();
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(2.5f);
     }
 
     public float getScaleMultiplier() {
@@ -44,175 +40,212 @@ public class TitanKnight extends Monster {
 
     @Override
     public void loadAnimations() {
-        // WALK (RUN)
-        walkRight = loadAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/run/run", 8);
-        walkLeft = walkRight;
+        // Load all animations
+        Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/run/run", 8);
+        Animation<TextureRegion> walkLeftAnim = walkRightAnim; // Same animation for both directions
 
-        // IDLE
-        idleRight = loadAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/idle/idle", 8);
-        idleLeft = idleRight;
+        Animation<TextureRegion> idleRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/idle/idle", 8);
+        Animation<TextureRegion> idleLeftAnim = idleRightAnim; // Same animation for both directions
 
-        // HIT (TAKEHIT) = HURT
-        takeHitRight = loadAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/hurt/hurt", 5);
-        takeHitLeft = takeHitRight;
+        Animation<TextureRegion> takeHitRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/hurt/hurt", 5);
+        Animation<TextureRegion> takeHitLeftAnim = takeHitRightAnim; // Same animation for both directions
 
         // CLEAVE = ảnh trong folder cleave (gồm 26 frame, atk1 & atk2)
         cleaveAnim = loadCleaveAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/cleave/");
         // SPELL = spell1.png ... spell17.png
         spellAnim = loadSpellAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/spell/spell", 17);
 
-        cleaveRight = cleaveAnim;
-        cleaveLeft = cleaveAnim;
+        Animation<TextureRegion> cleaveRightAnim = cleaveAnim;
+        Animation<TextureRegion> cleaveLeftAnim = cleaveAnim; // Same animation for both directions
 
-        // DEATH
-        deathRight = loadAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/death/death", 9);
-        deathLeft = deathRight;
+        Animation<TextureRegion> deathRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/death/death", 9);
+        Animation<TextureRegion> deathLeftAnim = deathRightAnim; // Same animation for both directions
 
         // Spell projectile
         fireSpellAnim = loadFireSpellAnimation("images/Entity/characters/monsters/elite/map2/titan_knight/fire_spell/firespell", 28);
+
+        // Set all animations in the animation manager
+        // The order needs to match the parameter list in setupAnimations:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight, cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            idleLeftAnim, idleRightAnim,
+            walkLeftAnim, walkRightAnim,
+            takeHitLeftAnim, takeHitRightAnim,
+            cleaveLeftAnim, cleaveRightAnim,
+            deathLeftAnim, deathRightAnim
+        );
     }
 
     // --- Logic: mỗi lần cast cleave gọi hàm này để chuyển xen kẽ cleave <-> spell ---
     public void switchCleaveTypeAndCastSpell(Player player) {
         cleaveTurn = !cleaveTurn;
+
+        Animation<TextureRegion> leftAnim, rightAnim;
         if (cleaveTurn) {
-            cleaveRight = cleaveAnim;
-            cleaveLeft = cleaveAnim;
+            leftAnim = cleaveAnim;
+            rightAnim = cleaveAnim;
         } else {
-            cleaveRight = spellAnim;
-            cleaveLeft = spellAnim;
+            leftAnim = spellAnim;
+            rightAnim = spellAnim;
             castFireSpell(player); // Khi sang spell, bắn spell về phía player
         }
+
+        // Update animations in animation manager
+        animationManager.setCleaveAnimations(leftAnim, rightAnim);
     }
 
     // Tạo spell projectile bay đến vị trí player tại thời điểm cast
     private void castFireSpell(Player player) {
+        if (player == null) return;
         Vector2 start = new Vector2(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-        Vector2 target = new Vector2(player.getBounds().x + player.getBounds().width / 2, player.getBounds().y + player.getBounds().height / 2);
+        Vector2 target = new Vector2(player.getBounds().x + player.getBounds().width / 2,
+                                    player.getBounds().y + player.getBounds().height / 2);
         fireSpells.add(new FireSpell(start, target));
     }
 
-    // Gọi từ GameMap hoặc AI mỗi frame để update spell (di chuyển, va chạm, gây damage)
-    public void updateFireSpells(Player player, float delta) {
+    // Update spell logic (movement, collision)
+    public void updateFireSpells(float deltaTime, Player player) {
+        if (player == null) return;
+
         Iterator<FireSpell> it = fireSpells.iterator();
         while (it.hasNext()) {
             FireSpell spell = it.next();
-            spell.update(delta);
+            spell.update(deltaTime);
 
-            // Nếu spell chạm player
-            if (spell.getRect().overlaps(player.getBounds())) {
+            // Check collision with player
+            if (spell.bounds.overlaps(player.getBounds())) {
                 player.takeDamage((int)spellDamage);
                 it.remove();
             }
-            // Nếu muốn: remove nếu spell bay ra khỏi vùng chơi, hoặc hết thời gian tồn tại
-        }
-    }
-
-    // Render spell
-    public void renderFireSpells(SpriteBatch batch, float stateTime) {
-        for (FireSpell spell : fireSpells) {
-            spell.render(batch, fireSpellAnim, stateTime);
-        }
-    }
-
-    // --- Animation loader helper ---
-    private Animation<TextureRegion> loadAnimation(String basePath, int frameCount) {
-        TextureRegion[] frames = new TextureRegion[frameCount];
-        for (int i = 1; i <= frameCount; i++) {
-            String filename = basePath + i + ".png";
-            Texture texture = new Texture(Gdx.files.internal(filename));
-            frames[i - 1] = new TextureRegion(texture);
-        }
-        return new Animation<>(0.12f, frames);
-    }
-
-    // Load cleave: gộp cả atk1 (1->13), atk2 (1->13) trong folder cleave
-    private Animation<TextureRegion> loadCleaveAnimation(String folder) {
-        int atkCount = 2;
-        int framePerAtk = 13;
-        TextureRegion[] frames = new TextureRegion[atkCount * framePerAtk];
-        int idx = 0;
-        for (int atk = 1; atk <= atkCount; atk++) {
-            for (int frame = 1; frame <= framePerAtk; frame++) {
-                String filename = folder + "atk" + atk + " (" + frame + ").png";
-                Texture texture = new Texture(Gdx.files.internal(filename));
-                frames[idx++] = new TextureRegion(texture);
+            // Remove if out of screen
+            else if (spell.lifetime > 5f) {
+                it.remove();
             }
         }
-        return new Animation<>(0.11f, frames);
     }
 
-    // Load spell: spell1.png ... spell17.png
-    private Animation<TextureRegion> loadSpellAnimation(String basePath, int frameCount) {
-        TextureRegion[] frames = new TextureRegion[frameCount];
-        for (int i = 1; i <= frameCount; i++) {
-            String filename = basePath + i + ".png";
-            Texture texture = new Texture(Gdx.files.internal(filename));
-            frames[i - 1] = new TextureRegion(texture);
+    // Render fire spells
+    private void renderFireSpells(SpriteBatch batch, float stateTime) {
+        for (FireSpell spell : fireSpells) {
+            TextureRegion frame = fireSpellAnim.getKeyFrame(stateTime, true);
+            batch.draw(frame, spell.bounds.x, spell.bounds.y, spell.bounds.width, spell.bounds.height);
         }
-        return new Animation<>(0.12f, frames);
-    }
-
-    // Load fire_spell: firespell0.png ... firespell27.png
-    private Animation<TextureRegion> loadFireSpellAnimation(String basePath, int frameCount) {
-        TextureRegion[] frames = new TextureRegion[frameCount];
-        for (int i = 0; i < frameCount; i++) {
-            String filename = basePath + i + ".png";
-            Texture texture = new Texture(Gdx.files.internal(filename));
-            frames[i] = new TextureRegion(texture);
-        }
-        return new Animation<>(0.08f, frames);
     }
 
     @Override
-    public void onCollision(Player player) {
+    public void render(SpriteBatch batch) {
+        super.render(batch);
 
+        // Additionally render fire spells
+        renderFireSpells(batch, animationManager.getStateTime());
     }
 
-    // --- Nội bộ: class spell ---
-    private class FireSpell {
-        private Vector2 pos;
-        private Vector2 velocity;
-        private Rectangle rect;
-        private float elapsed = 0f;
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
 
-        public FireSpell(Vector2 start, Vector2 target) {
-            this.pos = new Vector2(start);
-            Vector2 dir = target.cpy().sub(start).nor();
-            this.velocity = dir.scl(fireSpellSpeed);
-            this.rect = new Rectangle(pos.x - 0.4f, pos.y - 0.4f, 0.8f, 0.8f); // Spell hitbox
-        }
+        // Update fire spells
+        updateFireSpells(deltaTime, player);
 
-        public void update(float delta) {
-            pos.mulAdd(velocity, delta);
-            rect.setPosition(pos.x - rect.width / 2, pos.y - rect.height / 2);
-            elapsed += delta;
-        }
-
-        public Rectangle getRect() {
-            return rect;
-        }
-
-        public void render(SpriteBatch batch, Animation<TextureRegion> anim, float stateTime) {
-            TextureRegion frame = anim.getKeyFrame(elapsed, true);
-            batch.draw(frame, pos.x - rect.width/2, pos.y - rect.height/2, rect.width, rect.height);
+        // Check for special attack patterns
+        if (animationManager.isCleaving() && !cleaveTurn) {
+            // If in spell animation mode, we might want special behavior
         }
     }
 
     @Override
     public void onDeath() {
+        super.onDeath();
+        this.isDead = true;
 
+        // Clear all fire spells
+        fireSpells.clear();
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        render(batch, null);
+    public void onCollision(Player player) {
+        super.onCollision(player);
+
+        // Add titan-specific collision behavior if needed
+        if (!isDead) {
+            player.takeDamage(10); // Apply additional melee damage on collision
+        }
     }
 
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
-        super.render(batch);
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+    // Helper Animation loading methods
+
+    private Animation<TextureRegion> loadAnimation(String basePath, int frameCount) {
+        TextureRegion[] frames = new TextureRegion[frameCount];
+        for (int i = 0; i < frameCount; i++) {
+            String filename = basePath + (i+1) + ".png";
+            Texture texture = new Texture(Gdx.files.internal(filename));
+            frames[i] = new TextureRegion(texture);
+        }
+        return new Animation<>(0.1f, frames);
     }
 
+    private Animation<TextureRegion> loadCleaveAnimation(String folder) {
+        // Assume total frames is 26, loading from atk1_1.png through atk2_13.png
+        int frameCount = 26;
+        TextureRegion[] frames = new TextureRegion[frameCount];
+        int idx = 0;
+
+        // Load atk1 (first 13 frames)
+        for (int i = 1; i <= 13; i++) {
+            String filename = folder + "atk1_" + i + ".png";
+            Texture texture = new Texture(Gdx.files.internal(filename));
+            frames[idx++] = new TextureRegion(texture);
+        }
+
+        // Load atk2 (next 13 frames)
+        for (int i = 1; i <= 13; i++) {
+            String filename = folder + "atk2_" + i + ".png";
+            Texture texture = new Texture(Gdx.files.internal(filename));
+            frames[idx++] = new TextureRegion(texture);
+        }
+
+        return new Animation<>(0.08f, frames);
+    }
+
+    private Animation<TextureRegion> loadSpellAnimation(String basePath, int frameCount) {
+        TextureRegion[] frames = new TextureRegion[frameCount];
+        for (int i = 0; i < frameCount; i++) {
+            String filename = basePath + (i+1) + ".png";
+            Texture texture = new Texture(Gdx.files.internal(filename));
+            frames[i] = new TextureRegion(texture);
+        }
+        return new Animation<>(0.1f, frames);
+    }
+
+    private Animation<TextureRegion> loadFireSpellAnimation(String basePath, int frameCount) {
+        TextureRegion[] frames = new TextureRegion[frameCount];
+        for (int i = 0; i < frameCount; i++) {
+            String filename = basePath + (i+1) + ".png";
+            Texture texture = new Texture(Gdx.files.internal(filename));
+            frames[i] = new TextureRegion(texture);
+        }
+        return new Animation<>(0.05f, frames);
+    }
+
+    // Inner class for fire spells
+    private class FireSpell {
+        Rectangle bounds;
+        Vector2 velocity;
+        float lifetime = 0;
+
+        FireSpell(Vector2 start, Vector2 target) {
+            bounds = new Rectangle(start.x - 1.0f, start.y - 1.0f, 2.0f, 2.0f);
+
+            // Calculate direction to target
+            Vector2 direction = new Vector2(target.x - start.x, target.y - start.y).nor();
+            velocity = direction.scl(fireSpellSpeed);
+        }
+
+        void update(float deltaTime) {
+            // Move spell
+            bounds.x += velocity.x * deltaTime;
+            bounds.y += velocity.y * deltaTime;
+            lifetime += deltaTime;
+        }
+    }
 }

@@ -8,46 +8,54 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 public class CyanBat extends Monster {
+    private float scaleMultiplier = 2.0f;
+
     public CyanBat(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 1.2f;
-        this.spriteHeight = 1.2f;
-        updateBounds(); // Đồng bộ lại bounds
+    	super(new Rectangle(x, y, 1.2f, 1.2f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 2f; // Nhỏ hơn Boss
-        updateBounds();
-
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(2.0f);
     }
 
     public float getScaleMultiplier() {
-        return 2f;
+        return scaleMultiplier;
     }
 
     @Override
     public void loadAnimations() {
-        walkRight = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/walk/", "walk", 8, ".png", 1);
-        walkLeft  = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/walk/", "walk", 8, ".png", 1);
+        // Load animations with proper variable names
+        Animation<TextureRegion> walkRightAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/walk/", "walk", 8, ".png", 1);
+        Animation<TextureRegion> walkLeftAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/walk/", "walk", 8, ".png", 1);
 
-        idleRight = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/idle/", "idle", 11, ".png", 1);
-        idleLeft  = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/idle/", "idle", 11, ".png", 1);
+        Animation<TextureRegion> idleRightAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/idle/", "idle", 11, ".png", 1);
+        Animation<TextureRegion> idleLeftAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/idle/", "idle", 11, ".png", 1);
 
-        cleaveRight = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/atk/", "attack", 8, ".png", 1);
-        cleaveLeft  = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/atk/", "attack", 8, ".png", 1);
+        Animation<TextureRegion> cleaveRightAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/atk/", "attack", 8, ".png", 1);
+        Animation<TextureRegion> cleaveLeftAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/atk/", "attack", 8, ".png", 1);
 
-        takeHitRight = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/hit/", "hit", 3, ".png", 1);
-        takeHitLeft  = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/hit/", "hit", 3, ".png", 1);
+        Animation<TextureRegion> takeHitRightAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/hit/", "hit", 3, ".png", 1);
+        Animation<TextureRegion> takeHitLeftAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/hit/", "hit", 3, ".png", 1);
 
-        deathRight = idleRight;
-        deathLeft  = idleLeft;
+        // Use idle animations for death since there are no dedicated death animations
+        Animation<TextureRegion> deathRightAnim = idleRightAnim;
+        Animation<TextureRegion> deathLeftAnim = idleLeftAnim;
+
+        // Setup animations using the helper method from Monster
+        // The order needs to match the parameter list in setupAnimations:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight, cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            idleLeftAnim, idleRightAnim,
+            walkLeftAnim, walkRightAnim,
+            takeHitLeftAnim, takeHitRightAnim,
+            cleaveLeftAnim, cleaveRightAnim,
+            deathLeftAnim, deathRightAnim
+        );
     }
-
-
 
     private Animation<TextureRegion> loadAnimationWithPadding(String folder, String prefix, int frameCount, String suffix, int startIndex) {
         TextureRegion[] frames = new TextureRegion[frameCount];
@@ -59,27 +67,33 @@ public class CyanBat extends Monster {
         return new Animation<>(0.1f, frames);
     }
 
-    // Implement the required abstract onDeath() method from Character class
     @Override
     public void onDeath() {
+        super.onDeath();
         this.isDead = true;
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
+        // Use the parent class's render method
+        super.render(batch);
     }
-
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
-        super.render(batch); // Fix: call the parent's render with only the batch parameter
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
-    }
-
 
     @Override
     public void onCollision(Player player) {
+        // Use the parent class's collision handling
+        super.onCollision(player);
 
+        // Add bat-specific collision behavior if needed
+        if (!isDead) {
+            // For example, apply some effect when bat touches player
+            player.takeDamage(5); // Apply small damage
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add CyanBat-specific update behavior here if needed
     }
 }
-

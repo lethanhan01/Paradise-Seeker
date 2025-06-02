@@ -8,42 +8,49 @@ import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 public class Boss5 extends Monster {
+    // Boss-specific properties
+    private float scaleMultiplier = 12f;
+
     public Boss5(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, cleaveRange tuỳ chỉnh theo game bạn
-        this.spriteWidth = 12f;
-        this.spriteHeight = 7f;
-        updateBounds();
-        this.spawnX = x;
-        this.spawnY = y;
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 5f;
-        updateBounds();
+        super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed tuỳ chỉnh theo game bạn
+        // Note: loadAnimations is already called in Monster constructor
+        // No need to set spawnX, spawnY as they're now set in the parent constructor
+        this.collisionHandler.setCleaveRange(5f);
     }
 
     @Override
     public void loadAnimations() {
         // WALK (tên file là run0.png, run1.png, ...)
-        walkRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/walk/phai/", "run", 8, ".png", 0);
-        walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/walk/trai/", "run", 8, ".png", 0);
+        Animation<TextureRegion> walkRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/walk/phai/", "run", 8, ".png", 0);
+        Animation<TextureRegion> walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/walk/trai/", "run", 8, ".png", 0);
 
         // IDLE
-        idleRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/idle/phai/", "idle", 8, ".png", 0);
-        idleLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/idle/trai/", "idle", 8, ".png", 0);
+        Animation<TextureRegion> idleRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/idle/phai/", "idle", 8, ".png", 0);
+        Animation<TextureRegion> idleLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/idle/trai/", "idle", 8, ".png", 0);
 
         // CLEAVE: mỗi hướng có 3 đòn (atk1, atk2, atk3)
-        cleaveRight = loadBoss5CleaveCombo("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/cleave/phai/");
-        cleaveLeft  = loadBoss5CleaveCombo("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/cleave/trai/");
+        Animation<TextureRegion> cleaveRight = loadBoss5CleaveCombo("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/cleave/phai/");
+        Animation<TextureRegion> cleaveLeft  = loadBoss5CleaveCombo("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/cleave/trai/");
 
         // TAKEHIT
-        takeHitRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/takehit/phai/", "takehit", 4, ".png", 0);
-        takeHitLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/takehit/trai/", "takehit", 4, ".png", 0);
+        Animation<TextureRegion> takeHitRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/takehit/phai/", "takehit", 4, ".png", 0);
+        Animation<TextureRegion> takeHitLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/takehit/trai/", "takehit", 4, ".png", 0);
 
         // DEATH
-        deathRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/death/phai/", "death", 6, ".png", 0);
-        deathLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/death/trai/", "death", 6, ".png", 0);
+        Animation<TextureRegion> deathRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/death/phai/", "death", 6, ".png", 0);
+        Animation<TextureRegion> deathLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/death/trai/", "death", 6, ".png", 0);
+
+        // Set up all animations using the helper method from Monster
+        setupAnimations(
+            idleLeft, idleRight,
+            walkLeft, walkRight,
+            takeHitLeft, takeHitRight,
+            cleaveLeft, cleaveRight,
+            deathLeft, deathRight
+        );
     }
 
     // Load animation bình thường: run0.png, run1.png...
@@ -86,26 +93,34 @@ public class Boss5 extends Monster {
     }
 
     public float getScaleMultiplier() {
-        return 12f;
+        return scaleMultiplier;
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        super.render(batch); // Fixed by removing the incorrect parameter
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
+        // Use the renderer from parent class, which already handles drawing
+        // No need to manually draw currentFrame as it's handled by MonsterRenderer
+        super.render(batch);
     }
 
     @Override
     public void onDeath() {
-        isDead = true;
-        stateTime = 0;
+        super.onDeath();
+        // Add Boss5-specific death behavior if needed
     }
 
     @Override
     public void onCollision(Player player) {
-        // Implement collision behavior with the player
+        super.onCollision(player);
+        // Add Boss5-specific collision behavior
         if (!isDead) {
             player.takeDamage(25); // Deal damage to the player on collision
         }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add Boss5-specific update behavior here if needed
     }
 }

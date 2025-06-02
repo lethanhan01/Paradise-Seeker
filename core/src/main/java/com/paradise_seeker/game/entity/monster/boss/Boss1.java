@@ -5,43 +5,50 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
 
 public class Boss1 extends Monster {
+    // Boss-specific properties
+    private float cleaveRange = 5f;
+
     public Boss1(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);// Tùy chỉnh stats phù hợp
-        this.spriteWidth = 10f;
-        this.spriteHeight = 6f;
-        updateBounds();
-        this.spawnX = x;
-        this.spawnY = y;
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 5f;
-        updateBounds();
+        super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+        // Note: loadAnimations is already called in Monster constructor
+        // No need to set currentFrame, it's managed by animationManager now
+        this.collisionHandler.setCleaveRange(cleaveRange);
     }
 
     @Override
     public void loadAnimations() {
         // WALK
-        walkRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/phai/", "walk", 8, ".png", 0);
-        walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/trai/", "walk", 8, ".png", 0);
+        Animation<TextureRegion> walkRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/phai/", "walk", 8, ".png", 0);
+        Animation<TextureRegion> walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/trai/", "walk", 8, ".png", 0);
 
         // IDLE
-        idleRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/idle/phai/", "idle", 8, ".png", 0);
-        idleLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/idle/trai/", "idle", 8, ".png", 0);
+        Animation<TextureRegion> idleRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/idle/phai/", "idle", 8, ".png", 0);
+        Animation<TextureRegion> idleLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/idle/trai/", "idle", 8, ".png", 0);
 
         // CLEAVE (có 2 đòn, mỗi đòn 8 frame)
-        cleaveRight = loadComboAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/cleave/phai/", "atk", 2, 8, ".png");
-        cleaveLeft  = loadComboAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/cleave/trai/", "atk", 2, 8, ".png");
+        Animation<TextureRegion> cleaveRight = loadComboAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/cleave/phai/", "atk", 2, 8, ".png");
+        Animation<TextureRegion> cleaveLeft  = loadComboAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/cleave/trai/", "atk", 2, 8, ".png");
 
         // TAKE HIT
-        takeHitRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/takehit/phai/", "takehit", 3, ".png", 0);
-        takeHitLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/takehit/trai/", "takehit", 3, ".png", 0);
+        Animation<TextureRegion> takeHitRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/takehit/phai/", "takehit", 3, ".png", 0);
+        Animation<TextureRegion> takeHitLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/takehit/trai/", "takehit", 3, ".png", 0);
 
         // DEATH
-        deathRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/death/phai/", "death", 7, ".png", 0);
-        deathLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/death/trai/", "death", 7, ".png", 0);
+        Animation<TextureRegion> deathRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/death/phai/", "death", 7, ".png", 0);
+        Animation<TextureRegion> deathLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/death/trai/", "death", 7, ".png", 0);
+
+        // Set up all animations using the helper method from Monster
+        setupAnimations(
+            idleLeft, idleRight,
+            walkLeft, walkRight,
+            takeHitLeft, takeHitRight,
+            cleaveLeft, cleaveRight,
+            deathLeft, deathRight
+        );
     }
 
     // Load animation cơ bản (frame đặt tên liên tục: walk0.png, walk1.png, ...)
@@ -70,18 +77,15 @@ public class Boss1 extends Monster {
         return new Animation<>(0.1f, frames);
     }
 
-    protected float getScaleMultiplier() {
-        return 10f;
-    }
-
     @Override
-    public void onCollision(com.paradise_seeker.game.entity.Player player) {
-        // Implement boss-specific collision logic here, or leave empty if not needed
+    public void onCollision(Player player) {
+        super.onCollision(player);
+        // Add Boss1-specific collision logic here
     }
 
     @Override
     public void onDeath() {
-        // Implement boss-specific death logic here, or leave empty if not needed
+        super.onDeath();
+        // Add Boss1-specific death logic here
     }
-
 }

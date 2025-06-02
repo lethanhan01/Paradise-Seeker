@@ -8,54 +8,62 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 public class EvilPlant extends Monster {
+    private float scaleMultiplier = 2.0f;
+
     public EvilPlant(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // hp, speed, cleavedamage, offset
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 4f;
-        this.spriteHeight = 4f;
-        updateBounds(); // Đồng bộ lại bounds
+    	super(new Rectangle(x, y, 4.0f, 4.0f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // hp, speed, cleaveDamage, offset
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = idleLeft.getKeyFrame(0f);
-        this.cleaveRange = 2.5f; // Nhỏ hơn Boss
-        updateBounds();
-
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(2.5f);
     }
+
     public float getScaleMultiplier() {
-        return 2f;
+        return scaleMultiplier;
     }
 
     @Override
     public void loadAnimations() {
-        walkLeft = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/idle/", "idle", 8, ".png", 1);
-        walkRight = walkLeft; // Không có ảnh walk riêng nên dùng idle
+        // Load animations with proper variable names
+        Animation<TextureRegion> walkLeftAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/idle/", "idle", 8, ".png", 1);
+        Animation<TextureRegion> walkRightAnim = walkLeftAnim; // No dedicated walk animation, reuse idle
 
-        idleLeft = walkLeft;
-        idleRight = walkRight;
+        Animation<TextureRegion> idleLeftAnim = walkLeftAnim;
+        Animation<TextureRegion> idleRightAnim = walkRightAnim;
 
-        cleaveRight = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/atkleft/", "attack_left", 8, ".png", 1);
-        cleaveLeft = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/atkright/", "attack_right", 8, ".png", 1);
+        Animation<TextureRegion> cleaveRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/atkleft/", "attack_left", 8, ".png", 1);
+        Animation<TextureRegion> cleaveLeftAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/atkright/", "attack_right", 8, ".png", 1);
 
-        takeHitLeft = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/hit/", "hit", 3, ".png", 1);
-        takeHitRight = takeHitLeft;
+        Animation<TextureRegion> takeHitLeftAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/hit/", "hit", 3, ".png", 1);
+        Animation<TextureRegion> takeHitRightAnim = takeHitLeftAnim;
 
-        deathLeft = idleLeft;
-        deathRight = idleRight;
+        Animation<TextureRegion> deathLeftAnim = idleLeftAnim;
+        Animation<TextureRegion> deathRightAnim = idleRightAnim;
+
+        // Setup animations using the helper method from Monster
+        // The order needs to match the parameter list in setupAnimations:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight, cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            idleLeftAnim, idleRightAnim,
+            walkLeftAnim, walkRightAnim,
+            takeHitLeftAnim, takeHitRightAnim,
+            cleaveLeftAnim, cleaveRightAnim,
+            deathLeftAnim, deathRightAnim
+        );
     }
+
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
+        // Use the parent class's render method
+        super.render(batch);
     }
 
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
-        super.render(batch); // Fix: call the parent's render with only the batch parameter
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
-    }
-
+    // Removing the render(SpriteBatch batch, Player player) method as it's not needed
+    // The parent class renderer will handle drawing
 
     private Animation<TextureRegion> loadAnimation(String folder, String prefix, int frameCount, String suffix, int startIndex) {
         TextureRegion[] frames = new TextureRegion[frameCount];
@@ -69,11 +77,25 @@ public class EvilPlant extends Monster {
 
     @Override
     public void onDeath() {
+        super.onDeath();
         this.isDead = true;
     }
 
     @Override
     public void onCollision(Player player) {
+        super.onCollision(player);
 
+        // Add EvilPlant-specific collision behavior if needed
+        if (!isDead) {
+            // For example, apply some poison effect when plant touches player
+            player.takeDamage(5); // Apply small poison damage
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add EvilPlant-specific update behavior here if needed
+        // Plants typically don't move, so we might not need additional behavior
     }
 }

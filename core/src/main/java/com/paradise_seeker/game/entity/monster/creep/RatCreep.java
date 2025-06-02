@@ -8,50 +8,57 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 
 public class RatCreep extends Monster {
+    private float scaleMultiplier = 2f;
 
     public RatCreep(float x, float y) {
     	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 1.5f;
-        this.spriteHeight = 1.5f;
-        updateBounds(); // Đồng bộ lại bounds
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 1.5f;
-        updateBounds();
-
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(1.5f);
     }
 
     public float getScaleMultiplier() {
-        return 2f;
+        return scaleMultiplier;
     }
 
     @Override
     public void loadAnimations() {
         // Run (walk) animation
-        walkRight = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/run/rat_run", 6);
-        walkLeft  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/run/rat_run", 6);
+        Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/run/rat_run", 6);
+        Animation<TextureRegion> walkLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/run/rat_run", 6);
 
         // Idle animation
-        idleRight = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/idle/rat_idle", 6);
-        idleLeft  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/idle/rat_idle", 6);
+        Animation<TextureRegion> idleRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/idle/rat_idle", 6);
+        Animation<TextureRegion> idleLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/idle/rat_idle", 6);
 
         // Attack (cleave) animation
-        cleaveRight = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/atk/rat_atk", 6);
-        cleaveLeft  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/atk/rat_atk", 6);
+        Animation<TextureRegion> cleaveRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/atk/rat_atk", 6);
+        Animation<TextureRegion> cleaveLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/atk/rat_atk", 6);
 
         // Hurt (take hit) animation - single frame
-        takeHitRight = loadSingleFrame("images/Entity/characters/monsters/creep/map3/rat_creep/right/hurt/rat-hurt-outline.png");
-        takeHitLeft  = loadSingleFrame("images/Entity/characters/monsters/creep/map3/rat_creep/left/hurt/rat-hurt-outline.png");
+        Animation<TextureRegion> takeHitRightAnim = loadSingleFrame("images/Entity/characters/monsters/creep/map3/rat_creep/right/hurt/rat-hurt-outline.png");
+        Animation<TextureRegion> takeHitLeftAnim  = loadSingleFrame("images/Entity/characters/monsters/creep/map3/rat_creep/left/hurt/rat-hurt-outline.png");
 
         // Death animation
-        deathRight = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/death/rat_death", 6);
-        deathLeft  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/death/rat_death", 6);
+        Animation<TextureRegion> deathRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/death/rat_death", 6);
+        Animation<TextureRegion> deathLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/death/rat_death", 6);
+
+        // Set all animations in the animation manager
+        // The order needs to match the parameter list in setupAnimations:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight, cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            idleLeftAnim, idleRightAnim,
+            walkLeftAnim, walkRightAnim,
+            takeHitLeftAnim, takeHitRightAnim,
+            cleaveLeftAnim, cleaveRightAnim,
+            deathLeftAnim, deathRightAnim
+        );
     }
 
     private Animation<TextureRegion> loadAnimation(String basePath, int frameCount) {
@@ -71,22 +78,30 @@ public class RatCreep extends Monster {
 
     @Override
     public void onDeath() {
+        super.onDeath();
         this.isDead = true;
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null);
-    }
-
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
+        // Use parent class's render method
         super.render(batch);
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
     @Override
     public void onCollision(Player player) {
+        // Use parent class's collision handling
+        super.onCollision(player);
 
+        // Add rat-specific collision behavior if needed
+        if (!isDead) {
+            player.takeDamage(7); // Apply small damage on collision
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add RatCreep-specific update behavior here if needed
     }
 }

@@ -8,50 +8,53 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.map.GameMap;
 
 
 public class IceElite extends Monster {
+    private float scaleMultiplier = 5f;
 
     public IceElite(float x, float y) {
     	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
-        this.spawnX = x;
-        this.spawnY = y;
-        this.spriteWidth = 3.0f;
-        this.spriteHeight = 3.0f;
-        updateBounds(); // Đồng bộ lại bounds
+        // Note: spawnX and spawnY are now set in the parent constructor
+        // Note: loadAnimations is already called in Monster constructor
 
-        loadAnimations();
-        this.currentFrame = walkRight.getKeyFrame(0f);
-        this.cleaveRange = 2.8f;
-        updateBounds();
-
+        // Set cleave range through the collision handler
+        this.collisionHandler.setCleaveRange(2.8f);
     }
 
     public float getScaleMultiplier() {
-        return 5f;
+        return scaleMultiplier;
     }
 
     @Override
     public void loadAnimations() {
-        // Cleave (attack) - 14 frames, bắt đầu từ 1
-        cleaveRight = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/cleave/phai/1_atk_", 14);
-        cleaveLeft  = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/cleave/trai/1_atk_", 14);
+        // Load all needed animations
+        Animation<TextureRegion> cleaveRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/cleave/phai/1_atk_", 14);
+        Animation<TextureRegion> cleaveLeftAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/cleave/trai/1_atk_", 14);
 
-        // Death - 16 frames, bắt đầu từ 1
-        deathRight = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/death/phai/death_", 16);
-        deathLeft  = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/death/trai/death_", 16);
+        Animation<TextureRegion> deathRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/death/phai/death_", 16);
+        Animation<TextureRegion> deathLeftAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/death/trai/death_", 16);
 
-        // Idle - 6 frames, bắt đầu từ 1
-        idleRight = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/idle/phai/idle_", 6);
-        idleLeft  = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/idle/trai/idle_", 6);
+        Animation<TextureRegion> idleRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/idle/phai/idle_", 6);
+        Animation<TextureRegion> idleLeftAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/idle/trai/idle_", 6);
 
-        // Take hit - 7 frames, bắt đầu từ 1
-        takeHitRight = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/takehit/phai/take_hit_", 7);
-        takeHitLeft  = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/takehit/trai/take_hit_", 7);
+        Animation<TextureRegion> takeHitRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/takehit/phai/take_hit_", 7);
+        Animation<TextureRegion> takeHitLeftAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/takehit/trai/take_hit_", 7);
 
-        // Walk - 10 frames, bắt đầu từ 1
-        walkRight = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/walk/phai/walk_", 10);
-        walkLeft  = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/walk/trai/walk_", 10);
+        Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/walk/phai/walk_", 10);
+        Animation<TextureRegion> walkLeftAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/walk/trai/walk_", 10);
+
+        // Set all animations in the animation manager
+        // The order needs to match the parameter list in setupAnimations:
+        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight, cleaveLeft, cleaveRight, deathLeft, deathRight
+        setupAnimations(
+            idleLeftAnim, idleRightAnim,
+            walkLeftAnim, walkRightAnim,
+            takeHitLeftAnim, takeHitRightAnim,
+            cleaveLeftAnim, cleaveRightAnim,
+            deathLeftAnim, deathRightAnim
+        );
     }
 
     private Animation<TextureRegion> loadAnimation(String basePath, int frameCount) {
@@ -66,22 +69,31 @@ public class IceElite extends Monster {
 
     @Override
     public void onDeath() {
-
+        super.onDeath();
+        // Optional implementation for death effects
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        render(batch, null); // hoặc truyền player nếu có
-    }
-
-    public void render(SpriteBatch batch, Player player) {
-        if (isDead) return;
+        // Use the parent class's render method
         super.render(batch);
-        batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
     }
 
     @Override
     public void onCollision(Player player) {
+        // Use the parent class's collision handling
+        super.onCollision(player);
 
+        // Add ice-specific collision behavior if needed
+        if (!isDead) {
+            // For example, apply some slow effect to player when ice monster touches them
+            // player.applyStatusEffect("slow", 3.0f);  // Uncomment if you have status effects
+        }
+    }
+
+    @Override
+    public void update(float deltaTime, Player player, GameMap map) {
+        super.update(deltaTime, player, map);
+        // Add IceElite-specific update behavior here if needed
     }
 }
