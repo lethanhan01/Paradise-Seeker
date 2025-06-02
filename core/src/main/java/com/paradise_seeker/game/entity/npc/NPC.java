@@ -42,14 +42,9 @@ public class NPC implements Renderable, Collidable, Interactable {
     public Rectangle getBounds() {
         return bounds;
     }
-
+    @Override
     public void onCollision(Collidable other) {
         //
-    }
-
-    @Override
-    public void onCollision(Player player) {
-        // NPC không gây sát thương cho người chơi
     }
 
     public void interact(Player player) {

@@ -41,6 +41,12 @@ public class Portal implements Collidable {
     public Rectangle getBounds() {
         return innerBounds;  // Sử dụng vùng trigger thật khi kiểm tra va chạm
     }
+    @Override
+    public void onCollision(Collidable other) {
+		if (other instanceof Player) {
+			onCollision((Player) other);
+		}
+	}
 
     public void onCollision(Player player) {
         //System.out.println("Portal Collision triggered!");
