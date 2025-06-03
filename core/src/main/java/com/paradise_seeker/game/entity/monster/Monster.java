@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Player;
-import com.paradise_seeker.game.render.Renderable;
 import com.paradise_seeker.game.map.GameMap;
 
 
-public abstract class Monster extends Character implements Renderable, Collidable {
+public abstract class Monster extends Character {
 
     public boolean isDead = false;
     public float spawnX;
@@ -47,10 +46,14 @@ public abstract class Monster extends Character implements Renderable, Collidabl
         loadAnimations();
     }
 
-    /**
-     * Updates the monster's state.
-     */
-    public void update(float deltaTime, Player player, GameMap map) {
+    @Override
+    public void act(float deltaTime, GameMap map) {
+    	Player player = map.getPlayer();
+		this.act(deltaTime, player, map);
+	}
+
+    public void act(float deltaTime, Player player, GameMap map) {
+
         if (player == null || player.isDead) return;
 
         // Update AI first
@@ -152,16 +155,10 @@ public abstract class Monster extends Character implements Renderable, Collidabl
         collisionHandler.handleCollision(other);
     }
 
-    /**
-     * Handle specific collision with player.
-     */
     public void onCollision(Player player) {
         collisionHandler.handlePlayerCollision(player);
     }
 
-    /**
-     * Called when the monster dies.
-     */
     @Override
     public void onDeath() {
         // Base implementation is empty, subclasses can override

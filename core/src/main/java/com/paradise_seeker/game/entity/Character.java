@@ -3,8 +3,10 @@ package com.paradise_seeker.game.entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.collision.Collidable;
+import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.render.Renderable;
 
-public abstract class Character implements Collidable {
+public abstract class Character implements Collidable, Renderable {
     public float hp;
     public float maxHp; // Thêm maxHp để dễ quản lý
     public float mp;
@@ -30,16 +32,17 @@ public abstract class Character implements Collidable {
 		this.y = y;
     }
 
-    // Nhận sát thương
+    public void act(float deltaTime, GameMap map) {
+    }
     public void receiveDamage(float dmg) {
         hp = Math.max(0, hp - dmg);
         if (hp == 0) onDeath();
     }
-    // Cập nhật trạng thái nhân vật
+    @Override
     public abstract void render(SpriteBatch batch);
 
+    @Override
     public void onCollision(Collidable other) {
-        // xử lý va chạm mặc định (vd: đạn bắn trúng)??
     }
     public Rectangle getbounds() {
 		return bounds; // Trả về hitbox của nhân vật

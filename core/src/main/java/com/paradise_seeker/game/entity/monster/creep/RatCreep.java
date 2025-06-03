@@ -100,8 +100,8 @@ public class RatCreep extends Monster {
     }
 
     @Override
-    public void update(float deltaTime, Player player, GameMap map) {
-        super.update(deltaTime, player, map);
+    public void act(float deltaTime, Player player, GameMap map) {
+        super.act(deltaTime, player, map);
         // Add RatCreep-specific update behavior here if needed
     }
 }

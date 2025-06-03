@@ -128,7 +128,7 @@ public class GameScreen implements Screen {
                 game.currentGame = null;
             }
 
-            player.update(delta,mapManager.getCurrentMap());
+            player.act(delta,mapManager.getCurrentMap());
             mapManager.update(delta);
 
             Chest chest = mapManager.getCurrentMap().getChest();
@@ -153,7 +153,7 @@ public class GameScreen implements Screen {
 
             // Update all monsters (AI, attack, movement)
             for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
-                monster.update(delta, player, mapManager.getCurrentMap());
+                monster.act(delta, player, mapManager.getCurrentMap());
             }
         } else {
             mapManager.update(delta);

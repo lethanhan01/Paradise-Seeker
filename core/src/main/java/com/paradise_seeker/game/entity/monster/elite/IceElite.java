@@ -92,8 +92,8 @@ public class IceElite extends Monster {
     }
 
     @Override
-    public void update(float deltaTime, Player player, GameMap map) {
-        super.update(deltaTime, player, map);
+    public void act(float deltaTime, Player player, GameMap map) {
+        super.act(deltaTime, player, map);
         // Add IceElite-specific update behavior here if needed
     }
 }

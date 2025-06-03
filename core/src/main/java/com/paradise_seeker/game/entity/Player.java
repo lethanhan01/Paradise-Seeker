@@ -111,7 +111,8 @@ public class Player extends Character {
         }
     }
 
-    public void update(float deltaTime, GameMap gameMap) {
+    @Override
+    public void act(float deltaTime, GameMap gameMap) {
         if (isDead) return;
 
         lastPosition.set(bounds.x, bounds.y);
@@ -147,10 +148,10 @@ public class Player extends Character {
 
         // Update smoke effects
         smokeManager.update(deltaTime, animationManager);
-        updateNpcInteraction(gameMap);
+        NpcInteract(gameMap);
     }
 
-    private void updateNpcInteraction(GameMap gameMap) {
+    private void NpcInteract(GameMap gameMap) {
         if (gameMap != null) {
             showInteractMessage = false;
             for (NPC1 npc : gameMap.getNPCs()) {
@@ -257,13 +258,13 @@ public class Player extends Character {
     }
 
     public void setShieldedHit(boolean shieldedHit) {
-        this.isShieldedHit = shieldedHit;
-    }
 
+        this.isShieldedHit = shieldedHit;
+
+    }
     public PlayerSkill getPlayerSkill1() {
         return playerSkill1;
     }
-
     public PlayerSkill getPlayerSkill2() {
         return playerSkill2;
     }
