@@ -13,12 +13,13 @@ public class MonsterAI {
 
     private float attackCooldown = 5.0f;
     private float attackTimer = 0f;
-    private float stopDistance = 2.0f;
+    private float stopDistance;
 
     public MonsterAI(Monster monster) {
         this.monster = monster;
         // Lưu vị trí ban đầu
         this.originalPosition = new Vector2(monster.getBounds().x, monster.getBounds().y);
+        this.stopDistance = monster.getBounds().width / 2 + 0.5f; // Khoảng cách dừng tấn công
     }
 
     // Gọi hàm này mỗi lần bị player tấn công
