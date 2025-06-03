@@ -13,7 +13,7 @@ public class MonsterAI {
 
     private float attackCooldown = 5.0f;
     private float attackTimer = 0f;
-    private float stopDistance = 5.0f;
+    private float stopDistance = 2.0f;
 
     public MonsterAI(Monster monster) {
         this.monster = monster;
@@ -26,9 +26,23 @@ public class MonsterAI {
         isAggro = true;
         aggroTimer = 10f;
     }
+    
+    public void checkAggro(Player player) {
+		if (player == null || player.isDead()) return;
+
+		float dx = player.getBounds().x - monster.getBounds().x;
+		float dy = player.getBounds().y - monster.getBounds().y;
+		float dist = (float) Math.sqrt(dx * dx + dy * dy);
+
+		// Nếu player trong khoảng tầm nhìn thì kích hoạt aggro
+		if (dist < 5f) {
+			onAggro();
+		}
+	}
 
     public void update(float deltaTime, Player player, GameMap map) {
         if (monster.isDead() || player == null || player.isDead()) return;
+        checkAggro(player);
 
         attackTimer -= deltaTime;
 
