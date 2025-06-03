@@ -67,23 +67,12 @@ public abstract class Monster extends Character {
         animationManager.update(deltaTime, isMoving, isFacingRight(), isDead, false);
     }
 
-    /**
-     * Renders the monster using its renderer.
-     */
     public void render(SpriteBatch batch) {
         renderer.render(batch, bounds, animationManager.getCurrentFrame(), hp, maxHp, isDead);
     }
-    /**
-     * @return whether the monster is facing right
-     */
+
     public boolean isFacingRight() {
         return animationManager.isFacingRight();
-    }
-    /**
-     * @return the monster's current animation frame
-     */
-    public TextureRegion getCurrentFrame() {
-        return animationManager.getCurrentFrame();
     }
 
     public Rectangle getBounds() {
@@ -92,10 +81,6 @@ public abstract class Monster extends Character {
 
     public boolean isDead() {
         return isDead;
-    }
-
-    public void updateBounds() {
-        bounds.setSize(bounds.width, bounds.height);
     }
 
     public float getHp() {

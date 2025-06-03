@@ -3,7 +3,6 @@ package com.paradise_seeker.game.ui;
 import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.entity.Player;
 
 public class HUD {
-	
+
     private String notificationMessage = "";
     private float notificationTimer = 0f;
     private static final float NOTIFICATION_DISPLAY_TIME = 3.6f; // seconds
@@ -67,7 +66,7 @@ public class HUD {
         for (int i = 0; i < 4; i++) {
 			String filename = String.format("items/fragment/frag%01d.png", i + 1);
 			fragmentTextures[i] = new Texture(Gdx.files.internal(filename));
-		}	
+		}
     }
 
     public void showNotification(String message) {
@@ -76,7 +75,7 @@ public class HUD {
     }
 
     public void render(float delta) {
-    	
+
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
         float scaledBarWidth = screenWidth * 0.45f;
@@ -86,9 +85,9 @@ public class HUD {
 
         int frameIndexhp = Math.round((1 - hpPercent) * 73);
         int frameIndexmp = Math.round((1 - mpPercent) * 73);
-        
+
         spriteBatch.begin();
-        
+
 
         spriteBatch.draw(hpBarFrames[frameIndexhp], PADDING, screenHeight - PADDING - scaledBarHeight, scaledBarWidth, scaledBarHeight);
         spriteBatch.draw(mpBarFrames[frameIndexmp], PADDING * 0.95f, screenHeight - PADDING - scaledBarHeight * 1.8f, scaledBarWidth, scaledBarHeight);
@@ -134,7 +133,7 @@ public class HUD {
             if (Arrays.equals(fragmentIndices, full)) {
                 // Vẽ 1 ảnh mới (mảnh đã ghép)
                 spriteBatch.draw(fragmentTextures[3], fragmentX, fragmentY, fragmentSize, fragmentSize);
-                
+
             } else {
                 // Vẽ từng mảnh riêng
             	for (int i = 0; i < fragmentIndices.length && i < fragmentTextures.length; i++) {
@@ -170,7 +169,7 @@ public class HUD {
             }
 
             // Show interact message lower than notification
-            if (player.showInteractMessage) {
+            if (player.inputHandler.isShowInteractMessage()) {
                 float messageY = screenHeight - PADDING - (scaledBarHeight * 2.7f) - (screenHeight * 0.17f);
                 font.draw(spriteBatch, "> Press F to interact", PADDING, messageY);
             }

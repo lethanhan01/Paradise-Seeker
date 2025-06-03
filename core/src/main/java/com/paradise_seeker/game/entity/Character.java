@@ -38,8 +38,6 @@ public abstract class Character implements Collidable, Renderable {
         hp = Math.max(0, hp - dmg);
         if (hp == 0) onDeath();
     }
-    @Override
-    public abstract void render(SpriteBatch batch);
 
     @Override
     public void onCollision(Collidable other) {

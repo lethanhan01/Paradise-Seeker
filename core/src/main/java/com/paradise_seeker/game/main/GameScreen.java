@@ -22,12 +22,11 @@ import com.paradise_seeker.game.entity.object.item.MPitem;
 import com.paradise_seeker.game.ui.DialogueBox;
 import com.paradise_seeker.game.ui.HUD;
 import com.paradise_seeker.game.entity.skill.LaserBeam;
-import com.paradise_seeker.game.entity.skill.PlayerSkill;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
-import com.paradise_seeker.game.main.GameMapManager;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.render.PlayerRendererImpl;
 
 public class GameScreen implements Screen {
     final Main game;
@@ -63,7 +62,6 @@ public class GameScreen implements Screen {
         // Create player, initial position will be set from Tiled data by mapManager!
         Rectangle playerBounds = new Rectangle(0, 0, 1, 1); // Temporary
 		player = new Player();
-        player.setRenderer(new com.paradise_seeker.game.render.PlayerRendererImpl(player.getAnimationManager()));
         this.mapManager = new GameMapManager(player);
         this.hud = new HUD(player, game.font);
         this.shapeRenderer = new ShapeRenderer();
