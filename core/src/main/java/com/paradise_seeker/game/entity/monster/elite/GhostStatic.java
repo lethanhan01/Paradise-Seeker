@@ -81,8 +81,8 @@ public class GhostStatic extends Monster {
     }
 
     @Override
-    public void update(float deltaTime, Player player, GameMap map) {
-        super.update(deltaTime, player, map);
+    public void act(float deltaTime, Player player, GameMap map) {
+        super.act(deltaTime, player, map);
         // Add GhostStatic-specific update behavior here if needed
         // Since this is a static ghost, we might not need additional behavior
     }

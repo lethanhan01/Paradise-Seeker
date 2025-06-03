@@ -38,8 +38,11 @@ public abstract class GameMap {
     protected TiledMap tiledMap;
     protected Texture backgroundTexture;
 
+    public Player player;
     public Portal portal, startPortal;
     public Chest chest;
+    public Monster monster;
+
     public List<Collidable> collidables = new ArrayList<>();
     public List<NPC1> npcList = new ArrayList<>();
     public List<Monster> monsters = new ArrayList<>();
@@ -60,8 +63,6 @@ public abstract class GameMap {
     // Subclass must provide these
     protected abstract String getMapTmxPath();
     protected abstract String getMapBackgroundPath();
-
-    private Player player;
 
     public GameMap() {
         // 1. Load map and background
@@ -183,7 +184,7 @@ public abstract class GameMap {
 
     public void update(float deltaTime) {
         for (NPC1 npc : npcList) npc.update(deltaTime);
-        for (Monster m : monsters) m.update(deltaTime, player, this);
+        for (Monster m : monsters) m.act(deltaTime, player, this);
         hpItems.removeIf(item -> !item.isActive());
         mpItems.removeIf(item -> !item.isActive());
         atkItems.removeIf(item -> !item.isActive());

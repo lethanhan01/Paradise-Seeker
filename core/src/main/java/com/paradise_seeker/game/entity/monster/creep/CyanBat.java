@@ -92,8 +92,8 @@ public class CyanBat extends Monster {
     }
 
     @Override
-    public void update(float deltaTime, Player player, GameMap map) {
-        super.update(deltaTime, player, map);
+    public void act(float deltaTime, Player player, GameMap map) {
+        super.act(deltaTime, player, map);
         // Add CyanBat-specific update behavior here if needed
     }
 }
