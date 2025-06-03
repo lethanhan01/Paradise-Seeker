@@ -97,6 +97,7 @@ public abstract class Monster extends Character {
 
     /**
      * Handles the monster taking damage.
+     * 
      */
     public void takeDamage(float damage) {
         if (isDead) return;
