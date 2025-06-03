@@ -147,6 +147,8 @@ public abstract class Monster extends Character {
     @Override
     public void onDeath() {
         // Base implementation is empty, subclasses can override
+    	isDead = true;
+		bounds.setPosition(0, 0); // Reset position on death
     }
 
     /**

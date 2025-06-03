@@ -61,11 +61,11 @@ public class MonsterRenderer {
      * Render just the monster's HP bar
      */
     private void renderHpBar(SpriteBatch batch, Rectangle bounds, float hp, float maxHp) {
-        float percent = hp / maxHp;
-        int frameIdx = (int)(percent * (hpBarFrames.length - 1));
-        frameIdx = Math.max(0, Math.min(frameIdx, hpBarFrames.length - 1));
+    	float hpPercent = Math.max(0, Math.min(hp / (float) maxHp, 1f));
+        int frameIndex = Math.round((1 - hpPercent) * 29);
 
-        Texture hpBar = hpBarFrames[frameIdx];
+
+        Texture hpBar = hpBarFrames[frameIndex];
         float barX = bounds.x + (bounds.width - HP_BAR_WIDTH) / 2f;
         float barY = bounds.y + bounds.height + HP_BAR_Y_OFFSET;
 
@@ -83,5 +83,6 @@ public class MonsterRenderer {
                 }
             }
         }
+        
     }
 }
