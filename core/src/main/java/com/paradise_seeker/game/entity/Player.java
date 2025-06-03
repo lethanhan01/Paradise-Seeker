@@ -8,17 +8,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.paradise_seeker.game.collision.Collidable;
-import com.paradise_seeker.game.entity.npc.NPC1;
 import com.paradise_seeker.game.entity.object.item.Item;
 import com.paradise_seeker.game.entity.skill.*;
 import com.paradise_seeker.game.map.GameMap;
-import com.paradise_seeker.game.render.PlayerRenderer;
-import com.paradise_seeker.game.animation.PlayerAnimationManager;
 import com.paradise_seeker.game.animation.PlayerAnimationManagerImpl;
 import com.paradise_seeker.game.animation.smoke.SmokeManager;
-import com.paradise_seeker.game.input.PlayerInputHandler;
 import com.paradise_seeker.game.input.PlayerInputHandlerImpl;
 import com.paradise_seeker.game.inventory.PlayerInventoryManager;
+import com.paradise_seeker.game.render.PlayerRendererImpl;
 
 public class Player extends Character {
     public static final int MAX_HP = 1000;
@@ -31,8 +28,6 @@ public class Player extends Character {
 
     // Quản lý hiệu ứng smoke
     public SmokeManager smokeManager = new SmokeManager();
-
-    public boolean showInteractMessage = false;
 
     public float speedMultiplier = 1f;
     private Vector2 lastPosition = new Vector2();
@@ -51,9 +46,9 @@ public class Player extends Character {
     public boolean isPaused = false;
 
     // New fields for MVC pattern
-    public PlayerAnimationManager animationManager;
-    public PlayerInputHandler inputHandler;
-    public PlayerRenderer playerRenderer;
+    public PlayerAnimationManagerImpl animationManager;
+    public PlayerInputHandlerImpl inputHandler;
+    public PlayerRendererImpl playerRenderer;
 
     // Tracking death state
     public boolean isDead = false;
@@ -63,7 +58,7 @@ public class Player extends Character {
     // Invulnerability system
     public boolean isInvulnerable = false;
     public float invulnerabilityTimer = 0f;
-    public static final float INVULNERABILITY_DURATION = 0.5f; // Half second of invulnerability after getting hit
+    public static final float INVULNERABILITY_DURATION = 0.5f; // Thời gian bất tử sau khi nhận sát thương
 
     public Player() {
         this.bounds = new Rectangle(0, 0, 1, 1);
@@ -76,11 +71,11 @@ public class Player extends Character {
 
         // Khởi tạo PlayerInventoryManager
         this.inventoryManager = new PlayerInventoryManager();
-
         // Initialize the dependencies
         this.animationManager = new PlayerAnimationManagerImpl();
         this.animationManager.loadAnimations();
         this.inputHandler = new PlayerInputHandlerImpl();
+        this.playerRenderer = new PlayerRendererImpl(this.animationManager);
     }
 
     public Player(Rectangle bounds, float hp, float mp, float maxHp, float maxMp,  float atk, float speed, float x, float y, PlayerSkill playerSkill1, PlayerSkill playerSkill2) {
@@ -98,9 +93,6 @@ public class Player extends Character {
     }
 
     // Set renderer after creation since it may depend on the player being initialized
-    public void setRenderer(PlayerRenderer renderer) {
-        this.playerRenderer = renderer;
-    }
 
     public void regenMana(float deltaTime) {
         if (mp < MAX_MP) {
@@ -114,7 +106,7 @@ public class Player extends Character {
     @Override
     public void act(float deltaTime, GameMap gameMap) {
         if (isDead) return;
-
+        Player player = gameMap.getPlayer();
         lastPosition.set(bounds.x, bounds.y);
 
         // Use InputHandler instead of direct handling
@@ -148,25 +140,7 @@ public class Player extends Character {
 
         // Update smoke effects
         smokeManager.update(deltaTime, animationManager);
-        NpcInteract(gameMap);
-    }
-
-    private void NpcInteract(GameMap gameMap) {
-        if (gameMap != null) {
-            showInteractMessage = false;
-            for (NPC1 npc : gameMap.getNPCs()) {
-                float distance = Vector2.dst(
-                    bounds.x + bounds.width / 2, bounds.y + bounds.height / 2,
-                    npc.getBounds().x + npc.getBounds().width / 2, npc.getBounds().y + npc.getBounds().height / 2
-                );
-                if (distance <= 2.5f) {
-                    npc.setTalking(true);
-                    showInteractMessage = true;
-                } else {
-                    npc.setTalking(false);
-                }
-            }
-        }
+        inputHandler.handleNPCInteraction(player, gameMap);
     }
 
     // Khi cần thêm smoke:
@@ -175,7 +149,7 @@ public class Player extends Character {
     }
 
     // Render method now delegates to PlayerRenderer
-    @Override
+
     public void render(SpriteBatch batch) {
         if (playerRenderer != null) {
             playerRenderer.render(this, batch);
@@ -242,14 +216,17 @@ public class Player extends Character {
     }
 
     public void setMoving(boolean moving) {
+
         this.isMoving = moving;
     }
 
     public boolean isShielding() {
+
         return isShielding;
     }
 
     public void setShielding(boolean shielding) {
+
         this.isShielding = shielding;
     }
 
@@ -310,12 +287,10 @@ public class Player extends Character {
         return inventoryManager;
     }
 
-    public PlayerAnimationManager getAnimationManager() {
-        return animationManager;
-    }
 
     // Getter and setter for atk
     public float getAtk() {
+
         return this.atk;
     }
 

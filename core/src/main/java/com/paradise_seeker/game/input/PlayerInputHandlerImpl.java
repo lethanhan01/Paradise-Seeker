@@ -13,6 +13,11 @@ import com.paradise_seeker.game.collision.*;
  * Chuyên trách xử lý tất cả input của Player
  */
 public class PlayerInputHandlerImpl implements PlayerInputHandler {
+    public boolean showInteractMessage = false;
+
+    public boolean isShowInteractMessage() {
+        return showInteractMessage;
+    }
 
     @Override
     public void handleInput(Player player, float deltaTime, GameMap gameMap) {
@@ -155,7 +160,7 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
 
     @Override
     public void handleNPCInteraction(Player player, GameMap gameMap) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F) && player.showInteractMessage && gameMap != null) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F) && showInteractMessage && gameMap != null) {
             // Tìm NPC gần nhất để tương tác
             NPC1 nearestNPC = null;
             float minDistance = Float.MAX_VALUE;
