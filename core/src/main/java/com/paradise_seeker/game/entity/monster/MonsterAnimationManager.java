@@ -62,9 +62,9 @@ public class MonsterAnimationManager {
      * @param facingRight if the monster is facing right
      * @param isDead if the monster is dead
      */
-    public void update(float deltaTime, boolean isMoving, boolean facingRight, boolean isDead, boolean isTakingHit) {
+    public void update(float deltaTime, boolean isMoving, boolean facingRight, boolean isDead, boolean isTakingHit, float playerX) {
         stateTime += deltaTime;
-        this.facingRight = facingRight;
+        this.facingRight = playerX > owner.getBounds().x;
 
         // Update hit animation timer
         if (isTakingHit) {
