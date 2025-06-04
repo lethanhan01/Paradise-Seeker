@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.main;
+package com.paradise_seeker.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -22,10 +22,12 @@ import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.ui.DialogueBox;
 import com.paradise_seeker.game.ui.HUD;
 import com.paradise_seeker.game.entity.skill.LaserBeam;
+import com.paradise_seeker.game.main.Main;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.map.GameMapManager;
 
 public class GameScreen implements Screen {
     final Main game;

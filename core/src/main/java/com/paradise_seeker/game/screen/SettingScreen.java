@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.main;
+package com.paradise_seeker.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.paradise_seeker.game.main.Main;
 
 public class SettingScreen implements Screen {
 

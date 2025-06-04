@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.main;
+package com.paradise_seeker.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,6 +13,7 @@ import com.paradise_seeker.game.entity.object.item.Fragment;
 import com.paradise_seeker.game.entity.object.item.Item;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.entity.player.PlayerInventoryManager;
+import com.paradise_seeker.game.main.Main;
 
 public class InventoryScreen implements Screen {
     private final Player player;

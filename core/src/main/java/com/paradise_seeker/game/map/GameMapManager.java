@@ -1,12 +1,10 @@
-package com.paradise_seeker.game.main;
+package com.paradise_seeker.game.map;
 
 import java.util.List;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.entity.player.Player;
-import com.paradise_seeker.game.map.*;
-import com.paradise_seeker.game.ui.HUD;
 
 public class GameMapManager {
     private GameMap currentMap;
@@ -47,8 +45,6 @@ public class GameMapManager {
 
     public void render(SpriteBatch batch) { currentMap.render(batch); }
 
-    public void checkCollisions(Player player, HUD hud) { currentMap.checkCollisions(player, hud); }
-
     public void switchToNextMap() {
         int nextIndex = (currentMapIndex + 1) % maps.size();
         setCurrentMap(nextIndex);
@@ -59,17 +55,11 @@ public class GameMapManager {
         setCurrentMap(prevIndex);
     }
 
-    public void switchToSpecificMap(int index) {
-        if (index >= 0 && index < maps.size()) {
-            setCurrentMap(index);
-        }
-    }
-
     // -- The crucial method: sets current map and loads player spawn from Tiled!
     private void setCurrentMap(int index) {
         currentMapIndex = index;
         currentMap = maps.get(currentMapIndex);
-        currentMap.setPlayer(player); 
+        currentMap.setPlayer(player);
         // Now, and ONLY now, load the spawn for the current map:
         currentMap.loadSpawnPoints(player);
     }

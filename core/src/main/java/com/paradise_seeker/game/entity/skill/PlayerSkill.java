@@ -3,11 +3,8 @@ package com.paradise_seeker.game.entity.skill;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Character;
-import com.paradise_seeker.game.main.GameScreen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.Gdx;
 import java.util.List;
 import com.paradise_seeker.game.entity.monster.Monster;
 
@@ -36,20 +33,8 @@ public abstract class PlayerSkill implements Skill {
         return manaCost;
     }
 
-    public long getCooldown() {
-        return cooldown;
-    }
-
-    public long getLastUsedTime() {
-        return lastUsedTime;
-    }
-
     public void setLastUsedTime(long time) {
         this.lastUsedTime = time;
-    }
-
-    public void setCooldown(long cooldown) {
-        this.cooldown = cooldown;
     }
 
     public void setDamageMultiplier(float multiplier) {
