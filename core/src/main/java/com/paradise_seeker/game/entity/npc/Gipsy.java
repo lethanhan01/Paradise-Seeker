@@ -4,10 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.NPC;
-import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.map.GameMap;
 
-import java.util.List;
 
 /**
  * Class Gipsy đại diện cho một NPC có chức năng đặc biệt trong game.
@@ -17,24 +15,16 @@ import java.util.List;
  * - Đối thoại: giao cho DialogueManager
  */
 public class Gipsy extends NPC implements Collidable {
-    // Quản lý animation
-    private NPCAnimationManager animationManager;
+    public NPCAnimationManager animationManager;
 
-    // Quản lý trạng thái
-    private NPCStateManager stateManager;
+    public NPCStateManager stateManager;
 
-    // Quản lý hội thoại
-    private DialogueManager dialogueManager;
+    public  DialogueManager dialogueManager;
 
-    private float spriteWidth = 3f;
-    private float spriteHeight = 3f;
+    public float spriteWidth = 3f;
+    public float spriteHeight = 3f;
 
-    /**
-     * Khởi tạo một Gipsy NPC với vị trí xác định
-     *
-     * @param x Tọa độ x
-     * @param y Tọa độ y
-     */
+
     public Gipsy(float x, float y) {
         super(); // Gọi constructor của lớp cha NPC
         this.x = x;

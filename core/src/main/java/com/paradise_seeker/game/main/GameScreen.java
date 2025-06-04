@@ -103,7 +103,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Dialogue logic (unchanged)
-        handleDialogue();
+        //handleDialogue();
 
         // Zoom logic
         handleZoomInput();
@@ -199,7 +199,7 @@ public class GameScreen implements Screen {
         hud.spriteBatch.setProjectionMatrix(hudCamera.combined);
         hud.render(hudCamera.viewportHeight);
 
-        renderDialogueOptions(fontScale);
+        //renderDialogueOptions(fontScale);
 
         // --- PORTAL & MAP SWITCH ---
         handlePortals();
@@ -242,13 +242,13 @@ public class GameScreen implements Screen {
 			}
 		}
 	}
-
+    /*
     private void handleDialogue() {
         // Handle F key for dialogue interaction
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
             if (showDialogueOptions) {
                 if (currentTalkingNPC != null) {
-                    currentTalkingNPC.setHasTalked(true);
+                    currentTalkingNPC.stateManager.setHasTalked(true);
                     pendingPotionToDrop = options[selectedOptionIndex];
                     showDialogueOptions = false;
                     selectedOptionIndex = 0;
@@ -311,7 +311,7 @@ public class GameScreen implements Screen {
             }
         }
     }
-
+	*/
     private void finishNpcInteraction() {
         if (pendingPotionToDrop != null) {
             dropPotionNextToPlayer(pendingPotionToDrop);
@@ -350,9 +350,10 @@ public class GameScreen implements Screen {
         else if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS) || Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
             zoom = Math.max(0.5f, zoom - 0.1f);
     }
-
+    /*
     private void renderDialogueOptions(float fontScale) {
-        boolean shouldShowChoicesNow = dialogueBox.isVisible() && currentTalkingNPC != null && currentTalkingNPC.shouldShowOptions();
+        boolean shouldShowChoicesNow = dialogueBox.isVisible() && currentTalkingNPC != null && currentTalkingNPC.shouldSho
+        		wOptions();
         if ((shouldShowChoicesNow || showDialogueOptions) && game.font != null) {
             if (shouldShowChoicesNow && !showDialogueOptions) showDialogueOptions = true;
             hud.spriteBatch.begin();
@@ -374,7 +375,7 @@ public class GameScreen implements Screen {
             hud.spriteBatch.end();
         }
     }
-
+	*/
     @Override public void resize(int width, int height) {
         game.viewport.update(width, height, true);
         hudCamera.setToOrtho(false, width, height);
