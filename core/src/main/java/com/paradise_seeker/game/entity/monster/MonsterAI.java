@@ -19,13 +19,12 @@ public class MonsterAI {
         this.monster = monster;
         // Lưu vị trí ban đầu
         this.originalPosition = new Vector2(monster.getBounds().x, monster.getBounds().y);
-        this.stopDistance = monster.getBounds().width / 2 + 0.5f; // Khoảng cách dừng tấn công
     }
 
     // Gọi hàm này mỗi lần bị player tấn công
     public void onAggro() {
         isAggro = true;
-        aggroTimer = 10f;
+        aggroTimer = 5f;
     }
     
     public void checkAggro(Player player) {
@@ -43,13 +42,20 @@ public class MonsterAI {
 
     public void update(float deltaTime, Player player, GameMap map) {
         if (monster.isDead() || player == null || player.isDead()) return;
+        float stopDisplayer = (float) Math.sqrt(player.getBounds().width * player.getBounds().width + player.getBounds().height * player.getBounds().height) / 2f;
+        float stopDisMonster = (float) Math.sqrt(monster.getBounds().width * monster.getBounds().width + monster.getBounds().height * monster.getBounds().height) / 2f;
+        stopDistance = stopDisplayer + stopDisMonster + 0.1f;
         checkAggro(player);
 
-        attackTimer -= deltaTime;
+        
+
 
         // Đang aggro
         if (isAggro) {
             aggroTimer -= deltaTime;
+            attackTimer -= deltaTime;
+            System.out.println("attackTimer: " + attackTimer);
+            if (attackTimer < 0f) attackTimer = 0f;
 
             float dx = player.getBounds().x - monster.getBounds().x;
             float dy = player.getBounds().y - monster.getBounds().y;

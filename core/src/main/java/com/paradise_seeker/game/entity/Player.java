@@ -170,7 +170,8 @@ public class Player extends Character {
 
         hp = Math.max(0, hp - damage);
 
-        if (hp == 0 && !isDead) {
+        if (hp == 0 ) {
+        	if (!isDead) 
             onDeath();
         } else {
             isHit = true;

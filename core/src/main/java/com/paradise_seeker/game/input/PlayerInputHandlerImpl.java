@@ -120,7 +120,7 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
     public void handleAttack(Player player, GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             player.setAttacking(true);
-            player.resetStateTime();
+    //        player.resetStateTime();
 
             if (gameMap != null) {
                 float centerX = player.getBounds().x + player.getBounds().width / 2;
