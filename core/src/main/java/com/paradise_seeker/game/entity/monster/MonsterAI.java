@@ -26,7 +26,7 @@ public class MonsterAI {
         isAggro = true;
         aggroTimer = 5f;
     }
-    
+
     public void checkAggro(Player player) {
 		if (player == null || player.isDead()) return;
 
@@ -35,7 +35,7 @@ public class MonsterAI {
 		float dist = (float) Math.sqrt(dx * dx + dy * dy);
 
 		// Nếu player trong khoảng tầm nhìn thì kích hoạt aggro
-		if (dist < 5f) {
+		if (dist < 2f) {
 			onAggro();
 		}
 	}
@@ -47,7 +47,7 @@ public class MonsterAI {
         stopDistance = stopDisplayer + stopDisMonster + 0.1f;
         checkAggro(player);
 
-        
+
 
 
         // Đang aggro

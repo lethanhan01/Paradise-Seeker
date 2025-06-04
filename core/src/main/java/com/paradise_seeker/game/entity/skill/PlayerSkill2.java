@@ -31,28 +31,28 @@ public class PlayerSkill2 extends PlayerSkill {
             upFrames[1] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/len/lightning_skill1_frame2.png")));
             upFrames[2] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/len/lightning_skill1_frame3.png")));
             upFrames[3] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/len/lightning_skill1_frame4.png")));
-            skillAnimations.put("up", new Animation<>(0.1f, upFrames));
+            skillAnimations.put("up", new Animation<>(0.07f, upFrames));
 
             TextureRegion[] downFrames = new TextureRegion[4];
             downFrames[0] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/xuong/lightning_skill1_frame1.png")));
             downFrames[1] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/xuong/lightning_skill1_frame2.png")));
             downFrames[2] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/xuong/lightning_skill1_frame3.png")));
             downFrames[3] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/xuong/lightning_skill1_frame4.png")));
-            skillAnimations.put("down", new Animation<>(0.1f, downFrames));
+            skillAnimations.put("down", new Animation<>(0.07f, downFrames));
 
             TextureRegion[] leftFrames = new TextureRegion[4];
             leftFrames[0] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/trai/lightning_skill1_frame1.png")));
             leftFrames[1] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/trai/lightning_skill1_frame2.png")));
             leftFrames[2] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/trai/lightning_skill1_frame3.png")));
             leftFrames[3] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/trai/lightning_skill1_frame4.png")));
-            skillAnimations.put("left", new Animation<>(0.1f, leftFrames));
+            skillAnimations.put("left", new Animation<>(0.07f, leftFrames));
 
             TextureRegion[] rightFrames = new TextureRegion[4];
             rightFrames[0] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/phai/lightning_skill1_frame1.png")));
             rightFrames[1] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/phai/lightning_skill1_frame2.png")));
             rightFrames[2] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/phai/lightning_skill1_frame3.png")));
             rightFrames[3] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/phai/lightning_skill1_frame4.png")));
-            skillAnimations.put("right", new Animation<>(0.1f, rightFrames));
+            skillAnimations.put("right", new Animation<>(0.07f, rightFrames));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,3 +151,6 @@ public class PlayerSkill2 extends PlayerSkill {
         }
     }
 }
+
+
+

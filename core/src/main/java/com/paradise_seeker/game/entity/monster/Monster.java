@@ -20,7 +20,7 @@ public abstract class Monster extends Character {
     // Manager classes for separation of concerns
     public MonsterAnimationManager animationManager;
     public MonsterCollisionHandler collisionHandler;
-    public MonsterRenderer renderer;
+    public HPBarMonsterRenderer renderer;
     public MonsterAI ai;
 
     // Store the last position to determine if monster is moving
@@ -33,7 +33,7 @@ public abstract class Monster extends Character {
         this.spawnY = y;
 
         // Initialize managers
-        this.renderer = new MonsterRenderer();
+        this.renderer = new HPBarMonsterRenderer();
         this.animationManager = new MonsterAnimationManager(this);
         this.collisionHandler = new MonsterCollisionHandler(this);
         this.ai = new MonsterAI(this);

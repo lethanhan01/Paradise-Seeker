@@ -1,7 +1,7 @@
 package com.paradise_seeker.game.map;
 
-import com.paradise_seeker.game.entity.object.Chest;
-import com.paradise_seeker.game.entity.object.item.Fragment;
+import com.paradise_seeker.game.object.Chest;
+import com.paradise_seeker.game.object.item.Fragment;
 
 public class GameMap4 extends GameMap {
     public GameMap4() {

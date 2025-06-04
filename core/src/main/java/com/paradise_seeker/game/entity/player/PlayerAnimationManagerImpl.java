@@ -92,13 +92,13 @@ public class PlayerAnimationManagerImpl implements PlayerAnimationManager {
     private Animation<TextureRegion> loadAnimation(String filePath) {
         Texture sheet = new Texture(Gdx.files.internal(filePath));
         TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth() / 6, sheet.getHeight());
-        return new Animation<>(0.1f, tmp[0]);
+        return new Animation<>(0.07f, tmp[0]);
     }
 
     private Animation<TextureRegion> loadAnimation(String filePath, int frameCount) {
         Texture sheet = new Texture(Gdx.files.internal(filePath));
         TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth() / frameCount, sheet.getHeight());
-        return new Animation<>(0.1f, tmp[0]);
+        return new Animation<>(0.07f, tmp[0]);
     }
 
     @Override
@@ -209,3 +209,4 @@ public class PlayerAnimationManagerImpl implements PlayerAnimationManager {
         // Implement khi cần thiết
     }
 }
+

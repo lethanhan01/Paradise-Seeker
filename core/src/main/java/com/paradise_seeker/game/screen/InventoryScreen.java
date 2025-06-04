@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.paradise_seeker.game.entity.object.item.Fragment;
-import com.paradise_seeker.game.entity.object.item.Item;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.entity.player.PlayerInventoryManager;
 import com.paradise_seeker.game.main.Main;
+import com.paradise_seeker.game.object.item.Fragment;
+import com.paradise_seeker.game.object.item.Item;
 
 public class InventoryScreen implements Screen {
     private final Player player;

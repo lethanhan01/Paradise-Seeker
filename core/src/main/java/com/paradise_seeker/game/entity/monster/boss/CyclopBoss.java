@@ -23,7 +23,7 @@ public class CyclopBoss extends Monster {
     private float skillProjectileSpeed = 5.2f;
 
     public CyclopBoss(float x, float y) {
-        super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+        super(new Rectangle(x, y, 2f, 2f), 500f, 50f, 500f, 50f, 50f, 2f, x, y);
         this.collisionHandler.setCleaveRange(4.0f);
         // Note: loadAnimations is already called in Monster constructor
     }

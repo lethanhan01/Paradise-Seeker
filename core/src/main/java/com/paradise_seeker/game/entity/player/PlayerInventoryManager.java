@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.entity.object.item.Fragment;
-import com.paradise_seeker.game.entity.object.item.Item;
+import com.paradise_seeker.game.object.item.Fragment;
+import com.paradise_seeker.game.object.item.Item;
 
 /**
  * Class chuyên quản lý kho đồ của người chơi.

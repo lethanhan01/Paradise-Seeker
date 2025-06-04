@@ -15,7 +15,7 @@ public class FlyingCreep extends Monster {
     private float scaleMultiplier = 2f;
 
     public FlyingCreep(float x, float y) {
-    	super(new Rectangle(x, y, 1.8f, 1.8f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
+    	super(new Rectangle(x, y, 1.2f, 1.2f), 100f, 50f, 100f, 50f, 50f, 1f, x, y); // HP, speed, cleaveDamage
         // Note: spawnX and spawnY are now set in the parent constructor
         // Note: loadAnimations is already called in Monster constructor
 

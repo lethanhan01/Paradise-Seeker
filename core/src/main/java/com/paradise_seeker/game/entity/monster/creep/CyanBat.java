@@ -14,7 +14,7 @@ public class CyanBat extends Monster {
     private float scaleMultiplier = 2.0f;
 
     public CyanBat(float x, float y) {
-    	super(new Rectangle(x, y, 1.2f, 1.2f), 1000f, 500f, 1000f, 500f, 50f, 1f, x, y); // HP, speed, cleaveDamage
+    	super(new Rectangle(x, y, 1.2f, 1.2f), 100f, 50f, 100f, 50f, 50f, 1f, x, y); // HP, speed, cleaveDamage
         // Note: spawnX and spawnY are now set in the parent constructor
         // Note: loadAnimations is already called in Monster constructor
 

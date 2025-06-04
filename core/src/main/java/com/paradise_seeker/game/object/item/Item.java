@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.object.item;
+package com.paradise_seeker.game.object.item;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
