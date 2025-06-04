@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="80">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="111">
  <tileset firstgid="1" source="../map2-tilesets/Minifantasy_ForgottenPlainsTiles.tsx"/>
  <tileset firstgid="1588" source="../map2-tilesets/Minifantasy_ForgottenPlainsProps.tsx"/>
  <layer id="1" name="Tile Layer 1" width="50" height="50">
@@ -744,20 +744,6 @@
    </properties>
    <point/>
   </object>
-  <object id="75" x="544" y="832">
-   <properties>
-    <property name="class" value="RatCreep"/>
-    <property name="type" value="monster"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="76" x="964" y="1210">
-   <properties>
-    <property name="class" value="IceElite"/>
-    <property name="type" value="monster"/>
-   </properties>
-   <point/>
-  </object>
   <object id="77" x="1406" y="596">
    <properties>
     <property name="type" value="portal"/>
@@ -770,9 +756,177 @@
    </properties>
    <point/>
   </object>
-  <object id="79" x="972" y="786">
+  <object id="80" x="197.333" y="1390.67">
    <properties>
-    <property name="class" value="FirewormElite"/>
+    <property name="class" value="MinotaurElite"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="83" x="542.667" y="773.333">
+   <properties>
+    <property name="class" value="MinotaurElite"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="86" x="636" y="890.667">
+   <properties>
+    <property name="class" value="EvilPlant"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="89" x="266.667" y="473.333">
+   <properties>
+    <property name="class" value="EvilPlant"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="90" x="626.667" y="384">
+   <properties>
+    <property name="class" value="EvilPlant"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="91" x="1068" y="784">
+   <properties>
+    <property name="class" value="CyclopsBoss"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="92" x="1426.67" y="822.667">
+   <properties>
+    <property name="class" value="MinotaurElite"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="94" x="1464" y="1122.67">
+   <properties>
+    <property name="class" value="EvilPlant"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="104" x="997.333" y="1572">
+   <properties>
+    <property name="class" value="EvilPlant"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="96" x="1530.67" y="1202.67">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="105" x="821.333" y="1193.33">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="106" x="369.333" y="904">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="110" x="488" y="1349.33">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="108" x="508" y="913.333">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="109" x="222.667" y="1078.67">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="107" x="361.333" y="389.333">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="102" x="1544" y="748">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="99" x="978.667" y="1310.67">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="93" x="1066.67" y="1332">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="97" x="1017.33" y="1240">
+   <properties>
+    <property name="class" value="MinotaurElite"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="98" x="593.333" y="1022.67">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="103" x="162.667" y="634.667">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="101" x="92" y="1353.33">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="95" x="536" y="1448">
+   <properties>
+    <property name="class" value="EvilPlant"/>
+    <property name="type" value="monster "/>
+   </properties>
+   <point/>
+  </object>
+  <object id="88" x="150.667" y="816">
+   <properties>
+    <property name="class" value="YellowBat"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>

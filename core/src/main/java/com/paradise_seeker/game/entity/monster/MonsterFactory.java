@@ -19,24 +19,25 @@ public class MonsterFactory {
             case "DevilCreep":
                 m = new DevilCreep(x, y);
                 break;
-            case "RatCreep":
-                m = new RatCreep(x, y);
-                break;
-            case "Boss1":
-                m = new FireDemon(x, y);
+            case "EvilPlant":
+                m = new EvilPlant(x, y);
                 break;
             case "FlyingCreep":
                 m = new FlyingCreep(x, y);
                 break;
-            case "MinotaurElite":
-                m = new MinotaurElite(x, y);
+            case "GhostStatic":
+                m = new GhostStatic(x, y);
                 break;
-            case "EvilPlant":
-                m = new EvilPlant(x, y);
+            case "RatCreep":
+                m = new RatCreep(x, y);
+                break;
+            case "SkeletonEnemy":
+                m = new SkeletonEnemy(x, y);
                 break;
             case "YellowBat":
                 m = new YellowBat(x, y);
                 break;
+
             case "FirewormElite":
                 m = new FirewormElite(x, y);
                 break;
@@ -46,11 +47,22 @@ public class MonsterFactory {
             case "IceElite":
                 m = new IceElite(x, y);
                 break;
+            case "MinotaurElite":
+                m = new MinotaurElite(x, y);
+                break;
 
-            // --- Add new monsters below ---
-            // case "MyOtherMonster":
-            //     m = new MyOtherMonster(x, y);
-            //     break;
+            case "CyclopsBoss":
+                m = new CyclopBoss(x, y);
+                break;
+            case "FireDemon":
+                m = new FireDemon(x, y);
+                break;
+            case "Nyx":
+                m = new Nyx(x, y);
+                break;
+            case "ParadiseKing":
+                m = new ParadiseKing(x, y);
+                break;
 
             default:
                 System.err.println("Unknown monster class: " + className);

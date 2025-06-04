@@ -9,9 +9,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Collidable;
-import com.paradise_seeker.game.entity.object.item.Item;
 import com.paradise_seeker.game.entity.skill.*;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.object.item.Item;
 
 public class Player extends Character {
     public static final int MAX_HP = 1000;
@@ -94,7 +94,7 @@ public class Player extends Character {
 
     public void regenMana(float deltaTime) {
         if (mp < MAX_MP) {
-            mp += 45 * deltaTime;
+            mp += 0.5* deltaTime;
         }
         if (mp > MAX_MP) {
             mp = MAX_MP;
@@ -167,7 +167,7 @@ public class Player extends Character {
         hp = Math.max(0, hp - damage);
 
         if (hp == 0 ) {
-        	if (!isDead) 
+        	if (!isDead)
             onDeath();
         } else {
             isHit = true;

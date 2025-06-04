@@ -15,7 +15,7 @@ public class SkeletonEnemy extends Monster {
     private float scaleMultiplier = 2.1f;
 
     public SkeletonEnemy(float x, float y) {
-    	super(new Rectangle(x, y, 1.4f, 1.4f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage tuỳ chỉnh
+    	super(new Rectangle(x, y, 1.2f, 1.2f), 100f, 50f, 100f, 50f, 50f, 1f, x, y); // HP, speed, cleaveDamage
         // Note: spawnX and spawnY are now set in the parent constructor
         // Note: loadAnimations is already called in Monster constructor
 

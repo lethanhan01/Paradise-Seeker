@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.object;
+package com.paradise_seeker.game.object;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -8,11 +8,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
 import com.paradise_seeker.game.entity.Collidable;
-import com.paradise_seeker.game.entity.object.item.ATKitem;
-import com.paradise_seeker.game.entity.object.item.Item;
-import com.paradise_seeker.game.entity.object.item.Skill1item;
-import com.paradise_seeker.game.entity.object.item.Skill2item;
 import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.object.item.ATKitem;
+import com.paradise_seeker.game.object.item.Item;
+import com.paradise_seeker.game.object.item.Skill1item;
+import com.paradise_seeker.game.object.item.Skill2item;
 import com.badlogic.gdx.Gdx;
 
 public class Chest extends GameObject{

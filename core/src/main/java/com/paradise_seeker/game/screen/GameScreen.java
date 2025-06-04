@@ -13,11 +13,6 @@ import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.paradise_seeker.game.entity.object.*;
-import com.paradise_seeker.game.entity.object.item.ATKitem;
-import com.paradise_seeker.game.entity.object.item.HPitem;
-import com.paradise_seeker.game.entity.object.item.Item;
-import com.paradise_seeker.game.entity.object.item.MPitem;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.ui.DialogueBox;
 import com.paradise_seeker.game.ui.HUD;
@@ -28,6 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.map.GameMapManager;
+import com.paradise_seeker.game.object.*;
+import com.paradise_seeker.game.object.item.ATKitem;
+import com.paradise_seeker.game.object.item.HPitem;
+import com.paradise_seeker.game.object.item.Item;
+import com.paradise_seeker.game.object.item.MPitem;
 
 public class GameScreen implements Screen {
     final Main game;

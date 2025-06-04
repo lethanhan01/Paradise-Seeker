@@ -1,15 +1,15 @@
-package com.paradise_seeker.game.entity.object.item;
+package com.paradise_seeker.game.object.item;
 
 import com.paradise_seeker.game.entity.player.Player;
 
-public class ATKitem extends Item {
-    private int atkBoost;
+public class MPitem extends Item {
+    private int manaAmount;
 
-    public ATKitem(float x, float y, float size, String texturePath, int atkBoost) {
+    public MPitem(float x, float y, float size, String texturePath, int manaAmount) {
         super(x, y, size, texturePath);
-        this.atkBoost = atkBoost;
-        this.name = "Attack Boost";
-        this.description = "Attack + " + atkBoost + ".";
+        this.manaAmount = manaAmount;
+        this.name = "Mana Potion";
+        this.description = "Restores " + manaAmount + " MP.";
         this.stackable = true;
         this.maxStackSize = 5; // Giới hạn số lượng tối đa trong một stack
     }
@@ -22,16 +22,14 @@ public class ATKitem extends Item {
         }
     }
     public void use(Player player) {
-		player.atk += atkBoost;
+		player.mp = Math.min(Player.MAX_MP, player.mp + manaAmount);
 
 	}
-
 	public boolean canStackWith(Item other) {
-		if (!(other instanceof ATKitem)) return false;
-		ATKitem otherATK = (ATKitem) other;
-		return super.canStackWith(other) && this.atkBoost == otherATK.atkBoost;
+		if (!(other instanceof MPitem)) return false;
+		MPitem otherMP = (MPitem) other;
+		return super.canStackWith(other) && this.manaAmount == otherMP.manaAmount;
 	}
-
 	public void dispose() {
 		if (texture != null) {
 			texture.dispose();

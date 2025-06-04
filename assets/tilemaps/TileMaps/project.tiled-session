@@ -8,6 +8,14 @@
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "maps/map5.tmx": {
+            "scale": 0.33903125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 799.3363443635358,
+                "y": 800.8111346667895
+            }
+        }
     },
     "last.exportedFilePath": "C:/Users/NAME/Documents/GitHub/ParadiseSeeker/assets/tilemaps/TileMaps",
     "last.externalTilesetPath": "C:/Users/An/Documents/Project/assets/tilemaps/TileMaps/map2-tilesets",
@@ -18,7 +26,7 @@
     "map.width": 50,
     "openFiles": [
     ],
-    "project": "",
+    "project": "project.tiled-project",
     "property.type": "string",
     "recentFiles": [
     ],

@@ -13,7 +13,7 @@ public class FireDemon extends Monster {
     private float cleaveRange = 5f;
 
     public FireDemon(float x, float y) {
-        super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+        super(new Rectangle(x, y, 2f, 2f), 500f, 50f, 500f, 50f, 50f, 2f, x, y);
         // Note: loadAnimations is already called in Monster constructor
         // No need to set currentFrame, it's managed by animationManager now
         this.collisionHandler.setCleaveRange(cleaveRange);

@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.object;
+package com.paradise_seeker.game.object;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Collidable;

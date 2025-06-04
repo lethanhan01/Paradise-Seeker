@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
  * Responsible for all rendering aspects of a monster.
  * This class handles drawing the monster sprite and its UI elements like health bars.
  */
-public class MonsterRenderer {
+public class HPBarMonsterRenderer {
     // Constants for HP bar rendering
     private static final float HP_BAR_WIDTH = 2.0f;
     private static final float HP_BAR_HEIGHT = 0.5f;
@@ -18,7 +18,7 @@ public class MonsterRenderer {
 
     private Texture[] hpBarFrames;
 
-    public MonsterRenderer() {
+    public HPBarMonsterRenderer() {
         // Initialize HP bar textures
         loadHpBarTextures();
     }
