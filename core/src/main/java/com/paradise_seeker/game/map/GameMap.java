@@ -248,7 +248,7 @@ public abstract class GameMap {
         else if (item instanceof ATKitem) atkItems.add((ATKitem) item);
         // Extend for other item types as needed
     }
-
+//Hello
     public void damageMonstersInRange(float x, float y, float radius, float damage) {
         for (Monster m : monsters) {
             if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeDamage(damage);
