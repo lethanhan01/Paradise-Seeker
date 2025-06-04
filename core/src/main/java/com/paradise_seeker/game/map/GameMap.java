@@ -15,7 +15,7 @@ import com.paradise_seeker.game.collision.CollisionSystem;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.monster.MonsterFactory;
-import com.paradise_seeker.game.entity.npc.NPC1;
+import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.entity.object.*;
 import com.paradise_seeker.game.entity.object.item.ATKitem;
 import com.paradise_seeker.game.entity.object.item.Fragment;
@@ -44,7 +44,7 @@ public abstract class GameMap {
     public Monster monster;
 
     public List<Collidable> collidables = new ArrayList<>();
-    public List<NPC1> npcList = new ArrayList<>();
+    public List<Gipsy> npcList = new ArrayList<>();
     public List<Monster> monsters = new ArrayList<>();
     private List<GameObject> gameObjects = new ArrayList<>();
     private List<Rectangle> occupiedAreas = new ArrayList<>();
@@ -130,13 +130,13 @@ public abstract class GameMap {
 
                 case "npc":
                     String npcClass = (String) obj.getProperties().get("class");
-                    NPC1 npc;
+                    Gipsy npc;
                     if (npcClass != null && npcClass.equals("npc1")) {
                         // If you have different NPC subclasses, handle here.
                         // npc = new SpecialNPC(worldX, worldY);
-                        npc = new NPC1(worldX, worldY); // Fallback
+                        npc = new Gipsy(worldX, worldY); // Fallback
                     } else {
-                        npc = new NPC1(worldX, worldY);
+                        npc = new Gipsy(worldX, worldY);
                     }
                     npcList.add(npc);
                     collidables.add(npc);
@@ -176,14 +176,14 @@ public abstract class GameMap {
         for (Skill1item item : skill1Items) item.render(batch);
         for (Skill2item item : skill2Items) item.render(batch);
         for (Monster m : monsters) m.render(batch);
-        for (NPC1 npc : npcList) npc.render(batch);
+        for (Gipsy npc : npcList) npc.render(batch);
         if (portal != null) portal.render(batch);
         if (startPortal != null) startPortal.render(batch);
         if (chest != null) chest.render(batch);
     }
 
     public void update(float deltaTime) {
-        for (NPC1 npc : npcList) npc.update(deltaTime);
+        for (Gipsy npc : npcList) npc.act(deltaTime, GameMap.this);
         for (Monster m : monsters) m.act(deltaTime, player, this);
         hpItems.removeIf(item -> !item.isActive());
         mpItems.removeIf(item -> !item.isActive());
@@ -272,7 +272,7 @@ public abstract class GameMap {
         return dx * dx + dy * dy <= radius * radius;
     }
 
-    public List<NPC1> getNPCs() { return npcList; }
+    public List<Gipsy> getNPCs() { return npcList; }
     public List<Monster> getMonsters() { return monsters; }
     public float getMapWidth() { return MAP_WIDTH; }
     public float getMapHeight() { return MAP_HEIGHT; }

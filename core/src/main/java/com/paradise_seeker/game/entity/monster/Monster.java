@@ -26,7 +26,7 @@ public abstract class Monster extends Character {
     // Store the last position to determine if monster is moving
     public Vector2 lastPosition = new Vector2();
     public boolean isMoving = false;
-
+    
     public Monster(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y) {
         super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
         this.spawnX = x;
@@ -84,6 +84,7 @@ public abstract class Monster extends Character {
     }
 
     public float getHp() {
+
         return hp;
     }
 
@@ -97,7 +98,7 @@ public abstract class Monster extends Character {
 
     /**
      * Handles the monster taking damage.
-     * 
+     *
      */
     public void takeDamage(float damage) {
         if (isDead) return;

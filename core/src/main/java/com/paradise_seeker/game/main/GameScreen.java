@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.paradise_seeker.game.entity.npc.NPC1;
+import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,7 +26,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 import com.paradise_seeker.game.map.GameMap;
-import com.paradise_seeker.game.render.PlayerRendererImpl;
 
 public class GameScreen implements Screen {
     final Main game;
@@ -37,7 +36,7 @@ public class GameScreen implements Screen {
     private HUD hud;
     private DialogueBox dialogueBox;
     private Texture dialogueBg;
-    private NPC1 currentTalkingNPC;
+    private Gipsy currentTalkingNPC;
     private OrthographicCamera gameCamera;
     private OrthographicCamera hudCamera;
     private ShapeRenderer shapeRenderer;
@@ -104,7 +103,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Dialogue logic (unchanged)
-        handleDialogue();
+        //handleDialogue();
 
         // Zoom logic
         handleZoomInput();
@@ -200,7 +199,7 @@ public class GameScreen implements Screen {
         hud.spriteBatch.setProjectionMatrix(hudCamera.combined);
         hud.render(hudCamera.viewportHeight);
 
-        renderDialogueOptions(fontScale);
+        //renderDialogueOptions(fontScale);
 
         // --- PORTAL & MAP SWITCH ---
         handlePortals();
@@ -243,13 +242,13 @@ public class GameScreen implements Screen {
 			}
 		}
 	}
-
+    /*
     private void handleDialogue() {
         // Handle F key for dialogue interaction
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
             if (showDialogueOptions) {
                 if (currentTalkingNPC != null) {
-                    currentTalkingNPC.setHasTalked(true);
+                    currentTalkingNPC.stateManager.setHasTalked(true);
                     pendingPotionToDrop = options[selectedOptionIndex];
                     showDialogueOptions = false;
                     selectedOptionIndex = 0;
@@ -283,7 +282,7 @@ public class GameScreen implements Screen {
                     }
                 }
             } else {
-                for (NPC1 npc : mapManager.getCurrentMap().getNPCs()) {
+                for (Gipsy npc : mapManager.getCurrentMap().getNPCs()) {
                     float dx = Math.abs(player.getBounds().x - npc.getBounds().x);
                     float dy = Math.abs(player.getBounds().y - npc.getBounds().y);
                     if (dx < 2.5f && dy < 2.5f) {
@@ -312,7 +311,7 @@ public class GameScreen implements Screen {
             }
         }
     }
-
+	*/
     private void finishNpcInteraction() {
         if (pendingPotionToDrop != null) {
             dropPotionNextToPlayer(pendingPotionToDrop);
@@ -351,9 +350,10 @@ public class GameScreen implements Screen {
         else if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS) || Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
             zoom = Math.max(0.5f, zoom - 0.1f);
     }
-
+    /*
     private void renderDialogueOptions(float fontScale) {
-        boolean shouldShowChoicesNow = dialogueBox.isVisible() && currentTalkingNPC != null && currentTalkingNPC.shouldShowOptions();
+        boolean shouldShowChoicesNow = dialogueBox.isVisible() && currentTalkingNPC != null && currentTalkingNPC.shouldSho
+        		wOptions();
         if ((shouldShowChoicesNow || showDialogueOptions) && game.font != null) {
             if (shouldShowChoicesNow && !showDialogueOptions) showDialogueOptions = true;
             hud.spriteBatch.begin();
@@ -375,7 +375,7 @@ public class GameScreen implements Screen {
             hud.spriteBatch.end();
         }
     }
-
+	*/
     @Override public void resize(int width, int height) {
         game.viewport.update(width, height, true);
         hudCamera.setToOrtho(false, width, height);

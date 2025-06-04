@@ -34,7 +34,8 @@ public abstract class Character implements Collidable, Renderable {
 
     public void act(float deltaTime, GameMap map) {
     }
-    public void receiveDamage(float dmg) {
+
+    public void takeDamage(float dmg) {
         hp = Math.max(0, hp - dmg);
         if (hp == 0) onDeath();
     }

@@ -82,7 +82,7 @@ public class PlayerSkill implements Skill {
     public void execute(Character target) {
         if (canUse(System.currentTimeMillis()) && target != null) {
             int damage = (int) (1000 * damageMultiplier);
-            target.receiveDamage(damage);
+            target.takeDamage(damage);
             lastUsedTime = System.currentTimeMillis();
         }
     }
@@ -111,7 +111,7 @@ public class PlayerSkill implements Skill {
     public void castSkill(float atk, Character target) {
         if (canUse(System.currentTimeMillis()) && target != null) {
             float damage = (float) ((atk * 2) * damageMultiplier);
-            target.receiveDamage(damage);
+            target.takeDamage(damage);
             lastUsedTime = System.currentTimeMillis();
         }
     }

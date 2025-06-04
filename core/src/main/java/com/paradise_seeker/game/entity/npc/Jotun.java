@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-public class NPC2 {
+public class Jotun {
     private Rectangle bounds;
     private Player player;
     private float speed;
@@ -28,8 +28,8 @@ public class NPC2 {
     private float spriteWidth = 5.5f;
     private float spriteHeight = 5.5f;
 
-    
-    public NPC2(float x, float y, Player player) {
+
+    public Jotun(float x, float y, Player player) {
         this.spriteWidth = 5.5f;
         this.spriteHeight = 5.5f;
         updateBounds();
@@ -75,7 +75,7 @@ public class NPC2 {
         return new Animation<>(0.1f, frames.toArray(new TextureRegion[0]));
     }
 
-    
+
     // Track if player is within 2f radius
     private boolean playerInRange = false; // tracks if player is within 2f radius last frame
     public void update(float deltaTime) {

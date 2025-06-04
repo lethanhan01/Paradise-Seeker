@@ -30,7 +30,7 @@ public class Player extends Character {
     public SmokeManager smokeManager = new SmokeManager();
 
     public float speedMultiplier = 1f;
-    private Vector2 lastPosition = new Vector2();
+    private final Vector2 lastPosition = new Vector2();
 
     // Quản lý inventory thông qua PlayerInventoryManager
     public PlayerInventoryManager inventoryManager;
@@ -64,6 +64,8 @@ public class Player extends Character {
         this.bounds = new Rectangle(0, 0, 1, 1);
         this.hp = MAX_HP;
         this.mp = MAX_MP;
+        this.maxHp = MAX_HP;
+        this.maxMp = MAX_MP;
         this.atk = 20;
         this.speed = 5f;
         this.x = 0;
@@ -157,6 +159,7 @@ public class Player extends Character {
         smokeManager.render(batch, animationManager);
     }
 
+    @Override
     public void takeDamage(float damage) {
         // If player is invulnerable, don't take damage
         if (isInvulnerable) return;
