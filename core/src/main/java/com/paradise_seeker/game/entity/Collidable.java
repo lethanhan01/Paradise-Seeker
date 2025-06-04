@@ -1,7 +1,6 @@
-package com.paradise_seeker.game.collision;
+package com.paradise_seeker.game.entity;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.entity.Player;
 
 public interface Collidable {
     public Rectangle getBounds();

@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.animation;
+package com.paradise_seeker.game.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

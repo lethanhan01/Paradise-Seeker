@@ -1,6 +1,5 @@
-package com.paradise_seeker.game.input;
+package com.paradise_seeker.game.entity.player;
 
-import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.map.GameMap;
 
 public interface PlayerInputHandler {

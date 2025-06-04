@@ -1,7 +1,7 @@
 package com.paradise_seeker.game.entity.monster;
 
-import com.paradise_seeker.game.collision.Collidable;
-import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.entity.Collidable;
+import com.paradise_seeker.game.entity.player.Player;
 
 /**
  * Responsible for handling all collision-related logic for monsters.

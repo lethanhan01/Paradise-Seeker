@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.collision.Collidable;
-import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.entity.Collidable;
+import com.paradise_seeker.game.entity.player.Player;
 
 public class HazardObject implements Collidable {
     private Rectangle bounds;

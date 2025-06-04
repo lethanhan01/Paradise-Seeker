@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.animation.smoke;
+package com.paradise_seeker.game.entity.player;
 
 public class Smoke {
 	float x, y, stateTime;

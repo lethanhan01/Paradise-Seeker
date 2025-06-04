@@ -1,6 +1,6 @@
 package com.paradise_seeker.game.entity.object.item;
 
-import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.entity.player.Player;
 
 public class MPitem extends Item {
     private int manaAmount;

@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.entity.player.Player;
 
-public class Boss1 extends Monster {
+public class FireDemon extends Monster {
     // Boss-specific properties
     private float cleaveRange = 5f;
 
-    public Boss1(float x, float y) {
+    public FireDemon(float x, float y) {
         super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
         // Note: loadAnimations is already called in Monster constructor
         // No need to set currentFrame, it's managed by animationManager now

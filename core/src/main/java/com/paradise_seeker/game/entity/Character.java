@@ -1,10 +1,7 @@
 package com.paradise_seeker.game.entity;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.map.GameMap;
-import com.paradise_seeker.game.render.Renderable;
 
 public abstract class Character implements Collidable, Renderable {
     public float hp;

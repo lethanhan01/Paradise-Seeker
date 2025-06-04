@@ -1,6 +1,6 @@
 package com.paradise_seeker.game.entity.object.item;
 
-import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.entity.player.Player;
 
 public class HPitem extends Item {
     private int healAmount;

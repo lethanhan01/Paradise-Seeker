@@ -1,12 +1,11 @@
-package com.paradise_seeker.game.input;
+package com.paradise_seeker.game.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.map.GameMap;
-import com.paradise_seeker.game.collision.*;
 
 /**
  * Implementation của PlayerInputHandler

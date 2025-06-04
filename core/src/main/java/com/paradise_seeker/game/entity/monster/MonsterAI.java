@@ -1,6 +1,6 @@
 package com.paradise_seeker.game.entity.monster;
 import com.badlogic.gdx.math.Vector2;
-import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 
 public class MonsterAI {

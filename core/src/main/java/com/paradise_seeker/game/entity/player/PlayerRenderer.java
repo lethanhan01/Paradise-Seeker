@@ -1,7 +1,6 @@
-package com.paradise_seeker.game.render;
+package com.paradise_seeker.game.entity.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.paradise_seeker.game.entity.Player;
 
 /**
  * Interface render Player
