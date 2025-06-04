@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.main;
+package com.paradise_seeker.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.paradise_seeker.game.main.Main;
 
 public class PauseScreen implements Screen {
 

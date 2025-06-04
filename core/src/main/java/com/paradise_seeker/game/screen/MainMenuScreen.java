@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.main;
+package com.paradise_seeker.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.paradise_seeker.game.main.Main;
 import com.badlogic.gdx.audio.Music;
 
 public class MainMenuScreen implements Screen {

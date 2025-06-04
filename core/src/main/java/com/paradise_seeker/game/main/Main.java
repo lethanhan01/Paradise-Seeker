@@ -6,6 +6,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.paradise_seeker.game.screen.ControlScreen;
+import com.paradise_seeker.game.screen.GameScreen;
+import com.paradise_seeker.game.screen.InventoryScreen;
+import com.paradise_seeker.game.screen.MainMenuScreen;
+import com.paradise_seeker.game.screen.SettingScreen;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 

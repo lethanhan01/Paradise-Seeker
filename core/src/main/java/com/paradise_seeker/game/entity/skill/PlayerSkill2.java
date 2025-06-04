@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.main.GameScreen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.entity.monster.Monster;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,14 +39,14 @@ public class PlayerSkill2 extends PlayerSkill {
             downFrames[2] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/xuong/lightning_skill1_frame3.png")));
             downFrames[3] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/xuong/lightning_skill1_frame4.png")));
             skillAnimations.put("down", new Animation<>(0.1f, downFrames));
-            
+
             TextureRegion[] leftFrames = new TextureRegion[4];
             leftFrames[0] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/trai/lightning_skill1_frame1.png")));
             leftFrames[1] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/trai/lightning_skill1_frame2.png")));
             leftFrames[2] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/trai/lightning_skill1_frame3.png")));
             leftFrames[3] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/trai/lightning_skill1_frame4.png")));
             skillAnimations.put("left", new Animation<>(0.1f, leftFrames));
-            
+
             TextureRegion[] rightFrames = new TextureRegion[4];
             rightFrames[0] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/phai/lightning_skill1_frame1.png")));
             rightFrames[1] = new TextureRegion(new Texture(Gdx.files.internal("images/Entity/skills/PlayerSkills/Skill2/phai/lightning_skill1_frame2.png")));

@@ -1,6 +1,7 @@
-package com.paradise_seeker.game.main;
+package com.paradise_seeker.game.screen;
 
 import com.badlogic.gdx.Screen;
+import com.paradise_seeker.game.main.Main;
 
 public class LoadGameScreen implements Screen{
 
