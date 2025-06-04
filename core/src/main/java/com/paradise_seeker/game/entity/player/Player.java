@@ -19,8 +19,8 @@ public class Player extends Character {
     private final float dashCooldown = 0f;
     private final float dashDistance = 2f;
 
-    public PlayerSkill playerSkill1 = new PlayerSkill(true);
-    public PlayerSkill playerSkill2 = new PlayerSkill(false);
+    public PlayerSkill playerSkill1 = new PlayerSkill1();
+    public PlayerSkill playerSkill2 = new PlayerSkill2();
 
     // Quản lý hiệu ứng smoke
     public SmokeManager smokeManager = new SmokeManager();

@@ -134,7 +134,12 @@ public class GameScreen implements Screen {
 			}
 
             mapManager.getCurrentMap().checkCollisions(player, hud);
+            float playerCenterX = player.getBounds().x + player.getBounds().width / 2f;
+            float playerCenterY = player.getBounds().y + player.getBounds().height / 2f;
+            player.playerSkill2.updatePosition(playerCenterX, playerCenterY);
 
+            // Cập nhật logic skill2
+            player.playerSkill2.updateSkill(delta, mapManager.getCurrentMap().getMonsters());
             // Update projectiles
             for (int i = activeProjectiles.size() - 1; i >= 0; i--) {
                 LaserBeam projectile = activeProjectiles.get(i);
