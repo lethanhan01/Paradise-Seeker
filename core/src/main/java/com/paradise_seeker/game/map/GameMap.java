@@ -236,15 +236,6 @@ public abstract class GameMap {
         return false;
     }
 
-    public void renderSolids(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        for (Collidable c : collidables) {
-            Rectangle r = c.getBounds();
-            shapeRenderer.rect(r.x, r.y, r.width, r.height);
-        }
-        shapeRenderer.end();
-    }
 
     public void dispose() {
         backgroundTexture.dispose();
@@ -257,7 +248,7 @@ public abstract class GameMap {
         else if (item instanceof ATKitem) atkItems.add((ATKitem) item);
         // Extend for other item types as needed
     }
-
+//Hello
     public void damageMonstersInRange(float x, float y, float radius, float damage) {
         for (Monster m : monsters) {
             if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeDamage(damage);
