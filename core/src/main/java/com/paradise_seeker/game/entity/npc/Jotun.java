@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-public class Jotun {
+public class Jotun extends NPC {
     private Rectangle bounds;
     private Player player;
     private float speed;
