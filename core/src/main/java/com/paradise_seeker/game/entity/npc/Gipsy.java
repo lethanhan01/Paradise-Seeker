@@ -2,8 +2,7 @@ package com.paradise_seeker.game.entity.npc;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.collision.Collidable;
-import com.paradise_seeker.game.entity.NPC;
+import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.map.GameMap;
 
 

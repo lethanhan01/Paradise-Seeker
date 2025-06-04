@@ -1,8 +1,8 @@
 package com.paradise_seeker.game.entity.object;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.collision.Collidable;
-import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.entity.Collidable;
+import com.paradise_seeker.game.entity.player.Player;
 
 
 public class SolidObject implements Collidable {

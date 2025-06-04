@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity;
+package com.paradise_seeker.game.entity.player;
 
 import java.util.ArrayList;
 
@@ -7,15 +7,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.paradise_seeker.game.collision.Collidable;
+import com.paradise_seeker.game.entity.Character;
+import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.object.item.Item;
 import com.paradise_seeker.game.entity.skill.*;
 import com.paradise_seeker.game.map.GameMap;
-import com.paradise_seeker.game.animation.PlayerAnimationManagerImpl;
-import com.paradise_seeker.game.animation.smoke.SmokeManager;
-import com.paradise_seeker.game.input.PlayerInputHandlerImpl;
-import com.paradise_seeker.game.inventory.PlayerInventoryManager;
-import com.paradise_seeker.game.render.PlayerRendererImpl;
 
 public class Player extends Character {
     public static final int MAX_HP = 1000;

@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.inventory;
+package com.paradise_seeker.game.entity.player;
 
 import java.util.ArrayList;
 import java.util.Iterator;

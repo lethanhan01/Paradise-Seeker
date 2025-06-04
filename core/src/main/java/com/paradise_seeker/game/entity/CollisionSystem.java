@@ -1,8 +1,8 @@
-package com.paradise_seeker.game.collision;
-
-import com.paradise_seeker.game.entity.Player;
+package com.paradise_seeker.game.entity;
 
 import java.util.List;
+
+import com.paradise_seeker.game.entity.player.Player;
 
 public class CollisionSystem {
 

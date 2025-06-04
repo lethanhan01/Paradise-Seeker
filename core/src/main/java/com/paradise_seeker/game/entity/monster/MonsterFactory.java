@@ -23,7 +23,7 @@ public class MonsterFactory {
                 m = new RatCreep(x, y);
                 break;
             case "Boss1":
-                m = new Boss1(x, y);
+                m = new FireDemon(x, y);
                 break;
             case "FlyingCreep":
                 m = new FlyingCreep(x, y);

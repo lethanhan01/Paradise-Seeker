@@ -1,12 +1,12 @@
-package com.paradise_seeker.game.animation.smoke;
+package com.paradise_seeker.game.entity.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import com.paradise_seeker.game.animation.PlayerAnimationManager;
 
 public class SmokeManager {
     private final List<Smoke> smokes = new LinkedList<>();

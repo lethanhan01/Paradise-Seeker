@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.paradise_seeker.game.entity.Player;
+import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.*;
 import com.paradise_seeker.game.ui.HUD;
 
