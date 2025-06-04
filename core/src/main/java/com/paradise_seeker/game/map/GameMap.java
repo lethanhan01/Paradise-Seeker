@@ -236,15 +236,6 @@ public abstract class GameMap {
         return false;
     }
 
-    public void renderSolids(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        for (Collidable c : collidables) {
-            Rectangle r = c.getBounds();
-            shapeRenderer.rect(r.x, r.y, r.width, r.height);
-        }
-        shapeRenderer.end();
-    }
 
     public void dispose() {
         backgroundTexture.dispose();
