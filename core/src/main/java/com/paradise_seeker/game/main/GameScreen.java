@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Player;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.paradise_seeker.game.entity.npc.NPC1;
+import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,7 +26,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 import com.paradise_seeker.game.map.GameMap;
-import com.paradise_seeker.game.render.PlayerRendererImpl;
 
 public class GameScreen implements Screen {
     final Main game;
@@ -37,7 +36,7 @@ public class GameScreen implements Screen {
     private HUD hud;
     private DialogueBox dialogueBox;
     private Texture dialogueBg;
-    private NPC1 currentTalkingNPC;
+    private Gipsy currentTalkingNPC;
     private OrthographicCamera gameCamera;
     private OrthographicCamera hudCamera;
     private ShapeRenderer shapeRenderer;
@@ -283,7 +282,7 @@ public class GameScreen implements Screen {
                     }
                 }
             } else {
-                for (NPC1 npc : mapManager.getCurrentMap().getNPCs()) {
+                for (Gipsy npc : mapManager.getCurrentMap().getNPCs()) {
                     float dx = Math.abs(player.getBounds().x - npc.getBounds().x);
                     float dy = Math.abs(player.getBounds().y - npc.getBounds().y);
                     if (dx < 2.5f && dy < 2.5f) {

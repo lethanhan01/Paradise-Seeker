@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Player;
-import com.paradise_seeker.game.entity.npc.NPC1;
+import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.collision.*;
 
@@ -162,10 +162,10 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
     public void handleNPCInteraction(Player player, GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F) && showInteractMessage && gameMap != null) {
             // Tìm NPC gần nhất để tương tác
-            NPC1 nearestNPC = null;
+            Gipsy nearestNPC = null;
             float minDistance = Float.MAX_VALUE;
 
-            for (NPC1 npc : gameMap.getNPCs()) {
+            for (Gipsy npc : gameMap.getNPCs()) {
                 float distance = calculateDistance(player, npc);
                 if (distance <= 2.5f && distance < minDistance) {
                     minDistance = distance;
@@ -183,7 +183,7 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
     /**
      * Tính khoảng cách giữa player và NPC
      */
-    private float calculateDistance(Player player, NPC1 npc) {
+    private float calculateDistance(Player player, Gipsy npc) {
         return (float) Math.sqrt(
             Math.pow(player.getBounds().x + player.getBounds().width/2 - (npc.getBounds().x + npc.getBounds().width/2), 2) +
             Math.pow(player.getBounds().y + player.getBounds().height/2 - (npc.getBounds().y + npc.getBounds().height/2), 2)

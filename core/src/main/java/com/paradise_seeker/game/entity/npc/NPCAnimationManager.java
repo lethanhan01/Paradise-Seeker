@@ -6,60 +6,37 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.collision.Collidable;
-import com.paradise_seeker.game.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NPC1 implements Collidable {
+/**
+ * Class để quản lý animation của các NPC
+ */
+public class NPCAnimationManager {
     private Animation<TextureRegion> idleAnimation;
     private Animation<TextureRegion> talkAnimation;
     private Animation<TextureRegion> openChestAnimation;
     private Animation<TextureRegion> chestOpenedAnimation;
     private Animation<TextureRegion> currentAnimation;
     private TextureRegion currentFrame;
-
     private float stateTime;
-    private Rectangle bounds;
-    private float spriteWidth = 3f;
-    private float spriteHeight = 3f;
 
-    // --- State flags ---
-    private boolean isChestOpened = false;
-    private boolean isOpeningChest = false;
-    private boolean isTalking = false;
-    private boolean hasTalked = false;
-
-    // Getters and setters for state
-    public boolean hasTalked() { return hasTalked; }
-    public void setHasTalked(boolean value) {
-        this.hasTalked = value;
-    }
-    public boolean isChestOpened() { return isChestOpened; }
-    public boolean isOpeningChest() { return isOpeningChest; }
-
-    public NPC1(float x, float y) {
-        loadIdleAnimation();
-        loadTalkAnimation();
-        loadOpenChestAnimation();
-        loadChestOpenedAnimation();
-
-        this.spriteWidth = 3f;
-        this.spriteHeight = 3f;
-
-        this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight); // Bổ sung ngay đây
-
+    public NPCAnimationManager() {
+        loadAnimations();
         currentAnimation = idleAnimation;
         currentFrame = currentAnimation.getKeyFrame(0f);
         stateTime = 0f;
     }
 
+    public void loadAnimations() {
+        loadIdleAnimation();
+        loadTalkAnimation();
+        loadOpenChestAnimation();
+        loadChestOpenedAnimation();
+    }
 
-    public NPC1() {
-		// TODO Auto-generated constructor stub
-	}
-	private void loadIdleAnimation() {
+    private void loadIdleAnimation() {
         List<TextureRegion> frames = new ArrayList<>();
         for (int i = 120; i <= 130; i++) {
             String path = "images/Entity/characters/NPCs/npc1/act3/npc" + i + ".png";
@@ -106,12 +83,6 @@ public class NPC1 implements Collidable {
         openChestAnimation = new Animation<>(0.2f, frames.toArray(new TextureRegion[0]));
         openChestAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
-    public void updateBounds() {
-        if (bounds != null) {
-            bounds.setSize(spriteWidth, spriteHeight);
-        }
-    }
-
 
     private void loadChestOpenedAnimation() {
         List<TextureRegion> frames = new ArrayList<>();
@@ -129,103 +100,47 @@ public class NPC1 implements Collidable {
         chestOpenedAnimation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
-    public void update(float deltaTime) {
+    public void update(float deltaTime, boolean isOpeningChest, boolean isChestOpened) {
         stateTime += deltaTime;
         currentFrame = currentAnimation.getKeyFrame(stateTime);
 
         // Handle chest opening animation completion
         if (isOpeningChest && openChestAnimation.isAnimationFinished(stateTime)) {
-            currentAnimation = chestOpenedAnimation;
-            stateTime = 0f;
-            isChestOpened = true;
-            isOpeningChest = false;
-            currentFrame = chestOpenedAnimation.getKeyFrame(0f);
+            setChestOpenedAnimation();
         }
     }
 
-    public void setTalking(boolean talking) {
-        if (isTalking != talking) {
-            isTalking = talking;
-
-            // Don't change animation if currently opening chest
-            if (!isOpeningChest) {
-                if (talking) {
-                    currentAnimation = talkAnimation;
-                } else if (isChestOpened) {
-                    currentAnimation = chestOpenedAnimation;
-                } else {
-                    currentAnimation = idleAnimation;
-                }
-                stateTime = 0f;
-            }
-        }
+    public void setTalkingAnimation() {
+        currentAnimation = talkAnimation;
+        stateTime = 0f;
     }
 
-    public void openChest() {
-        if (isChestOpened || isOpeningChest) {
-            return;
-        }
+    public void setIdleAnimation() {
+        currentAnimation = idleAnimation;
+        stateTime = 0f;
+    }
 
+    public void setOpenChestAnimation() {
         currentAnimation = openChestAnimation;
         stateTime = 0f;
-        isOpeningChest = true;
-        isTalking = false; // Stop talking when opening chest
     }
 
-    public boolean isChestOpenAndFinished() {
-        return isChestOpened && !isOpeningChest;
+    public void setChestOpenedAnimation() {
+        currentAnimation = chestOpenedAnimation;
+        stateTime = 0f;
     }
 
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, Rectangle bounds, float spriteWidth, float spriteHeight) {
         if (currentFrame != null) {
             batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
         }
     }
 
-    public Rectangle getBounds() {
-        return bounds;
+    public boolean isAnimationFinished() {
+        return currentAnimation.isAnimationFinished(stateTime);
     }
 
-    // ======= Dialogue Logic =======
-    private List<String> dialogueLines = new ArrayList<>();
-    private int currentLineIndex = 0;
-
-    public void setDialogue(List<String> lines) {
-        this.dialogueLines = new ArrayList<>(lines);
-        this.currentLineIndex = 0;
-    }
-
-    public String getCurrentLine() {
-        if (dialogueLines.isEmpty()) {
-            return "";
-        }
-        return dialogueLines.get(currentLineIndex);
-    }
-
-    public boolean hasNextLine() {
-        return currentLineIndex < dialogueLines.size() - 1;
-    }
-
-    public void nextLine() {
-        if (hasNextLine()) {
-            currentLineIndex++;
-        }
-    }
-
-    public void resetDialogue() {
-        currentLineIndex = 0;
-    }
-
-    public int getCurrentLineIndex() {
-        return currentLineIndex;
-    }
-
-    public boolean shouldShowOptions() {
-        return getCurrentLineIndex() == 1 && !hasTalked;
-    }
-
-    @Override
-    public void onCollision(Collidable other) {
-        //
+    public Animation<TextureRegion> getCurrentAnimation() {
+        return currentAnimation;
     }
 }
