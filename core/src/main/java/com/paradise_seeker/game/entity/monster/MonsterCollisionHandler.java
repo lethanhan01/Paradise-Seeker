@@ -23,6 +23,8 @@ public class MonsterCollisionHandler {
     /**
      * Handle collision with another collidable entity
      */
+    
+    
     public void handleCollision(Collidable other) {
         if (other instanceof Player) {
             handlePlayerCollision((Player) other);
@@ -45,14 +47,13 @@ public class MonsterCollisionHandler {
             player.isShieldedHit = true;
             damage = Math.max(1, damage / 2); // Reduce damage if shielding
         } else {
-            player.isHit = true;
-            player.stateTime = 0;
+        	if (!player.isInvulnerable()) {
+                player.takeDamage(damage);
+            }
         }
 
         // Apply damage to player unless they're invulnerable from a recent hit
-        if (!player.isInvulnerable()) {
-            player.takeDamage(damage);
-        }
+        
     }
 
     /**
