@@ -3,11 +3,30 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "maps/map2.tmx",
     "expandedProjectPaths": [
+        "maps",
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "map2-tilesets/Minifantasy_ForgottenPlainsProps.tsx": {
+            "scaleInDock": 1
+        },
+        "map2-tilesets/Minifantasy_ForgottenPlainsTiles.tsx": {
+            "scaleInDock": 1
+        },
+        "map5-tilesets/throneroom1.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/map2.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1002.6666666666667,
+                "y": 1078
+            }
+        },
         "maps/map5.tmx": {
             "scale": 0.33903125,
             "selectedLayer": 0,
@@ -25,10 +44,14 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 50,
     "openFiles": [
+        "maps/map5.tmx",
+        "maps/map2.tmx"
     ],
     "project": "project.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "maps/map5.tmx",
+        "maps/map2.tmx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx"
