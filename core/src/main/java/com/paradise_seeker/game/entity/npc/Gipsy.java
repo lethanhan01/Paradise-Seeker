@@ -120,8 +120,58 @@ public class Gipsy extends NPC implements Collidable {
         return stateManager.isChestOpenAndFinished();
     }
 
-    @Override
-    public void render(SpriteBatch batch) {
+    // ---- Delegate methods for DialogueManager ----
 
+    /**
+     * Kiểm tra xem NPC có dòng thoại tiếp theo không
+     */
+    public boolean hasNextLine() {
+        return dialogueManager.hasNextLine();
     }
+
+    /**
+     * Chuyển sang dòng thoại tiếp theo
+     */
+    public void nextLine() {
+        dialogueManager.nextLine();
+    }
+
+    /**
+     * Lấy dòng thoại hiện tại
+     */
+    public String getCurrentLine() {
+        return dialogueManager.getCurrentLine();
+    }
+
+    /**
+     * Đặt lại đối thoại về dòng đầu tiên
+     */
+    public void resetDialogue() {
+        dialogueManager.resetDialogue();
+    }
+
+    /**
+     * Kiểm tra xem có nên hiển thị các tùy chọn đối thoại không
+     */
+    public boolean shouldShowOptions() {
+        // Giả định rằng các tùy chọn nên hiển thị khi đã đến dòng đối thoại cuối cùng
+        // và NPC đang trong trạng thái nói chuyện và chưa mở rương
+        return !hasNextLine() && stateManager.isTalking() && !stateManager.isChestOpened();
+    }
+
+    /**
+     * Kiểm tra xem rương đã được mở chưa
+     */
+    public boolean isChestOpened() {
+        return stateManager.isChestOpened();
+    }
+    public boolean hasTalked() {
+    	return stateManager.hasTalked();
+	}
+
+	@Override
+	public void render(SpriteBatch batch) {
+		// TODO Auto-generated method stub
+
+	}
 }
