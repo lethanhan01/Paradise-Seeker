@@ -64,7 +64,7 @@ public abstract class Monster extends Character {
         lastPosition.set(bounds.x, bounds.y);
 
         // Update animation state
-        animationManager.update(deltaTime, isMoving, isFacingRight(), isDead, false);
+        animationManager.update(deltaTime, isMoving, isFacingRight(), isDead, false, player.getBounds().x);
     }
 
     public void render(SpriteBatch batch) {
