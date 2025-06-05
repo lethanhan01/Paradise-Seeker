@@ -40,7 +40,7 @@ public class MonsterAI {
 			onAggro();
 		}
 	}
-
+//hello
     public void update(float deltaTime, Player player, GameMap map) {
         if (monster.isDead() || player == null || player.isDead()) return;
         float stopDisplayer = (float) Math.sqrt(player.getBounds().width * player.getBounds().width + player.getBounds().height * player.getBounds().height) / 2f;
@@ -55,7 +55,7 @@ public class MonsterAI {
         if (isAggro) {
             aggroTimer -= deltaTime;
             attackTimer -= deltaTime;
-            System.out.println("attackTimer: " + attackTimer);
+            //System.out.println("attackTimer: " + attackTimer);
             if (attackTimer < 0f) attackTimer = 0f;
 
             float dx = player.getBounds().x - monster.getBounds().x;
@@ -81,7 +81,7 @@ public class MonsterAI {
              if (!map.isBlocked(testX, monster)) {
                  bounds.x += moveX;
              }
-             
+
 
              // kiểm tra trục Y riêng
              Rectangle testY = new Rectangle(bounds);
@@ -89,7 +89,7 @@ public class MonsterAI {
              if (!map.isBlocked(testY, monster)) {
                  bounds.y += moveY;
              }
-			} 
+			}
 
             // Nếu tiếp cận rồi thì tấn công
             if (dist <= stopDistance && attackTimer <= 0f) {
@@ -106,7 +106,7 @@ public class MonsterAI {
                     float speed = monster.getSpeed() * deltaTime;
                     float moveX = (dx / dist) * speed;
                     float moveY = (dy / dist) * speed;
-                    
+
                 Rectangle bounds = monster.getBounds();
 
                 // kiểm tra trục X riêng

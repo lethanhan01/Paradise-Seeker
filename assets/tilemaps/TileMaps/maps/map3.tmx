@@ -235,13 +235,6 @@
    </properties>
    <point/>
   </object>
-  <object id="135" x="426" y="146">
-   <properties>
-    <property name="class" value="SkeletonEnemy"/>
-    <property name="type" value="monster"/>
-   </properties>
-   <point/>
-  </object>
   <object id="133" x="800" y="452">
    <properties>
     <property name="class" value="SkeletonEnemy"/>
@@ -256,16 +249,9 @@
    </properties>
    <point/>
   </object>
-  <object id="137" x="482" y="884">
+  <object id="137" x="1346" y="1042">
    <properties>
     <property name="class" value="SkeletonEnemy"/>
-    <property name="type" value="monster"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="123" x="708" y="714">
-   <properties>
-    <property name="class" value="FlyingDemon"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
@@ -278,13 +264,6 @@
    <point/>
   </object>
   <object id="125" x="1262" y="484">
-   <properties>
-    <property name="class" value="RatCreep"/>
-    <property name="type" value="monster"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="138" x="580" y="468">
    <properties>
     <property name="class" value="RatCreep"/>
     <property name="type" value="monster"/>
@@ -360,7 +339,7 @@
    </properties>
    <point/>
   </object>
-  <object id="119" x="804" y="660">
+  <object id="119" x="810" y="660">
    <properties>
     <property name="type" value="portal_start"/>
    </properties>
