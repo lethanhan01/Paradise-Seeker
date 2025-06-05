@@ -14,6 +14,8 @@ public class StaticLightningSkill {
     private Rectangle hitbox;
     private float stateTime = 0f;
     private boolean active = true;
+    private boolean hasDealtDamage = false;
+    private float scale = 0.02f;  // dùng chung cho render & hitbox
 
     public StaticLightningSkill(float x, float y, float damage, String direction, Animation<TextureRegion> animation) {
         this.x = x;
@@ -21,7 +23,18 @@ public class StaticLightningSkill {
         this.damage = damage;
         this.direction = direction;
         this.animation = animation;
-        this.hitbox = new Rectangle(x - 0.25f, y - 0.25f, 0.5f, 1f); // chỉnh lại theo size hình ảnh
+
+        // Tính hitbox chính xác từ frame đầu tiên
+        TextureRegion frame = animation.getKeyFrame(0f);
+        float realWidth = frame.getRegionWidth() * scale;
+        float realHeight = frame.getRegionHeight() * scale;
+
+        this.hitbox = new Rectangle(
+            x - realWidth / 2f,
+            y - realHeight / 2f,
+            realWidth,
+            realHeight
+        );
     }
 
     public void update() {
@@ -33,10 +46,12 @@ public class StaticLightningSkill {
 
     public void render(SpriteBatch batch) {
         TextureRegion frame = animation.getKeyFrame(stateTime, false);
-        float scale = 0.02f;
-        float drawX = x - frame.getRegionWidth() * scale / 2f;
-        float drawY = y - frame.getRegionHeight() * scale / 2f;
-        batch.draw(frame, drawX, drawY, frame.getRegionWidth() * scale, frame.getRegionHeight() * scale);
+        float realWidth = frame.getRegionWidth() * scale;
+        float realHeight = frame.getRegionHeight() * scale;
+        float drawX = x - realWidth / 2f;
+        float drawY = y - realHeight / 2f;
+
+        batch.draw(frame, drawX, drawY, realWidth, realHeight);
     }
 
     public boolean isActive() {
@@ -50,13 +65,22 @@ public class StaticLightningSkill {
     public float getDamage() {
         return damage;
     }
+
     public void setInactive() {
         this.active = false;
     }
+
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
-        this.hitbox.setPosition(x - 0.25f, y - 0.25f);
+        if (hitbox != null) {
+            hitbox.setPosition(x - hitbox.getWidth() / 2f, y - hitbox.getHeight() / 2f);
+        }
     }
-
+    public boolean hasDealtDamage() {
+        return hasDealtDamage;
+    }
+    public void markDamageDealt() {
+        hasDealtDamage = true;
+    }
 }

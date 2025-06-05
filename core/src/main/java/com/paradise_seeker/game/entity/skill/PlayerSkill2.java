@@ -130,9 +130,13 @@ public class PlayerSkill2 extends PlayerSkill {
             skill.update();
 
             for (Monster monster : monsters) {
-                if (!monster.isDead() && skill.getHitbox().overlaps(monster.getBounds())) {
+                if (!monster.isDead() && !skill.hasDealtDamage() &&
+                    skill.getHitbox().overlaps(monster.getBounds())) {
+
                     monster.takeDamage(skill.getDamage());
-                    skill.setInactive();  // Bạn cần thêm phương thức setInactive() trong StaticLightningSkill
+                    skill.markDamageDealt(); // Ghi nhận đã gây sát thương
+
+           
                 }
             }
 
