@@ -575,7 +575,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="solid" visible="0">
+ <objectgroup id="8" name="solid">
   <object id="1" name="solid" x="4" y="1282" width="406" height="6">
    <properties>
     <property name="solid" type="bool" value="true"/>
