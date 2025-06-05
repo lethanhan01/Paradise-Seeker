@@ -40,7 +40,7 @@ public class MonsterAI {
 			onAggro();
 		}
 	}
-
+//hello
     public void update(float deltaTime, Player player, GameMap map) {
         if (monster.isDead() || player == null || player.isDead()) return;
         float stopDisplayer = (float) Math.sqrt(player.getBounds().width * player.getBounds().width + player.getBounds().height * player.getBounds().height) / 2f;
