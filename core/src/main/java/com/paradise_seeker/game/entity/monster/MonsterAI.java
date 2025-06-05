@@ -1,4 +1,5 @@
 package com.paradise_seeker.game.entity.monster;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
@@ -72,27 +73,57 @@ public class MonsterAI {
                 float speed = monster.getSpeed() * deltaTime;
                 float moveX = (dx / dist) * speed;
                 float moveY = (dy / dist) * speed;
-                monster.getBounds().x += moveX;
-                monster.getBounds().y += moveY;
-            }
+                Rectangle bounds = monster.getBounds();
+
+             // kiểm tra trục X riêng
+             Rectangle testX = new Rectangle(bounds);
+             testX.x += moveX;
+             if (!map.isBlocked(testX, monster)) {
+                 bounds.x += moveX;
+             }
+             
+
+             // kiểm tra trục Y riêng
+             Rectangle testY = new Rectangle(bounds);
+             testY.y += moveY;
+             if (!map.isBlocked(testY, monster)) {
+                 bounds.y += moveY;
+             }
+			} 
 
             // Nếu tiếp cận rồi thì tấn công
             if (dist <= stopDistance && attackTimer <= 0f) {
                 player.takeDamage(monster.getAtk());
                 attackTimer = attackCooldown;
             }
-        } else {
-            // Quay về vị trí gốc
-            float dx = originalPosition.x - monster.getBounds().x;
-            float dy = originalPosition.y - monster.getBounds().y;
-            float dist = (float) Math.sqrt(dx * dx + dy * dy);
-            if (dist > 0.1f) {
-                float speed = monster.getSpeed() * deltaTime;
-                float moveX = (dx / dist) * speed;
-                float moveY = (dy / dist) * speed;
-                monster.getBounds().x += moveX;
-                monster.getBounds().y += moveY;
+        }
+            else {
+                // Quay về vị trí gốc
+                float dx = originalPosition.x - monster.getBounds().x;
+                float dy = originalPosition.y - monster.getBounds().y;
+                float dist = (float) Math.sqrt(dx * dx + dy * dy);
+                if (dist > 0.1f) {
+                    float speed = monster.getSpeed() * deltaTime;
+                    float moveX = (dx / dist) * speed;
+                    float moveY = (dy / dist) * speed;
+                    
+                Rectangle bounds = monster.getBounds();
+
+                // kiểm tra trục X riêng
+                Rectangle testX = new Rectangle(bounds);
+                testX.x += moveX;
+                if (!map.isBlocked(testX, monster)) {
+                    bounds.x += moveX;
+                }
+
+                // kiểm tra trục Y riêng
+                Rectangle testY = new Rectangle(bounds);
+                testY.y += moveY;
+                if (!map.isBlocked(testY, monster)) {
+                    bounds.y += moveY;
+                }
             }
         }
+
     }
 }

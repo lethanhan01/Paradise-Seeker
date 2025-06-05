@@ -229,11 +229,15 @@ public abstract class GameMap {
         }
     }
 
-    public boolean isBlocked(Rectangle nextBounds) {
+    public boolean isBlocked(Rectangle nextBounds, Collidable self) {
         for (Collidable c : collidables) {
+            if (c == self) continue; // tránh kiểm tra chính mình
             if (c.getBounds().overlaps(nextBounds)) return true;
         }
         return false;
+    }
+    public boolean isBlocked(Rectangle nextBounds) {
+        return isBlocked(nextBounds, null);
     }
 
 
