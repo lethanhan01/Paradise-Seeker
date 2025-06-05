@@ -14,7 +14,7 @@ public class FirewormElite extends Monster {
     private float scaleMultiplier = 3.0f;
 
     public FirewormElite(float x, float y) {
-        super(new Rectangle(x, y, 3.0f, 3.0f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y);
+        super(new Rectangle(x, y, 3.0f, 3.0f), 200f, 50f, 200f, 50f, 30f, 2f, x, y);
         // Note: spawnX and spawnY are now set in the parent constructor
         // Note: loadAnimations is already called in Monster constructor
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="120">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="140">
  <tileset firstgid="1" source="../map3-tilesets/0x72_DungeonTilesetII_v1.7.tsx"/>
  <tileset firstgid="1025" source="../map3-tilesets/16x16 dungeon ii wall reconfig v04 spritesheet.tsx"/>
  <tileset firstgid="1217" source="../map3-tilesets/atlas_floor.tsx"/>
@@ -221,6 +221,384 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="8" name="Spawns">
+  <object id="115" x="792" y="824">
+   <properties>
+    <property name="type" value="player"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="116" x="1410" y="672">
+   <properties>
+    <property name="class" value="SkeletonEnemy"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="135" x="426" y="146">
+   <properties>
+    <property name="class" value="SkeletonEnemy"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="133" x="800" y="452">
+   <properties>
+    <property name="class" value="SkeletonEnemy"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="126" x="1242" y="908">
+   <properties>
+    <property name="class" value="SkeletonEnemy"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="137" x="482" y="884">
+   <properties>
+    <property name="class" value="SkeletonEnemy"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="123" x="708" y="714">
+   <properties>
+    <property name="class" value="FlyingDemon"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="127" x="996" y="348">
+   <properties>
+    <property name="class" value="FlyingDemon"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="125" x="1262" y="484">
+   <properties>
+    <property name="class" value="RatCreep"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="138" x="580" y="468">
+   <properties>
+    <property name="class" value="RatCreep"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="124" x="276" y="980">
+   <properties>
+    <property name="class" value="FirewormElite"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="136" x="536" y="1480">
+   <properties>
+    <property name="class" value="FirewormElite"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="128" x="1280" y="210">
+   <properties>
+    <property name="class" value="FirewormElite"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="121" x="1108" y="1312">
+   <properties>
+    <property name="class" value="FireDemon"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="117" x="140" y="578">
+   <properties>
+    <property name="class" value="FlyingDemon"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="130" x="526" y="1164">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="131" x="808" y="1036">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="139" x="786" y="252">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="132" x="1410" y="256">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="118" x="1342" y="1554">
+   <properties>
+    <property name="type" value="portal"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="119" x="804" y="660">
+   <properties>
+    <property name="type" value="portal_start"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="traps" visible="0">
+  <object id="66" name="traps" x="1092" y="128" width="94" height="62">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="67" name="traps" x="772" y="290" width="58" height="62">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="68" name="traps" x="102" y="740" width="54" height="28">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="69" name="traps" x="392" y="676" width="20" height="60">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="70" name="traps" x="360" y="960" width="52" height="28">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="71" name="traps" x="358" y="1078" width="60" height="28">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="72" name="traps" x="966" y="830" width="20" height="22">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="73" name="traps" x="1286" y="830" width="54" height="22">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="74" name="traps" x="580" y="674" width="26" height="20">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="75" name="traps" x="386" y="188" width="28" height="24">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="76" name="traps" x="1508" y="992" width="26" height="20">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="77" name="traps" x="1032" y="590" width="16" height="18">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="78" name="traps" x="1094" y="370" width="18" height="18">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="79" name="traps" x="776" y="594" width="18" height="18">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="80" name="traps" x="1006" y="810" width="10" height="30">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="81" name="traps" x="1382" y="818" width="18" height="16">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="82" name="traps" x="1510" y="520" width="18" height="26">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="83" name="traps" x="452" y="166" width="24" height="30">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="84" name="traps" x="70" y="46" width="14" height="22">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="85" name="traps" x="232" y="368" width="18" height="24">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="86" name="traps" x="456" y="492" width="16" height="26">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="87" name="traps" x="546" y="354" width="32" height="36">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="88" name="traps" x="1032" y="48" width="20" height="22">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="89" name="traps" x="906" y="152" width="18" height="14">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="90" name="traps" x="1322" y="250" width="20" height="10">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="91" name="traps" x="900" y="920" width="24" height="12">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="92" name="traps" x="682" y="924" width="20" height="8">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="93" name="traps" x="1024" y="1052" width="34" height="8">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="94" name="traps" x="1124" y="1048" width="30" height="20">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="96" name="traps" x="198" y="842" width="18" height="24">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="97" name="traps" x="328" y="838" width="16" height="34">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="98" name="traps" x="260" y="1046" width="22" height="12">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="99" name="traps" x="362" y="618" width="18" height="34">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="100" name="traps" x="778" y="842" width="14" height="16">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="101" name="traps" x="614" y="652" width="20" height="14">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="102" name="traps" x="1324" y="364" width="12" height="16">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="103" name="traps" x="1132" y="944" width="16" height="20">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="104" name="traps" x="716" y="1070" width="10" height="24">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="105" name="traps" x="588" y="1066" width="10" height="28">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="106" name="traps" x="1514" y="1076" width="10" height="20">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="107" name="traps" x="872" y="1530" width="20" height="12">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="108" name="traps" x="1284" y="1532" width="24" height="16">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="109" name="traps" x="394" y="1194" width="12" height="26">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="110" name="traps" x="302" y="1202" width="10" height="18">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="111" name="traps" x="264" y="1388" width="14" height="20">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="114" name="traps" x="424" y="1390" width="14" height="22">
+   <properties>
+    <property name="traps" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="6" name="solid" visible="0">
   <object id="1" name="solid" x="41.3333" y="41.3333" width="1020" height="13.3333">
    <properties>
@@ -546,272 +924,6 @@
    <properties>
     <property name="solid" type="bool" value="true"/>
    </properties>
-  </object>
- </objectgroup>
- <objectgroup id="7" name="traps" visible="0">
-  <object id="66" name="traps" x="1092" y="128" width="94" height="62">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="67" name="traps" x="772" y="290" width="58" height="62">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="68" name="traps" x="102" y="740" width="54" height="28">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="69" name="traps" x="392" y="676" width="20" height="60">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="70" name="traps" x="360" y="960" width="52" height="28">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="71" name="traps" x="358" y="1078" width="60" height="28">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="72" name="traps" x="966" y="830" width="20" height="22">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="73" name="traps" x="1286" y="830" width="54" height="22">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="74" name="traps" x="580" y="674" width="26" height="20">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="75" name="traps" x="386" y="188" width="28" height="24">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="76" name="traps" x="1508" y="992" width="26" height="20">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="77" name="traps" x="1032" y="590" width="16" height="18">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="78" name="traps" x="1094" y="370" width="18" height="18">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="79" name="traps" x="776" y="594" width="18" height="18">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="80" name="traps" x="1006" y="810" width="10" height="30">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="81" name="traps" x="1382" y="818" width="18" height="16">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="82" name="traps" x="1510" y="520" width="18" height="26">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="83" name="traps" x="452" y="166" width="24" height="30">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="84" name="traps" x="70" y="46" width="14" height="22">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="85" name="traps" x="232" y="368" width="18" height="24">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="86" name="traps" x="456" y="492" width="16" height="26">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="87" name="traps" x="546" y="354" width="32" height="36">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="88" name="traps" x="1032" y="48" width="20" height="22">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="89" name="traps" x="906" y="152" width="18" height="14">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="90" name="traps" x="1322" y="250" width="20" height="10">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="91" name="traps" x="900" y="920" width="24" height="12">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="92" name="traps" x="682" y="924" width="20" height="8">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="93" name="traps" x="1024" y="1052" width="34" height="8">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="94" name="traps" x="1124" y="1048" width="30" height="20">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="96" name="traps" x="198" y="842" width="18" height="24">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="97" name="traps" x="328" y="838" width="16" height="34">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="98" name="traps" x="260" y="1046" width="22" height="12">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="99" name="traps" x="362" y="618" width="18" height="34">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="100" name="traps" x="778" y="842" width="14" height="16">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="101" name="traps" x="614" y="652" width="20" height="14">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="102" name="traps" x="1324" y="364" width="12" height="16">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="103" name="traps" x="1132" y="944" width="16" height="20">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="104" name="traps" x="716" y="1070" width="10" height="24">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="105" name="traps" x="588" y="1066" width="10" height="28">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="106" name="traps" x="1514" y="1076" width="10" height="20">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="107" name="traps" x="872" y="1530" width="20" height="12">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="108" name="traps" x="1284" y="1532" width="24" height="16">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="109" name="traps" x="394" y="1194" width="12" height="26">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="110" name="traps" x="302" y="1202" width="10" height="18">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="111" name="traps" x="264" y="1388" width="14" height="20">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="114" name="traps" x="424" y="1390" width="14" height="22">
-   <properties>
-    <property name="traps" type="bool" value="true"/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup id="8" name="Spawns">
-  <object id="115" x="792" y="824">
-   <properties>
-    <property name="type" value="player"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="116" x="1410" y="672">
-   <properties>
-    <property name="class" value="IceElite"/>
-    <property name="type" value="monster"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="117" x="124" y="548">
-   <properties>
-    <property name="class" value="FlyingDemon"/>
-    <property name="type" value="monster"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="118" x="1342" y="1554">
-   <properties>
-    <property name="type" value="portal"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="119" x="804" y="660">
-   <properties>
-    <property name="type" value="portal_start"/>
-   </properties>
-   <point/>
   </object>
  </objectgroup>
 </map>
