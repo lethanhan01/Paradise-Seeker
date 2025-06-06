@@ -2,12 +2,13 @@ package com.paradise_seeker.game.entity.monster;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.paradise_seeker.game.entity.player.AnimationManager;
 
 /**
  * Responsible for managing all monster animations.
  * Handles animation states, timers, and provides the appropriate animation frame based on monster state.
  */
-public class MonsterAnimationManager {
+public class MonsterAnimationManagerImpl implements AnimationManager {
     public Monster owner;
 
     // Animation sets
@@ -31,13 +32,14 @@ public class MonsterAnimationManager {
     public float cleaveTimer = 0f;
     public float cleaveDuration = 1.2f;
 
-    public MonsterAnimationManager(Monster monster) {
+    public MonsterAnimationManagerImpl(Monster monster) {
         this.owner = monster;
     }
+    @Override
+	public void loadAnimations() {
 
-    /**
-     * Sets all the animations for this monster
-     */
+	}
+
     public void setAnimations(Animation<TextureRegion> idleLeft, Animation<TextureRegion> idleRight,
                             Animation<TextureRegion> walkLeft, Animation<TextureRegion> walkRight,
                             Animation<TextureRegion> takeHitLeft, Animation<TextureRegion> takeHitRight,
@@ -55,13 +57,6 @@ public class MonsterAnimationManager {
         this.deathRight = deathRight;
     }
 
-    /**
-     * Update the animation state
-     * @param deltaTime time since last frame
-     * @param isMoving if the monster is moving
-     * @param facingRight if the monster is facing right
-     * @param isDead if the monster is dead
-     */
     public void update(float deltaTime, boolean isMoving, boolean facingRight, boolean isDead, boolean isTakingHit, float playerX) {
         stateTime += deltaTime;
         this.facingRight = playerX > owner.getBounds().x;
@@ -207,4 +202,40 @@ public class MonsterAnimationManager {
         this.cleaveLeft = left;
         this.cleaveRight = right;
     }
+
+	@Override
+	public Animation<TextureRegion> getRunAnimation(String direction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Animation<TextureRegion> getIdleAnimation(String direction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Animation<TextureRegion> getAttackAnimation(String direction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Animation<TextureRegion> getHitAnimation(String direction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Animation<TextureRegion> getDeathAnimation(String direction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
+	}
 }

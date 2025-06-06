@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * Tuân thủ nguyên tắc SRP - chỉ chịu trách nhiệm về rendering
  */
 public interface PlayerRenderer {
-
     /**
      * Render player chính
      */

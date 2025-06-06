@@ -4,17 +4,15 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class PlayerRendererImpl implements PlayerRenderer{
-    private PlayerAnimationManager animationManager;
+    private PlayerAnimationManagerImpl animationManager;
 
     // Shield textures
     private Texture shieldDown, shieldUp, shieldLeft, shieldRight;
 
-    public PlayerRendererImpl(PlayerAnimationManager animationManager) {
+    public PlayerRendererImpl(PlayerAnimationManagerImpl animationManager) {
         this.animationManager = animationManager;
         loadShieldTextures();
     }
@@ -109,10 +107,10 @@ public class PlayerRendererImpl implements PlayerRenderer{
         TextureRegion currentFrame = hitAnimation != null
             ? hitAnimation.getKeyFrame(player.getStateTime(), false)
             : null;
-        
+
         if (hitAnimation != null && hitAnimation.isAnimationFinished(player.getStateTime())) {
             player.isHit = false; // Reset trạng thái khi hoạt ảnh kết thúc
-        } 
+        }
         if (currentFrame == null) {
             System.out.println("WARNING: Player renderHit frame NULL! Using idle frame.");
             currentFrame = animationManager.getIdleAnimation(player.getDirection()).getKeyFrame(0, true);

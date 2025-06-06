@@ -15,7 +15,7 @@ public class SmokeManager {
         smokes.add(new Smoke(x, y));
     }
 
-    public void update(float deltaTime, PlayerAnimationManager animationManager) {
+    public void update(float deltaTime, PlayerAnimationManagerImpl animationManager) {
         Iterator<Smoke> iter = smokes.iterator();
         while (iter.hasNext()) {
             Smoke s = iter.next();
@@ -26,7 +26,7 @@ public class SmokeManager {
         }
     }
 
-    public void render(SpriteBatch batch, PlayerAnimationManager animationManager) {
+    public void render(SpriteBatch batch, PlayerAnimationManagerImpl animationManager) {
         Animation<TextureRegion> smokeAnim = animationManager.getSmokeAnimation();
         for (Smoke s : smokes) {
             TextureRegion frame = smokeAnim.getKeyFrame(s.stateTime, false);
