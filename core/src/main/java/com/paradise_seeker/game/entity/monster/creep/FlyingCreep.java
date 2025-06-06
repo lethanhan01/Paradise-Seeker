@@ -86,7 +86,7 @@ public class FlyingCreep extends Monster {
 
         // Add flying-specific collision behavior if needed
         if (!isDead) {
-            player.takeDamage(8); // Apply additional damage on collision
+            player.takeHit(8); // Apply additional damage on collision
         }
     }
 

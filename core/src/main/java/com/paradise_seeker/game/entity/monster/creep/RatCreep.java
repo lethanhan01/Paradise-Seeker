@@ -95,7 +95,7 @@ public class RatCreep extends Monster {
 
         // Add rat-specific collision behavior if needed
         if (!isDead) {
-            player.takeDamage(7); // Apply small damage on collision
+            player.takeHit(7); // Apply small damage on collision
         }
     }
 

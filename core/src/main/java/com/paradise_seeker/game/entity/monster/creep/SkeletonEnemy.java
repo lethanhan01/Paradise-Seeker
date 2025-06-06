@@ -135,7 +135,7 @@ public class SkeletonEnemy extends Monster {
 
         // Add skeleton-specific collision behavior if needed
         if (!isDead) {
-            player.takeDamage(6); // Apply small damage on collision
+            player.takeHit(6); // Apply small damage on collision
         }
     }
 

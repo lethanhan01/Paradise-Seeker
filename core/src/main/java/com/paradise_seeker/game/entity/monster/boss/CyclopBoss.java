@@ -113,7 +113,7 @@ public class CyclopBoss extends Monster {
             spell.update(delta);
 
             if (spell.getRect().overlaps(player.getBounds())) {
-                player.takeDamage((int)skillDamage);
+                player.takeHit((int)skillDamage);
                 it.remove();
             }
         }

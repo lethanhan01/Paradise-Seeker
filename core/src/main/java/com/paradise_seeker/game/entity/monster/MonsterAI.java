@@ -93,7 +93,7 @@ public class MonsterAI {
 
             // Nếu tiếp cận rồi thì tấn công
             if (dist <= stopDistance && attackTimer <= 0f) {
-                player.takeDamage(monster.getAtk());
+                player.takeHit(monster.atk);
                 attackTimer = attackCooldown;
             }
         }

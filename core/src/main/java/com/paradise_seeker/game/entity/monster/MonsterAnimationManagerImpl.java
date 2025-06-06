@@ -35,10 +35,6 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
     public MonsterAnimationManagerImpl(Monster monster) {
         this.owner = monster;
     }
-    @Override
-	public void loadAnimations() {
-
-	}
 
     public void setAnimations(Animation<TextureRegion> idleLeft, Animation<TextureRegion> idleRight,
                             Animation<TextureRegion> walkLeft, Animation<TextureRegion> walkRight,
@@ -57,7 +53,7 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
         this.deathRight = deathRight;
     }
 
-    public void update(float deltaTime, boolean isMoving, boolean facingRight, boolean isDead, boolean isTakingHit, float playerX) {
+    public void update(float deltaTime, boolean isMoving, boolean isDead, boolean isTakingHit, float playerX) {
         stateTime += deltaTime;
         this.facingRight = playerX > owner.getBounds().x;
 
@@ -119,84 +115,25 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
                 idleLeft.getKeyFrame(stateTime, true);
         }
     }
-
-    /**
-     * Start cleave animation
-     */
     public void startCleaveAnimation() {
         isCleaving = true;
         cleaveTimer = cleaveDuration;
     }
-
-    /**
-     * Start take hit animation
-     */
     public void startTakeHitAnimation() {
         isTakingHit = true;
         takeHitTimer = takeHitDuration;
     }
-
-    /**
-     * @return the current animation frame
-     */
     public TextureRegion getCurrentFrame() {
         return currentFrame;
     }
-
-    /**
-     * @return true if the monster is currently in the cleave animation
-     */
     public boolean isCleaving() {
         return isCleaving;
     }
-
-    /**
-     * Set the duration for the cleave animation
-     */
-    public void setCleaveDuration(float duration) {
-        this.cleaveDuration = duration;
-    }
-
-    /**
-     * Set the duration for the take hit animation
-     */
-    public void setTakeHitDuration(float duration) {
-        this.takeHitDuration = duration;
-    }
-
-    /**
-     * Reset the state time (e.g., when transitioning animations)
-     */
-    public void resetStateTime() {
-        this.stateTime = 0f;
-    }
-
-    /**
-     * @return the current state time of animations
-     */
     public float getStateTime() {
         return stateTime;
     }
-
-    /**
-     * @return true if the monster is facing right
-     */
     public boolean isFacingRight() {
         return facingRight;
-    }
-
-    /**
-     * Set whether the monster is facing right
-     */
-    public void setFacingRight(boolean facingRight) {
-        this.facingRight = facingRight;
-    }
-
-    /**
-     * @return true if the monster is currently in the take hit animation
-     */
-    public boolean isTakingHit() {
-        return isTakingHit;
     }
     public void setCleaveAnimations(Animation<TextureRegion> left, Animation<TextureRegion> right) {
         this.cleaveLeft = left;
@@ -206,31 +143,51 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
 	@Override
 	public Animation<TextureRegion> getRunAnimation(String direction) {
 		// TODO Auto-generated method stub
-		return null;
+		switch (direction) {
+			case "left": return walkLeft;
+			case "right": return walkRight;
+			default: return walkRight;
+		}
 	}
 
 	@Override
 	public Animation<TextureRegion> getIdleAnimation(String direction) {
 		// TODO Auto-generated method stub
-		return null;
+		switch (direction) {
+			case "left": return idleLeft;
+			case "right": return idleRight;
+			default: return idleRight;
+		}
 	}
 
 	@Override
 	public Animation<TextureRegion> getAttackAnimation(String direction) {
 		// TODO Auto-generated method stub
-		return null;
+		switch (direction) {
+			case "left": return cleaveLeft;
+			case "right": return cleaveRight;
+			default: return cleaveLeft;
+		}
 	}
 
 	@Override
 	public Animation<TextureRegion> getHitAnimation(String direction) {
 		// TODO Auto-generated method stub
-		return null;
+		switch (direction) {
+			case "left": return takeHitLeft;
+			case "right": return takeHitRight;
+			default: return takeHitRight;
+		}
 	}
 
 	@Override
 	public Animation<TextureRegion> getDeathAnimation(String direction) {
 		// TODO Auto-generated method stub
-		return null;
+		switch (direction) {
+			case "left": return deathLeft;
+			case "right": return deathRight;
+			default: return deathRight;
+		}
 	}
 
 	@Override

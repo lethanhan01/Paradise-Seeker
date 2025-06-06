@@ -17,13 +17,23 @@ public abstract class Monster extends Character {
     public float spawnX;
     public float spawnY;
 
-    // Manager classes for separation of concerns
     public MonsterAnimationManagerImpl animationManager;
     public MonsterCollisionHandler collisionHandler;
     public HPBarMonsterRenderer renderer;
     public MonsterAI ai;
+    public TextureRegion currentFrame;
 
-    // Store the last position to determine if monster is moving
+    public float stateTime = 0f;
+    public boolean facingRight = true;
+
+    public boolean isTakingHit = false;
+    public float takeHitTimer = 0f;
+    public float takeHitDuration = 0.5f;
+
+    public boolean isCleaving = false;
+    public float cleaveTimer = 0f;
+    public float cleaveDuration = 1.2f;
+
     public Vector2 lastPosition = new Vector2();
     public boolean isMoving = false;
 
@@ -64,7 +74,7 @@ public abstract class Monster extends Character {
         lastPosition.set(bounds.x, bounds.y);
 
         // Update animation state
-        animationManager.update(deltaTime, isMoving, isFacingRight(), isDead, false, player.getBounds().x);
+        animationManager.update(deltaTime, isMoving, isDead, false, player.getBounds().x);
     }
 
     public void render(SpriteBatch batch) {
@@ -89,18 +99,16 @@ public abstract class Monster extends Character {
     }
 
     public float getAtk() {
+
         return atk;
     }
 
     public float getSpeed() {
+
         return speed;
     }
 
-    /**
-     * Handles the monster taking damage.
-     *
-     */
-    public void takeDamage(float damage) {
+    public void takeHit(float damage) {
         if (isDead) return;
 
         this.hp = Math.max(0, this.hp - damage);
@@ -154,15 +162,9 @@ public abstract class Monster extends Character {
 
     }
 
-    /**
-     * Called to set up all animations for this monster.
-     * Must be implemented by subclasses.
-     */
+
     public abstract void loadAnimations();
 
-    /**
-     * Sets all animations in the animation manager after they've been loaded.
-     */
     protected void setupAnimations(
             Animation<TextureRegion> idleLeft, Animation<TextureRegion> idleRight,
             Animation<TextureRegion> walkLeft, Animation<TextureRegion> walkRight,
