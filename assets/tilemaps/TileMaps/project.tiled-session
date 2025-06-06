@@ -74,14 +74,14 @@
         },
         "maps/map2.tmx": {
             "expandedObjectLayers": [
-                9,
-                8
+                8,
+                9
             ],
             "scale": 0.75,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 1166.6666666666667,
-                "y": 800.6666666666667
+                "x": 162.66666666666663,
+                "y": 635.3333333333333
             }
         },
         "maps/map3.tmx": {
@@ -98,22 +98,21 @@
         },
         "maps/map4.tmx": {
             "expandedObjectLayers": [
-                32,
-                33
+                32
             ],
-            "scale": 0.5,
-            "selectedLayer": 18,
+            "scale": 2,
+            "selectedLayer": 15,
             "viewCenter": {
-                "x": 860,
-                "y": 653
+                "x": 282.5,
+                "y": 1051.25
             }
         },
         "maps/map5.tmx": {
-            "scale": 0.33903125,
-            "selectedLayer": 0,
+            "scale": 0.75,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 799.3363443635359,
-                "y": 797.8615540602821
+                "x": 709.3333333333333,
+                "y": 607.3333333333333
             }
         }
     },
@@ -131,7 +130,7 @@
         "maps/map3.tmx"
     ],
     "project": "project.tiled-project",
-    "property.type": "bool",
+    "property.type": "string",
     "recentFiles": [
         "maps/map5.tmx",
         "maps/map2.tmx",

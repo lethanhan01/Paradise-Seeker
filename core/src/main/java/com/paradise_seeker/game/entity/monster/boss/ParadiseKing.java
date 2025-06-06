@@ -15,7 +15,7 @@ public class ParadiseKing extends Monster {
     private float scaleMultiplier = 12f;
 
     public ParadiseKing(float x, float y) {
-        super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed tuỳ chỉnh theo game bạn
+        super(new Rectangle(x, y, 2f, 2f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed tuỳ chỉnh theo game bạn
         // Note: loadAnimations is already called in Monster constructor
         // No need to set spawnX, spawnY as they're now set in the parent constructor
         this.collisionHandler.setCleaveRange(5f);
