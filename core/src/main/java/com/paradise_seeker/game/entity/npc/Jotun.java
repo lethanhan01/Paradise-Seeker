@@ -90,7 +90,6 @@ public class Jotun extends NPC {
         float dy = playerY - npcY;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-        boolean wasInRange = playerInRange;
         playerInRange = distance <= 2f;
 
         if (playerInRange) {
