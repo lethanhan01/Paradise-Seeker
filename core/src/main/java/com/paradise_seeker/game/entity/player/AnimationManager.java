@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public interface AnimationManager {
 
-    void loadAnimations();
-
     Animation<TextureRegion> getRunAnimation(String direction);
 
     Animation<TextureRegion> getIdleAnimation(String direction);

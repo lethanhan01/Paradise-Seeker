@@ -93,7 +93,7 @@ public class DevilCreep extends Monster {
         // Add devil-specific collision behavior if needed
         if (!isDead) {
             // For example, apply some effect when devil touches player
-            player.takeDamage(10); // Apply additional damage
+            player.takeHit(10); // Apply additional damage
         }
     }
 

@@ -88,7 +88,7 @@ public class EvilPlant extends Monster {
         // Add EvilPlant-specific collision behavior if needed
         if (!isDead) {
             // For example, apply some poison effect when plant touches player
-            player.takeDamage(5); // Apply small poison damage
+            player.takeHit(5); // Apply small poison damage
         }
     }
 

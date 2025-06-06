@@ -88,7 +88,7 @@ public class FirewormElite extends Monster {
         // Add FirewormElite-specific collision behavior here if needed
         if (!isDead) {
             // Additional damage or effects when colliding with player
-            player.takeDamage(15); // Example: extra fire damage
+            player.takeHit(15); // Example: extra fire damage
         }
     }
 

@@ -23,8 +23,8 @@ public class MonsterCollisionHandler {
     /**
      * Handle collision with another collidable entity
      */
-    
-    
+
+
     public void handleCollision(Collidable other) {
         if (other instanceof Player) {
             handlePlayerCollision((Player) other);
@@ -40,7 +40,7 @@ public class MonsterCollisionHandler {
         }
 
         // Calculate damage based on monster's attack value
-        int damage = (int) owner.getAtk();
+        int damage = (int) owner.atk;
 
         // If player is shielding, reduce damage and handle shield effects
         if (player.isShielding) {
@@ -48,12 +48,12 @@ public class MonsterCollisionHandler {
             damage = Math.max(1, damage / 2); // Reduce damage if shielding
         } else {
         	if (!player.isInvulnerable()) {
-                player.takeDamage(damage);
+                player.takeHit(damage);
             }
         }
 
         // Apply damage to player unless they're invulnerable from a recent hit
-        
+
     }
 
     /**
@@ -72,11 +72,11 @@ public class MonsterCollisionHandler {
     public void applyCleaveHitToPlayer(Player player) {
         if (pendingCleaveHit && !cleaveDamageDealt) {
             // Calculate cleave damage (could be higher than regular damage)
-            float cleaveDamage = owner.getAtk() * 1.5f;
+            float cleaveDamage = owner.atk * 1.5f;
 
             // Apply damage if player is not invulnerable
             if (!player.isInvulnerable()) {
-                player.takeDamage((int) cleaveDamage);
+                player.takeHit((int) cleaveDamage);
                 player.isHit = true;
                 player.stateTime = 0;
             }

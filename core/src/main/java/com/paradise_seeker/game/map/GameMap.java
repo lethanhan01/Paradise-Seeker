@@ -255,7 +255,7 @@ public abstract class GameMap {
 //Hello
     public void damageMonstersInRange(float x, float y, float radius, float damage) {
         for (Monster m : monsters) {
-            if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeDamage(damage);
+            if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeHit(damage);
         }
     }
 

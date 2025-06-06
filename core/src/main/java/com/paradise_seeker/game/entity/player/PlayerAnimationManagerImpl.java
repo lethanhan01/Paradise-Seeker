@@ -19,8 +19,7 @@ public class PlayerAnimationManagerImpl implements AnimationManager {
     private Animation<TextureRegion> deathAnimation;
     private Animation<TextureRegion> smokeAnimation;
 
-    @Override
-    public void loadAnimations() {
+    public void setAnimations() {
         // Load animation di chuyển
         runDown = loadAnimation("images/Entity/characters/player/char_run_down_anim_strip_6.png");
         runUp = loadAnimation("images/Entity/characters/player/char_run_up_anim_strip_6.png");

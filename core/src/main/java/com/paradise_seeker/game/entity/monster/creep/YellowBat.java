@@ -85,7 +85,7 @@ public class YellowBat extends Monster {
 
         // Add bat-specific collision behavior if needed
         if (!isDead) {
-            player.takeDamage(5); // Apply small damage on collision
+            player.takeHit(5); // Apply small damage on collision
         }
     }
 

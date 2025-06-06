@@ -165,7 +165,7 @@ public class FlyingDemon extends Monster {
             bounds.x += velocityX * deltaTime;
             bounds.y += velocityY * deltaTime;
             if (player != null && bounds.overlaps(player.bounds)) {
-                player.takeDamage(15); // Sát thương đạn
+                player.takeHit(15); // Sát thương đạn
                 active = false;
             }
         }

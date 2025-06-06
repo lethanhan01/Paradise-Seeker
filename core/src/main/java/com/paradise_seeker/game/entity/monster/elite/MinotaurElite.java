@@ -87,7 +87,7 @@ public class MinotaurElite extends Monster {
         // Add minotaur-specific collision behavior if needed
         if (!isDead) {
             // Additional damage when colliding with player
-            player.takeDamage(20); // Example: strong minotaur charging damage
+            player.takeHit(20); // Example: strong minotaur charging damage
         }
     }
 

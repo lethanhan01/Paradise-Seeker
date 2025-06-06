@@ -101,7 +101,7 @@ public class Nyx extends Monster {
         super.onCollision(player);
         // Add Boss3-specific collision behavior
         if (!isDead) {
-            player.takeDamage(20); // Assume 20 damage on collision
+            player.takeHit(20); // Assume 20 damage on collision
         }
     }
 

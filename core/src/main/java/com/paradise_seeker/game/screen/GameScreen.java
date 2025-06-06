@@ -148,7 +148,7 @@ public class GameScreen implements Screen {
                 projectile.update();
                 for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
                     if (projectile.isActive() && !monster.isDead() && monster.getBounds().overlaps(projectile.getHitbox())) {
-                        monster.takeDamage(projectile.getDamage());
+                        monster.takeHit(projectile.getDamage());
                         projectile.setInactive();
                     }
                 }
