@@ -14,7 +14,6 @@ public abstract class Character implements Collidable, Renderable {
     public float x, y;
 
     public Character() {
-
     }
 
     public Character(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y) {
