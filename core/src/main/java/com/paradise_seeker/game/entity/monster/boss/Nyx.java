@@ -15,10 +15,10 @@ public class Nyx extends Monster {
     private float scaleMultiplier = 10f;
 
     public Nyx(float x, float y) {
-        super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // Tùy chỉnh stats phù hợp
+        super(new Rectangle(x, y, 3f, 3f), 500f, 50f, 500f, 50f, 20f, 2f, x, y); // Tùy chỉnh stats phù hợp
         // Note: loadAnimations is already called in Monster constructor
         // No need to set spawnX, spawnY as they're now set in the parent constructor
-        this.collisionHandler.setCleaveRange(5f);
+        this.collisionHandler.setCleaveRange(3f);
     }
 
     @Override

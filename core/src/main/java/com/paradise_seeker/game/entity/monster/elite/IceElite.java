@@ -15,7 +15,7 @@ public class IceElite extends Monster {
     private float scaleMultiplier = 5f;
 
     public IceElite(float x, float y) {
-    	super(new Rectangle(x, y, 10f, 6f), 1000f, 500f, 1000f, 500f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
+    	super(new Rectangle(x, y, 3f, 3f), 500f, 100f, 500f, 100f, 20f, 2f, x, y); // HP, speed, cleaveDamage, offset
         // Note: spawnX and spawnY are now set in the parent constructor
         // Note: loadAnimations is already called in Monster constructor
 
