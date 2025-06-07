@@ -301,8 +301,9 @@ public class Player extends Character {
 
     @Override
     public void onDeath() {
-        isDead = true;
-        stateTime = 0;
+        //isDead = true;
+        //stateTime = 0;
+    	hp = MAX_HP;
     }
 
     @Override

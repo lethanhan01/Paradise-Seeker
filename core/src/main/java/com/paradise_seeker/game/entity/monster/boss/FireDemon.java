@@ -9,83 +9,86 @@ import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.player.Player;
 
 public class FireDemon extends Monster {
-    // Boss-specific properties
     private float cleaveRange = 5f;
 
     public FireDemon(float x, float y) {
         super(new Rectangle(x, y, 2f, 2f), 500f, 50f, 500f, 50f, 50f, 2f, x, y);
-        // Note: loadAnimations is already called in Monster constructor
-        // No need to set currentFrame, it's managed by animationManager now
         this.collisionHandler.setCleaveRange(cleaveRange);
     }
 
     @Override
     public void loadAnimations() {
-        // WALK
-        Animation<TextureRegion> walkRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/phai/", "walk", 8, ".png", 0);
-        Animation<TextureRegion> walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/trai/", "walk", 8, ".png", 0);
+        // WALK: 1-12
+        Animation<TextureRegion> walkRight = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/walk/phai/demon_walk_", 1, 12);
+        Animation<TextureRegion> walkLeft  = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/walk/trai/demon_walk_", 1, 12);
 
-        // IDLE
-        Animation<TextureRegion> idleRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/idle/phai/", "idle", 8, ".png", 0);
-        Animation<TextureRegion> idleLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/idle/trai/", "idle", 8, ".png", 0);
+        // IDLE: Phai (demon_idle_1 (0).png đến demon_idle_1 (5).png), Trai (demon_idle_1.png ... demon_idle_6.png)
+        Animation<TextureRegion> idleRight = loadIdlePhai();
+        Animation<TextureRegion> idleLeft  = loadIdleTrai();
 
-        // CLEAVE (có 2 đòn, mỗi đòn 8 frame)
-        Animation<TextureRegion> cleaveRight = loadComboAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/cleave/phai/", "atk", 2, 8, ".png");
-        Animation<TextureRegion> cleaveLeft  = loadComboAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/cleave/trai/", "atk", 2, 8, ".png");
+        // CLEAVE: 1-15
+        Animation<TextureRegion> cleaveRight = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/cleave/phai/demon_cleave_", 1, 15);
+        Animation<TextureRegion> cleaveLeft  = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/cleave/trai/demon_cleave_", 1, 15);
 
-        // TAKE HIT
-        Animation<TextureRegion> takeHitRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/takehit/phai/", "takehit", 3, ".png", 0);
-        Animation<TextureRegion> takeHitLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/takehit/trai/", "takehit", 3, ".png", 0);
+        // TAKE HIT: 1-5
+        Animation<TextureRegion> takeHitRight = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/take_hit/phai/demon_take_hit_", 1, 5);
+        Animation<TextureRegion> takeHitLeft  = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/take_hit/trai/demon_take_hit_", 1, 5);
 
-        // DEATH
-        Animation<TextureRegion> deathRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/death/phai/", "death", 7, ".png", 0);
-        Animation<TextureRegion> deathLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/death/trai/", "death", 7, ".png", 0);
+        // DEATH: 1-22
+        Animation<TextureRegion> deathRight = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/death/phai/demon_death_", 1, 22);
+        Animation<TextureRegion> deathLeft  = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/death/trai/demon_death_", 1, 22);
 
-        // Set up all animations using the helper method from Monster
         setupAnimations(
-            idleLeft, idleRight,
-            walkLeft, walkRight,
-            takeHitLeft, takeHitRight,
-            cleaveLeft, cleaveRight,
-            deathLeft, deathRight
+                idleLeft, idleRight,
+                walkLeft, walkRight,
+                takeHitLeft, takeHitRight,
+                cleaveLeft, cleaveRight,
+                deathLeft, deathRight
         );
     }
 
-    // Load animation cơ bản (frame đặt tên liên tục: walk0.png, walk1.png, ...)
-    private Animation<TextureRegion> loadAnimation(String folder, String prefix, int frameCount, String suffix, int startIdx) {
-        TextureRegion[] frames = new TextureRegion[frameCount];
-        for (int i = 0; i < frameCount; i++) {
-            String filename = folder + prefix + (i + startIdx) + suffix;
-            Texture texture = new Texture(Gdx.files.internal(filename));
-            frames[i] = new TextureRegion(texture);
+    // Helper cho các action bình thường (tên liên tục)
+    private Animation<TextureRegion> loadFrameSequence(String basePath, int from, int to) {
+        int count = to - from + 1;
+        TextureRegion[] frames = new TextureRegion[count];
+        for (int i = 0; i < count; i++) {
+            String filename = basePath + (i + from) + ".png";
+            frames[i] = new TextureRegion(new Texture(Gdx.files.internal(filename)));
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.08f, frames); // có thể điều chỉnh thời gian cho phù hợp visual
     }
 
-    // Load animation cleave có nhiều đòn: .../atk0/atk0.png, .../atk1/atk0.png, ...
-    private Animation<TextureRegion> loadComboAnimation(String folder, String comboPrefix, int comboCount, int framesPerCombo, String suffix) {
-        TextureRegion[] frames = new TextureRegion[comboCount * framesPerCombo];
-        int idx = 0;
-        for (int combo = 0; combo < comboCount; combo++) {
-            String subFolder = folder + comboPrefix + combo + "/";
-            for (int frame = 0; frame < framesPerCombo; frame++) {
-                String filename = subFolder + comboPrefix + frame + suffix;
-                Texture texture = new Texture(Gdx.files.internal(filename));
-                frames[idx++] = new TextureRegion(texture);
-            }
+    // idle/phai (tên lẻ kiểu demon_idle_1 (0).png ...)
+    private Animation<TextureRegion> loadIdlePhai() {
+        int count = 6;
+        TextureRegion[] frames = new TextureRegion[count];
+        for (int i = 0; i < count; i++) {
+            String filename = "images/Entity/characters/monsters/boss/map3/FireDemon/idle/phai/demon_idle_1 (" + i + ").png";
+            frames[i] = new TextureRegion(new Texture(Gdx.files.internal(filename)));
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
+    }
+    // idle/trai (tên demon_idle_1.png ... demon_idle_6.png)
+    private Animation<TextureRegion> loadIdleTrai() {
+        int count = 6;
+        TextureRegion[] frames = new TextureRegion[count];
+        for (int i = 1; i <= count; i++) {
+            String filename = "images/Entity/characters/monsters/boss/map3/FireDemon/idle/trai/demon_idle_" + i + ".png";
+            frames[i - 1] = new TextureRegion(new Texture(Gdx.files.internal(filename)));
+        }
+        return new Animation<>(0.12f, frames);
     }
 
     @Override
     public void onCollision(Player player) {
         super.onCollision(player);
-        // Add Boss1-specific collision logic here
+        // Thêm logic boss nếu cần
     }
 
     @Override
     public void onDeath() {
         super.onDeath();
-        // Add Boss1-specific death logic here
+        // Logic boss khi chết
     }
 }
+
