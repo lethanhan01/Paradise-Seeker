@@ -63,4 +63,8 @@ public class GameMapManager {
         // Now, and ONLY now, load the spawn for the current map:
         currentMap.loadSpawnPoints(player);
     }
+
+	public int getCurrentMapIndex() {
+		return currentMapIndex;
+	}
 }
