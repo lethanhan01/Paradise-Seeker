@@ -217,8 +217,25 @@ public class GameScreen implements Screen {
         GameMap currentMap = mapManager.getCurrentMap();
         if (currentMap.portal != null && player.getBounds().overlaps(currentMap.portal.getBounds())) {
             currentMap.portal.onCollision(player);
-            mapManager.switchToNextMap();
-            switchMusicAndShowMap();
+            if (mapManager.getCurrentMapIndex() != 3) {
+            	mapManager.switchToNextMap();
+                switchMusicAndShowMap();
+			} else {
+				boolean hasKey = false;
+	        	for (Item item : player.getInventory()) {
+					if (item.getName().equals("Fragment of the Lost Treasure")) {
+						hasKey = true;
+						break;
+					}
+				}
+	        	if (hasKey) {
+	                // chuyển sang map 5
+	                mapManager.switchToNextMap();
+	            } else {
+	                hud.showNotification("> You need the Key to enter!");
+	            }
+			}
+            
         }
         if (currentMap.getStartPortal() != null && player.getBounds().overlaps(currentMap.getStartPortal().getBounds())) {
             currentMap.getStartPortal().onCollision(player);
