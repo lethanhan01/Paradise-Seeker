@@ -144,13 +144,13 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
     @Override
     public void handleSkills(Player player) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
-            if (player.getMp() >= 2) {
+            if (player.getMp() >= 2 && player.getPlayerSkill1().canUse(System.currentTimeMillis())) {
                 player.setMp(player.getMp() - 2);
                 player.getPlayerSkill1().castSkill(player.getAtk(), player.getBounds(), player.getDirection());
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-            if (player.getMp() >= 2) {
+            if (player.getMp() >= 2 && player.getPlayerSkill2().canUse(System.currentTimeMillis())) {
                 player.setMp(player.getMp() - 2);
                 player.getPlayerSkill2().castSkill(player.getAtk(), player.getBounds(), player.getDirection());
             }
