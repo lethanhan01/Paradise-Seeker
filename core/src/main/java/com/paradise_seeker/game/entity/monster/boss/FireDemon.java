@@ -55,7 +55,7 @@ public class FireDemon extends Monster {
             String filename = basePath + (i + from) + ".png";
             frames[i] = new TextureRegion(new Texture(Gdx.files.internal(filename)));
         }
-        return new Animation<>(0.08f, frames); // có thể điều chỉnh thời gian cho phù hợp visual
+        return new Animation<>(0.12f, frames);
     }
 
     // idle/phai (tên lẻ kiểu demon_idle_1 (0).png ...)

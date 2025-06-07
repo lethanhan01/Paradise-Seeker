@@ -68,12 +68,12 @@ public class RatCreep extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     private Animation<TextureRegion> loadSingleFrame(String filepath) {
         TextureRegion frame = new TextureRegion(new Texture(Gdx.files.internal(filepath)));
-        return new Animation<>(0.1f, frame);
+        return new Animation<>(0.12f, frame);
     }
 
     @Override
