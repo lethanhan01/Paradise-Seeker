@@ -70,11 +70,12 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
 
         // Update cleave animation timer
         if (isCleaving) {
-            cleaveTimer -= deltaTime;
-            if (cleaveTimer <= 0f) {
+            cleaveTimer += deltaTime; // <-- Tăng dần!
+            if (cleaveTimer >= cleaveDuration) {
                 isCleaving = false;
             }
         }
+
 
         // Select appropriate animation frame based on state
         updateCurrentFrame(isDead, isMoving);
@@ -117,7 +118,7 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
     }
     public void startCleaveAnimation() {
         isCleaving = true;
-        cleaveTimer = cleaveDuration;
+        cleaveTimer = 0f;
     }
     public void startTakeHitAnimation() {
         isTakingHit = true;

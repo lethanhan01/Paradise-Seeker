@@ -33,6 +33,7 @@ public abstract class Monster extends Character {
     public boolean isCleaving = false;
     public float cleaveTimer = 0f;
     public float cleaveDuration = 1.2f;
+    private boolean cleaveDamageApplied = false; // Đảm bảo chỉ trừ máu 1 lần/mỗi đòn chém
 
     public Vector2 lastPosition = new Vector2();
     public boolean isMoving = false;
@@ -76,6 +77,20 @@ public abstract class Monster extends Character {
         // Update animation state
         animationManager.update(deltaTime, isMoving, isDead, false, player.getBounds().x);
     }
+
+	 public void cleave(Player player) {
+	     // Start cleave animation
+	     animationManager.startCleaveAnimation();
+	
+	     // Set pending cleave hit in collision handler
+	     collisionHandler.setPendingCleaveHit(true);
+	
+	     // If player is in range, apply damage
+	     if (collisionHandler.isPlayerInCleaveRange(player)) {
+	         collisionHandler.applyCleaveHitToPlayer(player);
+	     }
+	 }
+    
 
     public void render(SpriteBatch batch) {
         renderer.render(batch, bounds, animationManager.getCurrentFrame(), hp, maxHp, isDead);
@@ -126,25 +141,7 @@ public abstract class Monster extends Character {
         ai.onAggro();
     }
 
-    /**
-     * Performs a cleave attack.
-     */
-    public void cleave(Player player) {
-        // Start cleave animation
-        animationManager.startCleaveAnimation();
 
-        // Set pending cleave hit in collision handler
-        collisionHandler.setPendingCleaveHit(true);
-
-        // If player is in range, apply damage
-        if (collisionHandler.isPlayerInCleaveRange(player)) {
-            collisionHandler.applyCleaveHitToPlayer(player);
-        }
-    }
-
-    /**
-     * Handle collision with another entity.
-     */
     @Override
     public void onCollision(Collidable other) {
         collisionHandler.handleCollision(other);
