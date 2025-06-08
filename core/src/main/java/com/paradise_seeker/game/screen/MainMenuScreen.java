@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.paradise_seeker.game.cutscene.IntroCutScene;
 import com.paradise_seeker.game.main.Main;
 import com.badlogic.gdx.audio.Music;
-
+import com.paradise_seeker.game.screen.WinScreen;
 public class MainMenuScreen implements Screen {
 
     final Main game;

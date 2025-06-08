@@ -2,6 +2,7 @@ package com.paradise_seeker.game.main;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,7 +29,7 @@ public class Main extends Game {
     public SettingScreen settingMenu = null;
     public InventoryScreen inventoryScreen = null;
     public ControlScreen controlScreen = null;
-
+    public GameScreen WinScreen = null;
     @Override
     public void create() {
         batch = new SpriteBatch();

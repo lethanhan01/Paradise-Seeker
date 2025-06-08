@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.entity.monster.boss.ParadiseKing;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -43,6 +44,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera hudCamera;// Camera for the HUD elements
     private ShapeRenderer shapeRenderer;
     private boolean isInGameMap = true;
+    private boolean winTriggered = false;
 
     public static List<LaserBeam> activeProjectiles = new ArrayList<>();
 
@@ -159,6 +161,18 @@ public class GameScreen implements Screen {
             for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
                 monster.act(delta, player, mapManager.getCurrentMap());
             }
+         // Kiểm tra boss ParadiseKing đã chết chưa và chuyển sang màn hình chiến thắng
+            for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
+            	if (monster instanceof ParadiseKing && monster.isDead() && !winTriggered){
+                    winTriggered = true;
+                    Gdx.app.postRunnable(() -> {
+                        music.stop(); // Dừng nhạc hiện tại
+                        game.setScreen(new WinScreen(game)); // Chuyển màn hình thắng
+                    });
+                    break;
+                }
+            }
+
         } else {
             mapManager.update(delta);
         }
