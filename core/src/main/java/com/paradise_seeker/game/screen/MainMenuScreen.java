@@ -27,6 +27,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final Main game) {
         this.game = game;
         touchPos = new Vector2();
+        //audio menu music
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menutheme.mp3"));
         menuMusic.setLooping(true);
         menuMusic.setVolume(game.settingMenu.setVolume);
@@ -62,11 +63,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+    	// Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
-
+        // Update camera and batch
         game.viewport.apply();
         game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
-
+         // Set the viewport dimensions
         float viewportWidth = game.viewport.getWorldWidth();
         float viewportHeight = game.viewport.getWorldHeight();
 
@@ -117,9 +119,9 @@ public class MainMenuScreen implements Screen {
 
         game.batch.end();
 
-        handleInput();
+        handleInput();// Handle user input for menu navigation
     }
-
+     // Handle user input for menu navigation
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selectedIndex--;

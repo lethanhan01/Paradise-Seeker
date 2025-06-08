@@ -25,10 +25,12 @@ public class PauseScreen implements Screen {
 
     @Override
     public void render(float delta) {
+    	// Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
+        // Update camera and batch
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
-        
+        // Set the viewport dimensions
         float viewportWidth = game.viewport.getWorldWidth();
         float viewportHeight = game.viewport.getWorldHeight();
 
@@ -44,6 +46,7 @@ public class PauseScreen implements Screen {
           
                 game.font.setColor(Color.WHITE);
                 if (i == selectedIndex) {
+                	//>
                     game.font.draw(game.batch, ">", x - 1.2f, y);
             }
 
@@ -52,9 +55,9 @@ public class PauseScreen implements Screen {
 
         game.batch.end();
 
-        handleInput();
+        handleInput();// Handle user input for menu navigation
     }
-
+    // Handle user input for menu navigation
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selectedIndex--;

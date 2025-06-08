@@ -27,7 +27,7 @@ public class InventoryScreen implements Screen {
     // Changed to use grid coordinates (0-2, 0-2) instead of screen coordinates
     private int selectedCol = 0;
     private int selectedRow = 0;
-
+    // Flag to indicate if we are in the description area
     private boolean inDescriptionArea = false;
     private static final float BASE_HEIGHT = 1400f;
     private float fontScale = 0.2f;
@@ -45,7 +45,7 @@ public class InventoryScreen implements Screen {
         this.backgroundTexture = new Texture(Gdx.files.internal("menu/inventory_menu/inventoryscreen1.png"));
         updateFontScale();
     }
-
+    // Update font scale based on screen height
     private void updateFontScale() {
         float screenHeight = Gdx.graphics.getHeight();
         this.fontScale = (screenHeight / BASE_HEIGHT) * 0.02f;
@@ -72,8 +72,9 @@ public class InventoryScreen implements Screen {
             game.font.getData().setScale(originalScaleX, originalScaleY);
             return;
         }
-
+        // Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
+        // Update camera and batch projection matrix
         game.camera.update();
 
         game.batch.setProjectionMatrix(game.camera.combined);
@@ -81,8 +82,8 @@ public class InventoryScreen implements Screen {
         game.batch.draw(backgroundTexture, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());
         game.batch.end();
 
-        drawUI();
-        handleInput();
+        drawUI();// Draw the inventory UI
+        handleInput();// Handle user input for navigation and item actions
 
         // Restore original font scale at the end
         game.font.getData().setScale(originalScaleX, originalScaleY);
@@ -161,7 +162,7 @@ public class InventoryScreen implements Screen {
         drawCenteredText("[B] Exit Inventory", 0.4f); // Adjust Y-coordinate as needed
         game.batch.end();
     }
-
+    // Handle user input for navigation and item actions
     private void handleInput() {
         // Move between inventory slots
         if (!inDescriptionArea) {
