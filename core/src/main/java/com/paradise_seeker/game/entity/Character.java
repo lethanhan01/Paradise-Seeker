@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.map.GameMap;
 
 public abstract class Character implements Collidable, Renderable {
-    public float hp;
+    public float hp; 
     public float maxHp; // Thêm maxHp để dễ quản lý
     public float mp;
     public float maxMp; // Thêm maxMp để dễ quản lý

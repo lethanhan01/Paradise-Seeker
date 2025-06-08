@@ -14,17 +14,18 @@ public class SettingScreen implements Screen {
 
     final Main game;
     GlyphLayout layout;
+    // Menu items
     String[] menuItems = {"Full Screen", "Music", "Control", "Back", "Return to Menu"};
     int selectedIndex = 0;
-
+    // audio volume configuration
     public static float setVolume = 0.5f;
     Texture background;
-
+    // Default music volume
     float musicVolume = setVolume;
-
+    // ShapeRenderer for drawing bars
     ShapeRenderer shapeRenderer;
 
-    // Font scaling
+    // Font scale menu	
     private static final float BASE_HEIGHT = 950f;
     private float fontScale = 0.025f;
     private float menuItemSpacing = 0.95f;
@@ -40,7 +41,7 @@ public class SettingScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         updateFontScale();
     }
-
+    //update font scale based on screen height
     private void updateFontScale() {
         float screenHeight = Gdx.graphics.getHeight();
         this.fontScale = (screenHeight / BASE_HEIGHT) * 0.045f;
@@ -55,10 +56,12 @@ public class SettingScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        // Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
+        // Update camera and batch projection matrix
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
-
+        // Set the viewport for the batch
         float viewportWidth = game.viewport.getWorldWidth();
         float viewportHeight = game.viewport.getWorldHeight();
 
@@ -69,13 +72,13 @@ public class SettingScreen implements Screen {
         game.batch.begin();
         game.batch.draw(background, 0, 0, viewportWidth, viewportHeight);
 
-        float xMenu = 3f;
-        float y = menuStartY;
+        float xMenu = 3f; // X position for menu items
+        float y = menuStartY;// Starting Y position for menu items
 
         // We'll need to remember where the Music bar is, for the toggle label.
         float barX = 0, barY = 0, barWidth = 5.5f, barHeight = 0.2f;
         boolean musicBarFound = false;
-
+         // Draw menu items
         for (int i = 0; i < menuItems.length; i++) {
             String text = menuItems[i];
             boolean isSelected = (i == selectedIndex);
@@ -96,6 +99,7 @@ public class SettingScreen implements Screen {
                 musicBarFound = true;
 
                 game.batch.end();
+                // Draw the volume bar
                 shapeRenderer.setProjectionMatrix(game.camera.combined);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(Color.GRAY);
@@ -109,7 +113,7 @@ public class SettingScreen implements Screen {
                 game.font.setColor(Color.LIGHT_GRAY);
                 game.font.draw(game.batch, "<A>", barX - 1.2f, barY + barHeight * 1.0f);
                 game.font.draw(game.batch, "<D>", barX + barWidth + 0.3f, barY + barHeight * 1.0f);
-
+                // Draw the volume value as text
                 int volumeValue = Math.round(vol * 10);
                 String volumeText = String.valueOf(volumeValue);
                 GlyphLayout volumeLayout = new GlyphLayout(game.font, volumeText);
@@ -140,14 +144,14 @@ public class SettingScreen implements Screen {
         game.batch.end();
         game.font.getData().setScale(originalScaleX, originalScaleY);
 
-        handleInput();
+        handleInput();// Handle user input for navigation and actions
     }
-
+    // Draw text with the current font and position
     private void drawText(String text, float x, float y) {
         layout.setText(game.font, text);
         game.font.draw(game.batch, layout, x, y);
     }
-
+    // Handle user input for navigation and actions
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selectedIndex--;

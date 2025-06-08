@@ -10,11 +10,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.paradise_seeker.game.main.Main;
 
 public class ControlScreen implements Screen {
-
-	final Main game;
+    
+	final Main game; 
 	BitmapFont font;
 	GlyphLayout layout;
-
+ // he thong dieu khien
 	String[][] controls = {
 			{"Moving", "WASD / ↑↓←→"},
 			{"Dashing", "Move + Left Shift"},
@@ -38,32 +38,38 @@ public class ControlScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		// Thiết lập camera và viewport
 		float viewportWidth = game.viewport.getWorldWidth();
         float viewportHeight = game.viewport.getWorldHeight();
+        // xóa màn hình với màu nền
 		ScreenUtils.clear(Color.DARK_GRAY);
-
+       // Cập nhật camera và vẽ lên batch
 		game.camera.update();
 		game.batch.setProjectionMatrix(game.camera.combined);
+		// Bắt đầu vẽ
 		game.batch.begin();
 
-		float xLeft = 2f;
-		float xRight = 10f;
-		float yStart = game.viewport.getWorldHeight() - 2f;
-		float lineHeight = 0.75f;
+		float xLeft = 2f; // vị trí cột trái
+		float xRight = 10f;// vị trí cột phải
+		float yStart = game.viewport.getWorldHeight() - 2f;// vị trí bắt đầu vẽ từ trên xuống
+		float lineHeight = 0.75f;//khoang gian giữa các dòng
 
-		font.setColor(Color.WHITE);
+		font.setColor(Color.WHITE);//mau chữ trắng
 
 		for (int i = 0; i < controls.length; i++) {
+			// lấy từng cặp điều khiển
 			String left = controls[i][0];
 			String right = controls[i][1];
 
-			float y = yStart - i * lineHeight;
-
+			float y = yStart - i * lineHeight;// thay đối vi trí y theo dòng
+          	// vẽ chữ
 			font.draw(game.batch, left, xLeft, y);
 			font.draw(game.batch, right, xRight, y);
 		}
+		// Tiêu đề
 		font.setColor(Color.RED);
 		layout.setText(font, "- Controls -");
+		//lấy vị trí để căn giữa
         float x = (viewportWidth - layout.width) / 2f;
 		font.draw(game.batch, layout, x, viewportHeight);
 		// Hint để quay lại

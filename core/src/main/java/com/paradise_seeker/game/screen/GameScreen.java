@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.entity.monster.boss.ParadiseKing;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,16 +34,17 @@ public class GameScreen implements Screen {
     final Main game;
     Player player = new Player();;
     Music music;
-    private float cameraLerp = 0.1f;
-    private GameMapManager mapManager;
-    private HUD hud;
+    private float cameraLerp = 0.1f;// Controls how fast the camera follows the player
+    private GameMapManager mapManager;// Manages the current map and transitions
+    private HUD hud;// Heads-Up Display for player stats, inventory, etc.
     private DialogueBox dialogueBox;
     private Texture dialogueBg;
     private Gipsy currentTalkingNPC;
-    private OrthographicCamera gameCamera;
-    private OrthographicCamera hudCamera;
+    private OrthographicCamera gameCamera;// Camera for the game world
+    private OrthographicCamera hudCamera;// Camera for the HUD elements
     private ShapeRenderer shapeRenderer;
     private boolean isInGameMap = true;
+    private boolean winTriggered = false;
 
     public static List<LaserBeam> activeProjectiles = new ArrayList<>();
 
@@ -159,6 +161,18 @@ public class GameScreen implements Screen {
             for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
                 monster.act(delta, player, mapManager.getCurrentMap());
             }
+         // Kiểm tra boss ParadiseKing đã chết chưa và chuyển sang màn hình chiến thắng
+            for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
+            	if (monster instanceof ParadiseKing && monster.isDead() && !winTriggered){
+                    winTriggered = true;
+                    Gdx.app.postRunnable(() -> {
+                        music.stop(); // Dừng nhạc hiện tại
+                        game.setScreen(new WinScreen(game)); // Chuyển màn hình thắng
+                    });
+                    break;
+                }
+            }
+
         } else {
             mapManager.update(delta);
         }
@@ -180,6 +194,7 @@ public class GameScreen implements Screen {
         gameCamera.update();
 
         // --- RENDER ---
+        // Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
         game.batch.setProjectionMatrix(gameCamera.combined);
         game.batch.begin();
@@ -188,12 +203,13 @@ public class GameScreen implements Screen {
         for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
             monster.render(game.batch);
         }
+        // Render player and skills
         player.render(game.batch);
         player.playerSkill1.render(game.batch);
         player.playerSkill2.render(game.batch);
         for (LaserBeam projectile : activeProjectiles) projectile.render(game.batch);
         game.batch.end();
-
+        // Render dialogue box
         hudCamera.update();
         game.batch.setProjectionMatrix(hudCamera.combined);
         game.batch.begin();
@@ -201,7 +217,7 @@ public class GameScreen implements Screen {
         float fontScale = Math.max(Gdx.graphics.getHeight() / baseHeight, 0.05f);
         dialogueBox.render(game.batch, fontScale);
         game.batch.end();
-
+        // Render HUD
         hud.shapeRenderer.setProjectionMatrix(hudCamera.combined);
         hud.spriteBatch.setProjectionMatrix(hudCamera.combined);
         hud.render(hudCamera.viewportHeight);
@@ -380,12 +396,13 @@ public class GameScreen implements Screen {
         if ((shouldShowChoicesNow || showDialogueOptions) && game.font != null) {
             if (shouldShowChoicesNow && !showDialogueOptions) showDialogueOptions = true;
             hud.spriteBatch.begin();
+            // Calculate positions for options
             float screenWidth = Gdx.graphics.getWidth();
             float startY = 60 * fontScale;
             float optionSpacing = 220 * fontScale;
             float totalWidth = optionSpacing * options.length;
             float startX = (screenWidth - totalWidth) / 2f + 20f * fontScale;
-
+            // Draw options
             float oldScaleX = game.font.getData().scaleX;
             float oldScaleY = game.font.getData().scaleY;
             game.font.getData().setScale(fontScale);

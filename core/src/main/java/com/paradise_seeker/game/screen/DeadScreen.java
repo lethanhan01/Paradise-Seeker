@@ -42,15 +42,18 @@ public class DeadScreen implements Screen{
 
     @Override
     public void render(float delta) {
+    	// Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
+        // Update camera and batch
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
-        
+        // Set the viewport dimensions
         float viewportWidth = game.viewport.getWorldWidth();
         float viewportHeight = game.viewport.getWorldHeight();
 
         game.batch.begin();
         game.batch.draw(background, 0, 0, viewportWidth, viewportHeight);
+        //Draw the title text
         float buttonWidth = 5f;
         float buttonHeight = 1f;
         float xButton = (viewportWidth - buttonWidth) / 2f;
@@ -65,6 +68,7 @@ public class DeadScreen implements Screen{
                 // Draw "<" on the right
                 game.font.draw(game.batch, "<", xButton + buttonWidth + 0.2f, yButton + buttonHeight * 0.7f);
             }
+            // Draw the button texture
             Texture tex = (i == selectedIndex) ? selectedButtonTextures[i] : buttonTextures[i];
             game.batch.draw(tex, xButton, yButton, buttonWidth, buttonHeight);
         }
@@ -72,9 +76,9 @@ public class DeadScreen implements Screen{
 
         game.batch.end();
 
-        handleInput();
+        handleInput();// Handle user input for navigation and selection
     }
-
+    // Handle user input for navigation and selection
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selectedIndex--;
