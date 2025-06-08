@@ -76,7 +76,7 @@ public class GhostStatic extends Monster {
         // Add ghost-specific collision behavior if needed
         if (!isDead) {
             // For example, apply some special effect when ghost touches player
-            player.takeDamage(10); // Apply additional ghost damage
+            player.takeHit(10); // Apply additional ghost damage
         }
     }
 

@@ -15,10 +15,6 @@ public class CyanBat extends Monster {
 
     public CyanBat(float x, float y) {
     	super(new Rectangle(x, y, 1.2f, 1.2f), 100f, 50f, 100f, 50f, 50f, 1f, x, y); // HP, speed, cleaveDamage
-        // Note: spawnX and spawnY are now set in the parent constructor
-        // Note: loadAnimations is already called in Monster constructor
-
-        // Set cleave range through the collision handler
         this.collisionHandler.setCleaveRange(2.0f);
     }
 
@@ -64,7 +60,7 @@ public class CyanBat extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     @Override
@@ -87,7 +83,7 @@ public class CyanBat extends Monster {
         // Add bat-specific collision behavior if needed
         if (!isDead) {
             // For example, apply some effect when bat touches player
-            player.takeDamage(5); // Apply small damage
+            player.takeHit(5); // Apply small damage
         }
     }
 

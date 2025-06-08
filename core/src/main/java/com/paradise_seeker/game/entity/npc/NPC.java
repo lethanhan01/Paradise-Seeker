@@ -24,7 +24,7 @@ public abstract class NPC extends Character  {
     }
 
     @Override
-    public void takeDamage(float damage) {
+    public void takeHit(float damage) {
         // NPC không thể bị thương, có thể để trống hoặc ghi đè nếu cần
     }
     @Override

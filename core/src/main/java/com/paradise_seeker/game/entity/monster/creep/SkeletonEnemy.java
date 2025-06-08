@@ -66,7 +66,7 @@ public class SkeletonEnemy extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i-1] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     // IDLE: skel_enemy1.png ... skel_enemy4.png (hoặc skel_enemy_1.png ... skel_enemy_4.png)
@@ -135,7 +135,7 @@ public class SkeletonEnemy extends Monster {
 
         // Add skeleton-specific collision behavior if needed
         if (!isDead) {
-            player.takeDamage(6); // Apply small damage on collision
+            player.takeHit(6); // Apply small damage on collision
         }
     }
 

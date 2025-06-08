@@ -123,7 +123,7 @@ public abstract class GameMap {
                 	//test chest
                     chest = new Chest(worldX, worldY);
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag1.png", 1));
-      //              chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag2.png", 2));
+                    chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag2.png", 2));
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag3.png", 3));
 
                     break;
@@ -255,7 +255,7 @@ public abstract class GameMap {
 //Hello
     public void damageMonstersInRange(float x, float y, float radius, float damage) {
         for (Monster m : monsters) {
-            if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeDamage(damage);
+            if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeHit(damage);
         }
     }
 

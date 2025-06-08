@@ -72,7 +72,7 @@ public class EvilPlant extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class EvilPlant extends Monster {
         // Add EvilPlant-specific collision behavior if needed
         if (!isDead) {
             // For example, apply some poison effect when plant touches player
-            player.takeDamage(5); // Apply small poison damage
+            player.takeHit(5); // Apply small poison damage
         }
     }
 

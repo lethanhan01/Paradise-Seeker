@@ -103,7 +103,7 @@ public class PlayerSkill2 extends PlayerSkill {
 
             StaticLightningSkill lightning = new StaticLightningSkill(centerX, centerY, atk * 2 * damageMultiplier, direction, anim);
             activeLightnings.add(lightning);
-
+            
             setLastUsedTime(System.currentTimeMillis());
         }
     }
@@ -133,10 +133,10 @@ public class PlayerSkill2 extends PlayerSkill {
                 if (!monster.isDead() && !skill.hasDealtDamage() &&
                     skill.getHitbox().overlaps(monster.getBounds())) {
 
-                    monster.takeDamage(skill.getDamage());
+                    monster.takeHit(skill.getDamage());
                     skill.markDamageDealt(); // Ghi nhận đã gây sát thương
 
-           
+
                 }
             }
 

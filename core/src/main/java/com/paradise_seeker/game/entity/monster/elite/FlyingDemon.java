@@ -72,7 +72,7 @@ public class FlyingDemon extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class FlyingDemon extends Monster {
             bounds.x += velocityX * deltaTime;
             bounds.y += velocityY * deltaTime;
             if (player != null && bounds.overlaps(player.bounds)) {
-                player.takeDamage(15); // Sát thương đạn
+                player.takeHit(15); // Sát thương đạn
                 active = false;
             }
         }

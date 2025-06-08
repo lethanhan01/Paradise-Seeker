@@ -61,7 +61,7 @@ public class Nyx extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     // Load animation cleave có nhiều đòn: .../atk0/atk0.png, .../atk1/atk0.png, ...
@@ -76,7 +76,7 @@ public class Nyx extends Monster {
                 frames[idx++] = new TextureRegion(texture);
             }
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     public float getScaleMultiplier() {
@@ -101,7 +101,7 @@ public class Nyx extends Monster {
         super.onCollision(player);
         // Add Boss3-specific collision behavior
         if (!isDead) {
-            player.takeDamage(20); // Assume 20 damage on collision
+            player.takeHit(20); // Assume 20 damage on collision
         }
     }
 

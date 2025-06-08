@@ -64,7 +64,7 @@ public class FlyingCreep extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class FlyingCreep extends Monster {
 
         // Add flying-specific collision behavior if needed
         if (!isDead) {
-            player.takeDamage(8); // Apply additional damage on collision
+            player.takeHit(8); // Apply additional damage on collision
         }
     }
 

@@ -17,16 +17,27 @@ public abstract class Monster extends Character {
     public float spawnX;
     public float spawnY;
 
-    // Manager classes for separation of concerns
-    public MonsterAnimationManager animationManager;
+    public MonsterAnimationManagerImpl animationManager;
     public MonsterCollisionHandler collisionHandler;
     public HPBarMonsterRenderer renderer;
     public MonsterAI ai;
+    public TextureRegion currentFrame;
 
-    // Store the last position to determine if monster is moving
+    public float stateTime = 0f;
+    public boolean facingRight = true;
+
+    public boolean isTakingHit = false;
+    public float takeHitTimer = 0f;
+    public float takeHitDuration = 0.5f;
+
+    public boolean isCleaving = false;
+    public float cleaveTimer = 0f;
+    public float cleaveDuration = 1.2f;
+    private boolean cleaveDamageApplied = false; // Đảm bảo chỉ trừ máu 1 lần/mỗi đòn chém
+
     public Vector2 lastPosition = new Vector2();
     public boolean isMoving = false;
-    
+
     public Monster(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y) {
         super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
         this.spawnX = x;
@@ -34,7 +45,7 @@ public abstract class Monster extends Character {
 
         // Initialize managers
         this.renderer = new HPBarMonsterRenderer();
-        this.animationManager = new MonsterAnimationManager(this);
+        this.animationManager = new MonsterAnimationManagerImpl(this);
         this.collisionHandler = new MonsterCollisionHandler(this);
         this.ai = new MonsterAI(this);
 
@@ -64,8 +75,22 @@ public abstract class Monster extends Character {
         lastPosition.set(bounds.x, bounds.y);
 
         // Update animation state
-        animationManager.update(deltaTime, isMoving, isFacingRight(), isDead, false, player.getBounds().x);
+        animationManager.update(deltaTime, isMoving, isDead, false, player.getBounds().x);
     }
+
+	 public void cleave(Player player) {
+	     // Start cleave animation
+	     animationManager.startCleaveAnimation();
+	
+	     // Set pending cleave hit in collision handler
+	     collisionHandler.setPendingCleaveHit(true);
+	
+	     // If player is in range, apply damage
+	     if (collisionHandler.isPlayerInCleaveRange(player)) {
+	         collisionHandler.applyCleaveHitToPlayer(player);
+	     }
+	 }
+    
 
     public void render(SpriteBatch batch) {
         renderer.render(batch, bounds, animationManager.getCurrentFrame(), hp, maxHp, isDead);
@@ -89,18 +114,16 @@ public abstract class Monster extends Character {
     }
 
     public float getAtk() {
+
         return atk;
     }
 
     public float getSpeed() {
+
         return speed;
     }
 
-    /**
-     * Handles the monster taking damage.
-     *
-     */
-    public void takeDamage(float damage) {
+    public void takeHit(float damage) {
         if (isDead) return;
 
         this.hp = Math.max(0, this.hp - damage);
@@ -118,25 +141,7 @@ public abstract class Monster extends Character {
         ai.onAggro();
     }
 
-    /**
-     * Performs a cleave attack.
-     */
-    public void cleave(Player player) {
-        // Start cleave animation
-        animationManager.startCleaveAnimation();
 
-        // Set pending cleave hit in collision handler
-        collisionHandler.setPendingCleaveHit(true);
-
-        // If player is in range, apply damage
-        if (collisionHandler.isPlayerInCleaveRange(player)) {
-            collisionHandler.applyCleaveHitToPlayer(player);
-        }
-    }
-
-    /**
-     * Handle collision with another entity.
-     */
     @Override
     public void onCollision(Collidable other) {
         collisionHandler.handleCollision(other);
@@ -154,15 +159,9 @@ public abstract class Monster extends Character {
 
     }
 
-    /**
-     * Called to set up all animations for this monster.
-     * Must be implemented by subclasses.
-     */
+
     public abstract void loadAnimations();
 
-    /**
-     * Sets all animations in the animation manager after they've been loaded.
-     */
     protected void setupAnimations(
             Animation<TextureRegion> idleLeft, Animation<TextureRegion> idleRight,
             Animation<TextureRegion> walkLeft, Animation<TextureRegion> walkRight,

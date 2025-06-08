@@ -41,17 +41,13 @@ public class Player extends Character {
     public boolean isShielding = false;
     public boolean isPaused = false;
 
-    // New fields for MVC pattern
     public PlayerAnimationManagerImpl animationManager;
     public PlayerInputHandlerImpl inputHandler;
     public PlayerRendererImpl playerRenderer;
 
-    // Tracking death state
     public boolean isDead = false;
     public boolean isHit = false;
     public boolean isShieldedHit = true;
-
-    // Invulnerability system
     public boolean isInvulnerable = false;
     public float invulnerabilityTimer = 0f;
     public static final float INVULNERABILITY_DURATION = 0.5f; // Thời gian bất tử sau khi nhận sát thương
@@ -69,9 +65,8 @@ public class Player extends Character {
 
         // Khởi tạo PlayerInventoryManager
         this.inventoryManager = new PlayerInventoryManager();
-        // Initialize the dependencies
         this.animationManager = new PlayerAnimationManagerImpl();
-        this.animationManager.loadAnimations();
+        this.animationManager.setAnimations();
         this.inputHandler = new PlayerInputHandlerImpl();
         this.playerRenderer = new PlayerRendererImpl(this.animationManager);
     }
@@ -86,7 +81,7 @@ public class Player extends Character {
 
         // Initialize the dependencies
         this.animationManager = new PlayerAnimationManagerImpl();
-        this.animationManager.loadAnimations();
+        this.animationManager.setAnimations();
         this.inputHandler = new PlayerInputHandlerImpl();
     }
 
@@ -156,7 +151,7 @@ public class Player extends Character {
     }
 
     @Override
-    public void takeDamage(float damage) {
+    public void takeHit(float damage) {
         // If player is invulnerable, don't take damage
         if (isInvulnerable) return;
 
@@ -167,8 +162,9 @@ public class Player extends Character {
         hp = Math.max(0, hp - damage);
 
         if (hp == 0 ) {
-        	if (!isDead)
-            onDeath();
+        	if (!isDead){
+                onDeath();
+            }
         } else {
             isHit = true;
             stateTime = 0;
@@ -305,8 +301,9 @@ public class Player extends Character {
 
     @Override
     public void onDeath() {
-        isDead = true;
-        stateTime = 0;
+        //isDead = true;
+        //stateTime = 0;
+    	hp = MAX_HP;
     }
 
     @Override
@@ -321,12 +318,9 @@ public class Player extends Character {
 
 	@Override
 	public Rectangle getBounds() {
-		// TODO Auto-generated method stub
 		return this.bounds;
 	}
-
 	public boolean isInvulnerable() {
-		// TODO Auto-generated method stub
 		return this.isInvulnerable;
 	}
 

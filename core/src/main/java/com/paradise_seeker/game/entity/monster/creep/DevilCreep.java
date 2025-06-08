@@ -69,7 +69,7 @@ public class DevilCreep extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class DevilCreep extends Monster {
         // Add devil-specific collision behavior if needed
         if (!isDead) {
             // For example, apply some effect when devil touches player
-            player.takeDamage(10); // Apply additional damage
+            player.takeHit(10); // Apply additional damage
         }
     }
 

@@ -61,7 +61,7 @@ public class ParadiseKing extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     // Load CLEAVE đặc biệt cho Boss5 (3 combo, tên file khác nhau)
@@ -89,7 +89,7 @@ public class ParadiseKing extends Monster {
                 frames[idx++] = new TextureRegion(texture);
             }
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     public float getScaleMultiplier() {
@@ -114,7 +114,7 @@ public class ParadiseKing extends Monster {
         super.onCollision(player);
         // Add Boss5-specific collision behavior
         if (!isDead) {
-            player.takeDamage(25); // Deal damage to the player on collision
+            player.takeHit(25); // Deal damage to the player on collision
         }
     }
 

@@ -9,35 +9,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Implementation của PlayerAnimationManager
  * Chuyên trách loading và quản lý animation
  */
-public class PlayerAnimationManagerImpl implements PlayerAnimationManager {
+public class PlayerAnimationManagerImpl implements AnimationManager {
 
-    // Animation di chuyển
     private Animation<TextureRegion> runUp, runDown, runLeft, runRight;
-
-    // Animation đứng yên
     private Animation<TextureRegion> idleUp, idleDown, idleLeft, idleRight;
-
-    // Animation tấn công
     private Animation<TextureRegion> attackUp, attackDown, attackLeft, attackRight;
-
-    // Animation leo trèo
-    private Animation<TextureRegion> climbUp, climbDown, climbUpAfter, climbDownBefore;
-
-    // Animation đẩy
-    private Animation<TextureRegion> pushUp, pushDown, pushLeft, pushRight;
-
-    // Animation bị đánh
     private Animation<TextureRegion> hitUp, hitDown, hitLeft, hitRight;
-
-    // Animation bị đánh khi có khiên
     private Animation<TextureRegion> shieldedHitUp, shieldedHitDown, shieldedHitLeft, shieldedHitRight;
-
-    // Animation chết và khói
     private Animation<TextureRegion> deathAnimation;
     private Animation<TextureRegion> smokeAnimation;
 
-    @Override
-    public void loadAnimations() {
+    public void setAnimations() {
         // Load animation di chuyển
         runDown = loadAnimation("images/Entity/characters/player/char_run_down_anim_strip_6.png");
         runUp = loadAnimation("images/Entity/characters/player/char_run_up_anim_strip_6.png");
@@ -55,18 +37,6 @@ public class PlayerAnimationManagerImpl implements PlayerAnimationManager {
         attackUp = loadAnimation("images/Entity/characters/player/attack_up_new.png");
         attackLeft = loadAnimation("images/Entity/characters/player/attack_left_new.png");
         attackRight = loadAnimation("images/Entity/characters/player/attack_right_new.png");
-
-        // Load climbing animations
-        climbDown = loadAnimation("images/Entity/characters/player/char_climbing_down_anim_strip_6.png");
-        climbDownBefore = loadAnimation("images/Entity/characters/player/char_climbing_down_before_anim_strip_3.png", 3);
-        climbUp = loadAnimation("images/Entity/characters/player/char_climbing_up_anim_strip_6.png");
-        climbUpAfter = loadAnimation("images/Entity/characters/player/char_climbing_up_after_anim_strip_3.png", 3);
-
-        // Load pushing animations
-        pushUp = loadAnimation("images/Entity/characters/player/char_pushing_up_anim_strip_6.png");
-        pushDown = loadAnimation("images/Entity/characters/player/char_pushing_down_anim_strip_6.png");
-        pushLeft = loadAnimation("images/Entity/characters/player/char_pushing_left_anim_strip_6.png");
-        pushRight = loadAnimation("images/Entity/characters/player/char_pushing_right_anim_strip_6.png");
 
         // Load shielded hit animations
         shieldedHitUp = loadAnimation("images/Entity/characters/player/char_shielded_hit_up_anim_strip_5.png", 5);
@@ -135,26 +105,6 @@ public class PlayerAnimationManagerImpl implements PlayerAnimationManager {
     }
 
     @Override
-    public Animation<TextureRegion> getClimbAnimation(String direction) {
-        switch (direction) {
-            case "up": return climbUp;
-            case "down": return climbDown;
-            default: return climbDown;
-        }
-    }
-
-    @Override
-    public Animation<TextureRegion> getPushAnimation(String direction) {
-        switch (direction) {
-            case "up": return pushUp;
-            case "down": return pushDown;
-            case "left": return pushLeft;
-            case "right": return pushRight;
-            default: return pushDown;
-        }
-    }
-
-    @Override
     public Animation<TextureRegion> getHitAnimation(String direction) {
         switch (direction) {
             case "up": return hitUp;
@@ -165,7 +115,6 @@ public class PlayerAnimationManagerImpl implements PlayerAnimationManager {
         }
     }
 
-    @Override
     public Animation<TextureRegion> getShieldedHitAnimation(String direction) {
         switch (direction) {
             case "up": return shieldedHitUp;
@@ -176,7 +125,6 @@ public class PlayerAnimationManagerImpl implements PlayerAnimationManager {
         }
     }
 
-    @Override
     public Animation<TextureRegion> getShieldAnimation(String direction) {
         // You can update the file paths and frame counts if you have specific shield animations
         switch (direction) {
@@ -194,19 +142,20 @@ public class PlayerAnimationManagerImpl implements PlayerAnimationManager {
     }
 
     @Override
-    public Animation<TextureRegion> getDeathAnimation() {
+    public Animation<TextureRegion> getDeathAnimation(String direction) {
         return deathAnimation;
     }
 
-    @Override
+
     public Animation<TextureRegion> getSmokeAnimation() {
         return smokeAnimation;
     }
 
-    @Override
-    public void dispose() {
-        // Dispose tất cả texture để tránh memory leak
-        // Implement khi cần thiết
-    }
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
 

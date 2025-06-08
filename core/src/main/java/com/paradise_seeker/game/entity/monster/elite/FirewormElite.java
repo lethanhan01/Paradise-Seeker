@@ -65,7 +65,7 @@ public class FirewormElite extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.1f, frames);
+        return new Animation<>(0.12f, frames);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class FirewormElite extends Monster {
         // Add FirewormElite-specific collision behavior here if needed
         if (!isDead) {
             // Additional damage or effects when colliding with player
-            player.takeDamage(15); // Example: extra fire damage
+            player.takeHit(15); // Example: extra fire damage
         }
     }
 
