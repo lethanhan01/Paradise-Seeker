@@ -130,4 +130,10 @@ public class Jotun extends NPC {
     public Rectangle getBounds() {
         return bounds;
     }
+
+	@Override
+	public void setTalking(boolean talking) {
+		// TODO Auto-generated method stub
+
+	}
 }

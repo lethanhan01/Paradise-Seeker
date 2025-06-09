@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.cutscene;
+package com.paradise_seeker.game.screen.cutscene;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;

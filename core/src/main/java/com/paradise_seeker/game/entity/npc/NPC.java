@@ -6,7 +6,7 @@ import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 
-public abstract class NPC extends Character  {
+public abstract class NPC extends Character implements Collidable {
     public String dialogue;
     public boolean isTalking ;
     public boolean hasTalked ;
@@ -28,7 +28,6 @@ public abstract class NPC extends Character  {
     }
     @Override
     public Rectangle getBounds() {
-
         return bounds;
     }
     @Override
@@ -40,6 +39,8 @@ public abstract class NPC extends Character  {
         // Cập nhật trạng thái NPC nếu cần
         // Ví dụ: di chuyển, thay đổi lời thoại, v.v.
     }
+    public abstract void setTalking(boolean talking);
+
     public void interact(Player player) {
         if (dialogue != null && !dialogue.isEmpty()) {
             // Hiển thị lời thoại cho người chơi
