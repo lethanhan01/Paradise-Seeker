@@ -3,9 +3,7 @@ package com.paradise_seeker.game.entity.npc;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class quản lý hội thoại của NPC
- */
+
 public class DialogueManager {
     private List<String> dialogueLines = new ArrayList<>();
     private int currentLineIndex = 0;

@@ -2,27 +2,15 @@ package com.paradise_seeker.game.entity.npc;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.map.GameMap;
 
-
-/**
- * Class Gipsy đại diện cho một NPC có chức năng đặc biệt trong game.
- * Class này thể hiện việc áp dụng nguyên tắc SRP bằng cách phân tách các trách nhiệm:
- * - Animation: giao cho NPCAnimationManager
- * - Trạng thái: giao cho NPCStateManager
- * - Đối thoại: giao cho DialogueManager
- */
-public class Gipsy extends NPC implements Collidable {
+public class Gipsy extends NPC {
     public NPCAnimationManager animationManager;
-
     public NPCStateManager stateManager;
-
-    public  DialogueManager dialogueManager;
+    public DialogueManager dialogueManager;
 
     public float spriteWidth = 3f;
     public float spriteHeight = 3f;
-
 
     public Gipsy(float x, float y) {
         super(); // Gọi constructor của lớp cha NPC
@@ -38,26 +26,16 @@ public class Gipsy extends NPC implements Collidable {
         this.dialogueManager = new DialogueManager();
     }
 
-    /**
-     * Constructor mặc định, đặt vị trí tại (0,0)
-     */
     public Gipsy() {
         this(0, 0);
     }
 
-    /**
-     * Cập nhật kích thước và vị trí bounds của NPC
-     */
     public void updateBounds() {
         if (bounds != null) {
             bounds.setSize(spriteWidth, spriteHeight);
             bounds.setPosition(x, y);
         }
     }
-
-    /**
-     * Thực hiện các hành động của NPC trong mỗi frame
-     */
     @Override
     public void act(float deltaTime, GameMap map) {
         // Cập nhật animation dựa trên trạng thái hiện tại
@@ -75,12 +53,7 @@ public class Gipsy extends NPC implements Collidable {
         updateBounds();
     }
 
-    /**
-     * Cài đặt trạng thái nói chuyện cho NPC
-     *
-     * @param talking true nếu NPC đang nói chuyện, false nếu không
-     */
-
+    @Override
     public void setTalking(boolean talking) {
         if (super.isTalking != talking) {
             super.isTalking = talking;
@@ -99,9 +72,6 @@ public class Gipsy extends NPC implements Collidable {
         }
     }
 
-    /**
-     * Mở rương (chức năng đặc biệt của Gipsy)
-     */
     public void openChest() {
         if (stateManager.isChestOpened() || stateManager.isOpeningChest()) {
             return;
@@ -111,27 +81,14 @@ public class Gipsy extends NPC implements Collidable {
         stateManager.startChestOpening();
     }
 
-    /**
-     * Kiểm tra xem rương đã được mở và hoàn thành animation mở rương chưa
-     *
-     * @return true nếu rương đã mở và đã hoàn thành animation, false nếu không
-     */
     public boolean isChestOpenAndFinished() {
         return stateManager.isChestOpenAndFinished();
     }
 
-    // ---- Delegate methods for DialogueManager ----
-
-    /**
-     * Kiểm tra xem NPC có dòng thoại tiếp theo không
-     */
     public boolean hasNextLine() {
         return dialogueManager.hasNextLine();
     }
 
-    /**
-     * Chuyển sang dòng thoại tiếp theo
-     */
     public void nextLine() {
         dialogueManager.nextLine();
     }

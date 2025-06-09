@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.object.item.ATKitem;
 import com.paradise_seeker.game.object.item.Item;
@@ -109,24 +110,19 @@ public class Chest extends GameObject{
 		return innerBounds;  // Sử dụng vùng trigger thật khi kiểm tra va chạm
 	}
 
-	public void onPlayerCollision(Player player) {
+	public void onPlayerCollision(Collidable other) {
 		// Handle player collision with the chest
-		player.blockMovement();
+		((Player) other).blockMovement();
 		if (isOpened || animationFinished) {
 			return; // Chest is already opened or animation is finished
 		}
 		for (Item item : items) {
-	        player.addItemToInventory(item);
+	        ((Player) other).addItemToInventory(item);
 	        item.setActive(false);
 	    }
-		//System.out.println("Player collided with chest!");
-
-
-
 		if (!isOpened) {
 			open();
 		}
-		// You can add more logic here, like giving items to the player
 	}
 
 	public Array<Item> getItems() {

@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Collidable;
-import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.entity.Renderable;
 
-public abstract class GameObject implements Collidable {
+public abstract class GameObject implements Collidable, Renderable {
     protected Rectangle bounds;
     protected Texture texture;
 
@@ -19,17 +19,15 @@ public abstract class GameObject implements Collidable {
         return bounds;
     }
 
+    @Override
     public void render(SpriteBatch batch) {
         batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
     }
-
-    public abstract void onPlayerCollision(Player player);
 
     @Override
     public void onCollision(Collidable other) {
         //
     }
-
 
     public void dispose() {
         texture.dispose();

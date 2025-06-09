@@ -9,14 +9,15 @@ import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.badlogic.gdx.Gdx;
 
-public class Portal implements Collidable {
-    public Rectangle bounds;       // Vùng hiển thị
+public class Portal extends GameObject implements Collidable {
     public Rectangle innerBounds;  // Vùng thật để trigger
-    private Animation<TextureRegion> animation;
-    private float stateTime = 0f;
+    public Animation<TextureRegion> animation;
+    public float stateTime = 0f;
     public boolean activated = false;
 
+
     public Portal(float x, float y) {
+    	super(x, y, 3f, 3f, "images/objects/portal/portal1_frame_1.png");
         this.bounds = new Rectangle(x, y, 3f , 3f );  // Kích thước to cho hình ảnh
         this.innerBounds = new Rectangle(x + 1.25f, y + 0.75f, 0.5f, 0.5f);  // Kích thước nhỏ để trigger chính xác
         this.animation = loadAnimation("images/objects/portal/portal1_frame_", 7, 0.1f);
@@ -44,12 +45,8 @@ public class Portal implements Collidable {
     @Override
     public void onCollision(Collidable other) {
 		if (other instanceof Player) {
-			onCollision((Player) other);
+			activated = true;
 		}
 	}
 
-    public void onCollision(Player player) {
-        //System.out.println("Portal Collision triggered!");
-        activated = true;
-    }
 }
