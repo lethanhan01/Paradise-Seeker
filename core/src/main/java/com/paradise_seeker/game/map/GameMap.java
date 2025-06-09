@@ -1,7 +1,5 @@
 package com.paradise_seeker.game.map;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -46,8 +44,8 @@ public abstract class GameMap {
     public List<Collidable> collidables = new ArrayList<>();
     public List<Gipsy> npcList = new ArrayList<>();
     public List<Monster> monsters = new ArrayList<>();
-    private List<GameObject> gameObjects = new ArrayList<>();
-    private List<Rectangle> occupiedAreas = new ArrayList<>();
+    public List<GameObject> gameObjects = new ArrayList<>();
+    public List<Rectangle> occupiedAreas = new ArrayList<>();
 
     // Items
     private List<HPitem> hpItems = new ArrayList<>();
@@ -276,7 +274,7 @@ public abstract class GameMap {
     public Chest getChest() { return chest; }
 
     // === Random item generator (if you want to keep it) ===
-    private void generateRandomItems(int hpCount, int mpCount) {
+    public void generateRandomItems(int hpCount, int mpCount) {
         Random rand = new Random();
         String[] hpTextures = {"items/potion/potion3.png", "items/potion/potion4.png", "items/potion/potion5.png"};
         int[] hpValues = {20, 40, 60};

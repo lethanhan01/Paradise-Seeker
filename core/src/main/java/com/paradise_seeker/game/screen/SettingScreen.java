@@ -25,14 +25,14 @@ public class SettingScreen implements Screen {
     // ShapeRenderer for drawing bars
     ShapeRenderer shapeRenderer;
 
-    // Font scale menu	
+    // Font scale menu
     private static final float BASE_HEIGHT = 950f;
     private float fontScale = 0.025f;
     private float menuItemSpacing = 0.95f;
     private float menuStartY = 0;
 
     // Track fullscreen toggle state for display
-    private boolean showFullscreenToggle = false;
+    public boolean showFullscreenToggle = false;
 
     public SettingScreen(Main game) {
         this.game = game;

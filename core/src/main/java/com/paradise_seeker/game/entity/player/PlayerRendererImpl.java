@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class PlayerRendererImpl implements PlayerRenderer{
-    private PlayerAnimationManagerImpl animationManager;
+	public PlayerAnimationManagerImpl animationManager;
 
     // Shield textures
-    private Texture shieldDown, shieldUp, shieldLeft, shieldRight;
+    public Texture shieldDown, shieldUp, shieldLeft, shieldRight;
 
     public PlayerRendererImpl(PlayerAnimationManagerImpl animationManager) {
         this.animationManager = animationManager;
