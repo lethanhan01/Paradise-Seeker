@@ -193,7 +193,6 @@ public class GameScreen implements Screen {
         gameCamera.viewportHeight = CAMERA_VIEW_HEIGHT * zoom;
         gameCamera.update();
 
-        // --- RENDER ---
         // Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
         game.batch.setProjectionMatrix(gameCamera.combined);

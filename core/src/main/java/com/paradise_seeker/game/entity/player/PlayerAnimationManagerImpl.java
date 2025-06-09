@@ -147,8 +147,8 @@ public class PlayerAnimationManagerImpl implements AnimationManager {
         return deathAnimation;
     }
 
-
     public Animation<TextureRegion> getSmokeAnimation() {
+
         return smokeAnimation;
     }
 
