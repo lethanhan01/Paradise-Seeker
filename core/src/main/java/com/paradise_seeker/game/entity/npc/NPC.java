@@ -1,6 +1,5 @@
 package com.paradise_seeker.game.entity.npc;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Collidable;
