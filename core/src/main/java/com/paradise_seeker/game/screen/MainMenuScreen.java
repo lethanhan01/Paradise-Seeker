@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.paradise_seeker.game.cutscene.IntroCutScene;
 import com.paradise_seeker.game.main.Main;
 import com.badlogic.gdx.audio.Music;
-import com.paradise_seeker.game.screen.WinScreen;
 public class MainMenuScreen implements Screen {
 
     final Main game;
@@ -23,7 +22,7 @@ public class MainMenuScreen implements Screen {
     Texture characterIcon;
     Texture leftIcon;
     Texture rightIcon;
- 
+
     Music menuMusic;
     public MainMenuScreen(final Main game) {
         this.game = game;
@@ -84,7 +83,7 @@ public class MainMenuScreen implements Screen {
         float xTitle = (viewportWidth - titleWidth) / 2f;
         float yTitle = viewportHeight - titleHeight - 0.4f;
         game.batch.draw(titleTexture, xTitle, yTitle, titleWidth, titleHeight);
-        
+
      // Draw left and right icons
         float iconWidth = 1.5f; // Adjust size as needed
         float iconHeight = 0.4f;
@@ -98,7 +97,7 @@ public class MainMenuScreen implements Screen {
         float buttonWidth = viewportWidth * 0.23f * 0.8f;
         float buttonHeight = viewportHeight * 0.1f * 0.8f;
         float xButton = (viewportWidth - buttonWidth) / 2f; // Center buttons horizontally
-        
+
 
         // Buttons start below the title image
         float yStart = yTitle - buttonHeight +1f;

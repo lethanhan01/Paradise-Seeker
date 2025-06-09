@@ -42,8 +42,8 @@ public class GameScreen implements Screen {
     private Gipsy currentTalkingNPC;
     private OrthographicCamera gameCamera;// Camera for the game world
     private OrthographicCamera hudCamera;// Camera for the HUD elements
-    private ShapeRenderer shapeRenderer;
-    private boolean isInGameMap = true;
+    public ShapeRenderer shapeRenderer;
+    public boolean isInGameMap = true;
     private boolean winTriggered = false;
 
     public static List<LaserBeam> activeProjectiles = new ArrayList<>();
@@ -251,7 +251,7 @@ public class GameScreen implements Screen {
 	                hud.showNotification("> You need the Key to enter!");
 	            }
 			}
-            
+
         }
         if (currentMap.getStartPortal() != null && player.getBounds().overlaps(currentMap.getStartPortal().getBounds())) {
             currentMap.getStartPortal().onCollision(player);
@@ -391,7 +391,7 @@ public class GameScreen implements Screen {
             zoom = Math.max(0.5f, zoom - 0.1f);
     }
 
-    private void renderDialogueOptions(float fontScale) {
+    public void renderDialogueOptions(float fontScale) {
         boolean shouldShowChoicesNow = dialogueBox.isVisible() && currentTalkingNPC != null && currentTalkingNPC.shouldShowOptions();
         if ((shouldShowChoicesNow || showDialogueOptions) && game.font != null) {
             if (shouldShowChoicesNow && !showDialogueOptions) showDialogueOptions = true;
@@ -431,7 +431,7 @@ public class GameScreen implements Screen {
         dialogueBg.dispose();
     }
 
-    private void switchMusicAndShowMap() {
+    public void switchMusicAndShowMap() {
         if (music != null) {
             music.stop();
             music.dispose();

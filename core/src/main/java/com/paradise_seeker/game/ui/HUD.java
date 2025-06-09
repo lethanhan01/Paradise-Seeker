@@ -12,6 +12,25 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class HUD {
 
+	public ShapeRenderer shapeRenderer;
+    public SpriteBatch spriteBatch;
+    private BitmapFont font;
+    private Player player;
+    private Texture[] hpBarFrames;
+    private Texture[] mpBarFrames;
+    public static final float BAR_WIDTH = 200f;
+    public static final float BAR_HEIGHT = 20f;
+    private static final float PADDING = 10f;
+    private static final float SPACING = 5f;
+    private Texture inventoryButton;
+    private Texture pauseButton;
+    private Texture[] fragmentTextures;
+
+    private float inventoryButtonWidth = 44f;
+    private float inventoryButtonHeight = 44f;
+    private float pauseButtonWidth = 44f;
+    private float pauseButtonHeight = 44f;
+
     private String notificationMessage = "";
     private float notificationTimer = 0f;
     private static final float NOTIFICATION_DISPLAY_TIME = 3.6f; // seconds
@@ -24,25 +43,6 @@ public class HUD {
         this.mapNotification = message;
         this.mapNotificationTimer = MAP_NOTIFICATION_TIME;
     }
-
-    public ShapeRenderer shapeRenderer;
-    public SpriteBatch spriteBatch;
-    private BitmapFont font;
-    private Player player;
-    private Texture[] hpBarFrames;
-    private Texture[] mpBarFrames;
-    private static final float BAR_WIDTH = 200f;
-    private static final float BAR_HEIGHT = 20f;
-    private static final float PADDING = 10f;
-    private static final float SPACING = 5f;
-    private Texture inventoryButton;
-    private Texture pauseButton;
-    private Texture[] fragmentTextures;
-
-    private float inventoryButtonWidth = 44f;
-    private float inventoryButtonHeight = 44f;
-    private float pauseButtonWidth = 44f;
-    private float pauseButtonHeight = 44f;
 
     public HUD(Player player, BitmapFont font) {
         this.player = player;

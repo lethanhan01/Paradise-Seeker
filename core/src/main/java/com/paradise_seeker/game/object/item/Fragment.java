@@ -3,8 +3,8 @@ package com.paradise_seeker.game.object.item;
 import com.paradise_seeker.game.entity.player.Player;
 
 public class Fragment extends Item {
-	private int fragmentIndex;
-	private boolean isCollected = false;
+	public int fragmentIndex;
+	public boolean isCollected = false;
 
 	public Fragment(float x, float y, float size, String texturePath, int fragmentIndex) {
 		super(x, y, size, texturePath);
@@ -21,10 +21,10 @@ public class Fragment extends Item {
 
 	public void use(Player player) {
 		if (fragmentIndex == 4) {
-			
+
 		}
 	}
-	
+
 	public int getFragmentIndex() {
 		return fragmentIndex;
 	}
@@ -32,6 +32,6 @@ public class Fragment extends Item {
 	@Override
 	public void onCollision(Player player) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

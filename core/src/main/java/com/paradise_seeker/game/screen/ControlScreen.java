@@ -10,8 +10,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.paradise_seeker.game.main.Main;
 
 public class ControlScreen implements Screen {
-    
-	final Main game; 
+
+	final Main game;
 	BitmapFont font;
 	GlyphLayout layout;
  // he thong dieu khien
@@ -23,8 +23,8 @@ public class ControlScreen implements Screen {
 			{"Skill 2", "I"},
 			{"Pause Game", "ESC"},
 			{"Inventory", "B"},
-			{"   - Use Item", "E"},
-			{"   - Drop Item", "Q"}
+			{"Use Item", "E"},
+			{"Drop Item", "Q"}
 	};
 
 	public ControlScreen(Main game) {

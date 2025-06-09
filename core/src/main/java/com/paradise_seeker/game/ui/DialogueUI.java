@@ -1,20 +1,15 @@
 package com.paradise_seeker.game.ui;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class DialogueUI {
-    private Stage stage;
-    private Label dialogueLabel;
-    private Window window;
-    private TextButton closeButton;
+    public Stage stage;
+    public Label dialogueLabel;
+    public Window window;
+    public TextButton closeButton;
 
     public DialogueUI(Stage stage, Skin skin) {
         this.stage = stage;

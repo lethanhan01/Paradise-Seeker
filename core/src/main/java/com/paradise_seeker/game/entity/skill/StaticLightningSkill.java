@@ -7,15 +7,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
 
 public class StaticLightningSkill {
-    private float x, y;
-    private float damage;
-    private String direction;
-    private Animation<TextureRegion> animation;
-    private Rectangle hitbox;
-    private float stateTime = 0f;
-    private boolean active = true;
-    private boolean hasDealtDamage = false;
-    private float scale = 0.02f;  // dùng chung cho render & hitbox
+    public float x, y;
+    public float damage;
+    public String direction;
+    public Animation<TextureRegion> animation;
+    public Rectangle hitbox;
+    public float stateTime = 0f;
+    public boolean active = true;
+    public boolean hasDealtDamage = false;
+    public float scale = 0.02f;  // dùng chung cho render & hitbox
 
     public StaticLightningSkill(float x, float y, float damage, String direction, Animation<TextureRegion> animation) {
         this.x = x;
