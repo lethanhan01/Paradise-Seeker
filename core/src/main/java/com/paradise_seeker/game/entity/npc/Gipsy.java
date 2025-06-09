@@ -93,23 +93,16 @@ public class Gipsy extends NPC {
         dialogueManager.nextLine();
     }
 
-    /**
-     * Lấy dòng thoại hiện tại
-     */
+
     public String getCurrentLine() {
         return dialogueManager.getCurrentLine();
     }
 
-    /**
-     * Đặt lại đối thoại về dòng đầu tiên
-     */
     public void resetDialogue() {
         dialogueManager.resetDialogue();
     }
 
-    /**
-     * Kiểm tra xem có nên hiển thị các tùy chọn đối thoại không
-     */
+
     public boolean shouldShowOptions() {
         // Giả định rằng các tùy chọn nên hiển thị khi đã đến dòng đối thoại cuối cùng
         // và NPC đang trong trạng thái nói chuyện và chưa mở rương

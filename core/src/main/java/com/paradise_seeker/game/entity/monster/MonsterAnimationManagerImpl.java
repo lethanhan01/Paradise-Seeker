@@ -143,7 +143,6 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
 
 	@Override
 	public Animation<TextureRegion> getRunAnimation(String direction) {
-		// TODO Auto-generated method stub
 		switch (direction) {
 			case "left": return walkLeft;
 			case "right": return walkRight;
@@ -153,7 +152,6 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
 
 	@Override
 	public Animation<TextureRegion> getIdleAnimation(String direction) {
-		// TODO Auto-generated method stub
 		switch (direction) {
 			case "left": return idleLeft;
 			case "right": return idleRight;
@@ -163,7 +161,6 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
 
 	@Override
 	public Animation<TextureRegion> getAttackAnimation(String direction) {
-		// TODO Auto-generated method stub
 		switch (direction) {
 			case "left": return cleaveLeft;
 			case "right": return cleaveRight;
@@ -173,7 +170,6 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
 
 	@Override
 	public Animation<TextureRegion> getHitAnimation(String direction) {
-		// TODO Auto-generated method stub
 		switch (direction) {
 			case "left": return takeHitLeft;
 			case "right": return takeHitRight;
@@ -183,7 +179,6 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
 
 	@Override
 	public Animation<TextureRegion> getDeathAnimation(String direction) {
-		// TODO Auto-generated method stub
 		switch (direction) {
 			case "left": return deathLeft;
 			case "right": return deathRight;
@@ -193,7 +188,6 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 }

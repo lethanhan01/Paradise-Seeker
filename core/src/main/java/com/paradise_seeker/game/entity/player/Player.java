@@ -131,7 +131,7 @@ public class Player extends Character {
             }
         }
 
-        // Update smoke effects
+        // Update smoke effect
         smokeManager.update(deltaTime, animationManager);
         inputHandler.handleNPCInteraction(player, gameMap);
     }

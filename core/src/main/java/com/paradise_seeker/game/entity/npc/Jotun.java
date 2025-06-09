@@ -29,14 +29,10 @@ public class Jotun extends NPC {
     private float spriteHeight = 5.5f;
 
 
-    public Jotun(float x, float y, Player player) {
+    public Jotun(float x, float y) {
         this.spriteWidth = 5.5f;
         this.spriteHeight = 5.5f;
         updateBounds();
-
-        this.player = player;
-        this.speed = player.speed;
-
         loadAnimations();
     }
 
