@@ -63,7 +63,7 @@ public class MonsterCollisionHandler {
         float distanceX = Math.abs(player.bounds.x - owner.getBounds().x);
         float distanceY = Math.abs(player.bounds.y - owner.getBounds().y);
 
-        return distanceX <= cleaveRange && distanceY <= cleaveRange / 2;
+        return distanceX <= 5f+cleaveRange && distanceY <= 5f+cleaveRange / 2;
     }
 
     /**
