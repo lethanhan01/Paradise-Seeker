@@ -59,7 +59,6 @@ public class InventoryScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        // Always update font scale before use (handles resize/minimize on-the-fly)
         updateFontScale();
 
         float originalScaleX = game.font.getData().scaleX;

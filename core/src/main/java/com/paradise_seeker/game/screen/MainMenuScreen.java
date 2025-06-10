@@ -19,7 +19,6 @@ public class MainMenuScreen implements Screen {
     Texture[] buttonTextures;
     Texture background;
     Texture[] selectedButtonTextures;
-    Texture characterIcon;
     Texture leftIcon;
     Texture rightIcon;
 
@@ -36,8 +35,6 @@ public class MainMenuScreen implements Screen {
         titleTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         background = new Texture("menu/start_menu/main_menu/bgnew.png");
 
-       // characterIcon = new Texture(Gdx.files.internal("images/Entity/characters/player/char_shielded_static_up.png"));
-        //characterIcon.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         leftIcon = new Texture(Gdx.files.internal("menu/start_menu/main_menu/arrleft.png"));
         rightIcon = new Texture(Gdx.files.internal("menu/start_menu/main_menu/arr.png"));
 
@@ -139,7 +136,6 @@ public class MainMenuScreen implements Screen {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             game.viewport.unproject(touchPos);
 
-            float viewportWidth = game.viewport.getWorldWidth();
             float viewportHeight = game.viewport.getWorldHeight();
             float titleHeight = 2f; // Should match above
             float yTitle = viewportHeight - titleHeight - 0.4f;

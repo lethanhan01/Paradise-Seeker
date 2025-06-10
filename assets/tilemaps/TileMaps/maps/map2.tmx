@@ -381,7 +381,7 @@
 </data>
  </layer>
  <objectgroup id="9" name="Spawns">
-  <object id="74" x="56" y="1230">
+  <object id="74" x="114.667" y="1242">
    <properties>
     <property name="type" value="player"/>
    </properties>
@@ -393,7 +393,7 @@
    </properties>
    <point/>
   </object>
-  <object id="78" x="28" y="1112">
+  <object id="78" x="9.5" y="1266.08">
    <properties>
     <property name="type" value="portal_start"/>
    </properties>
@@ -571,7 +571,7 @@
     <property name="solid" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="8" name="solid" x="22" y="1078" width="18" height="18">
+  <object id="8" name="solid" x="48.5" y="1031.08" width="18" height="100.5">
    <properties>
     <property name="solid" type="bool" value="true"/>
    </properties>

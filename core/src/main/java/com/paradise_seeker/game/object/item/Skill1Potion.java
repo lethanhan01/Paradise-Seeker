@@ -2,14 +2,14 @@ package com.paradise_seeker.game.object.item;
 
 import com.paradise_seeker.game.entity.player.Player;
 
-public class Skill1item extends Item {
+public class Skill1Potion extends Item {
     private float damageMultiplier;
 
-    public Skill1item(float x, float y, float size, String texturePath) {
+    public Skill1Potion(float x, float y, float size, String texturePath) {
         super(x, y, size, texturePath);
         this.damageMultiplier = 0.5f;
-        this.name = "Skill 1 Item";
-        this.description = "Skill 1's DMG +0.5x.";
+        this.name = "Skill 1 Potion";
+        this.description = "Skill 1's DMG + 0.5x.";
         this.stackable = true;
         this.maxStackSize = 5; // Giới hạn số lượng tối đa trong một stack
     }
@@ -28,8 +28,8 @@ public class Skill1item extends Item {
 
 
     public boolean canStackWith(Item other) {
-		if (!(other instanceof Skill1item)) return false;
-		Skill1item otherSkill = (Skill1item) other;
+		if (!(other instanceof Skill1Potion)) return false;
+		Skill1Potion otherSkill = (Skill1Potion) other;
 		return super.canStackWith(other) && this.name.equals(otherSkill.name);
 	}
 

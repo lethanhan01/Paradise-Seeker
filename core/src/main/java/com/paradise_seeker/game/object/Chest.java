@@ -8,10 +8,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
-import com.paradise_seeker.game.object.item.ATKitem;
+import com.paradise_seeker.game.object.item.ATKPotion;
 import com.paradise_seeker.game.object.item.Item;
-import com.paradise_seeker.game.object.item.Skill1item;
-import com.paradise_seeker.game.object.item.Skill2item;
+import com.paradise_seeker.game.object.item.Skill1Potion;
+import com.paradise_seeker.game.object.item.Skill2Potion;
 import com.badlogic.gdx.Gdx;
 
 public class Chest extends GameObject{
@@ -33,9 +33,9 @@ public class Chest extends GameObject{
         super(x, y, 3f, 3f, "images/objects/chest/chest hit animation.png");
         this.innerBounds = new Rectangle(x, y, 1f, 1f); // Vùng trigger nhỏ hơn
         items = Array.with(
-        	    new Skill1item(x, y, 1f, "items/buff/potion12.png"), // Thêm các item vào kho
-        	    new Skill2item(x, y, 1f, "items/buff/potion13.png"),
-        	    new ATKitem(x, y, 1f, "items/atkbuff_potion/potion15.png", 15)
+        	    new Skill1Potion(x, y, 1f, "items/buff/potion12.png"), // Thêm các item vào kho
+        	    new Skill2Potion(x, y, 1f, "items/buff/potion13.png"),
+        	    new ATKPotion(x, y, 1f, "items/atkbuff_potion/potion15.png", 15)
         	);
         loadAnimation();
     }

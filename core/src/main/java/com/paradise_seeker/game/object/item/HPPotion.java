@@ -2,10 +2,10 @@ package com.paradise_seeker.game.object.item;
 
 import com.paradise_seeker.game.entity.player.Player;
 
-public class HPitem extends Item {
+public class HPPotion extends Item {
     private int healAmount;
 
-    public HPitem(float x, float y, float size, String texturePath, int healAmount) {
+    public HPPotion(float x, float y, float size, String texturePath, int healAmount) {
         super(x, y, size, texturePath);
         this.healAmount = healAmount;
         this.name = "Health Potion";
@@ -25,8 +25,8 @@ public class HPitem extends Item {
         player.hp = Math.min(Player.MAX_HP, player.hp + healAmount);
     }
     public boolean canStackWith(Item other) {
-        if (!(other instanceof HPitem)) return false;
-        HPitem otherHP = (HPitem) other;
+        if (!(other instanceof HPPotion)) return false;
+        HPPotion otherHP = (HPPotion) other;
         return super.canStackWith(other) && this.healAmount == otherHP.healAmount;
     }
     public void dispose() {

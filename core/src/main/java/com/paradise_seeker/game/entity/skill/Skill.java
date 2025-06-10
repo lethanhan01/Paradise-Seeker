@@ -1,6 +1,5 @@
 package com.paradise_seeker.game.entity.skill;
 
-import com.paradise_seeker.game.entity.Character;
 import com.badlogic.gdx.math.Rectangle;
 
 public interface Skill {
