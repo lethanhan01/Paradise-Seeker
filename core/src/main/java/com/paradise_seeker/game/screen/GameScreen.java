@@ -27,8 +27,6 @@ import com.paradise_seeker.game.object.*;
 import com.paradise_seeker.game.object.item.ATKPotion;
 import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
-
-import com.paradise_seeker.game.object.item.MPitem;
 import com.paradise_seeker.game.screen.cutscene.EndMap1;
 import com.paradise_seeker.game.object.item.MPPotion;
 
