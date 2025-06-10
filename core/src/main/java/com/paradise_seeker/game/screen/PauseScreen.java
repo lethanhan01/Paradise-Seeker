@@ -12,8 +12,8 @@ public class PauseScreen implements Screen {
 
     final Main game;
     GlyphLayout layout;
-    String[] menuItems = {"- Pausing -", "Continue Game", "Settinsgs", "Return to Main Menu"};
-    int selectedIndex = 1; 
+    String[] menuItems = {"- Pausing -", "Continue Game", "Settings", "Return to Main Menu"};
+    int selectedIndex = 1;
     public PauseScreen(Main game) {
         this.game = game;
         this.layout = new GlyphLayout();
@@ -35,7 +35,7 @@ public class PauseScreen implements Screen {
         float viewportHeight = game.viewport.getWorldHeight();
 
         game.batch.begin();
-        
+
         game.font.setColor(Color.RED);
         for (int i = 0; i < menuItems.length; i++) {
             String text = menuItems[i];
@@ -43,7 +43,7 @@ public class PauseScreen implements Screen {
             float x = (viewportWidth - layout.width) / 2f;
             float y = viewportHeight - 2f - i * 1.5f;
 
-          
+
                 game.font.setColor(Color.WHITE);
                 if (i == selectedIndex) {
                 	//>
@@ -69,7 +69,7 @@ public class PauseScreen implements Screen {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             switch (selectedIndex) {
-                case 1: 
+                case 1:
                 	game.setScreen(game.currentGame);
                     break;
                 case 2: // Setting
@@ -81,7 +81,7 @@ public class PauseScreen implements Screen {
             }
         }
     }
-   
+
 
     @Override public void resize(int width, int height) {
         game.viewport.update(width, height, true);

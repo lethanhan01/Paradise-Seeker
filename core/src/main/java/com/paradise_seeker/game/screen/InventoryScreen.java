@@ -210,7 +210,7 @@ public class InventoryScreen implements Screen {
     private void useSelectedItem() {
         Item item = getSelectedItem();
         if (item != null && !(item instanceof Fragment)) {
-            item.use(player);
+            item.isUsed(player);
             if (item.isStackable()) {
                 item.setCount(item.getCount() - 1);
                 if (item.getCount() <= 0) {

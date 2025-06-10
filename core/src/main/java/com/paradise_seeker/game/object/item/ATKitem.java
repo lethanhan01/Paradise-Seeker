@@ -21,7 +21,9 @@ public class ATKitem extends Item {
             active = false;
         }
     }
-    public void use(Player player) {
+
+
+    public void isUsed(Player player) {
 		player.atk += atkBoost;
 
 	}

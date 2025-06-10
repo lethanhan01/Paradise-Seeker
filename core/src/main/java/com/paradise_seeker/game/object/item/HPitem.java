@@ -21,7 +21,7 @@ public class HPitem extends Item {
             active = false;
         }
     }
-    public void use(Player player) {
+    public void isUsed(Player player) {
         player.hp = Math.min(Player.MAX_HP, player.hp + healAmount);
     }
     public boolean canStackWith(Item other) {

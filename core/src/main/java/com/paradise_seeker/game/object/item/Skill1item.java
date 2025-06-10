@@ -21,8 +21,8 @@ public class Skill1item extends Item {
             active = false;
         }
     }
-    
-    public void use(Player player) {
+
+    public void isUsed(Player player) {
     	player.playerSkill1.setDamageMultiplier(this.damageMultiplier); // Nhân 2 damage skill1
 	}
 

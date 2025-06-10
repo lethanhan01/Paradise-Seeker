@@ -21,7 +21,8 @@ public class MPitem extends Item {
             active = false;
         }
     }
-    public void use(Player player) {
+
+    public void isUsed(Player player) {
 		player.mp = Math.min(Player.MAX_MP, player.mp + manaAmount);
 
 	}
