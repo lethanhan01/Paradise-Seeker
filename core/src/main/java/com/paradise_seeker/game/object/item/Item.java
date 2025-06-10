@@ -4,9 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Collidable;
+import com.paradise_seeker.game.entity.Renderable;
 import com.paradise_seeker.game.entity.player.Player;
 
-public abstract class Item implements Collidable {
+public abstract class Item implements Collidable, Renderable {
     protected Rectangle bounds;
     protected Texture texture;
     protected String name;
@@ -29,6 +30,7 @@ public abstract class Item implements Collidable {
         return bounds;
     }
 
+    @Override
     public void render(SpriteBatch batch) {
         if (active) {
             batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
@@ -44,7 +46,7 @@ public abstract class Item implements Collidable {
             texture.dispose();
         }
     }
-    public abstract void use(Player player);
+    public abstract void isUsed(Player player);
 
     public Texture getTexture() { return texture; }
     public String getName() { return name; }

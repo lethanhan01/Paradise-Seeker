@@ -19,7 +19,7 @@ public class Fragment extends Item {
 
 	@Override
 
-	public void use(Player player) {
+	public void isUsed(Player player) {
 		if (fragmentIndex == 4) {
 
 		}

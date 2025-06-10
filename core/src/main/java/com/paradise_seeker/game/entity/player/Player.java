@@ -58,7 +58,7 @@ public class Player extends Character {
         this.x = 0;
         this.y = 0;
 
-        // Khởi tạo PlayerInventoryManager
+        // Khởi tạo PlayerInventoryManager, ...
         this.inventoryManager = new PlayerInventoryManager();
         this.animationManager = new PlayerAnimationManagerImpl();
         this.animationManager.setAnimations();

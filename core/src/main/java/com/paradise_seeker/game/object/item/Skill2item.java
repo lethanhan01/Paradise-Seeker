@@ -22,7 +22,7 @@ public class Skill2item extends Item  {
         }
     }
 
-    public void use(Player player) {
+    public void isUsed(Player player) {
 		player.playerSkill2.setDamageMultiplier(this.damageMultiplier); // Nhân 2 damage skill2
 	}
     public boolean canStackWith(Item other) {
