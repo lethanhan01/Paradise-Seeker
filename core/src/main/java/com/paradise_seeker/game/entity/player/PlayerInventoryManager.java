@@ -7,10 +7,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.object.item.Fragment;
 import com.paradise_seeker.game.object.item.Item;
 
-/**
- * Class chuyên quản lý kho đồ của người chơi.
- * Tách ra từ class Player để tuân thủ nguyên tắc Single Responsibility (SRP) trong SOLID
- */
 public class PlayerInventoryManager {
     private ArrayList<Item> inventory;
     private int inventorySize;
@@ -26,10 +22,7 @@ public class PlayerInventoryManager {
         this.inventorySize = inventorySize;
     }
 
-    /**
-     * Thêm vật phẩm vào kho đồ
-     * @param newItem vật phẩm cần thêm
-     */
+
     public void addItemToInventory(Item newItem, Rectangle playerBounds) {
         if (newItem == null || !newItem.isActive()) return;
 

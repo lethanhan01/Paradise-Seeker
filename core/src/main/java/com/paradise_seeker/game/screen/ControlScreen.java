@@ -16,7 +16,7 @@ public class ControlScreen implements Screen {
 	GlyphLayout layout;
  // he thong dieu khien
 	String[][] controls = {
-			{"Moving", "WASD / ↑↓←→"},
+			{"Moving", "WASD / Arrow keys"},
 			{"Dashing", "Move + Left Shift"},
 			{"Attack", "SPACE"},
 			{"Skill 1", "U"},

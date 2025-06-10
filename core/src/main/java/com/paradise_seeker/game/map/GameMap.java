@@ -15,13 +15,13 @@ import com.paradise_seeker.game.entity.monster.MonsterFactory;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.object.*;
-import com.paradise_seeker.game.object.item.ATKitem;
+import com.paradise_seeker.game.object.item.ATKPotion;
 import com.paradise_seeker.game.object.item.Fragment;
-import com.paradise_seeker.game.object.item.HPitem;
+import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
-import com.paradise_seeker.game.object.item.MPitem;
-import com.paradise_seeker.game.object.item.Skill1item;
-import com.paradise_seeker.game.object.item.Skill2item;
+import com.paradise_seeker.game.object.item.MPPotion;
+import com.paradise_seeker.game.object.item.Skill1Potion;
+import com.paradise_seeker.game.object.item.Skill2Potion;
 import com.paradise_seeker.game.ui.HUD;
 import java.util.*;
 
@@ -48,11 +48,11 @@ public abstract class GameMap {
     public List<Rectangle> occupiedAreas = new ArrayList<>();
 
     // Items
-    private List<HPitem> hpItems = new ArrayList<>();
-    private List<MPitem> mpItems = new ArrayList<>();
-    private List<ATKitem> atkItems = new ArrayList<>();
-    private List<Skill1item> skill1Items = new ArrayList<>();
-    private List<Skill2item> skill2Items = new ArrayList<>();
+    private List<HPPotion> hpItems = new ArrayList<>();
+    private List<MPPotion> mpItems = new ArrayList<>();
+    private List<ATKPotion> atkItems = new ArrayList<>();
+    private List<Skill1Potion> skill1Items = new ArrayList<>();
+    private List<Skill2Potion> skill2Items = new ArrayList<>();
 
     private float itemSpawnTimer = 0f;
     private static final float ITEM_SPAWN_INTERVAL = 120f;
@@ -169,11 +169,11 @@ public abstract class GameMap {
     public void render(SpriteBatch batch) {
         batch.draw(backgroundTexture, 0, 0, MAP_WIDTH, MAP_HEIGHT);
         for (GameObject obj : gameObjects) obj.render(batch);
-        for (HPitem item : hpItems) item.render(batch);
-        for (MPitem item : mpItems) item.render(batch);
-        for (ATKitem item : atkItems) item.render(batch);
-        for (Skill1item item : skill1Items) item.render(batch);
-        for (Skill2item item : skill2Items) item.render(batch);
+        for (HPPotion item : hpItems) item.render(batch);
+        for (MPPotion item : mpItems) item.render(batch);
+        for (ATKPotion item : atkItems) item.render(batch);
+        for (Skill1Potion item : skill1Items) item.render(batch);
+        for (Skill2Potion item : skill2Items) item.render(batch);
         for (Monster m : monsters) m.render(batch);
         for (Gipsy npc : npcList) npc.render(batch);
         if (portal != null) portal.render(batch);
@@ -246,9 +246,9 @@ public abstract class GameMap {
     }
 
     public void dropItem(Item item) {
-        if (item instanceof HPitem) hpItems.add((HPitem) item);
-        else if (item instanceof MPitem) mpItems.add((MPitem) item);
-        else if (item instanceof ATKitem) atkItems.add((ATKitem) item);
+        if (item instanceof HPPotion) hpItems.add((HPPotion) item);
+        else if (item instanceof MPPotion) mpItems.add((MPPotion) item);
+        else if (item instanceof ATKPotion) atkItems.add((ATKPotion) item);
         // Extend for other item types as needed
     }
 
@@ -285,17 +285,17 @@ public abstract class GameMap {
         int[] atkValues = {5, 10, 15};
         for (int i = 0; i < hpCount; i++) {
             int idx = rand.nextInt(hpTextures.length);
-            hpItems.add(new HPitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, hpTextures[idx], hpValues[idx]));
+            hpItems.add(new HPPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, hpTextures[idx], hpValues[idx]));
         }
         for (int i = 0; i < mpCount; i++) {
             int idx = rand.nextInt(mpTextures.length);
-            mpItems.add(new MPitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, mpTextures[idx], mpValues[idx]));
+            mpItems.add(new MPPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, mpTextures[idx], mpValues[idx]));
         }
         for (int i = 0; i < 3; i++) {
             int idx = rand.nextInt(atkTextures.length);
-            atkItems.add(new ATKitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, atkTextures[idx], atkValues[idx]));
-            skill1Items.add(new Skill1item(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion12.png"));
-            skill2Items.add(new Skill2item(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion13.png"));
+            atkItems.add(new ATKPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, atkTextures[idx], atkValues[idx]));
+            skill1Items.add(new Skill1Potion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion12.png"));
+            skill2Items.add(new Skill2Potion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion13.png"));
         }
     }
 
@@ -306,21 +306,21 @@ public abstract class GameMap {
             String[] textures = {"items/potion/potion3.png", "items/potion/potion4.png", "items/potion/potion5.png"};
             int[] values = {20, 40, 60};
             int idx = rand.nextInt(textures.length);
-            hpItems.add(new HPitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
+            hpItems.add(new HPPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
         } else if (type == 1) {
             String[] textures = {"items/potion/potion9.png", "items/potion/potion10.png", "items/potion/potion11.png"};
             int[] values = {15, 30, 50};
             int idx = rand.nextInt(textures.length);
-            mpItems.add(new MPitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
+            mpItems.add(new MPPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
         } else if (type == 2) {
             String[] textures = {"items/atkbuff_potion/potion14.png", "items/atkbuff_potion/potion15.png", "items/atkbuff_potion/potion16.png"};
             int[] values = {5, 10, 15};
             int idx = rand.nextInt(textures.length);
-            atkItems.add(new ATKitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
+            atkItems.add(new ATKPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
         } else if (type == 3) {
-            skill1Items.add(new Skill1item(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion12.png"));
+            skill1Items.add(new Skill1Potion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion12.png"));
         } else {
-            skill2Items.add(new Skill2item(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion13.png"));
+            skill2Items.add(new Skill2Potion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion13.png"));
         }
     }
 

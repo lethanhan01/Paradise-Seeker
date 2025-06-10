@@ -7,7 +7,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.monster.boss.ParadiseKing;
 import com.paradise_seeker.game.entity.npc.Gipsy;
@@ -25,15 +24,18 @@ import java.util.List;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.map.GameMapManager;
 import com.paradise_seeker.game.object.*;
-import com.paradise_seeker.game.object.item.ATKitem;
-import com.paradise_seeker.game.object.item.HPitem;
+import com.paradise_seeker.game.object.item.ATKPotion;
+import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
+
 import com.paradise_seeker.game.object.item.MPitem;
 import com.paradise_seeker.game.screen.cutscene.EndMap1;
+import com.paradise_seeker.game.object.item.MPPotion;
+
 
 public class GameScreen implements Screen {
     final Main game;
-    Player player = new Player();;
+    Player player = new Player();
     Music music;
     private float cameraLerp = 0.1f;// Controls how fast the camera follows the player
     private GameMapManager mapManager;// Manages the current map and transitions
@@ -66,7 +68,6 @@ public class GameScreen implements Screen {
         this.game = game;
 
         // Create player, initial position will be set from Tiled data by mapManager!
-        Rectangle playerBounds = new Rectangle(0, 0, 1, 1); // Temporary
 		player = new Player();
         this.mapManager = new GameMapManager(player);
         this.hud = new HUD(player, game.font);
@@ -96,15 +97,18 @@ public class GameScreen implements Screen {
         this.hudCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
+    public void setmusic() {
+    	String musicPath = mapManager.getCurrentMapMusic();
+    	music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
+    	music.setLooping(true);
+    	music.setVolume(game.settingMenu.setVolume);
+    	music.play();
+    	hud.showMapNotification(mapManager.getCurrentMap().getMapName());
+	}
     @Override
     public void show() {
         if (music != null) music.stop();
-        String musicPath = mapManager.getCurrentMapMusic();
-        music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
-        music.setLooping(true);
-        music.setVolume(game.settingMenu.setVolume);
-        music.play();
-        hud.showMapNotification(mapManager.getCurrentMap().getMapName());
+        setmusic();
     }
 
     @Override
@@ -392,13 +396,13 @@ public class GameScreen implements Screen {
 
         switch (potionType) {
             case "HP potion":
-                dropped = new HPitem(dropX, dropY, 1f, "items/potion/potion3.png", 20);
+                dropped = new HPPotion(dropX, dropY, 1f, "items/potion/potion3.png", 20);
                 break;
             case "MP potion":
-                dropped = new MPitem(dropX, dropY, 1f, "items/potion/potion9.png", 15);
+                dropped = new MPPotion(dropX, dropY, 1f, "items/potion/potion9.png", 15);
                 break;
             case "ATK potion":
-                dropped = new ATKitem(dropX, dropY, 1f, "items/atkbuff_potion/potion14.png", 5);
+                dropped = new ATKPotion(dropX, dropY, 1f, "items/atkbuff_potion/potion14.png", 5);
                 break;
         }
 
@@ -411,31 +415,6 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) zoom = Math.min(3.0f, zoom + 0.1f);
         else if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS) || Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
             zoom = Math.max(0.5f, zoom - 0.1f);
-    }
-
-    public void renderDialogueOptions(float fontScale) {
-        boolean shouldShowChoicesNow = dialogueBox.isVisible() && currentTalkingNPC != null && currentTalkingNPC.shouldShowOptions();
-        if ((shouldShowChoicesNow || showDialogueOptions) && game.font != null) {
-            if (shouldShowChoicesNow && !showDialogueOptions) showDialogueOptions = true;
-            hud.spriteBatch.begin();
-            // Calculate positions for options
-            float screenWidth = Gdx.graphics.getWidth();
-            float startY = 60 * fontScale;
-            float optionSpacing = 220 * fontScale;
-            float totalWidth = optionSpacing * options.length;
-            float startX = (screenWidth - totalWidth) / 2f + 20f * fontScale;
-            // Draw options
-            float oldScaleX = game.font.getData().scaleX;
-            float oldScaleY = game.font.getData().scaleY;
-            game.font.getData().setScale(fontScale);
-
-            for (int i = 0; i < options.length; i++) {
-                String prefix = (i == selectedOptionIndex) ? "> " : "  ";
-                game.font.draw(hud.spriteBatch, prefix + (i + 1) + ". " + options[i], startX + i * optionSpacing, startY);
-            }
-            game.font.getData().setScale(oldScaleX, oldScaleY);
-            hud.spriteBatch.end();
-        }
     }
 
     @Override public void resize(int width, int height) {
@@ -458,11 +437,6 @@ public class GameScreen implements Screen {
             music.stop();
             music.dispose();
         }
-        String musicPath = mapManager.getCurrentMapMusic();
-        music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
-        music.setLooping(true);
-        music.setVolume(game.settingMenu.setVolume);
-        music.play();
-        hud.showMapNotification(mapManager.getCurrentMap().getMapName());
+        setmusic();
     }
 }
