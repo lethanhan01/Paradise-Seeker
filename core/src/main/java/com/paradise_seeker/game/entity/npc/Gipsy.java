@@ -3,6 +3,9 @@ package com.paradise_seeker.game.entity.npc;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.map.GameMap;
+import com.badlogic.gdx.graphics.Texture;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Gipsy extends NPC {
     public NPCAnimationManager animationManager;
@@ -24,6 +27,13 @@ public class Gipsy extends NPC {
         this.animationManager = new NPCAnimationManager();
         this.stateManager = new NPCStateManager();
         this.dialogueManager = new DialogueManager();
+
+        // Thiết lập câu thoại mặc định cho Gipsy
+        List<String> defaultDialogue = new ArrayList<>();
+        defaultDialogue.add("Hello, traveler!");
+        defaultDialogue.add("I am Gipsy, a wandering merchant.");
+        defaultDialogue.add("Would you like to open a chest?");
+        dialogueManager.setDialogue(defaultDialogue);
     }
 
     public Gipsy() {
@@ -36,6 +46,12 @@ public class Gipsy extends NPC {
             bounds.setPosition(x, y);
         }
     }
+
+    @Override
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
     @Override
     public void act(float deltaTime, GameMap map) {
         // Cập nhật animation dựa trên trạng thái hiện tại
@@ -93,7 +109,6 @@ public class Gipsy extends NPC {
         dialogueManager.nextLine();
     }
 
-
     public String getCurrentLine() {
         return dialogueManager.getCurrentLine();
     }
@@ -101,7 +116,6 @@ public class Gipsy extends NPC {
     public void resetDialogue() {
         dialogueManager.resetDialogue();
     }
-
 
     public boolean shouldShowOptions() {
         // Giả định rằng các tùy chọn nên hiển thị khi đã đến dòng đối thoại cuối cùng
@@ -115,13 +129,24 @@ public class Gipsy extends NPC {
     public boolean isChestOpened() {
         return stateManager.isChestOpened();
     }
+
     public boolean hasTalked() {
     	return stateManager.hasTalked();
 	}
 
 	@Override
-	public void render(SpriteBatch batch) {
-		// TODO Auto-generated method stub
+	protected void loadTexture() {
+		// Load default texture for Gipsy
+		texture = new Texture("images/Entity/characters/NPCs/npc1/act3/npc120.png");
+	}
 
+	@Override
+	public void render(SpriteBatch batch) {
+		// Use animation manager to render if available, otherwise use default texture
+		if (animationManager != null) {
+			animationManager.render(batch, bounds, spriteWidth, spriteHeight);
+		} else if (texture != null) {
+			batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
+		}
 	}
 }

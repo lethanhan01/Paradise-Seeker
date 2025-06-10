@@ -77,6 +77,7 @@ public abstract class GameMap {
     }
 
     public void loadSpawnPoints(Player player) {
+        clearEntities();
         MapLayer spawnsLayer = tiledMap.getLayers().get("Spawns");
         if (spawnsLayer == null) return;
 
@@ -91,8 +92,9 @@ public abstract class GameMap {
 
             switch (type) {
                 case "player":
-                    player.bounds.x = worldX;
-                    player.bounds.y = worldY;
+                    Rectangle bounds = player.getBounds();
+                    bounds.x = worldX;
+                    bounds.y = worldY;
                     break;
 
                 case "monster": {
@@ -128,14 +130,17 @@ public abstract class GameMap {
 
                 case "npc":
                     String npcClass = (String) obj.getProperties().get("class");
-                    Gipsy npc;
-                    if (npcClass != null && npcClass.equals("npc1")) {
-                        // If you have different NPC subclasses, handle here.
-                        // npc = new SpecialNPC(worldX, worldY);
-                        npc = new Gipsy(worldX, worldY); // Fallback
-                    } else {
+                    Gipsy npc = new Gipsy(worldX, worldY); // Tạo NPC mặc định
+
+                    // Kiểm tra nếu có property "class" và giá trị là "Gipsy"
+                    if (npcClass != null && npcClass.equals("Gipsy")) {
                         npc = new Gipsy(worldX, worldY);
                     }
+                    // Bạn có thể thêm các điều kiện khác cho các class NPC khác ở đây
+                    // else if (npcClass != null && npcClass.equals("OtherNPC")) {
+                    //     npc = new OtherNPC(worldX, worldY);
+                    // }
+
                     npcList.add(npc);
                     collidables.add(npc);
                     break;
@@ -284,11 +289,15 @@ public abstract class GameMap {
         int[] atkValues = {5, 10, 15};
         for (int i = 0; i < hpCount; i++) {
             int idx = rand.nextInt(hpTextures.length);
-            hpItems.add(new HPitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, hpTextures[idx], hpValues[idx]));
+            float x = rand.nextFloat() * (MAP_WIDTH - 2) + 1;
+            float y = rand.nextFloat() * (MAP_HEIGHT - 2) + 1;
+            hpItems.add(new HPitem(x, y, 1f, hpTextures[idx], hpValues[idx]));
         }
         for (int i = 0; i < mpCount; i++) {
             int idx = rand.nextInt(mpTextures.length);
-            mpItems.add(new MPitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, mpTextures[idx], mpValues[idx]));
+            float x = rand.nextFloat() * (MAP_WIDTH - 2) + 1;
+            float y = rand.nextFloat() * (MAP_HEIGHT - 2) + 1;
+            mpItems.add(new MPitem(x, y, 1f, mpTextures[idx], mpValues[idx]));
         }
         for (int i = 0; i < 3; i++) {
             int idx = rand.nextInt(atkTextures.length);
@@ -300,35 +309,53 @@ public abstract class GameMap {
 
     private void spawnRandomItem() {
         Random rand = new Random();
-        int type = rand.nextInt(5); // 0 = HP, 1 = MP, 2 = ATK, 3 = Skill1, 4 = Skill2
-        if (type == 0) {
-            String[] textures = {"items/potion/potion3.png", "items/potion/potion4.png", "items/potion/potion5.png"};
-            int[] values = {20, 40, 60};
-            int idx = rand.nextInt(textures.length);
-            hpItems.add(new HPitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
-        } else if (type == 1) {
-            String[] textures = {"items/potion/potion9.png", "items/potion/potion10.png", "items/potion/potion11.png"};
-            int[] values = {15, 30, 50};
-            int idx = rand.nextInt(textures.length);
-            mpItems.add(new MPitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
-        } else if (type == 2) {
-            String[] textures = {"items/atkbuff_potion/potion14.png", "items/atkbuff_potion/potion15.png", "items/atkbuff_potion/potion16.png"};
-            int[] values = {5, 10, 15};
-            int idx = rand.nextInt(textures.length);
-            atkItems.add(new ATKitem(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
-        } else if (type == 3) {
-            skill1Items.add(new Skill1item(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion12.png"));
-        } else {
-            skill2Items.add(new Skill2item(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion13.png"));
+        float x = rand.nextFloat() * (MAP_WIDTH - 2) + 1;
+        float y = rand.nextFloat() * (MAP_HEIGHT - 2) + 1;
+        int type = rand.nextInt(5);
+        switch (type) {
+            case 0:
+                hpItems.add(new HPitem(x, y, 1f, "items/potion/potion3.png", 20));
+                break;
+            case 1:
+                mpItems.add(new MPitem(x, y, 1f, "items/potion/potion9.png", 15));
+                break;
+            case 2:
+                atkItems.add(new ATKitem(x, y, 1f, "items/atkbuff_potion/potion14.png", 5));
+                break;
+            case 3:
+                skill1Items.add(new Skill1item(x, y, 1f, "items/buff/potion12.png"));
+                break;
+            case 4:
+                skill2Items.add(new Skill2item(x, y, 1f, "items/buff/potion13.png"));
+                break;
         }
     }
 
-  public void setPlayer(Player player) {
-    this.player = player;
-}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-  public Player getPlayer() {
-    return player;
-}
+    public Player getPlayer() {
+        return player;
+    }
 
+    public void clearEntities() {
+        monsters.clear();
+        npcList.clear();
+        hpItems.clear();
+        mpItems.clear();
+        atkItems.clear();
+        skill1Items.clear();
+        skill2Items.clear();
+        // Chỉ xóa collidable là quái, NPC, item động
+        collidables.removeIf(c -> 
+            c instanceof Monster ||
+            c instanceof Gipsy ||
+            c instanceof HPitem ||
+            c instanceof MPitem ||
+            c instanceof ATKitem ||
+            c instanceof Skill1item ||
+            c instanceof Skill2item
+        );
+    }
 }

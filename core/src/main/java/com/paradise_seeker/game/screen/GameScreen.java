@@ -185,7 +185,7 @@ public class GameScreen implements Screen {
         }
 
         // Camera follows player
-        Vector2 playerCenter = new Vector2(player.bounds.x + player.bounds.width / 2, player.bounds.y + player.bounds.height / 2);
+        Vector2 playerCenter = new Vector2(player.getBounds().x + player.getBounds().width / 2, player.getBounds().y + player.getBounds().height / 2);
         Vector2 currentCameraPos = new Vector2(gameCamera.position.x, gameCamera.position.y);
         Vector2 newCameraPos = currentCameraPos.lerp(playerCenter, cameraLerp);
         gameCamera.position.set(newCameraPos.x, newCameraPos.y, 0);

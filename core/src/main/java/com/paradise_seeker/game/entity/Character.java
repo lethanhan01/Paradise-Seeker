@@ -2,6 +2,7 @@ package com.paradise_seeker.game.entity;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.map.GameMap;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class Character implements Collidable, Renderable {
     public float hp; 
@@ -10,7 +11,7 @@ public abstract class Character implements Collidable, Renderable {
     public float maxMp; // Thêm maxMp để dễ quản lý
     public float atk;
     public float speed;
-    public Rectangle bounds = new Rectangle(); // Kích thước và vị trí của nhân vật
+    protected Rectangle bounds = new Rectangle(); // Kích thước và vị trí của nhân vật
     public float x, y;
 
     public Character() {
@@ -25,7 +26,7 @@ public abstract class Character implements Collidable, Renderable {
         this.maxHp = maxHp;
         this.maxMp = maxMp;
         this.x = x;
-		this.y = y;
+        this.y = y;
     }
 
     public void act(float deltaTime, GameMap map) {
@@ -39,10 +40,16 @@ public abstract class Character implements Collidable, Renderable {
     @Override
     public void onCollision(Collidable other) {
     }
-    public Rectangle getbounds() {
-		return bounds; // Trả về hitbox của nhân vật
-	}
+
+    @Override
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        // Base implementation is empty, subclasses should override
+    }
 
     public abstract void onDeath();
-
 }

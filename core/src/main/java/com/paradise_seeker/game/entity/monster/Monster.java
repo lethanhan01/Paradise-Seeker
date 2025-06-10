@@ -100,6 +100,7 @@ public abstract class Monster extends Character {
         return animationManager.isFacingRight();
     }
 
+    @Override
     public Rectangle getBounds() {
         return bounds;
     }

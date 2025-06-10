@@ -1,15 +1,19 @@
 package com.paradise_seeker.game.entity.npc;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Collidable;
+import com.paradise_seeker.game.entity.Renderable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 
-public abstract class NPC extends Character implements Collidable {
+public abstract class NPC extends Character {
     public String dialogue;
-    public boolean isTalking ;
-    public boolean hasTalked ;
+    public boolean isTalking;
+    public boolean hasTalked;
+    protected Texture texture;
 
     public NPC() {
         this.bounds = new Rectangle(0, 0, 1, 1);
@@ -20,25 +24,33 @@ public abstract class NPC extends Character implements Collidable {
         this.dialogue = "";
         this.isTalking = false;
         this.hasTalked = false;
+        loadTexture();
+    }
+
+    protected abstract void loadTexture();
+
+    public void dispose() {
+        if (texture != null) {
+            texture.dispose();
+        }
     }
 
     @Override
     public void takeHit(float damage) {
         // NPC không thể bị thương, có thể để trống hoặc ghi đè nếu cần
     }
-    @Override
-    public Rectangle getBounds() {
-        return bounds;
-    }
+
     @Override
     public void onCollision(Collidable other) {
         //
     }
+
     @Override
     public void act(float deltaTime, GameMap map) {
         // Cập nhật trạng thái NPC nếu cần
         // Ví dụ: di chuyển, thay đổi lời thoại, v.v.
     }
+
     public abstract void setTalking(boolean talking);
 
     public void interact(Player player) {
@@ -55,4 +67,17 @@ public abstract class NPC extends Character implements Collidable {
 		// TODO Auto-generated method stub
 
 	}
+
+    @Override
+    public void render(SpriteBatch batch) {
+        // Draw NPC texture if available
+        if (texture != null) {
+            batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
+        }
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return super.getBounds();
+    }
 }
