@@ -12,7 +12,7 @@ public class FireDemon extends Monster {
     private float cleaveRange = 5f;
 
     public FireDemon(float x, float y) {
-        super(new Rectangle(x, y, 2f, 2f), 500f, 50f, 500f, 50f, 50f, 2f, x, y);
+        super(new Rectangle(x, y, 3.5f, 3.5f), 500f, 50f, 500f, 50f, 50f, 2f, x, y);
         this.collisionHandler.setCleaveRange(cleaveRange);
     }
 
