@@ -10,9 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class để quản lý animation của các NPC
- */
+
 public class NPCAnimationManager {
     private Animation<TextureRegion> idleAnimation;
     private Animation<TextureRegion> talkAnimation;

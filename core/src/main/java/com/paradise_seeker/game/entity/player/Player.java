@@ -19,17 +19,8 @@ public class Player extends Character {
     private final float dashCooldown = 0f;
     private final float dashDistance = 2f;
 
-    public PlayerSkill playerSkill1 = new PlayerSkill1();
-    public PlayerSkill playerSkill2 = new PlayerSkill2();
-
-    // Quản lý hiệu ứng smoke
-    public SmokeManager smokeManager = new SmokeManager();
-
     public float speedMultiplier = 1f;
     private final Vector2 lastPosition = new Vector2();
-
-    // Quản lý inventory thông qua PlayerInventoryManager
-    public PlayerInventoryManager inventoryManager;
 
     public float stateTime = 0f;
     public String direction = "down";
@@ -41,9 +32,13 @@ public class Player extends Character {
     public boolean isShielding = false;
     public boolean isPaused = false;
 
+    public PlayerInventoryManager inventoryManager;
+    public DashTrailManager smokeManager = new DashTrailManager();
     public PlayerAnimationManagerImpl animationManager;
     public PlayerInputHandlerImpl inputHandler;
     public PlayerRendererImpl playerRenderer;
+    public PlayerSkill playerSkill1 = new PlayerSkill1();
+    public PlayerSkill playerSkill2 = new PlayerSkill2();
 
     public boolean isDead = false;
     public boolean isHit = false;
