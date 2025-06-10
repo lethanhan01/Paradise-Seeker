@@ -56,6 +56,7 @@ public abstract class GameMap {
 
     private float itemSpawnTimer = 0f;
     private static final float ITEM_SPAWN_INTERVAL = 120f;
+   
 
 
     // Subclass must provide these
