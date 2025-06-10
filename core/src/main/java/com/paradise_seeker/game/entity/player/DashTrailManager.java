@@ -8,17 +8,17 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SmokeManager {
-    private final List<Smoke> smokes = new LinkedList<>();
+public class DashTrailManager {
+    private final List<DashTrail> smokes = new LinkedList<>();
 
     public void addSmoke(float x, float y) {
-        smokes.add(new Smoke(x, y));
+        smokes.add(new DashTrail(x, y));
     }
 
     public void update(float deltaTime, PlayerAnimationManagerImpl animationManager) {
-        Iterator<Smoke> iter = smokes.iterator();
+        Iterator<DashTrail> iter = smokes.iterator();
         while (iter.hasNext()) {
-            Smoke s = iter.next();
+            DashTrail s = iter.next();
             s.stateTime += deltaTime;
             if (animationManager.getSmokeAnimation().isAnimationFinished(s.stateTime)) {
                 iter.remove();
@@ -28,7 +28,7 @@ public class SmokeManager {
 
     public void render(SpriteBatch batch, PlayerAnimationManagerImpl animationManager) {
         Animation<TextureRegion> smokeAnim = animationManager.getSmokeAnimation();
-        for (Smoke s : smokes) {
+        for (DashTrail s : smokes) {
             TextureRegion frame = smokeAnim.getKeyFrame(s.stateTime, false);
             batch.draw(frame, s.x, s.y, 1f, 1f);
         }

@@ -1,8 +1,8 @@
 package com.paradise_seeker.game.entity.player;
 
-public class Smoke {
+public class DashTrail {
 	float x, y, stateTime;
-    Smoke(float x, float y) {
+    DashTrail(float x, float y) {
     	this.x = x;
     	this.y = y;
     	this.stateTime = 0f;
