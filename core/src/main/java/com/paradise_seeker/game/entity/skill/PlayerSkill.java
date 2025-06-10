@@ -2,17 +2,16 @@ package com.paradise_seeker.game.entity.skill;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.entity.Character;
+import com.paradise_seeker.game.entity.Renderable;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.List;
 import com.paradise_seeker.game.entity.monster.Monster;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class PlayerSkill implements Skill {
+public abstract class PlayerSkill implements Skill, Renderable {
     protected float manaCost;
     protected long cooldown;
     protected long lastUsedTime;
@@ -29,10 +28,6 @@ public abstract class PlayerSkill implements Skill {
         return (now - lastUsedTime) >= cooldown;
     }
 
-    public float getManaCost() {
-        return manaCost;
-    }
-
     public void setLastUsedTime(long time) {
         this.lastUsedTime = time;
     }
@@ -47,27 +42,16 @@ public abstract class PlayerSkill implements Skill {
 
     protected abstract void loadSkillAnimations();
 
-    // Không chứa logic cụ thể, để các lớp con override
     @Override
     public abstract void castSkill(float atk, float x, float y, String direction);
-
     @Override
     public abstract void castSkill(float atk, Rectangle bounds, String direction);
 
     @Override
-    public void execute(Character target) { /* Có thể để trống nếu không cần */ }
-
-    @Override
-    public void castSkill(float atk, float x, float y) {}
-
-    @Override
-    public void castSkill(float atk, Character target) {}
-
-    @Override
     public void update(long now) {
     }
+    @Override
     public void render(SpriteBatch batch) {
-        // Mặc định không làm gì. Override ở lớp con nếu cần hiển thị skill
     }
     public void updatePosition(float x, float y) {
         // Không làm gì mặc định
