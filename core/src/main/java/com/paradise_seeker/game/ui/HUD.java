@@ -74,6 +74,7 @@ public class HUD {
         this.notificationTimer = NOTIFICATION_DISPLAY_TIME;
     }
 
+
     public void render(float delta) {
 
         float screenWidth = Gdx.graphics.getWidth();
