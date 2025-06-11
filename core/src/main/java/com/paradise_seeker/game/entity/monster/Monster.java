@@ -156,7 +156,7 @@ public abstract class Monster extends Character {
         // Base implementation is empty, subclasses can override
     	isDead = true;
 		bounds.set(0, 0, 0, 0); // Reset position on death
-
+        
     }
 
 
