@@ -9,7 +9,7 @@ import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.badlogic.gdx.Gdx;
 
-public class Portal extends GameObject implements Collidable {
+public class Portal extends GameObject {
     public Rectangle innerBounds;  // Vùng thật để trigger
     public Animation<TextureRegion> animation;
     public float stateTime = 0f;
