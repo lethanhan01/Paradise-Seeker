@@ -70,6 +70,9 @@ public class GameScreen implements Screen {
         this.mapManager = new GameMapManager(player);
         this.hud = new HUD(player, game.font);
         this.shapeRenderer = new ShapeRenderer();
+        
+        // Reset font color to white when starting new game
+        game.font.setColor(Color.WHITE);
 
         dialogueBg = new Texture(Gdx.files.internal("ui/dialog/dlg_box_bg/dialogboxc.png"));
         float boxHeight = 180f;

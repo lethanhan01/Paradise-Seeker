@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.monster;
+package com.paradise_seeker.game.rendering.renderer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -83,6 +83,6 @@ public class HPBarMonsterRenderer {
                 }
             }
         }
-        
+
     }
 }

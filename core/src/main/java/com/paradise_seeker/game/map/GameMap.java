@@ -22,10 +22,11 @@ import com.paradise_seeker.game.object.item.Item;
 import com.paradise_seeker.game.object.item.MPPotion;
 import com.paradise_seeker.game.object.item.Skill1Potion;
 import com.paradise_seeker.game.object.item.Skill2Potion;
+import com.paradise_seeker.game.rendering.Renderable;
 import com.paradise_seeker.game.ui.HUD;
 import java.util.*;
 
-public abstract class GameMap {
+public abstract class GameMap implements Renderable {
     public int MAP_WIDTH;
     public int MAP_HEIGHT;
     protected int TILE_WIDTH;
@@ -171,6 +172,7 @@ public abstract class GameMap {
         }
     }
 
+    @Override
     public void render(SpriteBatch batch) {
         batch.draw(backgroundTexture, 0, 0, MAP_WIDTH, MAP_HEIGHT);
         for (GameObject obj : gameObjects) obj.render(batch);

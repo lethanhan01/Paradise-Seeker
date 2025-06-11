@@ -10,6 +10,7 @@ import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
+import com.paradise_seeker.game.rendering.renderer.HPBarMonsterRenderer;
 import com.paradise_seeker.game.rendering.renderer.MonsterRendererImpl;
 
 public abstract class Monster extends Character {
