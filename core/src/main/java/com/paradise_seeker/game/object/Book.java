@@ -17,4 +17,10 @@ public class Book extends GameObject {
 		}
 	}
 
+	@Override
+	public boolean isSolid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

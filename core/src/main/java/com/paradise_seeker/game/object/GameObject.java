@@ -9,7 +9,7 @@ import com.paradise_seeker.game.rendering.Renderable;
 public abstract class GameObject implements Collidable, Renderable {
     protected Rectangle bounds;
     protected Texture texture;
-
+    protected boolean solid;
     public GameObject(float x, float y, float width, float height, String texturePath) {
         this.bounds = new Rectangle(x, y, width, height);
         this.texture = new Texture(texturePath);
@@ -32,4 +32,6 @@ public abstract class GameObject implements Collidable, Renderable {
     public void dispose() {
         texture.dispose();
     }
+
+	public abstract boolean isSolid();
 }

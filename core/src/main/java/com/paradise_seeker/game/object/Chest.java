@@ -19,7 +19,7 @@ public class Chest extends GameObject{
     private static final int FRAME_ROWS = 1;
     private static final float FRAME_DURATION = 0.1f; // Thời gian mỗi frame
    // Vùng hiển thị
-    public Rectangle innerBounds;
+    private Rectangle innerBounds;
 
     private float stateTime = 0f;
     private boolean isOpened = false;
@@ -28,10 +28,12 @@ public class Chest extends GameObject{
     private Texture chestSheet;
     private Animation<TextureRegion> chestOpenAnimation;
     private Array<Item> items;
+    private SolidObject solidComponent;
 
     public Chest (float x, float y) {
         super(x, y, 3f, 3f, "images/objects/chest/chest hit animation.png");
         this.innerBounds = new Rectangle(x, y, 1f, 1f); // Vùng trigger nhỏ hơn
+        this.solidComponent = new SolidObject(this.innerBounds);
         items = Array.with(
         	    new Skill1Potion(x, y, 1f, "items/buff/potion12.png"), // Thêm các item vào kho
         	    new Skill2Potion(x, y, 1f, "items/buff/potion13.png"),
@@ -107,12 +109,11 @@ public class Chest extends GameObject{
 
 	@Override
 	public Rectangle getBounds() {
-		return innerBounds;  // Sử dụng vùng trigger thật khi kiểm tra va chạm
+		return solidComponent.getBounds();  
 	}
 
 	public void onPlayerCollision(Collidable other) {
 		// Handle player collision with the chest
-		((Player) other).blockMovement();
 		if (isOpened || animationFinished) {
 			return; // Chest is already opened or animation is finished
 		}
@@ -128,4 +129,13 @@ public class Chest extends GameObject{
 	public Array<Item> getItems() {
 		return items;
 	}
+	@Override
+	public boolean isSolid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public SolidObject getSolidComponent() {
+	    return solidComponent;
+	}
+
 }

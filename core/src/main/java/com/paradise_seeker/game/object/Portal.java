@@ -49,4 +49,10 @@ public class Portal extends GameObject implements Collidable {
 		}
 	}
 
+	@Override
+	public boolean isSolid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

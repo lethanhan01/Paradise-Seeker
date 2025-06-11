@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.object.GameObject;
 
 /**
  * Implementation của PlayerInputHandler
@@ -53,8 +54,14 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
             if (gameMap != null && gameMap.collidables != null) {
                 for (Collidable c : gameMap.collidables) {
                     if (c != player && nextBounds.overlaps(c.getBounds())) {
-                        blocked = true;
-                        break;
+                    	 c.onCollision(player);  // Gọi để xử lý phụ (mở rương...)
+
+                         if (c instanceof GameObject) {
+                             GameObject go = (GameObject) c;
+                             if (go.isSolid()) {
+                                 blocked = true;
+                                 break; // Không cập nhật vị trí nếu bị block
+                             }
                     }
                 }
             }
@@ -73,7 +80,7 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
         }
         clampToMapBounds(player, gameMap);
     }
-
+}
     @Override
     public void handleDash(Player player, GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) && player.getDashTimer() <= 0 && player.isMoving()) {

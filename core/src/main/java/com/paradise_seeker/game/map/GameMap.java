@@ -126,7 +126,7 @@ public abstract class GameMap {
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag1.png", 1));
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag2.png", 2));
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag3.png", 3));
-
+                    collidables.add(chest.getSolidComponent()); 
                     break;
 
                 case "npc":
