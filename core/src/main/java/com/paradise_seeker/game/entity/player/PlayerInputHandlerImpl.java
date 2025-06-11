@@ -55,13 +55,11 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
                 for (Collidable c : gameMap.collidables) {
                     if (c != player && nextBounds.overlaps(c.getBounds())) {
                     	 c.onCollision(player);  // Gọi để xử lý phụ (mở rương...)
-
-                         if (c instanceof GameObject) {
-                             GameObject go = (GameObject) c;
-                             if (go.isSolid()) {
-                                 blocked = true;
-                                 break; // Không cập nhật vị trí nếu bị block
-                             }
+                    	 if (c.isSolid()) {
+                    		    player.blockMovement();
+                    		    blocked = true;
+                    		    break;
+                    		}
                     }
                 }
             }
@@ -80,7 +78,6 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
         }
         clampToMapBounds(player, gameMap);
     }
-}
     @Override
     public void handleDash(Player player, GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) && player.getDashTimer() <= 0 && player.isMoving()) {
