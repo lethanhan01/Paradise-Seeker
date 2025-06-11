@@ -95,7 +95,7 @@ public class Nyx extends Monster {
         super.onDeath();
         // Add Boss3-specific death behavior if needed
         isDead = true; // Set the isDead flag to true
-        bounds.set(0, 0, 0, 0); // Reset position on death
+        //bounds.set(0, 0, 0, 0); // Reset position on death
         
         
     }

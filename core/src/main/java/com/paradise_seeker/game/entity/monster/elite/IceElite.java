@@ -70,6 +70,7 @@ public class IceElite extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
+        this.isDead = true; // Set isDead to true when the monster dies
         // Optional implementation for death effects
     }
 

@@ -19,11 +19,14 @@ public class MonsterAnimationManager implements AnimationManager {
     public Animation<TextureRegion> cleaveLeft, cleaveRight;
     public Animation<TextureRegion> deathLeft, deathRight;
 
+    private boolean deathStarted = false;
+    private float deathStartTime = 0f;
     // Animation state
     public TextureRegion currentFrame;
     public float stateTime = 0f;
     public boolean facingRight = true;
 
+    
     // Animation timers
     public boolean isTakingHit = false;
     public float takeHitTimer = 0f;
@@ -87,12 +90,21 @@ public class MonsterAnimationManager implements AnimationManager {
      * Updates the current frame based on monster state
      */
     private void updateCurrentFrame(boolean isDead, boolean isMoving) {
-        if (isDead) {
-            currentFrame = facingRight ?
-                deathRight.getKeyFrame(stateTime, false) :
-                deathLeft.getKeyFrame(stateTime, false);
-            return;
-        }
+    	if (isDead) {
+    	    if (!deathStarted) {
+    	        deathStarted = true;
+    	        deathStartTime = stateTime; // ⏱️ Ghi lại thời điểm bắt đầu animation chết
+    	    }
+
+    	    float localTime = stateTime - deathStartTime;
+
+    	    currentFrame = facingRight
+    	        ? deathRight.getKeyFrame(localTime, false)
+    	        : deathLeft.getKeyFrame(localTime, false);
+
+    	    return;
+    	}
+
 
         if (isCleaving) {
             currentFrame = facingRight ?
@@ -190,7 +202,11 @@ public class MonsterAnimationManager implements AnimationManager {
 	public void resetStateTime() {
 	    this.stateTime = 0f;
 	}
-
+	public boolean isDeathAnimationFinished() {
+	    float duration = facingRight ? deathRight.getAnimationDuration()
+	                                 : deathLeft.getAnimationDuration();
+	    return deathStarted && (stateTime - deathStartTime >= duration);
+	}
 
 	@Override
 	public void dispose() {
