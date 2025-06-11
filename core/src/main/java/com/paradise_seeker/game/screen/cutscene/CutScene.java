@@ -100,7 +100,7 @@ public abstract class CutScene implements Screen {
 		if (currentSceneIndex < backgrounds.size()) {
 			String text = cutsceneTexts.get(currentSceneIndex);
 
-	        game.font.draw(game.batch, text, 1f, 2.5f);
+	        game.font.draw(game.batch, text, 1f, 2.75f);
 		}
 
 	}
