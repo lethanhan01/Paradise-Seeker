@@ -55,6 +55,7 @@ public class MonsterAnimationManager implements AnimationManager {
     }
 
     public void update(float deltaTime, boolean isMoving, boolean isDead, boolean isTakingHit, float playerX) {
+    			// Update state time and facing direction
         stateTime += deltaTime;
         this.facingRight = playerX > owner.getBounds().x;
 
@@ -186,6 +187,10 @@ public class MonsterAnimationManager implements AnimationManager {
 			default: return deathRight;
 		}
 	}
+	public void resetStateTime() {
+	    this.stateTime = 0f;
+	}
+
 
 	@Override
 	public void dispose() {

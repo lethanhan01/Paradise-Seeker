@@ -103,7 +103,7 @@ public class PlayerSkill2 extends PlayerSkill {
 
             StaticLightningSkill lightning = new StaticLightningSkill(centerX, centerY, atk * 2 * damageMultiplier, direction, anim);
             activeLightnings.add(lightning);
-            
+
             setLastUsedTime(System.currentTimeMillis());
         }
     }

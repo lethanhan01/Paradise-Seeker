@@ -68,19 +68,20 @@
             "scale": 0.8431249999999999,
             "selectedLayer": 13,
             "viewCenter": {
-                "x": 495.18161601186074,
-                "y": 579.3921423276502
+                "x": 494.58858413639746,
+                "y": 628.0207561156412
             }
         },
         "maps/map2.tmx": {
             "expandedObjectLayers": [
+                8,
                 9
             ],
-            "scale": 0.75,
+            "scale": 4,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 632.6666666666666,
-                "y": 800.6666666666667
+                "x": 121,
+                "y": 1208.625
             }
         },
         "maps/map3.tmx": {

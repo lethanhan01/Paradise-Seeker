@@ -750,13 +750,6 @@
   <object id="95" x="296" y="418.667" width="16" height="17.3333"/>
  </objectgroup>
  <objectgroup id="17" name="Spawns">
-  <object id="110" x="493" y="774">
-   <properties>
-    <property name="class" value="CyanBat"/>
-    <property name="type" value="monster"/>
-   </properties>
-   <point/>
-  </object>
   <object id="112" x="484.325" y="165.721">
    <properties>
     <property name="type" value="portal"/>
