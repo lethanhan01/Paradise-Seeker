@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.object.Book;
 import com.paradise_seeker.game.object.GameObject;
 
 /**
@@ -23,6 +24,9 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
     public void handleInput(Player player, float deltaTime, GameMap gameMap) {
         if (player.isPaused() || player.isAttacking || player.isDead) return;
 
+        // Check for interaction opportunities and set showInteractMessage
+        checkForInteractions(player, gameMap);
+
         handleMovement(player, deltaTime, gameMap);
         handleDash(player, gameMap);
         handleAttack(player, gameMap);
@@ -30,7 +34,26 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
         handleSkills(player);
         handleNPCInteraction(player, gameMap);
     }
-
+    private void checkForInteractions(Player player, GameMap gameMap) {
+        showInteractMessage = false; // Reset first
+        
+        if (gameMap == null) return;
+        
+        // Check for NPCs
+        for (Gipsy npc : gameMap.getNPCs()) {
+            float distance = calculateDistance(player, npc);
+            if (distance <= 2.5f) {
+                showInteractMessage = true;
+                return; // Found an interaction, no need to check further
+            }
+        }
+        
+        // Check for books
+        Book book = gameMap.getBook();
+        if (book != null && book.isPlayerInRange(player) && !book.isOpened()) {
+            showInteractMessage = true;
+        }
+    }
     @Override
     public void handleMovement(Player player, float deltaTime, GameMap gameMap) {
         float dx = 0, dy = 0;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="111">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="115">
  <tileset firstgid="1" source="../map2-tilesets/Minifantasy_ForgottenPlainsTiles.tsx"/>
  <tileset firstgid="1588" source="../map2-tilesets/Minifantasy_ForgottenPlainsProps.tsx"/>
  <layer id="1" name="Tile Layer 1" width="50" height="50">
@@ -434,7 +434,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="9" name="Spawns" visible="0">
+ <objectgroup id="9" name="Spawns">
   <object id="74" x="114.667" y="1242">
    <properties>
     <property name="type" value="player"/>
@@ -474,7 +474,7 @@
    </properties>
    <point/>
   </object>
-  <object id="91" x="974.667" y="685.333">
+  <object id="91" x="1072" y="761.333">
    <properties>
     <property name="class" value="CyclopsBoss"/>
     <property name="type" value="monster"/>
@@ -593,8 +593,21 @@
    </properties>
    <point/>
   </object>
+  <object id="111" x="1314.67" y="585.333">
+   <properties>
+    <property name="type" value="chest2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="113" x="782.667" y="460">
+   <properties>
+    <property name="class" value="Gipsy"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
  </objectgroup>
- <objectgroup id="8" name="solid" visible="0">
+ <objectgroup id="8" name="solid">
   <object id="1" name="solid" x="4" y="1282" width="406" height="6">
    <properties>
     <property name="solid" type="bool" value="true"/>
