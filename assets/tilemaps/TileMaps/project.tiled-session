@@ -3,10 +3,10 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "maps/map1.tmx",
+    "activeFile": "maps/map2.tmx",
     "expandedProjectPaths": [
-        ".",
-        "maps"
+        "maps",
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -71,8 +71,8 @@
             "scale": 0.8431249999999999,
             "selectedLayer": 13,
             "viewCenter": {
-                "x": 494.58858413639746,
-                "y": 628.0207561156412
+                "x": 480.3558191252781,
+                "y": 479.7627872498148
             }
         },
         "maps/map2.tmx": {
@@ -80,17 +80,17 @@
                 9,
                 8
             ],
-            "scale": 1.5,
+            "scale": 0.75,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 716,
-                "y": 800.3333333333333
+                "x": 966.6666666666667,
+                "y": 491.33333333333326
             }
         },
         "maps/map3.tmx": {
             "expandedObjectLayers": [
-                6,
-                8
+                8,
+                6
             ],
             "scale": 0.5,
             "selectedLayer": 4,
@@ -101,13 +101,14 @@
         },
         "maps/map4.tmx": {
             "expandedObjectLayers": [
+                34,
                 32
             ],
             "scale": 0.75,
             "selectedLayer": 17,
             "viewCenter": {
-                "x": 526.6666666666667,
-                "y": 788.6666666666667
+                "x": 757.3333333333333,
+                "y": 868.6666666666667
             }
         },
         "maps/map5.tmx": {
@@ -140,10 +141,10 @@
     "property.type": "string",
     "recentFiles": [
         "maps/map5.tmx",
-        "maps/map2.tmx",
-        "maps/map4.tmx",
+        "maps/map1.tmx",
         "maps/map3.tmx",
-        "maps/map1.tmx"
+        "maps/map4.tmx",
+        "maps/map2.tmx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx"

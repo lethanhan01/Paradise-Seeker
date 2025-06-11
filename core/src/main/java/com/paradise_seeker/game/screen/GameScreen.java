@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
         this.mapManager = new GameMapManager(player);
         this.hud = new HUD(player, game.font);
         this.shapeRenderer = new ShapeRenderer();
-        
+
         // Reset font color to white when starting new game
         game.font.setColor(Color.WHITE);
 
@@ -145,7 +145,7 @@ public class GameScreen implements Screen {
 				handleChest();
 			}
 
-
+            handleBook();
 
             mapManager.getCurrentMap().checkCollisions(player, hud);
             float playerCenterX = player.getBounds().x + player.getBounds().width / 2f;
@@ -286,6 +286,30 @@ public class GameScreen implements Screen {
             switchMusicAndShowMap();
         }
     }
+
+    private void handleBook() {
+        Book book = mapManager.getCurrentMap().getBook();
+        if (book != null && book.isPlayerInRange(player)) {
+            // Show interaction message if book hasn't been opened yet
+
+
+            // Handle F key press for book interaction
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+                if (!book.isOpened()) {
+                    book.onCollision(player);
+                    // Show the book content with longer display time
+                    hud.showNotification(book.getContent());
+                } else {
+                    // If already opened, show a different message
+                    hud.showNotification("You have already read this book.");
+                }
+            }
+        }
+    }
+
+
+
+
 
     private void handleChest() {
 		Chest chest = mapManager.getCurrentMap().getChest();

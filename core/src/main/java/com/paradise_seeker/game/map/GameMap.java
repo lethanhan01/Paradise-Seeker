@@ -41,6 +41,7 @@ public abstract class GameMap implements Renderable {
     public Portal portal, startPortal;
     public Chest chest;
     public Monster monster;
+    public Book book;
 
     public List<Collidable> collidables = new ArrayList<>();
     public List<Gipsy> npcList = new ArrayList<>();
@@ -124,11 +125,56 @@ public abstract class GameMap implements Renderable {
                 case "chest":
                 	//test chest
                     chest = new Chest(worldX, worldY);
+                    collidables.add(chest.getSolidComponent());
+                    break;
+                case "chest2":
+                    chest = new Chest(worldX, worldY);
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag1.png", 1));
+                    collidables.add(chest.getSolidComponent());
+                    break;
+                case "chest3":
+                    chest = new Chest(worldX, worldY);
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag2.png", 2));
+                    collidables.add(chest.getSolidComponent());
+                    break;
+                case "chest4":
+                    chest = new Chest(worldX, worldY);
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag3.png", 3));
                     collidables.add(chest.getSolidComponent());
                     break;
+                case "book":
+                    // Create as Book type instead of GameObject
+                    book = new Book(worldX, worldY, "items/book.png");
+
+                    // Optional: Set custom content from map properties
+                    String bookContent = (String) obj.getProperties().get("content");
+                    if (bookContent != null && !bookContent.isEmpty()) {
+                        book.setContent(bookContent);
+                    } else {
+                        // Default content if not specified in map
+                        book.setContent("An ancient book filled with forgotten knowledge...");
+                    }
+
+                    gameObjects.add(book);
+                    collidables.add(book);
+                    break;
+
+                case "randomPotion":
+                	// Random potion spawn point, can be used for testing
+					Random rand = new Random();
+					int potionType = rand.nextInt(5); // 0 = HP, 1 = MP, 2 = ATK, 3 = Skill1, 4 = Skill2
+					if (potionType == 0) {
+						hpItems.add(new HPPotion(worldX, worldY, 1, "items/potion/potion3.png", 20));
+					} else if (potionType == 1) {
+						mpItems.add(new MPPotion(worldX, worldY, 1, "items/potion/potion9.png", 15));
+					} else if (potionType == 2) {
+						atkItems.add(new ATKPotion(worldX, worldY, 1, "items/atkbuff_potion/potion14.png", 5));
+					} else if (potionType == 3) {
+						skill1Items.add(new Skill1Potion(worldX, worldY, 1, "items/buff/potion12.png"));
+					} else if (potionType == 4) {
+						skill2Items.add(new Skill2Potion(worldX, worldY, 1, "items/buff/potion13.png"));
+					}
+					break;
 
                 case "npc":
                     String npcClass = (String) obj.getProperties().get("class");
@@ -280,6 +326,7 @@ public abstract class GameMap implements Renderable {
     public Portal getStartPortal() { return startPortal; }
     public Portal getPortal() { return portal; }
     public Chest getChest() { return chest; }
+    public Book getBook() {return book; }
 
     // === Random item generator (if you want to keep it) ===
     public void generateRandomItems(int hpCount, int mpCount) {
@@ -358,4 +405,5 @@ public abstract class GameMap implements Renderable {
             c instanceof Skill2Potion
         );
     }
+
 }

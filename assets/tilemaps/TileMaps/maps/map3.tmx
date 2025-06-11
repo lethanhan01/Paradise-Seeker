@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="140">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="151">
  <tileset firstgid="1" source="../map3-tilesets/0x72_DungeonTilesetII_v1.7.tsx"/>
  <tileset firstgid="1025" source="../map3-tilesets/16x16 dungeon ii wall reconfig v04 spritesheet.tsx"/>
  <tileset firstgid="1217" source="../map3-tilesets/atlas_floor.tsx"/>
@@ -222,7 +222,7 @@
 </data>
  </layer>
  <objectgroup id="8" name="Spawns">
-  <object id="115" x="792" y="824">
+  <object id="115" x="722" y="880">
    <properties>
     <property name="type" value="player"/>
    </properties>
@@ -333,15 +333,65 @@
    </properties>
    <point/>
   </object>
-  <object id="118" x="1342" y="1554">
+  <object id="118" x="1380" y="1552">
    <properties>
     <property name="type" value="portal"/>
    </properties>
    <point/>
   </object>
-  <object id="119" x="810" y="660">
+  <object id="119" x="778" y="830">
    <properties>
     <property name="type" value="portal_start"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="140" x="1102" y="892">
+   <properties>
+    <property name="type" value="chest"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="141" x="1174" y="1040">
+   <properties>
+    <property name="type" value="chest"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="142" x="1504" y="1328">
+   <properties>
+    <property name="type" value="chest3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="143" x="90" y="466">
+   <properties>
+    <property name="type" value="chest"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="144" x="1122" y="256">
+   <properties>
+    <property name="type" value="chest"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="145" x="836" y="640">
+   <properties>
+    <property name="type" value="chest"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="149" x="470" y="882">
+   <properties>
+    <property name="class" value="Gipsy"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="148" x="1408" y="478">
+   <properties>
+    <property name="class" value="Gipsy"/>
+    <property name="type" value="npc"/>
    </properties>
    <point/>
   </object>

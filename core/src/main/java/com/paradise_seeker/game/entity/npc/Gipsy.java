@@ -16,26 +16,26 @@ public class Gipsy extends NPC {
     public NPCAnimationManager animationManager;
     public NPCStateManager stateManager;
     public DialogueManager dialogueManager;
-    
+
     // Add this field
     private NPCRenderer renderer;
 
-    public float spriteWidth = 3f;
-    public float spriteHeight = 3f;
+    public float spriteWidth = 1.9f;
+    public float spriteHeight = 1.8f;
 
     public Gipsy(float x, float y) {
         super(); // Gọi constructor của lớp cha NPC
         this.x = x;
         this.y = y;
-        this.spriteWidth = 3f;
-        this.spriteHeight = 3f;
+        this.spriteWidth = 1.9f;
+        this.spriteHeight = 1.8f;
         this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
 
         // Khởi tạo các manager
         this.animationManager = new NPCAnimationManager();
         this.stateManager = new NPCStateManager();
         this.dialogueManager = new DialogueManager();
-        
+
         // Initialize the renderer
         this.renderer = new NPCRendererImpl(this.animationManager);
 
@@ -69,7 +69,7 @@ public class Gipsy extends NPC {
         if (renderer instanceof NPCRendererImpl) {
             ((NPCRendererImpl) renderer).update(deltaTime);
         }
-        
+
         // Cập nhật animation dựa trên trạng thái hiện tại
         animationManager.update(deltaTime, stateManager.isOpeningChest(), stateManager.isChestOpened());
 
