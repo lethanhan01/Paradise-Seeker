@@ -126,7 +126,7 @@ public abstract class CutScene implements Screen {
             t.dispose();
         }
     }
-
+    
     protected void onCutsceneEnd() {
         // Sau khi cutscene kết thúc, chuyển sang màn hình chơi game
         if (game.currentGame == null) {
