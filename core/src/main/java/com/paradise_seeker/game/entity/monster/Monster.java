@@ -12,7 +12,7 @@ import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
 import com.paradise_seeker.game.rendering.renderer.MonsterRendererImpl;
 
-public abstract class Monster extends Character {
+public abstract class Monster extends Character implements Collidable {
 
     public boolean isDead = false;
     public float spawnX;
@@ -185,4 +185,8 @@ public abstract class Monster extends Character {
             renderer.dispose();
         }
     }
+    @Override
+    public boolean isSolid() {
+        return true; // Monsters are solid by default
+}
 }
