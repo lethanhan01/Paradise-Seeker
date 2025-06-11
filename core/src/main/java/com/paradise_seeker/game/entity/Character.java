@@ -2,10 +2,9 @@ package com.paradise_seeker.game.entity;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.map.GameMap;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public abstract class Character implements Collidable, Renderable {
-    public float hp; 
+public abstract class Character implements Collidable {
+    public float hp;
     public float maxHp; // Thêm maxHp để dễ quản lý
     public float mp;
     public float maxMp; // Thêm maxMp để dễ quản lý
@@ -44,11 +43,6 @@ public abstract class Character implements Collidable, Renderable {
     @Override
     public Rectangle getBounds() {
         return bounds;
-    }
-
-    @Override
-    public void render(SpriteBatch batch) {
-        // Base implementation is empty, subclasses should override
     }
 
     public abstract void onDeath();

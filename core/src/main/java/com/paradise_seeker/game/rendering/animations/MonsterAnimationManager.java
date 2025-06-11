@@ -1,14 +1,15 @@
-package com.paradise_seeker.game.entity.monster;
+package com.paradise_seeker.game.rendering.animations;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.paradise_seeker.game.entity.AnimationManager;
+import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.rendering.AnimationManager;
 
 /**
  * Responsible for managing all monster animations.
  * Handles animation states, timers, and provides the appropriate animation frame based on monster state.
  */
-public class MonsterAnimationManagerImpl implements AnimationManager {
+public class MonsterAnimationManager implements AnimationManager {
     public Monster owner;
 
     // Animation sets
@@ -32,7 +33,7 @@ public class MonsterAnimationManagerImpl implements AnimationManager {
     public float cleaveTimer = 0f;
     public float cleaveDuration = 1.2f;
 
-    public MonsterAnimationManagerImpl(Monster monster) {
+    public MonsterAnimationManager(Monster monster) {
         this.owner = monster;
     }
 

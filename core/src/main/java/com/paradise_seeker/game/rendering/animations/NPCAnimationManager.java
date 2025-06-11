@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.npc;
+package com.paradise_seeker.game.rendering.animations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.paradise_seeker.game.rendering.AnimationManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class NPCAnimationManager {
+public class NPCAnimationManager implements AnimationManager {
     private Animation<TextureRegion> idleAnimation;
     private Animation<TextureRegion> talkAnimation;
     private Animation<TextureRegion> openChestAnimation;
@@ -52,8 +52,8 @@ public class NPCAnimationManager {
 
     private void loadTalkAnimation() {
         List<TextureRegion> frames = new ArrayList<>();
-        for (int i = 10; i <= 19; i++) {
-            String path = "images/Entity/characters/NPCs/npc1/act1/npc" + i + ".png";
+        for (int i = 130; i <= 140; i++) {
+            String path = "images/Entity/characters/NPCs/npc1/act4/npc" + i + ".png";
             try {
                 Texture texture = new Texture(Gdx.files.internal(path));
                 texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -68,8 +68,8 @@ public class NPCAnimationManager {
 
     private void loadOpenChestAnimation() {
         List<TextureRegion> frames = new ArrayList<>();
-        for (int i = 131; i <= 137; i++) {
-            String path = "images/Entity/characters/NPCs/npc1/act4/npc" + i + ".png";
+        for (int i = 130; i <= 140; i++) {
+            String path = "images/Entity/characters/NPCs/npc1/act5/npc" + i + ".png";
             try {
                 Texture texture = new Texture(Gdx.files.internal(path));
                 texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -98,14 +98,19 @@ public class NPCAnimationManager {
         chestOpenedAnimation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
-    public void update(float deltaTime, boolean isOpeningChest, boolean isChestOpened) {
+    public void update(float deltaTime, boolean isTalking, boolean isChestOpened) {
         stateTime += deltaTime;
-        currentFrame = currentAnimation.getKeyFrame(stateTime);
-
-        // Handle chest opening animation completion
-        if (isOpeningChest && openChestAnimation.isAnimationFinished(stateTime)) {
+        
+        // Update animation based on state
+        if (isTalking) {
+            setTalkingAnimation();
+        } else if (isChestOpened) {
             setChestOpenedAnimation();
+        } else {
+            setIdleAnimation();
         }
+        
+        currentFrame = currentAnimation.getKeyFrame(stateTime);
     }
 
     public void setTalkingAnimation() {
@@ -128,17 +133,41 @@ public class NPCAnimationManager {
         stateTime = 0f;
     }
 
-    public void render(SpriteBatch batch, Rectangle bounds, float spriteWidth, float spriteHeight) {
-        if (currentFrame != null) {
-            batch.draw(currentFrame, bounds.x, bounds.y, spriteWidth, spriteHeight);
-        }
+    public TextureRegion getCurrentFrame() {
+        return currentFrame;
     }
 
     public boolean isAnimationFinished() {
         return currentAnimation.isAnimationFinished(stateTime);
     }
 
-    public Animation<TextureRegion> getCurrentAnimation() {
-        return currentAnimation;
+    @Override
+    public Animation<TextureRegion> getRunAnimation(String direction) {
+        return idleAnimation;
+    }
+
+    @Override
+    public Animation<TextureRegion> getIdleAnimation(String direction) {
+        return idleAnimation;
+    }
+
+    @Override
+    public Animation<TextureRegion> getAttackAnimation(String direction) {
+        return talkAnimation;
+    }
+
+    @Override
+    public Animation<TextureRegion> getHitAnimation(String direction) {
+        return idleAnimation;
+    }
+
+    @Override
+    public Animation<TextureRegion> getDeathAnimation(String direction) {
+        return idleAnimation;
+    }
+
+    @Override
+    public void dispose() {
+        // Dispose of any resources if needed
     }
 }

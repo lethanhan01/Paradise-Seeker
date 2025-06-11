@@ -300,9 +300,10 @@ public class GameScreen implements Screen {
                         currentTalkingNPC.setTalking(false);
                         currentTalkingNPC.openChest();
                         waitingForChestToOpen = true;
+                        finishNpcInteraction();
                     }
                 }
-            } else if (dialogueBox.isVisible() && currentTalkingNPC != null) {
+            } else if (currentTalkingNPC != null) {
                 if (currentTalkingNPC.shouldShowOptions() && !showDialogueOptions) {
                     showDialogueOptions = true;
                 } else {
@@ -315,9 +316,8 @@ public class GameScreen implements Screen {
                         if (!currentTalkingNPC.isChestOpened()) {
                             currentTalkingNPC.openChest();
                             waitingForChestToOpen = true;
-                        } else {
-                            finishNpcInteraction();
                         }
+                        finishNpcInteraction();
                     }
                 }
             } else {
@@ -358,8 +358,11 @@ public class GameScreen implements Screen {
         }
         if (currentTalkingNPC != null) {
             currentTalkingNPC.setTalking(false);
+            currentTalkingNPC = null;
         }
-        currentTalkingNPC = null;
+        showDialogueOptions = false;
+        selectedOptionIndex = 0;
+        waitingForChestToOpen = false;
     }
 
     private void dropPotionNextToPlayer(String potionType) {

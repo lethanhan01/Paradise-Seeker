@@ -1,16 +1,16 @@
-package com.paradise_seeker.game.entity.player;
+package com.paradise_seeker.game.rendering.animations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.paradise_seeker.game.entity.AnimationManager;
+import com.paradise_seeker.game.rendering.AnimationManager;
 
 /**
  * Implementation của PlayerAnimationManager
  * Chuyên trách loading và quản lý animation
  */
-public class PlayerAnimationManagerImpl implements AnimationManager {
+public class PlayerAnimationManager implements AnimationManager {
 
     private Animation<TextureRegion> runUp, runDown, runLeft, runRight;
     private Animation<TextureRegion> idleUp, idleDown, idleLeft, idleRight;
