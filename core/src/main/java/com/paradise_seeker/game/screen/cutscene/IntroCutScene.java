@@ -1,39 +1,26 @@
 package com.paradise_seeker.game.screen.cutscene;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.Gdx;
 import com.paradise_seeker.game.main.Main;
 
 public class IntroCutScene extends CutScene {
-	float timer = 0f;
 
-    public IntroCutScene(Main game) {
-        super(game, "cutscene/Chapter 1/1.1.0.png" , "> Press SPACE to skip <", 5f);
+	public IntroCutScene(Main game) {
+        super(
+            game,
+            Arrays.asList(
+                "cutscene/Chapter 1/1.1.0.png",
+                "cutscene/Chapter 1/1.1.1.png",
+                "cutscene/Chapter 1/1.2.1.png"
+            ),
+            Arrays.asList( // MAX 41 KY TU
+            	"This temple... where Professor Alistair\n disappeared",
+                "This artifact is the last clue he left \n behind.",
+                "There must be answers here."
+            ),
+            5f // mỗi cảnh hiển thị 5 giây
+        );
     }
-
-    @Override
-    protected void onCutsceneEnd() {
-        // Sau khi cutscene kết thúc, chuyển sang màn hình chơi game
-        if (game.currentGame == null) {
-            game.currentGame = new com.paradise_seeker.game.screen.GameScreen(game);
-        }
-        game.setScreen(game.currentGame);
-    }
-	@Override
-	protected void drawCutsceneContent(float delta) {
-		game.font.draw(game.batch, cutsceneText, 9f, 9.5f);
-		
-		timer += delta;
-		if (timer >= cutsceneDuration) {
-			onCutsceneEnd();
-			return;
-		}
-	}
-
-	@Override
-	protected void handleInput() {
-		if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.SPACE)) {
-			onCutsceneEnd();
-		}
-		
-	}
 }

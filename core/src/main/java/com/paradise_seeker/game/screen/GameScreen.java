@@ -27,7 +27,9 @@ import com.paradise_seeker.game.object.*;
 import com.paradise_seeker.game.object.item.ATKPotion;
 import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
+import com.paradise_seeker.game.screen.cutscene.EndMap1;
 import com.paradise_seeker.game.object.item.MPPotion;
+
 
 public class GameScreen implements Screen {
     final Main game;
@@ -57,6 +59,8 @@ public class GameScreen implements Screen {
     private boolean showDialogueOptions = false;
     private String pendingPotionToDrop = null;
     private boolean waitingForChestToOpen = false;
+    
+    private int[] mapcutsceneIndices = {0, 0, 0, 0, 0}; // Indices for cutscenes in the map
 
     public GameScreen(final Main game) {
         this.game = game;
@@ -137,7 +141,9 @@ public class GameScreen implements Screen {
             if (chest != null) {
 				handleChest();
 			}
-
+            
+            
+            
             mapManager.getCurrentMap().checkCollisions(player, hud);
             float playerCenterX = player.getBounds().x + player.getBounds().width / 2f;
             float playerCenterY = player.getBounds().y + player.getBounds().height / 2f;
@@ -233,6 +239,24 @@ public class GameScreen implements Screen {
         GameMap currentMap = mapManager.getCurrentMap();
         if (currentMap.portal != null && player.getBounds().overlaps(currentMap.portal.getBounds())) {
             currentMap.portal.onCollision(player);
+            
+            switch (mapManager.getCurrentMapIndex()) {
+				case 0: // Map 1 to Map 2
+					if (mapcutsceneIndices[0] == 0) {
+						mapcutsceneIndices[0] = 1; // Set cutscene index for Map 1 to Map 2
+					    game.setScreen(new EndMap1(game));
+					}
+					break;
+				case 1: // Map 2 to Map 3
+					break;
+				case 2: // Map 3 to Map 4
+					break;
+				case 3: // Map 4 to Map 5
+					break;
+				case 4: // Map 5 to Map 1 (loop back)
+					break;
+			}
+            
             if (mapManager.getCurrentMapIndex() != 3) {
             	mapManager.switchToNextMap();
                 switchMusicAndShowMap();
