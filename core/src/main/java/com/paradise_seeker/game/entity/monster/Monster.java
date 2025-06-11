@@ -17,7 +17,7 @@ public abstract class Monster extends Character {
     public boolean isDead = false;
     public float spawnX;
     public float spawnY;
-
+    private boolean hasSetBounds = false;
     public MonsterAnimationManager animationManager;
     public MonsterCollisionHandler collisionHandler;
     public MonsterRendererImpl renderer;
@@ -78,6 +78,10 @@ public abstract class Monster extends Character {
 
         // Update animation state
         animationManager.update(deltaTime, isMoving, isDead, false, player.getBounds().x);
+        if (isDead && animationManager.isDeathAnimationFinished() && !hasSetBounds) {
+            bounds.set(0, 0, 0, 0); // ✅ Ẩn quái vật sau khi hoạt họa chết hoàn tất
+            hasSetBounds = true;
+        }
     }
 
 	 public void cleave(Player player) {
@@ -154,6 +158,7 @@ public abstract class Monster extends Character {
     public void onDeath() {
     	isDead = true;
 		bounds.set(0, 0, 0, 0); // Reset position on death
+
 
     }
 

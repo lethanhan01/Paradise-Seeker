@@ -70,6 +70,7 @@ public class MinotaurElite extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
+        this.isDead = true; // Set the monster as dead
         // Optional implementation for death effects
     }
 

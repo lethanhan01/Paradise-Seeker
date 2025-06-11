@@ -59,6 +59,7 @@ public class GhostStatic extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
+        this.isDead = true; // Set isDead to true when the ghost dies
         // Optional implementation for death effects
     }
 

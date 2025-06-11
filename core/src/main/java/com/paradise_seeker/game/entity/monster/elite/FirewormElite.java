@@ -71,6 +71,7 @@ public class FirewormElite extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
+        this.isDead = true;
         // Death effect can be implemented here
     }
 
