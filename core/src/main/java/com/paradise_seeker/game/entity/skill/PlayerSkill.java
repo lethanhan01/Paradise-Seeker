@@ -33,7 +33,7 @@ public abstract class PlayerSkill implements Skill, Renderable {
     }
 
     public void setDamageMultiplier(float multiplier) {
-        this.damageMultiplier = multiplier;
+        this.damageMultiplier += multiplier;
     }
 
     public float getdamageMultiplier() {

@@ -3,6 +3,7 @@ package com.paradise_seeker.game.screen.cutscene;
 import java.util.Arrays;
 
 import com.paradise_seeker.game.main.Main;
+import com.paradise_seeker.game.screen.WinScreen;
 
 public class EndGame extends CutScene {
 
@@ -25,6 +26,10 @@ public class EndGame extends CutScene {
 				),
 				5f // mỗi cảnh hiển thị 5 giây
 		);
+	}
+	@Override
+	protected void onCutsceneEnd() {
+		game.setScreen(new WinScreen(game));
 	}
 
 }
