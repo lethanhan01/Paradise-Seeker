@@ -1,7 +1,5 @@
 package com.paradise_seeker.game.main;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,10 +11,8 @@ import com.paradise_seeker.game.screen.GameScreen;
 import com.paradise_seeker.game.screen.InventoryScreen;
 import com.paradise_seeker.game.screen.MainMenuScreen;
 import com.paradise_seeker.game.screen.SettingScreen;
-import com.paradise_seeker.game.screen.cutscene.CutScene;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 
 public class Main extends Game {
 

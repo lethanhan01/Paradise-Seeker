@@ -4,12 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.paradise_seeker.game.entity.Renderable;
 import com.badlogic.gdx.graphics.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DialogueBox implements Renderable {
+public class DialogueBox {
     private Texture background;
     private BitmapFont font;
     private String text;
@@ -71,11 +70,6 @@ public class DialogueBox implements Renderable {
     }
 
     // Optionally keep this for backward compatibility (calls with default scale 1.0f)
-    @Override
-    public void render(SpriteBatch batch) {
-        render(batch, 1.0f);
-    }
-
     private String[] wrapText(String text, BitmapFont font, float maxWidth) {
         GlyphLayout layout = new GlyphLayout();
         String[] words = text.split(" ");

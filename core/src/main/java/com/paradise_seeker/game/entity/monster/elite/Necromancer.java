@@ -93,8 +93,8 @@ public class Necromancer extends Monster {
         if (player == null) return;
         float bulletX = bounds.x + bounds.width / 2f;
         float bulletY = bounds.y + bounds.height / 2f;
-        float targetX = player.bounds.x + player.bounds.width / 2;
-        float targetY = player.bounds.y + player.bounds.height / 2;
+        float targetX = bounds.x + bounds.width / 2;
+        float targetY = bounds.y + bounds.height / 2;
         projectiles.add(new Projectile(bulletX, bulletY, targetX, targetY));
     }
 
@@ -154,7 +154,7 @@ public class Necromancer extends Monster {
             stateTime += deltaTime;
             bounds.x += velocityX * deltaTime;
             bounds.y += velocityY * deltaTime;
-            if (player != null && bounds.overlaps(player.bounds)) {
+            if (player != null && bounds.overlaps(bounds)) {
                 player.takeHit(30); // Sát thương spell
                 active = false;
             }
