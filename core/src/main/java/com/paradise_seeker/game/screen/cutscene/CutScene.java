@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.paradise_seeker.game.main.Main;
 import com.badlogic.gdx.Gdx;
@@ -22,7 +21,7 @@ public abstract class CutScene implements Screen {
     protected String skipText = "> Press SPACE to skip <";
     protected GlyphLayout layout;
     protected ShapeRenderer shapeRenderer;
-    
+
 
     protected int currentSceneIndex = 0;
     protected float timeElapsed = 0f;
@@ -61,9 +60,9 @@ public abstract class CutScene implements Screen {
         game.batch.draw(backgrounds.get(currentSceneIndex), 0, 0,
                 game.viewport.getWorldWidth(), game.viewport.getWorldHeight());
         game.batch.end();
-        
+
     	drawTextBox( 1, 1, 13, 2);
-    	
+
         game.batch.begin();
         drawCutsceneContent(delta);
         game.batch.end();
@@ -78,7 +77,7 @@ public abstract class CutScene implements Screen {
             onCutsceneEnd();
         }
     }
-    
+
     protected void drawTextBox(float x, float y, float width, float height) {
         shapeRenderer.setProjectionMatrix(game.camera.combined);
 
@@ -97,13 +96,13 @@ public abstract class CutScene implements Screen {
 
 
 	protected void drawCutsceneContent(float delta) {
-		game.font.draw(game.batch, skipText, 9f, 9.5f); 
+		game.font.draw(game.batch, skipText, 9f, 9.5f);
 		if (currentSceneIndex < backgrounds.size()) {
 			String text = cutsceneTexts.get(currentSceneIndex);
-			
+
 	        game.font.draw(game.batch, text, 1f, 2.5f);
 		}
-	
+
 	}
 
     protected void handleInput() {

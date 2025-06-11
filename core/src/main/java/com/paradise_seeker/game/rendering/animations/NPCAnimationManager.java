@@ -3,9 +3,7 @@ package com.paradise_seeker.game.rendering.animations;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.rendering.AnimationManager;
 
 import java.util.ArrayList;
@@ -100,7 +98,7 @@ public class NPCAnimationManager implements AnimationManager {
 
     public void update(float deltaTime, boolean isTalking, boolean isChestOpened) {
         stateTime += deltaTime;
-        
+
         // Update animation based on state
         if (isTalking) {
             setTalkingAnimation();
@@ -109,7 +107,7 @@ public class NPCAnimationManager implements AnimationManager {
         } else {
             setIdleAnimation();
         }
-        
+
         currentFrame = currentAnimation.getKeyFrame(stateTime);
     }
 

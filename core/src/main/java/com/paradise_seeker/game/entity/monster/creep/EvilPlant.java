@@ -14,7 +14,7 @@ public class EvilPlant extends Monster {
     private float scaleMultiplier = 2.0f;
 
     public EvilPlant(float x, float y) {
-    	super(new Rectangle(x, y, 1.2f, 1.2f), 100f, 50f, 100f, 50f, 50f, 1f, x, y); // HP, speed, cleaveDamage
+    	super(new Rectangle(x, y, 1f, 1.2f), 100f, 50f, 100f, 50f, 50f, 1f, x, y); // HP, speed, cleaveDamage
         // Note: spawnX and spawnY are now set in the parent constructor
         // Note: loadAnimations is already called in Monster constructor
 
@@ -57,9 +57,9 @@ public class EvilPlant extends Monster {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         // Use the parent class's render method
-        super.render(batch);
+        super.isRendered(batch);
     }
 
     // Removing the render(SpriteBatch batch, Player player) method as it's not needed

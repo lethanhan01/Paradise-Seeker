@@ -10,9 +10,7 @@ import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
-import com.paradise_seeker.game.rendering.renderer.MonsterRenderer;
 import com.paradise_seeker.game.rendering.renderer.MonsterRendererImpl;
-
 
 public abstract class Monster extends Character {
 
@@ -22,7 +20,7 @@ public abstract class Monster extends Character {
     private boolean hasSetBounds = false;
     public MonsterAnimationManager animationManager;
     public MonsterCollisionHandler collisionHandler;
-    public MonsterRenderer renderer;
+    public MonsterRendererImpl renderer;
     public HPBarMonsterRenderer hpBarRenderer;
     public MonsterAI ai;
     public TextureRegion currentFrame;
@@ -99,7 +97,7 @@ public abstract class Monster extends Character {
 	     }
 	 }
 
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         renderer.render(this, batch);
         hpBarRenderer.render(batch, bounds, animationManager.getCurrentFrame(), hp, maxHp, isDead);
     }
@@ -159,8 +157,9 @@ public abstract class Monster extends Character {
     @Override
     public void onDeath() {
     	isDead = true;
-		//bounds.set(0, 0, 0, 0); // Reset position on death
-        
+		bounds.set(0, 0, 0, 0); // Reset position on death
+
+
     }
 
     public abstract void loadAnimations();

@@ -97,10 +97,10 @@ public class ParadiseKing extends Monster {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         // Use the renderer from parent class, which already handles drawing
         // No need to manually draw currentFrame as it's handled by MonsterRenderer
-        super.render(batch);
+        super.isRendered(batch);
     }
 
     @Override
