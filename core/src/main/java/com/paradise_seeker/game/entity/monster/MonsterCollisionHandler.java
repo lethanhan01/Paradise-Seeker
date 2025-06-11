@@ -23,8 +23,6 @@ public class MonsterCollisionHandler {
     /**
      * Handle collision with another collidable entity
      */
-
-
     public void handleCollision(Collidable other) {
         if (other instanceof Player) {
             handlePlayerCollision((Player) other);
@@ -47,21 +45,18 @@ public class MonsterCollisionHandler {
             player.isShieldedHit = true;
             damage = Math.max(1, damage / 2); // Reduce damage if shielding
         } else {
-        	if (!player.isInvulnerable()) {
+            if (!player.isInvulnerable()) {
                 player.takeHit(damage);
             }
         }
-
-        // Apply damage to player unless they're invulnerable from a recent hit
-
     }
 
     /**
      * Check if player is within cleave range
      */
     public boolean isPlayerInCleaveRange(Player player) {
-        float distanceX = Math.abs(player.bounds.x - owner.getBounds().x);
-        float distanceY = Math.abs(player.bounds.y - owner.getBounds().y);
+        float distanceX = Math.abs(player.getBounds().x - owner.getBounds().x);
+        float distanceY = Math.abs(player.getBounds().y - owner.getBounds().y);
 
         return distanceX <= 5f+cleaveRange && distanceY <= 5f+cleaveRange / 2;
     }

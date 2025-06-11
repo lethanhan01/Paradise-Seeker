@@ -78,6 +78,7 @@ public abstract class GameMap {
     }
 
     public void loadSpawnPoints(Player player) {
+        clearEntities();
         MapLayer spawnsLayer = tiledMap.getLayers().get("Spawns");
         if (spawnsLayer == null) return;
 
@@ -92,8 +93,9 @@ public abstract class GameMap {
 
             switch (type) {
                 case "player":
-                    player.bounds.x = worldX;
-                    player.bounds.y = worldY;
+                    Rectangle bounds = player.getBounds();
+                    bounds.x = worldX;
+                    bounds.y = worldY;
                     break;
 
                 case "monster": {
@@ -129,14 +131,17 @@ public abstract class GameMap {
 
                 case "npc":
                     String npcClass = (String) obj.getProperties().get("class");
-                    Gipsy npc;
-                    if (npcClass != null && npcClass.equals("npc1")) {
-                        // If you have different NPC subclasses, handle here.
-                        // npc = new SpecialNPC(worldX, worldY);
-                        npc = new Gipsy(worldX, worldY); // Fallback
-                    } else {
+                    Gipsy npc = new Gipsy(worldX, worldY); // Tạo NPC mặc định
+
+                    // Kiểm tra nếu có property "class" và giá trị là "Gipsy"
+                    if (npcClass != null && npcClass.equals("Gipsy")) {
                         npc = new Gipsy(worldX, worldY);
                     }
+                    // Bạn có thể thêm các điều kiện khác cho các class NPC khác ở đây
+                    // else if (npcClass != null && npcClass.equals("OtherNPC")) {
+                    //     npc = new OtherNPC(worldX, worldY);
+                    // }
+
                     npcList.add(npc);
                     collidables.add(npc);
                     break;
@@ -324,12 +329,31 @@ public abstract class GameMap {
         }
     }
 
-  public void setPlayer(Player player) {
-    this.player = player;
-}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-  public Player getPlayer() {
-    return player;
-}
+    public Player getPlayer() {
+        return player;
+    }
 
+    public void clearEntities() {
+        monsters.clear();
+        npcList.clear();
+        hpItems.clear();
+        mpItems.clear();
+        atkItems.clear();
+        skill1Items.clear();
+        skill2Items.clear();
+        // Chỉ xóa collidable là quái, NPC, item động
+        collidables.removeIf(c -> 
+            c instanceof Monster ||
+            c instanceof Gipsy ||
+            c instanceof HPitem ||
+            c instanceof MPitem ||
+            c instanceof ATKitem ||
+            c instanceof Skill1item ||
+            c instanceof Skill2item
+        );
+    }
 }

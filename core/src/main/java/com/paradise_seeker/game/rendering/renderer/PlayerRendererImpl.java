@@ -1,18 +1,20 @@
-package com.paradise_seeker.game.entity.player;
+package com.paradise_seeker.game.rendering.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 
-public class PlayerRendererImpl implements PlayerRenderer{
-	public PlayerAnimationManagerImpl animationManager;
+public class PlayerRendererImpl implements PlayerRenderer {
+	public PlayerAnimationManager animationManager;
 
     // Shield textures
     public Texture shieldDown, shieldUp, shieldLeft, shieldRight;
 
-    public PlayerRendererImpl(PlayerAnimationManagerImpl animationManager) {
+    public PlayerRendererImpl(PlayerAnimationManager animationManager) {
         this.animationManager = animationManager;
         loadShieldTextures();
     }

@@ -15,6 +15,8 @@ public class DialogueBox implements Renderable {
     private String text;
     private boolean visible;
     private float x, y, width, height;
+    private String[] dialogueLines;
+    private int currentLineIndex = 0;
 
     public DialogueBox(String text, Texture background, BitmapFont font, float x, float y, float width, float height) {
         this.text = text;
@@ -92,5 +94,26 @@ public class DialogueBox implements Renderable {
         }
         lines.add(line.toString());
         return lines.toArray(new String[0]);
+    }
+
+    public void setDialogueLines(String[] lines) {
+        this.dialogueLines = lines;
+        this.currentLineIndex = 0;
+        if (lines != null && lines.length > 0) {
+            show(lines[0]);
+        }
+    }
+
+    public void nextLine() {
+        if (dialogueLines != null && currentLineIndex < dialogueLines.length - 1) {
+            currentLineIndex++;
+            show(dialogueLines[currentLineIndex]);
+        } else {
+            hide();
+        }
+    }
+
+    public boolean hasNextLine() {
+        return dialogueLines != null && currentLineIndex < dialogueLines.length - 1;
     }
 }

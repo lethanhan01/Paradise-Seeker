@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Jotun extends NPC {
-    private Rectangle bounds;
     private Player player;
     private float speed;
 
@@ -28,20 +27,27 @@ public class Jotun extends NPC {
     private float spriteWidth = 5.5f;
     private float spriteHeight = 5.5f;
 
-
     public Jotun(float x, float y) {
+        super();
+        this.x = x;
+        this.y = y;
         this.spriteWidth = 5.5f;
         this.spriteHeight = 5.5f;
-        updateBounds();
+        this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
         loadAnimations();
     }
 
     public void updateBounds() {
         if (bounds != null) {
             bounds.setSize(spriteWidth, spriteHeight);
+            bounds.setPosition(x, y);
         }
     }
 
+    @Override
+    public Rectangle getBounds() {
+        return bounds;
+    }
 
     private void loadAnimations() {
         String basePathRight = "images/Entity/characters/NPCs/npc2 - Copy/trai/";
@@ -70,7 +76,6 @@ public class Jotun extends NPC {
         }
         return new Animation<>(0.1f, frames.toArray(new TextureRegion[0]));
     }
-
 
     // Track if player is within 2f radius
     private boolean playerInRange = false; // tracks if player is within 2f radius last frame
@@ -106,9 +111,7 @@ public class Jotun extends NPC {
         }
     }
 
-
-
-
+    @Override
     public void render(SpriteBatch batch) {
     	Animation<TextureRegion> currentAnim;
     	if (isMoving) {
@@ -119,13 +122,16 @@ public class Jotun extends NPC {
     	if (currentAnim != null) {
     	    TextureRegion frame = currentAnim.getKeyFrame(stateTime, true);
     	    batch.draw(frame, bounds.x, bounds.y, bounds.width, bounds.height);
+    	} else if (texture != null) {
+    	    batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
     	}
-
     }
 
-    public Rectangle getBounds() {
-        return bounds;
-    }
+	@Override
+	protected void loadTexture() {
+		// Load default texture for Jotun
+		texture = new Texture("images/Entity/characters/NPCs/npc2 - Copy/trai/idle/npc2_idle_1.png");
+	}
 
 	@Override
 	public void setTalking(boolean talking) {

@@ -106,10 +106,12 @@ public class FlyingDemon extends Monster {
 
     private void spawnProjectile(Player player) {
         if (player == null) return;
+        Rectangle bounds = getBounds();
         float bulletX = isFacingRight() ? bounds.x + bounds.width : bounds.x - 0.5f;
         float bulletY = bounds.y + bounds.height / 2 - 0.25f;
-        float targetX = player.bounds.x + player.bounds.width / 2;
-        float targetY = player.bounds.y + player.bounds.height / 2;
+        Rectangle playerBounds = player.getBounds();
+        float targetX = playerBounds.x + playerBounds.width / 2;
+        float targetY = playerBounds.y + playerBounds.height / 2;
         projectiles.add(new Projectile(bulletX, bulletY, targetX, targetY, isFacingRight()));
     }
 
@@ -130,6 +132,11 @@ public class FlyingDemon extends Monster {
         for (Projectile p : projectiles) {
             p.render(batch);
         }
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return bounds;
     }
 
     private class Projectile {
@@ -164,7 +171,7 @@ public class FlyingDemon extends Monster {
             if (!active) return;
             bounds.x += velocityX * deltaTime;
             bounds.y += velocityY * deltaTime;
-            if (player != null && bounds.overlaps(player.bounds)) {
+            if (player != null && bounds.overlaps(player.getBounds())) {
                 player.takeHit(15); // Sát thương đạn
                 active = false;
             }

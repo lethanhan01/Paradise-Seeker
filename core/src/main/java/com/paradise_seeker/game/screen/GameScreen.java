@@ -192,7 +192,7 @@ public class GameScreen implements Screen {
         }
 
         // Camera follows player
-        Vector2 playerCenter = new Vector2(player.bounds.x + player.bounds.width / 2, player.bounds.y + player.bounds.height / 2);
+        Vector2 playerCenter = new Vector2(player.getBounds().x + player.getBounds().width / 2, player.getBounds().y + player.getBounds().height / 2);
         Vector2 currentCameraPos = new Vector2(gameCamera.position.x, gameCamera.position.y);
         Vector2 newCameraPos = currentCameraPos.lerp(playerCenter, cameraLerp);
         gameCamera.position.set(newCameraPos.x, newCameraPos.y, 0);
@@ -325,9 +325,10 @@ public class GameScreen implements Screen {
                         currentTalkingNPC.setTalking(false);
                         currentTalkingNPC.openChest();
                         waitingForChestToOpen = true;
+                        finishNpcInteraction();
                     }
                 }
-            } else if (dialogueBox.isVisible() && currentTalkingNPC != null) {
+            } else if (currentTalkingNPC != null) {
                 if (currentTalkingNPC.shouldShowOptions() && !showDialogueOptions) {
                     showDialogueOptions = true;
                 } else {
@@ -340,9 +341,8 @@ public class GameScreen implements Screen {
                         if (!currentTalkingNPC.isChestOpened()) {
                             currentTalkingNPC.openChest();
                             waitingForChestToOpen = true;
-                        } else {
-                            finishNpcInteraction();
                         }
+                        finishNpcInteraction();
                     }
                 }
             } else {
@@ -383,8 +383,11 @@ public class GameScreen implements Screen {
         }
         if (currentTalkingNPC != null) {
             currentTalkingNPC.setTalking(false);
+            currentTalkingNPC = null;
         }
-        currentTalkingNPC = null;
+        showDialogueOptions = false;
+        selectedOptionIndex = 0;
+        waitingForChestToOpen = false;
     }
 
     private void dropPotionNextToPlayer(String potionType) {

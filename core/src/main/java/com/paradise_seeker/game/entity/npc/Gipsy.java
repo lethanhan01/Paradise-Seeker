@@ -3,11 +3,22 @@ package com.paradise_seeker.game.entity.npc;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.map.GameMap;
+import com.badlogic.gdx.graphics.Texture;
+import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
+// Add this import at the top
+import com.paradise_seeker.game.rendering.renderer.NPCRenderer;
+import com.paradise_seeker.game.rendering.renderer.NPCRendererImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Gipsy extends NPC {
     public NPCAnimationManager animationManager;
     public NPCStateManager stateManager;
     public DialogueManager dialogueManager;
+    
+    // Add this field
+    private NPCRenderer renderer;
 
     public float spriteWidth = 3f;
     public float spriteHeight = 3f;
@@ -24,6 +35,16 @@ public class Gipsy extends NPC {
         this.animationManager = new NPCAnimationManager();
         this.stateManager = new NPCStateManager();
         this.dialogueManager = new DialogueManager();
+        
+        // Initialize the renderer
+        this.renderer = new NPCRendererImpl(this.animationManager);
+
+        // Thiết lập câu thoại mặc định cho Gipsy
+        List<String> defaultDialogue = new ArrayList<>();
+        defaultDialogue.add("Hello, traveler!");
+        defaultDialogue.add("I am Gipsy, a wandering merchant.");
+        defaultDialogue.add("Would you like to open a chest?");
+        dialogueManager.setDialogue(defaultDialogue);
     }
 
     public Gipsy() {
@@ -36,8 +57,19 @@ public class Gipsy extends NPC {
             bounds.setPosition(x, y);
         }
     }
+
+    @Override
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
     @Override
     public void act(float deltaTime, GameMap map) {
+        // Update renderer state time
+        if (renderer instanceof NPCRendererImpl) {
+            ((NPCRendererImpl) renderer).update(deltaTime);
+        }
+        
         // Cập nhật animation dựa trên trạng thái hiện tại
         animationManager.update(deltaTime, stateManager.isOpeningChest(), stateManager.isChestOpened());
 
@@ -93,7 +125,6 @@ public class Gipsy extends NPC {
         dialogueManager.nextLine();
     }
 
-
     public String getCurrentLine() {
         return dialogueManager.getCurrentLine();
     }
@@ -101,7 +132,6 @@ public class Gipsy extends NPC {
     public void resetDialogue() {
         dialogueManager.resetDialogue();
     }
-
 
     public boolean shouldShowOptions() {
         // Giả định rằng các tùy chọn nên hiển thị khi đã đến dòng đối thoại cuối cùng
@@ -115,13 +145,25 @@ public class Gipsy extends NPC {
     public boolean isChestOpened() {
         return stateManager.isChestOpened();
     }
+
     public boolean hasTalked() {
     	return stateManager.hasTalked();
 	}
 
 	@Override
-	public void render(SpriteBatch batch) {
-		// TODO Auto-generated method stub
+	protected void loadTexture() {
+		// Load default texture for Gipsy
+		texture = new Texture("images/Entity/characters/NPCs/npc1/act3/npc120.png");
+	}
 
+	@Override
+	public void render(SpriteBatch batch) {
+		// Use the renderer instead of calling animationManager.render()
+		if (renderer != null) {
+			renderer.render(this, batch);
+		} else if (texture != null) {
+			// Fallback to texture if renderer is not available
+			batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
+		}
 	}
 }

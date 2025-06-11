@@ -5,8 +5,8 @@
     },
     "activeFile": "maps/map1.tmx",
     "expandedProjectPaths": [
-        "maps",
-        "."
+        ".",
+        "maps"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -92,8 +92,8 @@
             "scale": 0.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 800,
-                "y": 801
+                "x": 799,
+                "y": 799
             }
         },
         "maps/map4.tmx": {
@@ -103,7 +103,7 @@
             "scale": 2,
             "selectedLayer": 15,
             "viewCenter": {
-                "x": 771.5,
+                "x": 800.25,
                 "y": 800.25
             }
         },
@@ -114,7 +114,7 @@
             "scale": 0.75,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 738.6666666666667,
+                "x": 739.3333333333333,
                 "y": 560.6666666666667
             }
         }

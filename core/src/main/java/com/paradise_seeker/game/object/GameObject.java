@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Collidable;
-import com.paradise_seeker.game.entity.Renderable;
+import com.paradise_seeker.game.rendering.Renderable;
 
 public abstract class GameObject implements Collidable, Renderable {
     protected Rectangle bounds;

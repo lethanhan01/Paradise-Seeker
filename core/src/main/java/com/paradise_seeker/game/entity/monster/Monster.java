@@ -9,6 +9,9 @@ import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
+import com.paradise_seeker.game.rendering.renderer.MonsterRenderer;
+import com.paradise_seeker.game.rendering.renderer.MonsterRendererImpl;
 
 
 public abstract class Monster extends Character {
@@ -17,9 +20,10 @@ public abstract class Monster extends Character {
     public float spawnX;
     public float spawnY;
 
-    public MonsterAnimationManagerImpl animationManager;
+    public MonsterAnimationManager animationManager;
     public MonsterCollisionHandler collisionHandler;
-    public HPBarMonsterRenderer renderer;
+    public MonsterRenderer renderer;
+    public HPBarMonsterRenderer hpBarRenderer;
     public MonsterAI ai;
     public TextureRegion currentFrame;
 
@@ -44,8 +48,9 @@ public abstract class Monster extends Character {
         this.spawnY = y;
 
         // Initialize managers
-        this.renderer = new HPBarMonsterRenderer();
-        this.animationManager = new MonsterAnimationManagerImpl(this);
+        this.hpBarRenderer = new HPBarMonsterRenderer();
+        this.animationManager = new MonsterAnimationManager(this);
+        this.renderer = new MonsterRendererImpl(animationManager);
         this.collisionHandler = new MonsterCollisionHandler(this);
         this.ai = new MonsterAI(this);
 
@@ -64,7 +69,6 @@ public abstract class Monster extends Character {
 	}
 
     public void act(float deltaTime, Player player, GameMap map) {
-
         if (player == null || player.isDead) return;
 
         // Update AI first
@@ -91,15 +95,16 @@ public abstract class Monster extends Character {
 	     }
 	 }
 
-
     public void render(SpriteBatch batch) {
-        renderer.render(batch, bounds, animationManager.getCurrentFrame(), hp, maxHp, isDead);
+        renderer.render(this, batch);
+        hpBarRenderer.render(batch, bounds, animationManager.getCurrentFrame(), hp, maxHp, isDead);
     }
 
     public boolean isFacingRight() {
         return animationManager.isFacingRight();
     }
 
+    @Override
     public Rectangle getBounds() {
         return bounds;
     }
@@ -109,17 +114,14 @@ public abstract class Monster extends Character {
     }
 
     public float getHp() {
-
         return hp;
     }
 
     public float getAtk() {
-
         return atk;
     }
 
     public float getSpeed() {
-
         return speed;
     }
 
@@ -141,7 +143,6 @@ public abstract class Monster extends Character {
         ai.onAggro();
     }
 
-
     @Override
     public void onCollision(Collidable other) {
         collisionHandler.handleCollision(other);
@@ -153,12 +154,10 @@ public abstract class Monster extends Character {
 
     @Override
     public void onDeath() {
-        // Base implementation is empty, subclasses can override
     	isDead = true;
 		bounds.set(0, 0, 0, 0); // Reset position on death
         
     }
-
 
     public abstract void loadAnimations();
 
@@ -177,7 +176,7 @@ public abstract class Monster extends Character {
             deathLeft, deathRight
         );
     }
-    //Disposes of resources.
+
     public void dispose() {
         if (renderer != null) {
             renderer.dispose();

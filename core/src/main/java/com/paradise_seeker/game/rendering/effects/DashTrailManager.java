@@ -1,8 +1,10 @@
-package com.paradise_seeker.game.entity.player;
+package com.paradise_seeker.game.rendering.effects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.paradise_seeker.game.entity.player.DashTrail;
+import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -15,7 +17,7 @@ public class DashTrailManager {
         smokes.add(new DashTrail(x, y));
     }
 
-    public void update(float deltaTime, PlayerAnimationManagerImpl animationManager) {
+    public void update(float deltaTime, PlayerAnimationManager animationManager) {
         Iterator<DashTrail> iter = smokes.iterator();
         while (iter.hasNext()) {
             DashTrail s = iter.next();
@@ -26,7 +28,7 @@ public class DashTrailManager {
         }
     }
 
-    public void render(SpriteBatch batch, PlayerAnimationManagerImpl animationManager) {
+    public void render(SpriteBatch batch, PlayerAnimationManager animationManager) {
         Animation<TextureRegion> smokeAnim = animationManager.getSmokeAnimation();
         for (DashTrail s : smokes) {
             TextureRegion frame = smokeAnim.getKeyFrame(s.stateTime, false);
