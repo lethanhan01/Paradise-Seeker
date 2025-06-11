@@ -50,6 +50,9 @@ public class MonsterFactory {
             case "MinotaurElite":
                 m = new MinotaurElite(x, y);
                 break;
+            case "Necromancer":
+          		m = new Necromancer(x, y);
+				break;
 
             case "CyclopsBoss":
                 m = new CyclopBoss(x, y);

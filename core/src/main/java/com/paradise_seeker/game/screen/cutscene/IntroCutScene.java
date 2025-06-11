@@ -2,7 +2,6 @@ package com.paradise_seeker.game.screen.cutscene;
 
 import java.util.Arrays;
 
-import com.badlogic.gdx.Gdx;
 import com.paradise_seeker.game.main.Main;
 
 public class IntroCutScene extends CutScene {

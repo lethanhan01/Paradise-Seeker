@@ -56,7 +56,7 @@ public abstract class GameMap {
 
     private float itemSpawnTimer = 0f;
     private static final float ITEM_SPAWN_INTERVAL = 120f;
-   
+
 
 
     // Subclass must provide these
@@ -346,14 +346,14 @@ public abstract class GameMap {
         skill1Items.clear();
         skill2Items.clear();
         // Chỉ xóa collidable là quái, NPC, item động
-        collidables.removeIf(c -> 
+        collidables.removeIf(c ->
             c instanceof Monster ||
             c instanceof Gipsy ||
-            c instanceof HPitem ||
-            c instanceof MPitem ||
-            c instanceof ATKitem ||
-            c instanceof Skill1item ||
-            c instanceof Skill2item
+            c instanceof HPPotion ||
+            c instanceof MPPotion ||
+            c instanceof ATKPotion ||
+            c instanceof Skill1Potion ||
+            c instanceof Skill2Potion
         );
     }
 }
