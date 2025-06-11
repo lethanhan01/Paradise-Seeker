@@ -59,7 +59,7 @@ public class GameScreen implements Screen {
     private boolean showDialogueOptions = false;
     private String pendingPotionToDrop = null;
     private boolean waitingForChestToOpen = false;
-    
+
     private int[] mapcutsceneIndices = {0, 0, 0, 0, 0}; // Indices for cutscenes in the map
 
     public GameScreen(final Main game) {
@@ -141,9 +141,9 @@ public class GameScreen implements Screen {
             if (chest != null) {
 				handleChest();
 			}
-            
-            
-            
+
+
+
             mapManager.getCurrentMap().checkCollisions(player, hud);
             float playerCenterX = player.getBounds().x + player.getBounds().width / 2f;
             float playerCenterY = player.getBounds().y + player.getBounds().height / 2f;
@@ -207,10 +207,10 @@ public class GameScreen implements Screen {
         mapManager.render(game.batch);
         // Render all monsters
         for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
-            monster.render(game.batch);
+            monster.isRendered(game.batch);
         }
         // Render player and skills
-        player.render(game.batch);
+        player.isRendered(game.batch);
         player.playerSkill1.render(game.batch);
         player.playerSkill2.render(game.batch);
         for (LaserBeam projectile : activeProjectiles) projectile.render(game.batch);
@@ -239,7 +239,7 @@ public class GameScreen implements Screen {
         GameMap currentMap = mapManager.getCurrentMap();
         if (currentMap.portal != null && player.getBounds().overlaps(currentMap.portal.getBounds())) {
             currentMap.portal.onCollision(player);
-            
+
             switch (mapManager.getCurrentMapIndex()) {
 				case 0: // Map 1 to Map 2
 					if (mapcutsceneIndices[0] == 0) {
@@ -256,7 +256,7 @@ public class GameScreen implements Screen {
 				case 4: // Map 5 to Map 1 (loop back)
 					break;
 			}
-            
+
             if (mapManager.getCurrentMapIndex() != 3) {
             	mapManager.switchToNextMap();
                 switchMusicAndShowMap();

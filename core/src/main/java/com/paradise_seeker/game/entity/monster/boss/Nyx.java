@@ -84,10 +84,10 @@ public class Nyx extends Monster {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         // Use the renderer from parent class, which already handles drawing
         // No need to manually draw currentFrame as it's handled by MonsterRenderer
-        super.render(batch);
+        super.isRendered(batch);
     }
 
     @Override
@@ -96,8 +96,8 @@ public class Nyx extends Monster {
         // Add Boss3-specific death behavior if needed
         isDead = true; // Set the isDead flag to true
         bounds.set(0, 0, 0, 0); // Reset position on death
-        
-        
+
+
     }
 
     @Override

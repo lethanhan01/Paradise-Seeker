@@ -126,7 +126,7 @@ public abstract class GameMap {
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag1.png", 1));
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag2.png", 2));
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag3.png", 3));
-                    collidables.add(chest.getSolidComponent()); 
+                    collidables.add(chest.getSolidComponent());
                     break;
 
                 case "npc":
@@ -179,7 +179,7 @@ public abstract class GameMap {
         for (ATKPotion item : atkItems) item.render(batch);
         for (Skill1Potion item : skill1Items) item.render(batch);
         for (Skill2Potion item : skill2Items) item.render(batch);
-        for (Monster m : monsters) m.render(batch);
+        for (Monster m : monsters) m.isRendered(batch);
         for (Gipsy npc : npcList) npc.render(batch);
         if (portal != null) portal.render(batch);
         if (startPortal != null) startPortal.render(batch);

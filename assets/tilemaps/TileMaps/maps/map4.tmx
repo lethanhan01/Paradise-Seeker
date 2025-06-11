@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="35" nextobjectid="298">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="35" nextobjectid="302">
  <tileset firstgid="1" source="../map4-tilesets/dd_waterfall_sheet.tsx"/>
  <tileset firstgid="157" source="../map4-tilesets/tf_darkdimension_sheet.tsx"/>
  <layer id="17" name="bg" width="50" height="50">
@@ -921,6 +921,9 @@
 </data>
  </layer>
  <objectgroup id="32" name="Spawns">
+  <properties>
+   <property name="type" value=""/>
+  </properties>
   <object id="1" x="780" y="1461.33">
    <properties>
     <property name="type" value="player"/>
@@ -946,7 +949,7 @@
    </properties>
    <point/>
   </object>
-  <object id="295" x="1494" y="992">
+  <object id="295" x="1494" y="952">
    <properties>
     <property name="class" value="DevilCreep"/>
     <property name="type" value="monster"/>
@@ -960,14 +963,14 @@
    </properties>
    <point/>
   </object>
-  <object id="293" x="1298" y="1224">
+  <object id="293" x="1307.33" y="1204">
    <properties>
     <property name="class" value="DevilCreep"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="284" x="93.3333" y="951.333">
+  <object id="284" x="380" y="914">
    <properties>
     <property name="class" value="FlyingCreep"/>
     <property name="type" value="monster"/>
@@ -1002,14 +1005,14 @@
    </properties>
    <point/>
   </object>
-  <object id="291" x="963.333" y="1226.67">
+  <object id="291" x="1482" y="1113.34">
    <properties>
     <property name="class" value="GhostStatic"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="290" x="89.3333" y="488.667">
+  <object id="290" x="406.667" y="572.667">
    <properties>
     <property name="class" value="GhostStatic"/>
     <property name="type" value="monster"/>
@@ -1053,6 +1056,27 @@
   <object id="6" x="784" y="834">
    <properties>
     <property name="type" value="teleport_higher"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="298" x="94.6667" y="984">
+   <properties>
+    <property name="class" value="Necromancer"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="299" x="953.333" y="1220">
+   <properties>
+    <property name="class" value="Necromancer"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="300" x="85.3333" y="462.667">
+   <properties>
+    <property name="class" value="Necromancer"/>
+    <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>

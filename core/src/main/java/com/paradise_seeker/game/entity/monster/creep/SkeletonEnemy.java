@@ -123,9 +123,9 @@ public class SkeletonEnemy extends Monster {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         // Use parent class's render method
-        super.render(batch);
+        super.isRendered(batch);
     }
 
     @Override

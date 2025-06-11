@@ -63,9 +63,9 @@ public class YellowBat extends Monster {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         // Use parent class's render method
-        super.render(batch);
+        super.isRendered(batch);
     }
 
     private Animation<TextureRegion> loadAnimation(String folder, String prefix, int frameCount, String suffix, int startIndex) {

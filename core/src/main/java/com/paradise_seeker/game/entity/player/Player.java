@@ -14,7 +14,6 @@ import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.object.item.Item;
 import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 import com.paradise_seeker.game.rendering.effects.DashTrailManager;
-import com.paradise_seeker.game.rendering.renderer.PlayerRenderer;
 import com.paradise_seeker.game.rendering.renderer.PlayerRendererImpl;
 
 public class Player extends Character {
@@ -132,7 +131,7 @@ public class Player extends Character {
     }
 
 
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         playerRenderer.render(this, batch);
         smokeManager.render(batch, animationManager);
     }

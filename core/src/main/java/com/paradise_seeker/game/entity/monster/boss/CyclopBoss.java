@@ -222,9 +222,9 @@ public class CyclopBoss extends Monster {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         if (isDead) return;
-        super.render(batch);
+        super.isRendered(batch);
         renderSkillProjectiles(batch, animationManager.getStateTime());
     }
 }

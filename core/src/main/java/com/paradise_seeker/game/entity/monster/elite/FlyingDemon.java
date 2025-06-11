@@ -124,9 +124,9 @@ public class FlyingDemon extends Monster {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         // Call parent render
-        super.render(batch);
+        super.isRendered(batch);
 
         // Render projectiles
         for (Projectile p : projectiles) {
