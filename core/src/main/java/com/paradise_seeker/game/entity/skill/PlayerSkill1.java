@@ -5,12 +5,29 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.Gdx;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.screen.GameScreen;
 
 import java.util.List;
 
-public class PlayerSkill1 extends PlayerSkill {
+public class PlayerSkill1 extends PlayerSkill implements Projectile {
+    private static final float MIN_X = 0f;
+    private static final float MAX_X = 100f;
+    private static final float MIN_Y = 0f;
+    private static final float MAX_Y = 100f;
+
+    private float x, y;
+    private float speed = 10f;
+    private float damage;
+    private boolean active = true;
+    private Rectangle hitbox;
+    private String direction;
+    private Animation<TextureRegion> animation;
+    private float stateTime = 0f;
+    private String directionRaw;
+    private Animation<TextureRegion> animDown;
+
     public PlayerSkill1() {
         super(10, 500); // mana, cooldown
         loadSkillAnimations();
@@ -44,9 +61,19 @@ public class PlayerSkill1 extends PlayerSkill {
     @Override
     public void castSkill(float atk, float x, float y, String direction) {
         if (canUse(System.currentTimeMillis())) {
-            Animation<TextureRegion> anim = skillAnimations.get(direction);
-            LaserBeam laser = new LaserBeam(x, y, atk * 2 * damageMultiplier, direction, anim);
-            GameScreen.activeProjectiles.add(laser);
+            // Remove any existing projectiles from this skill
+            GameScreen.activeProjectiles.removeIf(projectile -> projectile instanceof PlayerSkill1);
+            
+            this.x = x;
+            this.y = y;
+            this.damage = atk * 2 * damageMultiplier;
+            this.direction = direction;
+            this.directionRaw = direction;
+            this.hitbox = new Rectangle(x, y, 1f, 1f);
+            this.animation = skillAnimations.get(direction);
+            this.active = true;
+            this.stateTime = 0f;
+            GameScreen.activeProjectiles.add(this);
             setLastUsedTime(System.currentTimeMillis());
         }
     }
@@ -58,12 +85,86 @@ public class PlayerSkill1 extends PlayerSkill {
         castSkill(atk, x, y, direction);
     }
 
-    public void updateSkill(float delta, List<Monster> monsters) {
-        // PlayerSkill1 không cần logic update riêng, để trống
+    @Override
+    public void update() {
+        if (!active) return;
+        
+        float delta = Gdx.graphics.getDeltaTime();
+        switch (direction) {
+            case "up": y += speed * delta; break;
+            case "down": y -= speed * delta; break;
+            case "left": x -= speed * delta; break;
+            case "right": x += speed * delta; break;
+        }
+        hitbox.setPosition(x, y);
+        stateTime += delta;
+        
+        if (x < MIN_X || x > MAX_X || y < MIN_Y || y > MAX_Y) {
+            active = false;
+        }
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        // PlayerSkill1 không cần render riêng, để trống
+        if (!active) return;
+
+        Animation<TextureRegion> animToDraw = animation;
+        if (animToDraw == null && animDown != null) {
+            animToDraw = animDown;
+        }
+        if (animToDraw != null) {
+            TextureRegion frame = animToDraw.getKeyFrame(stateTime, false);
+
+            float regionWidth = frame.getRegionWidth();
+            float regionHeight = frame.getRegionHeight();
+
+            float width, height, scale;
+            float targetBase = 0.75f;
+
+            if (directionRaw.equals("left") || directionRaw.equals("right")) {
+                scale = targetBase / regionHeight;
+            } else {
+                scale = targetBase / regionWidth;
+            }
+            width = regionWidth * scale;
+            height = regionHeight * scale;
+
+            float drawX = x - width / 2f;
+            float drawY = y - height / 2f;
+            float originX = width / 2f;
+            float originY = height / 2f;
+            float rotation = 0f;
+
+            batch.draw(frame, drawX, drawY, originX, originY, width, height, 1f, 1f, rotation);
+        }
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
+
+    @Override
+    public float getDamage() {
+        return damage;
+    }
+
+    @Override
+    public void setInactive() {
+        this.active = false;
+    }
+
+    public void setAnimDown(Animation<TextureRegion> animDown) {
+        this.animDown = animDown;
+    }
+
+    @Override
+    public void updateSkill(float delta, List<Monster> monsters) {
+        update();
     }
 }
