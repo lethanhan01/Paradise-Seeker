@@ -8,37 +8,31 @@ import com.paradise_seeker.game.entity.player.Player;
  * This class manages collision detection and response with other game entities.
  */
 public class MonsterCollisionHandler {
-    private Monster owner;
     private float cleaveRange;
     private boolean pendingCleaveHit;
     private boolean cleaveDamageDealt;
 
-    public MonsterCollisionHandler(Monster monster) {
-        this.owner = monster;
+    public MonsterCollisionHandler() {
         this.cleaveRange = 4f; // Default cleave range
         this.pendingCleaveHit = false;
         this.cleaveDamageDealt = false;
     }
 
-    /**
-     * Handle collision with another collidable entity
-     */
-    public void handleCollision(Collidable other) {
+
+    public void handleCollision(Collidable other, Monster monster) {
         if (other instanceof Player) {
-            handlePlayerCollision((Player) other);
+            handlePlayerCollision((Player) other, monster);
         }
     }
 
-    /**
-     * Handle collision specifically with a player
-     */
-    public void handlePlayerCollision(Player player) {
-        if (owner.isDead() || player.isInvulnerable()) {
+
+    public void handlePlayerCollision(Player player, Monster monster) {
+        if (monster.isDead() || player.isInvulnerable()) {
             return;
         }
 
         // Calculate damage based on monster's attack value
-        int damage = (int) owner.atk;
+        int damage = (int) monster.atk;
 
         // If player is shielding, reduce damage and handle shield effects
         if (player.isShielding) {
@@ -54,9 +48,9 @@ public class MonsterCollisionHandler {
     /**
      * Check if player is within cleave range
      */
-    public boolean isPlayerInCleaveRange(Player player) {
-        float distanceX = Math.abs(player.getBounds().x - owner.getBounds().x);
-        float distanceY = Math.abs(player.getBounds().y - owner.getBounds().y);
+    public boolean isPlayerInCleaveRange(Player player, Monster monster) {
+        float distanceX = Math.abs(player.getBounds().x - monster.getBounds().x);
+        float distanceY = Math.abs(player.getBounds().y - monster.getBounds().y);
 
         return distanceX <= 5f+cleaveRange && distanceY <= 5f+cleaveRange / 2;
     }
@@ -64,10 +58,10 @@ public class MonsterCollisionHandler {
     /**
      * Apply cleave damage to a player
      */
-    public void applyCleaveHitToPlayer(Player player) {
+    public void applyCleaveHitToPlayer(Player player, Monster monster) {
         if (pendingCleaveHit && !cleaveDamageDealt) {
             // Calculate cleave damage (could be higher than regular damage)
-            float cleaveDamage = owner.atk * 1.5f;
+            float cleaveDamage = monster.atk * 1.5f;
 
             // Apply damage if player is not invulnerable
             if (!player.isInvulnerable()) {

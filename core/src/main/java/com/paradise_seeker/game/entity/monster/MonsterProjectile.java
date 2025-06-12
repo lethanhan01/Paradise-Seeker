@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 
-public class Projectile {
+public class MonsterProjectile {
 	private float x, y, vx, vy;
     private final float speed = 8f;
     public boolean finished = false;
@@ -16,7 +16,7 @@ public class Projectile {
     private final Rectangle hitbox;
     private boolean hitDealt = false;
 
-    public Projectile(float x, float y, float dx, float dy, Animation<TextureRegion> anim) {
+    public MonsterProjectile(float x, float y, float dx, float dy, Animation<TextureRegion> anim) {
         this.x = x;
         this.y = y;
         this.vx = dx * speed;

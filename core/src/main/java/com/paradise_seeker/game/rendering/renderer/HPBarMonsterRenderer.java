@@ -34,16 +34,7 @@ public class HPBarMonsterRenderer {
         }
     }
 
-    /**
-     * Render the monster and its UI elements
-     *
-     * @param batch The sprite batch to render with
-     * @param bounds The monster's bounds for positioning
-     * @param currentFrame The current animation frame to render
-     * @param hp The monster's current HP
-     * @param maxHp The monster's maximum HP
-     * @param isDead Whether the monster is dead
-     */
+
     public void render(SpriteBatch batch, Rectangle bounds, TextureRegion currentFrame,
                       float hp, float maxHp, boolean isDead) {
         // Only render if the monster is not dead or if we're still showing death animation

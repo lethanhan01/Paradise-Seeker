@@ -12,7 +12,7 @@ import com.paradise_seeker.game.object.Book;
  * Implementation của PlayerInputHandler
  * Chuyên trách xử lý tất cả input của Player
  */
-public class PlayerInputHandlerImpl implements PlayerInputHandler {
+public class PlayerInputHandlerManager implements PlayerInputHandler {
     public boolean showInteractMessage = false;
 
     public boolean isShowInteractMessage() {

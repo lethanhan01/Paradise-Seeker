@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.paradise_seeker.game.entity.monster.Projectile;
+import com.paradise_seeker.game.entity.monster.MonsterProjectile;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 
@@ -17,11 +17,9 @@ import java.util.List;
 
 public class CyclopBoss extends Monster {
 
-    // Boss stats, có thể chỉnh lại cho phù hợp
     private final float scaleMultiplier = 2.5f;
 
-    // List đạn skill đang bay
-    private final List<Projectile> projectiles = new ArrayList<>();
+    private final List<MonsterProjectile> projectiles = new ArrayList<>();
 
     public CyclopBoss(float x, float y) {
         super(new Rectangle(x, y, 2.0f, 2.0f), 1500f, 100f, 1500f, 100f, 100f, 1.5f, x, y);
@@ -74,9 +72,9 @@ public class CyclopBoss extends Monster {
     public void act(float deltaTime, Player player, GameMap map) {
         super.act(deltaTime, player, map);
         // Update đạn skill
-        Iterator<Projectile> iter = projectiles.iterator();
+        Iterator<MonsterProjectile> iter = projectiles.iterator();
         while (iter.hasNext()) {
-            Projectile p = iter.next();
+            MonsterProjectile p = iter.next();
             p.update(deltaTime, map, player);
             if (p.finished) iter.remove();
         }
@@ -85,7 +83,7 @@ public class CyclopBoss extends Monster {
     @Override
     public void isRendered(SpriteBatch batch) {
         super.isRendered(batch);
-        for (Projectile p : projectiles) p.render(batch);
+        for (MonsterProjectile p : projectiles) p.render(batch);
     }
 
     // -- Cơ chế cleave: override lại cleave để tạo skill projectile --
@@ -104,7 +102,7 @@ public class CyclopBoss extends Monster {
         Animation<TextureRegion> projAnim = isFacingRight()
             ? loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/skill/phai/projectile/", 135, 142)
             : loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/skill/trai/projectile/", 285, 292);
-        projectiles.add(new Projectile(cx, cy, dx, dy, projAnim));
+        projectiles.add(new MonsterProjectile(cx, cy, dx, dy, projAnim));
     }
     // Nếu boss bị player chạm/cấn thì vẫn gọi collisionHandler như thường
     @Override

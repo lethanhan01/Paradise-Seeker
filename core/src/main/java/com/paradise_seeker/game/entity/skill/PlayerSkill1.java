@@ -11,7 +11,7 @@ import com.paradise_seeker.game.screen.GameScreen;
 
 import java.util.List;
 
-public class PlayerSkill1 extends PlayerSkill implements Projectile {
+public class PlayerSkill1 extends PlayerSkill implements PlayerProjectile {
     private static final float MIN_X = 0f;
     private static final float MAX_X = 100f;
     private static final float MIN_Y = 0f;

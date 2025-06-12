@@ -5,7 +5,6 @@ import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 
 public class MonsterAI {
-    private final Monster monster;
     private boolean isAggro = false;
     private float aggroTimer = 0f;
     private Vector2 originalPosition;
@@ -17,7 +16,6 @@ public class MonsterAI {
     private final float AGGRO_RANGE_MAX = 12f;    // phạm vi tối đa cho phép aggro tiếp tục
 
     public MonsterAI(Monster monster) {
-        this.monster = monster;
         this.originalPosition = new Vector2(monster.getBounds().x, monster.getBounds().y);
     }
 
@@ -26,7 +24,7 @@ public class MonsterAI {
         aggroTimer = AGGRO_DURATION;
     }
 
-    public void checkAggro(Player player) {
+    public void checkAggro(Player player, Monster monster) {
         if (player == null || player.isDead()) return;
         float dx = player.getBounds().x - monster.getBounds().x;
         float dy = player.getBounds().y - monster.getBounds().y;
@@ -36,12 +34,12 @@ public class MonsterAI {
         }
     }
 
-    public void update(float deltaTime, Player player, GameMap map) {
+    public void update(float deltaTime, Player player, GameMap map, Monster monster) {
         if (monster.isDead() || player == null || player.isDead()) return;
         float stopDisplayer = (float) Math.sqrt(player.getBounds().width * player.getBounds().width + player.getBounds().height * player.getBounds().height) / 2f;
         float stopDisMonster = (float) Math.sqrt(monster.getBounds().width * monster.getBounds().width + monster.getBounds().height * monster.getBounds().height) / 2f;
         stopDistance = stopDisplayer + stopDisMonster + 0.1f;
-        checkAggro(player);
+        checkAggro(player, monster);
 
         float dx = player.getBounds().x - monster.getBounds().x;
         float dy = player.getBounds().y - monster.getBounds().y;
