@@ -1,7 +1,6 @@
 package com.paradise_seeker.game.object;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 
 public class Book extends GameObject {
@@ -36,15 +35,6 @@ public class Book extends GameObject {
     public void open() {
         if (!isOpened) {
             isOpened = true;
-        }
-    }
-
-    @Override
-    public void onCollision(Collidable other) {
-        if (other instanceof Player) {
-            Player player = (Player) other;
-            // Don't block movement for books - they should be walkable
-            // Only handle interaction logic here
         }
     }
 
