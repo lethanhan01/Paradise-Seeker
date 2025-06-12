@@ -54,10 +54,8 @@ public abstract class PlayerSkill implements Skill, Renderable {
     public void render(SpriteBatch batch) {
     }
     public void updatePosition(float x, float y) {
-        // Không làm gì mặc định
     }
 
     public void updateSkill(float delta, List<Monster> monsters) {
-        // Không làm gì mặc định
     }
 }

@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.ui.DialogueBox;
 import com.paradise_seeker.game.ui.HUD;
-import com.paradise_seeker.game.entity.skill.LaserBeam;
+import com.paradise_seeker.game.entity.skill.Projectile;
 import com.paradise_seeker.game.main.Main;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
     public boolean isInGameMap = true;
     private boolean winTriggered = false;
 
-    public static List<LaserBeam> activeProjectiles = new ArrayList<>();
+    public static List<Projectile> activeProjectiles = new ArrayList<>();
 
     private final float CAMERA_VIEW_WIDTH = 16f;
     private final float CAMERA_VIEW_HEIGHT = 10f;
@@ -161,7 +161,7 @@ public class GameScreen implements Screen {
             player.playerSkill2.updateSkill(delta, mapManager.getCurrentMap().getMonsters());
             // Update projectiles
             for (int i = activeProjectiles.size() - 1; i >= 0; i--) {
-                LaserBeam projectile = activeProjectiles.get(i);
+                Projectile projectile = activeProjectiles.get(i);
                 projectile.update();
                 for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
                     if (projectile.isActive() && !monster.isDead() && monster.getBounds().overlaps(projectile.getHitbox())) {
@@ -221,7 +221,7 @@ public class GameScreen implements Screen {
         player.isRendered(game.batch);
         player.playerSkill1.render(game.batch);
         player.playerSkill2.render(game.batch);
-        for (LaserBeam projectile : activeProjectiles) projectile.render(game.batch);
+        for (Projectile projectile : activeProjectiles) projectile.render(game.batch);
         game.batch.end();
         // Render dialogue box
         hudCamera.update();
