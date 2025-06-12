@@ -273,9 +273,10 @@ public class Player extends Character {
 
     @Override
     public void onDeath() {
-        isDead = true;
-        isInvulnerable = true;
-        invulnerabilityTimer = Float.MAX_VALUE;
+//        isDead = true;
+//        isInvulnerable = true;
+//        invulnerabilityTimer = Float.MAX_VALUE;
+    	hp=MAX_HP;
     }
 
     @Override
