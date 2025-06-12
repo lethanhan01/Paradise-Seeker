@@ -65,7 +65,6 @@ public class GameScreen implements Screen {
     private boolean waitingForChestToOpen = false;
 
     private int[] mapcutsceneIndicesEnd = {0, 0, 0, 0, 0}; // Indices for cutscenes in the map
-    private int[] mapcutsceneIndicesBegin = {0, 0, 0, 0, 0}; // Indices for cutscenes in the map
 
     public GameScreen(final Main game) {
         this.game = game;
@@ -176,17 +175,6 @@ public class GameScreen implements Screen {
             for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
                 monster.act(delta, player, mapManager.getCurrentMap());
             }
-         // Kiểm tra boss ParadiseKing đã chết chưa và chuyển sang màn hình chiến thắng
-            for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
-            	if (monster instanceof ParadiseKing && monster.isDead() && !winTriggered){
-                    winTriggered = true;
-                    Gdx.app.postRunnable(() -> {
-                        music.stop(); // Dừng nhạc hiện tại
-                        game.setScreen(new WinScreen(game)); // Chuyển màn hình thắng
-                    });
-                    break;
-                }
-            }
 
         } else {
             mapManager.update(delta);
@@ -256,8 +244,8 @@ public class GameScreen implements Screen {
 					}
 					break;
 				case 1: // Map 2 to Map 3
-					if (mapcutsceneIndicesBegin[1] == 0) {
-						mapcutsceneIndicesBegin[1] = 1; // Set cutscene index for Map 2 to Map 3
+					if (mapcutsceneIndicesEnd[1] == 0) {
+						mapcutsceneIndicesEnd[1] = 1; // Set cutscene index for Map 2 to Map 3
 					    game.setScreen(new EndMap2(game));
 					}
 					break;
@@ -270,14 +258,24 @@ public class GameScreen implements Screen {
 				case 3: // Map 4 to Map 5
 					break;
 				case 4: // Map 5 to Map 1 (loop back)
-					if (mapcutsceneIndicesBegin[4] == 0) {
-						mapcutsceneIndicesBegin[4] = 1; // Set cutscene index for Map 5 to Map 1
-					    game.setScreen(new EndGame(game)); // Reuse EndMap1 for Map 5 to Map 1 transition
-					}
+					// Kiểm tra boss ParadiseKing đã chết chưa và chuyển sang màn hình chiến thắng
+		            for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
+		            	if (monster instanceof ParadiseKing && monster.isDead() && !winTriggered){
+		                    winTriggered = true;
+		                    Gdx.app.postRunnable(() -> {
+		                        music.stop(); // Dừng nhạc hiện tại
+		                        if (mapcutsceneIndicesEnd[4] == 0) {
+		    						mapcutsceneIndicesEnd[4] = 1; // Set cutscene index for Map 5 to Map 1
+		    					    game.setScreen(new EndGame(game)); // Reuse EndMap1 for Map 5 to Map 1 transition
+		    					}
+		                    });
+		                }
+		            }
 					break;
 			}
 
-            if (mapManager.getCurrentMapIndex() != 3) {
+            if (mapManager.getCurrentMapIndex() != 3 && mapManager.getCurrentMapIndex() != 4) {
+
             	mapManager.switchToNextMap();
                 switchMusicAndShowMap();
 			} else {
@@ -290,11 +288,14 @@ public class GameScreen implements Screen {
 				}
 	        	if (hasKey) {
 	                // chuyển sang map 5
-	        		if (mapcutsceneIndicesBegin[3] == 0) {
-						mapcutsceneIndicesBegin[3] = 1; // Set cutscene index for Map 4 to Map 5
+	        		if (mapcutsceneIndicesEnd[3] == 0) {
+						mapcutsceneIndicesEnd[3] = 1; // Set cutscene index for Map 4 to Map 5
 					    game.setScreen(new EndMap4(game)); // Reuse EndMap1 for Map 4 to Map 5 transition
 					}
-	                mapManager.switchToNextMap();
+	        		if (mapManager.getCurrentMapIndex() == 3) {
+		                mapManager.switchToNextMap();	                
+		                }
+
 	            } else {
 	                hud.showNotification("> You need the Key to enter!");
 	            }
