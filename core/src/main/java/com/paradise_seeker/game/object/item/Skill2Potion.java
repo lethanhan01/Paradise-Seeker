@@ -7,9 +7,9 @@ public class Skill2Potion extends Item  {
 
     public Skill2Potion(float x, float y, float size, String texturePath) {
         super(x, y, size, texturePath);
-        this.damageMultiplier = 0.5f;
+        this.damageMultiplier = 0.25f;
         this.name = "Skill 2 Potion";
-        this.description = "Skill 2's DMG +0.5x.";
+        this.description = "Skill 2's DMG +0.25x.";
         this.stackable = true;
         this.maxStackSize = 5; // Giới hạn số lượng tối đa trong một stack
     }

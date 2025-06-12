@@ -164,7 +164,7 @@ public abstract class GameMap implements Renderable {
 					Random rand = new Random();
 					int potionType = rand.nextInt(5); // 0 = HP, 1 = MP, 2 = ATK, 3 = Skill1, 4 = Skill2
 					if (potionType == 0) {
-						hpItems.add(new HPPotion(worldX, worldY, 1, "items/potion/potion3.png", 20));
+						hpItems.add(new HPPotion(worldX, worldY, 1, "items/potion/potion3.png", 100));
 					} else if (potionType == 1) {
 						mpItems.add(new MPPotion(worldX, worldY, 1, "items/potion/potion9.png", 15));
 					} else if (potionType == 2) {
@@ -332,7 +332,7 @@ public abstract class GameMap implements Renderable {
     public void generateRandomItems(int hpCount, int mpCount) {
         Random rand = new Random();
         String[] hpTextures = {"items/potion/potion3.png", "items/potion/potion4.png", "items/potion/potion5.png"};
-        int[] hpValues = {20, 40, 60};
+        int[] hpValues = {100, 200, 300};
         String[] mpTextures = {"items/potion/potion9.png", "items/potion/potion10.png", "items/potion/potion11.png"};
         int[] mpValues = {15, 30, 50};
         String[] atkTextures = {"items/atkbuff_potion/potion14.png", "items/atkbuff_potion/potion15.png", "items/atkbuff_potion/potion16.png"};
@@ -358,7 +358,7 @@ public abstract class GameMap implements Renderable {
         int type = rand.nextInt(5); // 0 = HP, 1 = MP, 2 = ATK, 3 = Skill1, 4 = Skill2
         if (type == 0) {
             String[] textures = {"items/potion/potion3.png", "items/potion/potion4.png", "items/potion/potion5.png"};
-            int[] values = {20, 40, 60};
+            int[] values = {100, 200, 300};
             int idx = rand.nextInt(textures.length);
             hpItems.add(new HPPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
         } else if (type == 1) {
@@ -368,7 +368,7 @@ public abstract class GameMap implements Renderable {
             mpItems.add(new MPPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
         } else if (type == 2) {
             String[] textures = {"items/atkbuff_potion/potion14.png", "items/atkbuff_potion/potion15.png", "items/atkbuff_potion/potion16.png"};
-            int[] values = {5, 10, 15};
+            int[] values = {10, 15, 20};
             int idx = rand.nextInt(textures.length);
             atkItems.add(new ATKPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, textures[idx], values[idx]));
         } else if (type == 3) {
