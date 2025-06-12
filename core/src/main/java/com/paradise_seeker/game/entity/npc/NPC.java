@@ -11,7 +11,7 @@ import com.paradise_seeker.game.rendering.renderer.NPCRenderer;
 import com.paradise_seeker.game.rendering.renderer.NPCRendererImpl;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
 
-public abstract class NPC extends Character {
+public abstract class NPC extends Character implements Collidable {
     public String dialogue;
     public boolean isTalking;
     public boolean hasTalked;
@@ -90,4 +90,8 @@ public abstract class NPC extends Character {
             animationManager.update(deltaTime, isTalking, false);
         }
     }
+    @Override
+    public  boolean isSolid() {
+        return true; // NPCs are solid by default
+   }
 }
