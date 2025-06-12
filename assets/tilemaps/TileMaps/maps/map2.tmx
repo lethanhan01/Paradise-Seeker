@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="115">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="132">
  <tileset firstgid="1" source="../map2-tilesets/Minifantasy_ForgottenPlainsTiles.tsx"/>
  <tileset firstgid="1588" source="../map2-tilesets/Minifantasy_ForgottenPlainsProps.tsx"/>
  <layer id="1" name="Tile Layer 1" width="50" height="50">
@@ -441,7 +441,7 @@
    </properties>
    <point/>
   </object>
-  <object id="77" x="1406" y="596">
+  <object id="77" x="1551.33" y="586.667">
    <properties>
     <property name="type" value="portal"/>
    </properties>
@@ -453,14 +453,21 @@
    </properties>
    <point/>
   </object>
-  <object id="80" x="197.333" y="1390.67">
+  <object id="80" x="244" y="1416">
    <properties>
     <property name="class" value="MinotaurElite"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="86" x="533.333" y="789.334">
+  <object id="130" x="550.666" y="853.337">
+   <properties>
+    <property name="class" value="MinotaurElite"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="86" x="504" y="714.667">
    <properties>
     <property name="class" value="EvilPlant"/>
     <property name="type" value="monster"/>
@@ -474,35 +481,49 @@
    </properties>
    <point/>
   </object>
-  <object id="91" x="1072" y="761.333">
+  <object id="128" x="132" y="957.333">
+   <properties>
+    <property name="class" value="EvilPlant"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="91" x="1077.33" y="741.333">
    <properties>
     <property name="class" value="CyclopsBoss"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="92" x="1426.67" y="822.667">
+  <object id="92" x="1440" y="848">
    <properties>
     <property name="class" value="MinotaurElite"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="94" x="1464" y="1122.67">
+  <object id="124" x="1178.67" y="1360">
+   <properties>
+    <property name="class" value="MinotaurElite"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="94" x="1036" y="1233.34">
    <properties>
     <property name="class" value="EvilPlant"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="104" x="997.333" y="1572">
+  <object id="104" x="968" y="1577.33">
    <properties>
     <property name="class" value="EvilPlant"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="96" x="1530.67" y="1202.67">
+  <object id="96" x="1548" y="925.337">
    <properties>
     <property name="class" value="CyanBat"/>
     <property name="type" value="monster"/>
@@ -516,49 +537,77 @@
    </properties>
    <point/>
   </object>
-  <object id="110" x="488" y="1349.33">
+  <object id="110" x="477.333" y="1326.66">
    <properties>
     <property name="class" value="CyanBat"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="108" x="508" y="913.333">
+  <object id="108" x="590.667" y="1112">
    <properties>
     <property name="class" value="CyanBat"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="109" x="222.667" y="1078.67">
+  <object id="125" x="569.333" y="477.333">
    <properties>
     <property name="class" value="CyanBat"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="102" x="1544" y="748">
+  <object id="109" x="228" y="1045.34">
    <properties>
     <property name="class" value="CyanBat"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="99" x="978.667" y="1310.67">
+  <object id="102" x="1344" y="740">
    <properties>
     <property name="class" value="CyanBat"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="93" x="1086.67" y="1352">
+  <object id="99" x="1194.67" y="1194.67">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="127" x="1537.33" y="1197.34">
+   <properties>
+    <property name="class" value="CyanBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="93" x="1010.67" y="1390.67">
    <properties>
     <property name="class" value="YellowBat"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="98" x="529.333" y="1048">
+  <object id="98" x="504" y="1013.33">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="131" x="645.333" y="941.333">
+   <properties>
+    <property name="class" value="YellowBat"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="123" x="1406.67" y="1132">
    <properties>
     <property name="class" value="YellowBat"/>
     <property name="type" value="monster"/>
@@ -572,14 +621,14 @@
    </properties>
    <point/>
   </object>
-  <object id="101" x="92" y="1353.33">
+  <object id="101" x="84" y="1476">
    <properties>
     <property name="class" value="YellowBat"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="95" x="536" y="1448">
+  <object id="95" x="593.333" y="1452">
    <properties>
     <property name="class" value="EvilPlant"/>
     <property name="type" value="monster "/>
@@ -593,7 +642,7 @@
    </properties>
    <point/>
   </object>
-  <object id="111" x="1314.67" y="585.333">
+  <object id="111" x="1300" y="593.333">
    <properties>
     <property name="type" value="chest2"/>
    </properties>
@@ -603,6 +652,48 @@
    <properties>
     <property name="class" value="Gipsy"/>
     <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="115" x="697.333" y="382.667">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="116" x="414.667" y="486.667">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="117" x="29.3333" y="1410.67">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="118" x="58.6667" y="818.667">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="119" x="926.667" y="1165.33">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="122" x="1528" y="1342.67">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="121" x="253.333" y="862.667">
+   <properties>
+    <property name="type" value="randomPotion"/>
    </properties>
    <point/>
   </object>
@@ -643,12 +734,17 @@
     <property name="solid" type="bool" value="true"/>
    </properties>
   </object>
+  <object id="129" name="solid" x="17.8333" y="896.413" width="18" height="100.5">
+   <properties>
+    <property name="solid" type="bool" value="true"/>
+   </properties>
+  </object>
   <object id="9" name="solid" x="44" y="988" width="140" height="24">
    <properties>
     <property name="solid" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="10" name="solid" x="120" y="870" width="92" height="18">
+  <object id="10" name="solid" x="108" y="870" width="104" height="18">
    <properties>
     <property name="solid" type="bool" value="true"/>
    </properties>
@@ -708,7 +804,7 @@
     <property name="solid" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="22" name="solid" x="756" y="510" width="108" height="16">
+  <object id="22" name="solid" x="756" y="510" width="144" height="16">
    <properties>
     <property name="solid" type="bool" value="true"/>
    </properties>
@@ -728,7 +824,7 @@
     <property name="solid" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="26" name="solid" x="860" y="534" width="10" height="960">
+  <object id="26" name="solid" x="860" y="515.333" width="10" height="978.667">
    <properties>
     <property name="solid" type="bool" value="true"/>
    </properties>

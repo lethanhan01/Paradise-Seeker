@@ -5,9 +5,9 @@ import com.badlogic.gdx.math.Rectangle;
 
 public interface Projectile {
     void update();
-    void render(SpriteBatch batch);
+    void isRendered(SpriteBatch batch);
     boolean isActive();
     Rectangle getHitbox();
     float getDamage();
     void setInactive();
-} 
+}

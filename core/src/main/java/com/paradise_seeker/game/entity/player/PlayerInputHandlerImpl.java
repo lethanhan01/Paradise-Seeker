@@ -7,7 +7,6 @@ import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.object.Book;
-import com.paradise_seeker.game.object.GameObject;
 
 /**
  * Implementation của PlayerInputHandler
@@ -36,9 +35,9 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
     }
     private void checkForInteractions(Player player, GameMap gameMap) {
         showInteractMessage = false; // Reset first
-        
+
         if (gameMap == null) return;
-        
+
         // Check for NPCs
         for (Gipsy npc : gameMap.getNPCs()) {
             float distance = calculateDistance(player, npc);
@@ -47,7 +46,7 @@ public class PlayerInputHandlerImpl implements PlayerInputHandler {
                 return; // Found an interaction, no need to check further
             }
         }
-        
+
         // Check for books
         Book book = gameMap.getBook();
         if (book != null && book.isPlayerInRange(player) && !book.isOpened()) {

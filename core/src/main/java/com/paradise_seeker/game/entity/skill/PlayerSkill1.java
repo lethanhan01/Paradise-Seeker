@@ -63,7 +63,7 @@ public class PlayerSkill1 extends PlayerSkill implements Projectile {
         if (canUse(System.currentTimeMillis())) {
             // Remove any existing projectiles from this skill
             GameScreen.activeProjectiles.removeIf(projectile -> projectile instanceof PlayerSkill1);
-            
+
             this.x = x;
             this.y = y;
             this.damage = atk * 2 * damageMultiplier;
@@ -88,7 +88,7 @@ public class PlayerSkill1 extends PlayerSkill implements Projectile {
     @Override
     public void update() {
         if (!active) return;
-        
+
         float delta = Gdx.graphics.getDeltaTime();
         switch (direction) {
             case "up": y += speed * delta; break;
@@ -98,14 +98,14 @@ public class PlayerSkill1 extends PlayerSkill implements Projectile {
         }
         hitbox.setPosition(x, y);
         stateTime += delta;
-        
+
         if (x < MIN_X || x > MAX_X || y < MIN_Y || y > MAX_Y) {
             active = false;
         }
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void isRendered(SpriteBatch batch) {
         if (!active) return;
 
         Animation<TextureRegion> animToDraw = animation;
