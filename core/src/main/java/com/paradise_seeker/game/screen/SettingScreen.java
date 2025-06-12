@@ -27,6 +27,7 @@ public class SettingScreen implements Screen {
 
     // Font scale menu
     private static final float BASE_HEIGHT = 950f;
+    private static final float cd = Gdx.graphics.getHeight();
     private float fontScale = 0.025f;
     private float menuItemSpacing = 0.95f;
     private float menuStartY = 0;
@@ -43,8 +44,9 @@ public class SettingScreen implements Screen {
     }
     //update font scale based on screen height
     private void updateFontScale() {
-        float screenHeight = Gdx.graphics.getHeight();
-        this.fontScale = (screenHeight / BASE_HEIGHT) * 0.045f;
+    float screenHeight = Gdx.graphics.getHeight();
+    float ratio	 = screenHeight / cd;
+        this.fontScale = (screenHeight / (BASE_HEIGHT*ratio)) * 0.045f;
         menuItemSpacing = 0.95f * fontScale * 48f;
         menuStartY = game.viewport.getWorldHeight() - 3f;
     }
@@ -208,10 +210,11 @@ public class SettingScreen implements Screen {
 
     private void toggleFullscreen() {
         if (Gdx.graphics.isFullscreen()) {
-            Gdx.graphics.setWindowedMode(800, 600);
+            Gdx.graphics.setWindowedMode(640, 480);
         } else {
             Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
         }
+        updateFontScale(); // Update font scale after toggling fullscreen
     }
 
     @Override
