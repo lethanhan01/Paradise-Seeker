@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.Input;
@@ -16,6 +17,7 @@ public class WinScreen implements Screen {
     private final SpriteBatch batch;
     private final BitmapFont font;
     private final Texture background;
+    private final GlyphLayout layout;
 
     private String[] buttons = {"Play Again", "Back to Menu"};
     private int selectedIndex = 0;
@@ -23,10 +25,11 @@ public class WinScreen implements Screen {
     public WinScreen(Main game) {
         this.game = game;
         this.batch = new SpriteBatch();
-        this.font = new BitmapFont();  // dùng font mặc định
-        this.font.getData().setScale(2f);
+        this.font = game.font;  // dùng font mặc định
+        this.font.getData().setScale(1.3f);
         this.font.setColor(Color.WHITE);
-        this.background = new Texture("menu/win_menu/menu_end/win_menu.png"); // nên tạo ảnh riêng hoặc dùng tạm ảnh nền cũ
+        this.background = new Texture("menu/win_menu/menu_end/win_menu.png");
+        this.layout = new GlyphLayout();
     }
 
     @Override
@@ -37,30 +40,47 @@ public class WinScreen implements Screen {
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        float screenWidth = Gdx.graphics.getWidth();
+        
         // Tiêu đề
-        font.draw(batch, " Congratulations! You Win! ", 100, 450);
+        String title = "Congratulations! You Win!";
+        layout.setText(font, title);
+        float titleX = (screenWidth - layout.width) / 2;
+        font.draw(batch, title, titleX, 430);
 
         // Danh sách nút
         for (int i = 0; i < buttons.length; i++) {
             if (i == selectedIndex) {
-                font.setColor(Color.YELLOW);
+                font.setColor(Color.BLUE);
             } else {
                 font.setColor(Color.WHITE);
             }
-            font.draw(batch, buttons[i], 120, 350 - i * 60);
+            layout.setText(font, buttons[i]);
+            float buttonX = (screenWidth - layout.width) / 2;
+            font.draw(batch, buttons[i], buttonX, 350 - i * 60);
         }
 
         // Credit
         font.setColor(Color.LIGHT_GRAY);
-        font.getData().setScale(1.2f);
-        font.draw(batch, "Group Member (22):", 100, 210);
-        font.draw(batch, "- Hiep", 120, 180);
-        font.draw(batch, "- An", 120, 150);
-        font.draw(batch, "- Nhi", 120, 120);
-        font.draw(batch, "- Anh", 120, 90);
-        font.draw(batch, "- Long", 120, 60);
-        font.draw(batch, "- Minh", 120, 30);
-        font.getData().setScale(2f);
+        font.getData().setScale(0.85f);
+        
+        String credit = "- Credits - ";
+        layout.setText(font, credit);
+        float creditX = (screenWidth - layout.width) / 2;
+        font.draw(batch, credit, creditX, 210);
+        
+        String[] members = {
+            "Nguyen Hoang Hiep", "Le Thanh An", "Pham Yen Nhi", 
+            "Bui Tuan Anh", "Nguyen Hoang Long", "Trinh Van Minh"
+        };
+        
+        for (int i = 0; i < members.length; i++) {
+            layout.setText(font, members[i]);
+            float memberX = (screenWidth - layout.width) / 2;
+            font.draw(batch, members[i], memberX, 180 - i * 30);
+        }
+        
+        font.getData().setScale(1.3f);
 
         batch.end();
 
@@ -93,5 +113,6 @@ public class WinScreen implements Screen {
         batch.dispose();
         font.dispose();
         background.dispose();
+        // layout does not need to be disposed
     }
 }
