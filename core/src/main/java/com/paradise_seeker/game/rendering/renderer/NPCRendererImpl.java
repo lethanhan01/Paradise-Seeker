@@ -10,6 +10,8 @@ import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
 public class NPCRendererImpl implements NPCRenderer {
     private NPCAnimationManager animationManager;
     private float stateTime = 0f; // Internal state time for animations
+    public float indicatorX;
+    public float indicatorY;
 
     public NPCRendererImpl(NPCAnimationManager animationManager) {
         this.animationManager = animationManager;
@@ -80,16 +82,9 @@ public class NPCRendererImpl implements NPCRenderer {
     }
 
     private void renderDialogueIndicator(NPC npc, SpriteBatch batch) {
-        // Simple dialogue indicator (can be enhanced with custom textures)
-        // This could be a speech bubble or exclamation mark
-        // For now, just a placeholder - you can implement with actual indicator texture
 
-        // Example: Render a simple indicator above NPC
-        float indicatorX = npc.getBounds().x + npc.getBounds().width / 2 - 0.1f;
-        float indicatorY = npc.getBounds().y + npc.getBounds().height + 0.1f;
-
-        // You would draw your dialogue indicator texture here
-        // batch.draw(dialogueIndicatorTexture, indicatorX, indicatorY, 0.2f, 0.2f);
+        indicatorX = npc.getBounds().x + npc.getBounds().width / 2 - 0.1f;
+        indicatorY = npc.getBounds().y + npc.getBounds().height + 0.1f;
     }
 
     @Override
