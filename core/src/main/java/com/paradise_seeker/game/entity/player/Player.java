@@ -8,22 +8,21 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.paradise_seeker.game.entity.Character;
-import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.skill.*;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.object.item.Item;
 import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 import com.paradise_seeker.game.rendering.effects.DashTrailManager;
-import com.paradise_seeker.game.rendering.renderer.PlayerRendererImpl;
+import com.paradise_seeker.game.rendering.renderer.PlayerRendererManager;
 
 public class Player extends Character {
-    public static final int MAX_HP = 1000;
-    public static final int MAX_MP = 100;
-    private final float dashCooldown = 0f;
-    private final float dashDistance = 2f;
+    public static final float MAX_HP = 1000;
+    public static final float MAX_MP = 100;
+    public final float dashCooldown = 0f;
+    public final float dashDistance = 2f;
 
     public float speedMultiplier = 1f;
-    private final Vector2 lastPosition = new Vector2();
+    public final Vector2 lastPosition = new Vector2();
 
     public float stateTime = 0f;
     public String direction = "down";
@@ -39,7 +38,7 @@ public class Player extends Character {
     public DashTrailManager smokeManager = new DashTrailManager();
     public PlayerAnimationManager animationManager;
     public PlayerInputHandlerManager inputHandler;
-    public PlayerRendererImpl playerRenderer;
+    public PlayerRendererManager playerRenderer;
     public PlayerSkill playerSkill1 = new PlayerSkill1();
     public PlayerSkill playerSkill2 = new PlayerSkill2();
 
@@ -48,7 +47,7 @@ public class Player extends Character {
     public boolean isShieldedHit = true;
     public boolean isInvulnerable = false;
     public float invulnerabilityTimer = 0f;
-    public static final float INVULNERABILITY_DURATION = 0.5f;
+    public static final float INVULNERABILITY_DURATION = 0.7f;
 
     public Player() {
         this.bounds = new Rectangle(0, 0, 1, 1);
@@ -56,7 +55,7 @@ public class Player extends Character {
         this.mp = MAX_MP;
         this.maxHp = MAX_HP;
         this.maxMp = MAX_MP;
-        this.atk = 20;
+        this.atk = 25;
         this.speed = 5f;
         this.x = 0;
         this.y = 0;
@@ -65,7 +64,7 @@ public class Player extends Character {
         this.animationManager = new PlayerAnimationManager();
         this.animationManager.setAnimations();
         this.inputHandler = new PlayerInputHandlerManager();
-        this.playerRenderer = new PlayerRendererImpl(this.animationManager);
+        this.playerRenderer = new PlayerRendererManager(this.animationManager);
     }
 
     public Player(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y, PlayerSkill playerSkill1, PlayerSkill playerSkill2) {
@@ -77,12 +76,12 @@ public class Player extends Character {
         this.animationManager = new PlayerAnimationManager();
         this.animationManager.setAnimations();
         this.inputHandler = new PlayerInputHandlerManager();
-        this.playerRenderer = new PlayerRendererImpl(this.animationManager);
+        this.playerRenderer = new PlayerRendererManager(this.animationManager);
     }
 
     public void regenMana(float deltaTime) {
         if (mp < MAX_MP) {
-            mp += 0.5 * deltaTime;
+            mp += (float) 0.5 * deltaTime;
         }
         if (mp > MAX_MP) {
             mp = MAX_MP;
@@ -175,9 +174,6 @@ public class Player extends Character {
         return stateTime;
     }
 
-    public void resetStateTime() {
-        this.stateTime = 0;
-    }
 
     public String getDirection() {
         return direction;
@@ -193,22 +189,6 @@ public class Player extends Character {
 
     public void setMoving(boolean moving) {
         this.isMoving = moving;
-    }
-
-    public boolean isShielding() {
-        return isShielding;
-    }
-
-    public void setShielding(boolean shielding) {
-        this.isShielding = shielding;
-    }
-
-    public boolean isShieldedHit() {
-        return isShieldedHit;
-    }
-
-    public void setShieldedHit(boolean shieldedHit) {
-        this.isShieldedHit = shieldedHit;
     }
 
     public PlayerSkill getPlayerSkill1() {
@@ -278,22 +258,6 @@ public class Player extends Character {
 //        invulnerabilityTimer = Float.MAX_VALUE;
     	hp=MAX_HP;
     }
-
-    @Override
-    public void onCollision(Collidable other) {
-        if (other instanceof Player) {
-            Player otherPlayer = (Player) other;
-            if (otherPlayer.isDead) {
-                return;
-            }
-        }
-    }
-
-    @Override
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
     public boolean isInvulnerable() {
         return isInvulnerable;
     }

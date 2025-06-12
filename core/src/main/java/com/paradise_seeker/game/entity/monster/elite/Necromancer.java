@@ -17,7 +17,7 @@ public class Necromancer extends Monster {
 
     public Necromancer(float x, float y) {
         super(new Rectangle(x, y, 1.6f, 1.8f), 250f, 40f, 200f, 60f, 25f, 2.2f, x, y);
-        this.collisionHandler.setCleaveRange(2.2f);
+        this.collisionHandler.setCleaveRange(2f);
     }
 
     public float getScaleMultiplier() {
@@ -25,7 +25,7 @@ public class Necromancer extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Idle
         Animation<TextureRegion> idleRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/necromancer/idle/phai/idle", 8);
         Animation<TextureRegion> idleLeftAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/necromancer/idle/trai/idle", 8);

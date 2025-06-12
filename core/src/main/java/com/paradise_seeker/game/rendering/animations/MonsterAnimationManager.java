@@ -10,7 +10,6 @@ import com.paradise_seeker.game.rendering.AnimationManager;
  * Handles animation states, timers, and provides the appropriate animation frame based on monster state.
  */
 public class MonsterAnimationManager implements AnimationManager {
-    public Monster owner;
 
     // Animation sets
     public Animation<TextureRegion> idleLeft, idleRight;
@@ -26,7 +25,7 @@ public class MonsterAnimationManager implements AnimationManager {
     public float stateTime = 0f;
     public boolean facingRight = true;
 
-    
+
     // Animation timers
     public boolean isTakingHit = false;
     public float takeHitTimer = 0f;
@@ -36,8 +35,17 @@ public class MonsterAnimationManager implements AnimationManager {
     public float cleaveTimer = 0f;
     public float cleaveDuration = 1.2f;
 
-    public MonsterAnimationManager(Monster monster) {
-        this.owner = monster;
+    public MonsterAnimationManager() {
+        deathStarted = false;
+        deathStartTime = 0f;
+        stateTime = 0f;
+        facingRight = true;
+        isTakingHit = false;
+        takeHitTimer = 0f;
+        takeHitDuration = 0.5f;
+        isCleaving = false;
+        cleaveTimer = 0f;
+        cleaveDuration = 1.2f;
     }
 
     public void setAnimations(Animation<TextureRegion> idleLeft, Animation<TextureRegion> idleRight,
@@ -57,8 +65,7 @@ public class MonsterAnimationManager implements AnimationManager {
         this.deathRight = deathRight;
     }
 
-    public void update(float deltaTime, boolean isMoving, boolean isDead, boolean isTakingHit, float playerX) {
-    			// Update state time and facing direction
+    public void update(float deltaTime, boolean isMoving, boolean isDead, boolean isTakingHit, float playerX, Monster owner) {
         stateTime += deltaTime;
         this.facingRight = playerX > owner.getBounds().x;
 
@@ -86,9 +93,7 @@ public class MonsterAnimationManager implements AnimationManager {
         updateCurrentFrame(isDead, isMoving);
     }
 
-    /**
-     * Updates the current frame based on monster state
-     */
+
     private void updateCurrentFrame(boolean isDead, boolean isMoving) {
     	if (isDead) {
     	    if (!deathStarted) {

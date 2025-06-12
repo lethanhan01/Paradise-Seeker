@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
 // Add this import at the top
 import com.paradise_seeker.game.rendering.renderer.NPCRenderer;
-import com.paradise_seeker.game.rendering.renderer.NPCRendererImpl;
+import com.paradise_seeker.game.rendering.renderer.NPCRendererManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Gipsy extends NPC {
         this.dialogueManager = new DialogueManager();
 
         // Initialize the renderer
-        this.renderer = new NPCRendererImpl(this.animationManager);
+        this.renderer = new NPCRendererManager(this.animationManager);
 
         // Thiết lập câu thoại mặc định cho Gipsy
         List<String> defaultDialogue = new ArrayList<>();
@@ -66,8 +66,8 @@ public class Gipsy extends NPC {
     @Override
     public void act(float deltaTime, GameMap map) {
         // Update renderer state time
-        if (renderer instanceof NPCRendererImpl) {
-            ((NPCRendererImpl) renderer).update(deltaTime);
+        if (renderer instanceof NPCRendererManager) {
+            ((NPCRendererManager) renderer).update(deltaTime);
         }
 
         // Cập nhật animation dựa trên trạng thái hiện tại

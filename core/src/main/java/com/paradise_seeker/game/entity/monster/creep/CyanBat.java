@@ -23,7 +23,7 @@ public class CyanBat extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Load animations with proper variable names
         Animation<TextureRegion> walkRightAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/right/walk/", "walk", 8, ".png", 1);
         Animation<TextureRegion> walkLeftAnim = loadAnimationWithPadding("images/Entity/characters/monsters/creep/map2/cyan_bat/left/walk/", "walk", 8, ".png", 1);

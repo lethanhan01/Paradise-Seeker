@@ -2,28 +2,15 @@ package com.paradise_seeker.game.rendering.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 
-public class PlayerRendererImpl implements PlayerRenderer {
+public class PlayerRendererManager implements PlayerRenderer {
 	public PlayerAnimationManager animationManager;
 
-    // Shield textures
-    public Texture shieldDown, shieldUp, shieldLeft, shieldRight;
-
-    public PlayerRendererImpl(PlayerAnimationManager animationManager) {
+    public PlayerRendererManager(PlayerAnimationManager animationManager) {
         this.animationManager = animationManager;
-        loadShieldTextures();
-    }
-
-    private void loadShieldTextures() {
-        shieldDown = new Texture(Gdx.files.internal("images/Entity/characters/player/char_shielded_static_down.png"));
-        shieldUp = new Texture(Gdx.files.internal("images/Entity/characters/player/char_shielded_static_up.png"));
-        shieldLeft = new Texture(Gdx.files.internal("images/Entity/characters/player/char_shielded_static_left.png"));
-        shieldRight = new Texture(Gdx.files.internal("images/Entity/characters/player/char_shielded_static_right.png"));
     }
 
     @Override
@@ -33,18 +20,8 @@ public class PlayerRendererImpl implements PlayerRenderer {
             return;
         }
 
-        if (player.isShielding() && player.isShieldedHit()) {
-            renderShieldedHit(player, batch);
-            return;
-        }
-
         if (player.isHit) {
             renderHit(player, batch);
-            return;
-        }
-
-        if (player.isShielding()) {
-            renderShield(player, batch);
             return;
         }
 
@@ -90,20 +67,6 @@ public class PlayerRendererImpl implements PlayerRenderer {
     }
 
     @Override
-    public void renderShield(Player player, SpriteBatch batch) {
-        Animation<TextureRegion> shieldAnimation = animationManager.getShieldAnimation(player.getDirection());
-        TextureRegion currentFrame = shieldAnimation.getKeyFrame(player.getStateTime(), false);
-
-        // Phóng to khi giơ khiên
-        float scaledWidth = player.getBounds().width * 3.0f;
-        float scaledHeight = player.getBounds().height * 3.0f;
-        float drawX = player.getBounds().x - (scaledWidth - player.getBounds().width) / 2f;
-        float drawY = player.getBounds().y - (scaledHeight - player.getBounds().height) / 2f;
-        batch.draw(currentFrame, drawX, drawY, scaledWidth, scaledHeight);
-    }
-
-
-    @Override
     public void renderHit(Player player, SpriteBatch batch) {
         Animation<TextureRegion> hitAnimation = animationManager.getHitAnimation(player.getDirection());
         TextureRegion currentFrame = hitAnimation != null
@@ -120,21 +83,6 @@ public class PlayerRendererImpl implements PlayerRenderer {
         batch.draw(currentFrame, player.getBounds().x, player.getBounds().y,
             player.getBounds().width, player.getBounds().height);
     }
-
-    @Override
-    public void renderShieldedHit(Player player, SpriteBatch batch) {
-        Animation<TextureRegion> shieldedHitAnimation = animationManager.getShieldedHitAnimation(player.getDirection());
-        TextureRegion currentFrame = shieldedHitAnimation != null
-            ? shieldedHitAnimation.getKeyFrame(player.getStateTime(), false)
-            : null;
-        if (currentFrame == null) {
-            System.out.println("WARNING: Player renderShieldedHit frame NULL! Using idle frame.");
-            currentFrame = animationManager.getIdleAnimation(player.getDirection()).getKeyFrame(0, true);
-        }
-        batch.draw(currentFrame, player.getBounds().x, player.getBounds().y,
-            player.getBounds().width, player.getBounds().height);
-    }
-
 
     @Override
     public void renderDeath(Player player, SpriteBatch batch) {

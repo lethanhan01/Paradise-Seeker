@@ -15,11 +15,8 @@ public class MinotaurElite extends Monster {
 
     public MinotaurElite(float x, float y) {
     	super(new Rectangle(x, y, 3f, 3f), 500f, 100f, 500f, 100f, 50f, 2f, x, y); // HP, speed, cleaveDamage, offset
-        // Note: spawnX and spawnY are now set in the parent constructor
-        // Note: loadAnimations is already called in Monster constructor
 
-        // Set cleave range through the collision handler
-        this.collisionHandler.setCleaveRange(2.5f);
+        this.collisionHandler.setCleaveRange(2f);
     }
 
     public float getScaleMultiplier() {
@@ -27,7 +24,7 @@ public class MinotaurElite extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Load all needed animations
         Animation<TextureRegion> cleaveRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map2/minotaur_elite/cleave/phai/atk_1_", 16);
         Animation<TextureRegion> cleaveLeftAnim = loadAnimation("images/Entity/characters/monsters/elite/map2/minotaur_elite/cleave/trai/atk_1_", 16);

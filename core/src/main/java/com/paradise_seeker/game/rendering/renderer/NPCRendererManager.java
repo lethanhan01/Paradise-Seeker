@@ -7,13 +7,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.npc.NPC;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
 
-public class NPCRendererImpl implements NPCRenderer {
+public class NPCRendererManager implements NPCRenderer {
     private NPCAnimationManager animationManager;
     private float stateTime = 0f; // Internal state time for animations
     public float indicatorX;
     public float indicatorY;
 
-    public NPCRendererImpl(NPCAnimationManager animationManager) {
+    public NPCRendererManager(NPCAnimationManager animationManager) {
         this.animationManager = animationManager;
     }
 

@@ -28,7 +28,7 @@ public class IceElite extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Load all needed animations
         Animation<TextureRegion> cleaveRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/cleave/phai/1_atk_", 14);
         Animation<TextureRegion> cleaveLeftAnim = loadAnimation("images/Entity/characters/monsters/elite/map4/ice_elite/cleave/trai/1_atk_", 14);

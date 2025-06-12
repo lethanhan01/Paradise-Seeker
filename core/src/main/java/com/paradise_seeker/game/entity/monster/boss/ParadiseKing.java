@@ -22,7 +22,7 @@ public class ParadiseKing extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // WALK (tên file là run0.png, run1.png, ...)
         Animation<TextureRegion> walkRight = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/walk/phai/", "run", 8, ".png", 0);
         Animation<TextureRegion> walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map5/boss_5/Paradise_king/walk/trai/", "run", 8, ".png", 0);

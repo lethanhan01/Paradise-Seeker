@@ -27,7 +27,7 @@ public class YellowBat extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Load all required animations
         Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/right/fly/", "fly", 7, ".png", 1);
         Animation<TextureRegion> walkLeftAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/yellow_bat/left/fly/", "fly", 7, ".png", 1);

@@ -25,11 +25,6 @@ public interface PlayerInputHandler {
     void handleAttack(Player player, GameMap gameMap);
 
     /**
-     * Xử lý khiên
-     */
-    void handleShield(Player player);
-
-    /**
      * Xử lý kỹ năng
      */
     void handleSkills(Player player);

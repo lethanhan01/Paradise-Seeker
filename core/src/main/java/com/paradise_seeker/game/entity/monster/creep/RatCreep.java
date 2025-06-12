@@ -28,7 +28,7 @@ public class RatCreep extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Run (walk) animation
         Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/right/run/rat_run", 6);
         Animation<TextureRegion> walkLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map3/rat_creep/left/run/rat_run", 6);

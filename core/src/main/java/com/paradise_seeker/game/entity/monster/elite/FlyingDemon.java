@@ -31,7 +31,7 @@ public class FlyingDemon extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Fly (walk)
         Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/elite/map3/flying_demon/right/fly/flyingdemon_fly", 4);
         Animation<TextureRegion> walkLeftAnim = loadAnimation("images/Entity/characters/monsters/elite/map3/flying_demon/left/fly/flyingdemon_fly", 4);

@@ -23,14 +23,14 @@ public class CyclopBoss extends Monster {
 
     public CyclopBoss(float x, float y) {
         super(new Rectangle(x, y, 2.0f, 2.0f), 1500f, 100f, 1500f, 100f, 100f, 1.5f, x, y);
-        this.collisionHandler.setCleaveRange(10.0f);
+        this.collisionHandler.setCleaveRange(8.0f);
     }
 
     public float getScaleMultiplier() { return scaleMultiplier; }
 
     // ---- Animation loader ----
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Dãy ảnh đúng folder, không dùng cleave, skill = cleave!
         Animation<TextureRegion> walkRightAnim = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/walk/phai/", 15, 26);
         Animation<TextureRegion> walkLeftAnim = loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/walk/trai/", 165, 176);
@@ -64,7 +64,7 @@ public class CyclopBoss extends Monster {
             String file = folder + "cyclop" + (startIdx + i) + ".png";
             frames[i] = new TextureRegion(new Texture(Gdx.files.internal(file)));
         }
-        return new Animation<>(0.13f, frames);
+        return new Animation<>(0.14f, frames);
     }
 
     // --- Main update/act ---

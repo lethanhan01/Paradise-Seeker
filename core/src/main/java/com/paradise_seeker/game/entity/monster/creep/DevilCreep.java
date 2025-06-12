@@ -28,7 +28,7 @@ public class DevilCreep extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Cleave (attack) - 16 frame
         Animation<TextureRegion> cleaveRightAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/right/vampire_creep_atk_", 16, ".png");
         Animation<TextureRegion> cleaveLeftAnim  = loadAnimation("images/Entity/characters/monsters/creep/map4/devil_creep/left/vampire_creep_atk_", 16, ".png");

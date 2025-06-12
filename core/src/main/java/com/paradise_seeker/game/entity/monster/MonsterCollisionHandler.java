@@ -13,7 +13,7 @@ public class MonsterCollisionHandler {
     private boolean cleaveDamageDealt;
 
     public MonsterCollisionHandler() {
-        this.cleaveRange = 4f; // Default cleave range
+        this.cleaveRange = 2.5f; // Default cleave range
         this.pendingCleaveHit = false;
         this.cleaveDamageDealt = false;
     }

@@ -27,7 +27,7 @@ public class FirewormElite extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Walk (9 frame, index 0)
         Animation<TextureRegion> walkRight = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_walk/right/walk", 9);
         Animation<TextureRegion> walkLeft = loadAnimation("images/Entity/characters/monsters/elite/map3/fireworm/fireworm_walk/left/walk", 9);

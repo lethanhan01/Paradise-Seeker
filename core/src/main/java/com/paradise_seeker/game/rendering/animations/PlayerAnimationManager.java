@@ -16,7 +16,6 @@ public class PlayerAnimationManager implements AnimationManager {
     private Animation<TextureRegion> idleUp, idleDown, idleLeft, idleRight;
     private Animation<TextureRegion> attackUp, attackDown, attackLeft, attackRight;
     private Animation<TextureRegion> hitUp, hitDown, hitLeft, hitRight;
-    private Animation<TextureRegion> shieldedHitUp, shieldedHitDown, shieldedHitLeft, shieldedHitRight;
     private Animation<TextureRegion> deathAnimation;
     private Animation<TextureRegion> smokeAnimation;
 
@@ -39,11 +38,6 @@ public class PlayerAnimationManager implements AnimationManager {
         attackLeft = loadAnimation("images/Entity/characters/player/attack_left_new.png");
         attackRight = loadAnimation("images/Entity/characters/player/attack_right_new.png");
 
-        // Load shielded hit animations
-        shieldedHitUp = loadAnimation("images/Entity/characters/player/char_shielded_hit_up_anim_strip_5.png", 5);
-        shieldedHitDown = loadAnimation("images/Entity/characters/player/char_shielded_hit_down_anim_strip_5.png", 5);
-        shieldedHitLeft = loadAnimation("images/Entity/characters/player/char_shielded_hit_left_anim_strip_5.png", 5);
-        shieldedHitRight = loadAnimation("images/Entity/characters/player/char_shielded_hit_right_anim_strip_5.png", 5);
 
         // Load hit animations
         hitUp = loadAnimation("images/Entity/characters/player/char_hit_up_anim_strip_3.png", 3);
@@ -60,13 +54,13 @@ public class PlayerAnimationManager implements AnimationManager {
         smokeAnimation = new Animation<>(0.08f, smokeFrames);
     }
 
-    private Animation<TextureRegion> loadAnimation(String filePath) {
+    public Animation<TextureRegion> loadAnimation(String filePath) {
         Texture sheet = new Texture(Gdx.files.internal(filePath));
         TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth() / 6, sheet.getHeight());
         return new Animation<>(0.07f, tmp[0]);
     }
 
-    private Animation<TextureRegion> loadAnimation(String filePath, int frameCount) {
+    public Animation<TextureRegion> loadAnimation(String filePath, int frameCount) {
         Texture sheet = new Texture(Gdx.files.internal(filePath));
         TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth() / frameCount, sheet.getHeight());
         return new Animation<>(0.07f, tmp[0]);
@@ -116,39 +110,12 @@ public class PlayerAnimationManager implements AnimationManager {
         }
     }
 
-    public Animation<TextureRegion> getShieldedHitAnimation(String direction) {
-        switch (direction) {
-            case "up": return shieldedHitUp;
-            case "down": return shieldedHitDown;
-            case "left": return shieldedHitLeft;
-            case "right": return shieldedHitRight;
-            default: return shieldedHitDown;
-        }
-    }
-
-    public Animation<TextureRegion> getShieldAnimation(String direction) {
-        // You can update the file paths and frame counts if you have specific shield animations
-        switch (direction) {
-            case "up":
-                return idleUp; // Replace with shieldUp animation if available
-            case "down":
-                return idleDown; // Replace with shieldDown animation if available
-            case "left":
-                return idleLeft; // Replace with shieldLeft animation if available
-            case "right":
-                return idleRight; // Replace with shieldRight animation if available
-            default:
-                return idleDown;
-        }
-    }
-
     @Override
     public Animation<TextureRegion> getDeathAnimation(String direction) {
         return deathAnimation;
     }
 
     public Animation<TextureRegion> getSmokeAnimation() {
-
         return smokeAnimation;
     }
 

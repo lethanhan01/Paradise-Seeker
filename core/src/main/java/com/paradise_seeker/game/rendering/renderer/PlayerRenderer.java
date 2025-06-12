@@ -13,11 +13,7 @@ public interface PlayerRenderer {
 
     void renderAttack(Player player, SpriteBatch batch);
 
-    void renderShield(Player player, SpriteBatch batch);
-
     void renderHit(Player player, SpriteBatch batch);
-
-    void renderShieldedHit(Player player, SpriteBatch batch);
 
     void renderDeath(Player player, SpriteBatch batch);
 

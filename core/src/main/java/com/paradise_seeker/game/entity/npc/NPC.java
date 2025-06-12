@@ -8,7 +8,7 @@ import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.renderer.NPCRenderer;
-import com.paradise_seeker.game.rendering.renderer.NPCRendererImpl;
+import com.paradise_seeker.game.rendering.renderer.NPCRendererManager;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
 
 public abstract class NPC extends Character implements Collidable {
@@ -31,7 +31,7 @@ public abstract class NPC extends Character implements Collidable {
         this.hasTalked = false;
         loadTexture();
         this.animationManager = new NPCAnimationManager();
-        this.renderer = new NPCRendererImpl(animationManager);
+        this.renderer = new NPCRendererManager(animationManager);
     }
 
     protected abstract void loadTexture();
