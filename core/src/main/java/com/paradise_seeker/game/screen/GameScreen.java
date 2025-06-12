@@ -106,7 +106,7 @@ public class GameScreen implements Screen {
     	String musicPath = mapManager.getCurrentMapMusic();
     	music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
     	music.setLooping(true);
-    	music.setVolume(game.settingMenu.setVolume);
+    	music.setVolume(game.settingMenu.musicVolume);
     	music.play();
     	hud.showMapNotification(mapManager.getCurrentMap().getMapName());
 	}
@@ -446,13 +446,13 @@ public class GameScreen implements Screen {
 
         switch (potionType) {
             case "HP potion":
-                dropped = new HPPotion(dropX, dropY, 1f, "items/potion/potion3.png", 20);
+                dropped = new HPPotion(dropX, dropY, 1f, "items/potion/potion3.png", 100);
                 break;
             case "MP potion":
                 dropped = new MPPotion(dropX, dropY, 1f, "items/potion/potion9.png", 15);
                 break;
             case "ATK potion":
-                dropped = new ATKPotion(dropX, dropY, 1f, "items/atkbuff_potion/potion14.png", 5);
+                dropped = new ATKPotion(dropX, dropY, 1f, "items/atkbuff_potion/potion14.png", 10);
                 break;
         }
 

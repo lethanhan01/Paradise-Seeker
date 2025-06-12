@@ -55,11 +55,16 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
+    	menuMusic.setVolume(game.settingMenu.musicVolume);
         menuMusic.play();
     }
 
     @Override
     public void render(float delta) {
+
+		// Clear the screen
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
     	// Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
         // Update camera and batch
