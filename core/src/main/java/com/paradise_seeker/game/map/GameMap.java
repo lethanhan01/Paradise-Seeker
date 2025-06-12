@@ -11,7 +11,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.CollisionSystem;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.paradise_seeker.game.entity.monster.MonsterFactory;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.object.*;
