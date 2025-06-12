@@ -38,7 +38,7 @@ public class Player extends Character {
     public PlayerInventoryManager inventoryManager;
     public DashTrailManager smokeManager = new DashTrailManager();
     public PlayerAnimationManager animationManager;
-    public PlayerInputHandlerImpl inputHandler;
+    public PlayerInputHandlerManager inputHandler;
     public PlayerRendererImpl playerRenderer;
     public PlayerSkill playerSkill1 = new PlayerSkill1();
     public PlayerSkill playerSkill2 = new PlayerSkill2();
@@ -64,7 +64,7 @@ public class Player extends Character {
         this.inventoryManager = new PlayerInventoryManager();
         this.animationManager = new PlayerAnimationManager();
         this.animationManager.setAnimations();
-        this.inputHandler = new PlayerInputHandlerImpl();
+        this.inputHandler = new PlayerInputHandlerManager();
         this.playerRenderer = new PlayerRendererImpl(this.animationManager);
     }
 
@@ -76,7 +76,7 @@ public class Player extends Character {
         this.inventoryManager = new PlayerInventoryManager();
         this.animationManager = new PlayerAnimationManager();
         this.animationManager.setAnimations();
-        this.inputHandler = new PlayerInputHandlerImpl();
+        this.inputHandler = new PlayerInputHandlerManager();
         this.playerRenderer = new PlayerRendererImpl(this.animationManager);
     }
 

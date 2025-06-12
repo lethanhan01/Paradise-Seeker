@@ -50,7 +50,7 @@ public abstract class Monster extends Character implements Collidable {
         this.hpBarRenderer = new HPBarMonsterRenderer();
         this.animationManager = new MonsterAnimationManager(this);
         this.renderer = new MonsterRendererImpl(animationManager);
-        this.collisionHandler = new MonsterCollisionHandler(this);
+        this.collisionHandler = new MonsterCollisionHandler();
         this.ai = new MonsterAI(this);
 
         // Set initial position
@@ -71,7 +71,7 @@ public abstract class Monster extends Character implements Collidable {
         if (player == null || player.isDead) return;
 
         // Update AI first
-        ai.update(deltaTime, player, map);
+        ai.update(deltaTime, player, map, this);
 
         // Track movement
         isMoving = lastPosition.dst(bounds.x, bounds.y) > 0.0001f;
@@ -93,8 +93,8 @@ public abstract class Monster extends Character implements Collidable {
 	     collisionHandler.setPendingCleaveHit(true);
 
 	     // If player is in range, apply damage
-	     if (collisionHandler.isPlayerInCleaveRange(player)) {
-	         collisionHandler.applyCleaveHitToPlayer(player);
+	     if (collisionHandler.isPlayerInCleaveRange(player, this)) {
+	         collisionHandler.applyCleaveHitToPlayer(player, this);
 	     }
 	 }
 
@@ -148,11 +148,11 @@ public abstract class Monster extends Character implements Collidable {
 
     @Override
     public void onCollision(Collidable other) {
-        collisionHandler.handleCollision(other);
+        collisionHandler.handleCollision(other, this);
     }
 
     public void onCollision(Player player) {
-        collisionHandler.handlePlayerCollision(player);
+        collisionHandler.handlePlayerCollision(player, this);
     }
 
     @Override
