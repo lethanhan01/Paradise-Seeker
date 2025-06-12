@@ -5,8 +5,8 @@
     },
     "activeFile": "maps/map5.tmx",
     "expandedProjectPaths": [
-        "maps",
-        "."
+        ".",
+        "maps"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -89,7 +89,6 @@
         },
         "maps/map3.tmx": {
             "expandedObjectLayers": [
-                6,
                 8
             ],
             "scale": 0.5,
@@ -116,7 +115,7 @@
                 5
             ],
             "scale": 0.75,
-            "selectedLayer": 2,
+            "selectedLayer": 4,
             "viewCenter": {
                 "x": 801.3333333333333,
                 "y": 252.66666666666663
