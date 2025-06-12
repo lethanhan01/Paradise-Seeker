@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.entity.monster.Projectile;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 
@@ -103,54 +104,12 @@ public class CyclopBoss extends Monster {
         Animation<TextureRegion> projAnim = isFacingRight()
             ? loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/skill/phai/projectile/", 135, 142)
             : loadAnimation("images/Entity/characters/monsters/boss/map2/boss_2/cyclop/skill/trai/projectile/", 285, 292);
-        projectiles.add(new Projectile(cx, cy, dx, dy, projAnim, this));
+        projectiles.add(new Projectile(cx, cy, dx, dy, projAnim));
     }
-
     // Nếu boss bị player chạm/cấn thì vẫn gọi collisionHandler như thường
     @Override
     public void onCollision(Player player) {
         super.onCollision(player); // logic trong MonsterCollisionHandler sẽ xử lý
     }
 
-    // --- Class đạn skill của boss ---
-    public static class Projectile {
-        private float x, y, vx, vy;
-        private final float speed = 8f;
-        private boolean finished = false;
-        private final Animation<TextureRegion> anim;
-        private float stateTime = 0f;
-        private final Rectangle hitbox;
-        private final CyclopBoss owner;
-        private boolean hitDealt = false;
-
-        public Projectile(float x, float y, float dx, float dy, Animation<TextureRegion> anim, CyclopBoss owner) {
-            this.x = x;
-            this.y = y;
-            this.vx = dx * speed;
-            this.vy = dy * speed;
-            this.anim = anim;
-            this.owner = owner;
-            this.hitbox = new Rectangle(x, y, 1.1f, 1.1f);
-        }
-
-        public void update(float dt, GameMap map, Player player) {
-            if (finished) return;
-            x += vx * dt;
-            y += vy * dt;
-            stateTime += dt;
-            hitbox.setPosition(x, y);
-
-            // Va chạm player
-            if (!hitDealt && hitbox.overlaps(player.getBounds()) && !player.isInvulnerable()) {
-                player.takeHit(38); // Damage skill
-                hitDealt = true;
-                finished = true;
-            }
-        }
-
-        public void render(SpriteBatch batch) {
-            TextureRegion frame = anim.getKeyFrame(stateTime, true);
-            batch.draw(frame, x, y, hitbox.width, hitbox.height);
-        }
-    }
 }
