@@ -221,7 +221,7 @@ public class GameScreen implements Screen {
         player.isRendered(game.batch);
         player.playerSkill1.render(game.batch);
         player.playerSkill2.render(game.batch);
-        for (Projectile projectile : activeProjectiles) projectile.render(game.batch);
+        for (Projectile projectile : activeProjectiles) projectile.isRendered(game.batch);
         game.batch.end();
         // Render dialogue box
         hudCamera.update();

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "maps/map2.tmx",
+    "activeFile": "maps/map5.tmx",
     "expandedProjectPaths": [
         "maps",
         "."
@@ -83,14 +83,14 @@
             "scale": 0.75,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 966.6666666666667,
-                "y": 491.33333333333326
+                "x": 486.66666666666674,
+                "y": 944.6666666666667
             }
         },
         "maps/map3.tmx": {
             "expandedObjectLayers": [
-                8,
-                6
+                6,
+                8
             ],
             "scale": 0.5,
             "selectedLayer": 4,
@@ -107,8 +107,8 @@
             "scale": 0.75,
             "selectedLayer": 17,
             "viewCenter": {
-                "x": 757.3333333333333,
-                "y": 868.6666666666667
+                "x": 1056,
+                "y": 753.9999999999999
             }
         },
         "maps/map5.tmx": {
@@ -118,8 +118,8 @@
             "scale": 0.75,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 800.6666666666666,
-                "y": 799.3333333333333
+                "x": 801.3333333333333,
+                "y": 252.66666666666663
             }
         }
     },
@@ -140,11 +140,11 @@
     "project": "project.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "maps/map5.tmx",
         "maps/map1.tmx",
         "maps/map3.tmx",
         "maps/map4.tmx",
-        "maps/map2.tmx"
+        "maps/map2.tmx",
+        "maps/map5.tmx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx"

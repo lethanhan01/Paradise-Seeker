@@ -77,10 +77,8 @@ public class Necromancer extends Monster {
 
     @Override
     public void onCollision(Player player) {
-        // Use the parent class's collision handling
         super.onCollision(player);
 
-        // Add ice-specific collision behavior if needed
         if (!isDead) {
             // For example, apply some slow effect to player when ice monster touches them
             // player.applyStatusEffect("slow", 3.0f);  // Uncomment if you have status effects

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="35" nextobjectid="312">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="35" nextobjectid="325">
  <tileset firstgid="1" source="../map4-tilesets/dd_waterfall_sheet.tsx"/>
  <tileset firstgid="157" source="../map4-tilesets/tf_darkdimension_sheet.tsx"/>
  <layer id="17" name="bg" width="50" height="50">
@@ -942,7 +942,7 @@
    </properties>
    <point/>
   </object>
-  <object id="4" x="116" y="1194">
+  <object id="4" x="114.667" y="1146">
    <properties>
     <property name="class" value="DevilCreep"/>
     <property name="type" value="monster"/>
@@ -956,7 +956,7 @@
    </properties>
    <point/>
   </object>
-  <object id="294" x="444" y="270">
+  <object id="294" x="474.667" y="302">
    <properties>
     <property name="class" value="DevilCreep"/>
     <property name="type" value="monster"/>
@@ -970,21 +970,28 @@
    </properties>
    <point/>
   </object>
-  <object id="284" x="380" y="914">
+  <object id="324" x="1224.66" y="808">
+   <properties>
+    <property name="class" value="DevilCreep"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="284" x="414.667" y="928.667">
    <properties>
     <property name="class" value="FlyingCreep"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="297" x="397.333" y="775.333">
+  <object id="297" x="400" y="764.666">
    <properties>
     <property name="class" value="FlyingCreep"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="296" x="1185.33" y="771.333">
+  <object id="322" x="1198.67" y="552.666">
    <properties>
     <property name="class" value="FlyingCreep"/>
     <property name="type" value="monster"/>
@@ -1019,7 +1026,14 @@
    </properties>
    <point/>
   </object>
-  <object id="286" x="572" y="1221.33">
+  <object id="323" x="1145.33" y="926">
+   <properties>
+    <property name="class" value="GhostStatic"/>
+    <property name="type" value="monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="286" x="616" y="1218.66">
    <properties>
     <property name="class" value="IceElite"/>
     <property name="type" value="monster"/>
@@ -1033,7 +1047,7 @@
    </properties>
    <point/>
   </object>
-  <object id="289" x="340" y="275.333">
+  <object id="289" x="358.667" y="274">
    <properties>
     <property name="class" value="IceElite"/>
     <property name="type" value="monster"/>
@@ -1059,28 +1073,28 @@
    </properties>
    <point/>
   </object>
-  <object id="298" x="94.6667" y="984">
+  <object id="298" x="94.6667" y="917.333">
    <properties>
     <property name="class" value="Necromancer"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="299" x="1020.33" y="1207">
+  <object id="299" x="992.33" y="1219">
    <properties>
     <property name="class" value="Necromancer"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="300" x="85.3333" y="462.667">
+  <object id="300" x="96" y="478.667">
    <properties>
     <property name="class" value="Necromancer"/>
     <property name="type" value="monster"/>
    </properties>
    <point/>
   </object>
-  <object id="311" x="795.5" y="523.5">
+  <object id="311" x="795.5" y="518.167">
    <properties>
     <property name="type" value="chest4"/>
    </properties>
@@ -1090,6 +1104,60 @@
    <properties>
     <property name="class" value="Gipsy"/>
     <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="312" x="220" y="1260">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="321" x="1149.33" y="226.667">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="320" x="462.667" y="229.333">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="313" x="33.3333" y="412">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="314" x="1562.67" y="436">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="315" x="898.667" y="1218.67">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="318" x="44" y="1128">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="317" x="1537.33" y="1248">
+   <properties>
+    <property name="type" value="randomPotion"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="316" x="666.667" y="1221.33">
+   <properties>
+    <property name="type" value="randomPotion"/>
    </properties>
    <point/>
   </object>

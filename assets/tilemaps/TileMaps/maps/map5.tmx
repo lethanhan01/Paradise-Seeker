@@ -190,15 +190,9 @@
    </properties>
    <point/>
   </object>
-  <object id="18" x="754.252" y="276.416">
+  <object id="18" x="758.252" y="272.416">
    <properties>
     <property name="type" value="portal"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="19" x="1270.66" y="186.42">
-   <properties>
-    <property name="type" value="portal_start"/>
    </properties>
    <point/>
   </object>
