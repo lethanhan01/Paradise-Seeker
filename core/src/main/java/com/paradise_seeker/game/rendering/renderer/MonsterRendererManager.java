@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
 
-public class MonsterRendererImpl implements MonsterRenderer {
+public class MonsterRendererManager implements MonsterRenderer {
     private MonsterAnimationManager animationManager;
 
-    public MonsterRendererImpl(MonsterAnimationManager animationManager) {
+    public MonsterRendererManager(MonsterAnimationManager animationManager) {
         this.animationManager = animationManager;
     }
 

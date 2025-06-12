@@ -22,7 +22,7 @@ public class Nyx extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // WALK
         Animation<TextureRegion> walkRight = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/phai/", "walk", 8, ".png", 0);
         Animation<TextureRegion> walkLeft  = loadAnimation("images/Entity/characters/monsters/boss/map4/boss_3/Nyx/walk/trai/", "walk", 8, ".png", 0);
@@ -97,8 +97,8 @@ public class Nyx extends Monster {
         isDead = true; // Set the isDead flag to true
 
         bounds.set(0, 0, 0, 0); // Reset position on death
-        
-        
+
+
     }
 
     @Override

@@ -69,11 +69,7 @@ public class PlayerInventoryManager {
         }
     }
 
-    /**
-     * Kiểm tra số lượng của một vật phẩm trong kho đồ
-     * @param itemId ID của vật phẩm cần kiểm tra
-     * @return số lượng vật phẩm có trong kho đồ
-     */
+
     public int getItemCount(String itemId) {
         int count = 0;
         for (Item item : inventory) {

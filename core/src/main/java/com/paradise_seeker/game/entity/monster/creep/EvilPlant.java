@@ -27,7 +27,7 @@ public class EvilPlant extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Load animations with proper variable names
         Animation<TextureRegion> walkLeftAnim = loadAnimation("images/Entity/characters/monsters/creep/map2/evil_plant/idle/", "idle", 8, ".png", 1);
         Animation<TextureRegion> walkRightAnim = walkLeftAnim; // No dedicated walk animation, reuse idle

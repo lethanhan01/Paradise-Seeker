@@ -17,7 +17,7 @@ public class FireDemon extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // WALK: 1-12
         Animation<TextureRegion> walkRight = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/walk/phai/demon_walk_", 1, 12);
         Animation<TextureRegion> walkLeft  = loadFrameSequence("images/Entity/characters/monsters/boss/map3/FireDemon/walk/trai/demon_walk_", 1, 12);

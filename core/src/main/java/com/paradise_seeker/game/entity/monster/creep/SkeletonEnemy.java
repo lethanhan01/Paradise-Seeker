@@ -28,7 +28,7 @@ public class SkeletonEnemy extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Load all required animations
         Animation<TextureRegion> walkRightAnim = loadRunAnimation();
         Animation<TextureRegion> walkLeftAnim = walkRightAnim;  // Same animation for both directions

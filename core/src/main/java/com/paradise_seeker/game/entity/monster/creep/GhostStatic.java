@@ -28,7 +28,7 @@ public class GhostStatic extends Monster {
     }
 
     @Override
-    public void loadAnimations() {
+    public void hasAnimations() {
         // Dùng chung 1 animation cho tất cả trạng thái
         Animation<TextureRegion> ghostAnim = loadAnimation("images/Entity/characters/monsters/creep/map4/ghost_static/Dark VFX 2 (48x64)", 16);
 

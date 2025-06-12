@@ -29,7 +29,6 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         handleMovement(player, deltaTime, gameMap);
         handleDash(player, gameMap);
         handleAttack(player, gameMap);
-        handleShield(player);
         handleSkills(player);
         handleNPCInteraction(player, gameMap);
     }
@@ -155,17 +154,6 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         }
     }
 
-    @Override
-    public void handleShield(Player player) {
-        if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-            if (!player.isShielding()) {
-                player.setShielding(true);
-            }
-        } else {
-            player.setShielding(false);
-            player.setShieldedHit(false);
-        }
-    }
 
     @Override
     public void handleSkills(Player player) {

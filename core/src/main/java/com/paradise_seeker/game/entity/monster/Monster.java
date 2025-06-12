@@ -11,7 +11,7 @@ import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
 import com.paradise_seeker.game.rendering.renderer.HPBarMonsterRenderer;
-import com.paradise_seeker.game.rendering.renderer.MonsterRendererImpl;
+import com.paradise_seeker.game.rendering.renderer.MonsterRendererManager;
 
 public abstract class Monster extends Character implements Collidable {
 
@@ -21,7 +21,7 @@ public abstract class Monster extends Character implements Collidable {
     private boolean hasSetBounds = false;
     public MonsterAnimationManager animationManager;
     public MonsterCollisionHandler collisionHandler;
-    public MonsterRendererImpl renderer;
+    public MonsterRendererManager renderer;
     public HPBarMonsterRenderer hpBarRenderer;
     public MonsterAI ai;
     public TextureRegion currentFrame;
@@ -48,8 +48,8 @@ public abstract class Monster extends Character implements Collidable {
 
         // Initialize managers
         this.hpBarRenderer = new HPBarMonsterRenderer();
-        this.animationManager = new MonsterAnimationManager(this);
-        this.renderer = new MonsterRendererImpl(animationManager);
+        this.animationManager = new MonsterAnimationManager();
+        this.renderer = new MonsterRendererManager(animationManager);
         this.collisionHandler = new MonsterCollisionHandler();
         this.ai = new MonsterAI(this);
 
@@ -58,7 +58,7 @@ public abstract class Monster extends Character implements Collidable {
         this.bounds = new Rectangle(x, y, bounds.width, bounds.height);
 
         // Load animations (to be implemented by subclasses)
-        loadAnimations();
+        hasAnimations();
     }
 
     @Override
@@ -78,7 +78,7 @@ public abstract class Monster extends Character implements Collidable {
         lastPosition.set(bounds.x, bounds.y);
 
         // Update animation state
-        animationManager.update(deltaTime, isMoving, isDead, false, player.getBounds().x);
+        animationManager.update(deltaTime, isMoving, isDead, false, player.getBounds().x, this);
         if (isDead && animationManager.isDeathAnimationFinished() && !hasSetBounds) {
             bounds.set(0, 0, 0, 0); // ✅ Ẩn quái vật sau khi hoạt họa chết hoàn tất
             hasSetBounds = true;
@@ -163,7 +163,7 @@ public abstract class Monster extends Character implements Collidable {
 
     }
 
-    public abstract void loadAnimations();
+    public abstract void hasAnimations();
 
     protected void setupAnimations(
             Animation<TextureRegion> idleLeft, Animation<TextureRegion> idleRight,
