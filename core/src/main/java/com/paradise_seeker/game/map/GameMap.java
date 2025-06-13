@@ -119,22 +119,21 @@ public abstract class GameMap implements Renderable {
                 case "chest":
                 	//test chest
                     chest = new Chest(worldX, worldY);
-                    collidables.add(chest.getSolidComponent());
                     break;
                 case "chest2":
                     chest = new Chest(worldX, worldY);
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag1.png", 1));
-                    collidables.add(chest.getSolidComponent());
+
                     break;
                 case "chest3":
                     chest = new Chest(worldX, worldY);
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag2.png", 2));
-                    collidables.add(chest.getSolidComponent());
+
                     break;
                 case "chest4":
                     chest = new Chest(worldX, worldY);
                     chest.addItem(new Fragment(worldX, worldY, 1f, "items/fragment/frag3.png", 3));
-                    collidables.add(chest.getSolidComponent());
+
                     break;
                 case "book":
                     // Create as Book type instead of GameObject

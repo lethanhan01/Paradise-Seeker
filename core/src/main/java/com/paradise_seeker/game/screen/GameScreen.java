@@ -336,6 +336,9 @@ public class GameScreen implements Screen {
     private void handleChest() {
 		Chest chest = mapManager.getCurrentMap().getChest();
 		if (chest != null && player.getBounds().overlaps(chest.getBounds())) {
+			
+	    	    player.blockMovement();
+
 			if (!chest.isOpened())
 				hud.showNotification("[F] Open Chest?");
 
