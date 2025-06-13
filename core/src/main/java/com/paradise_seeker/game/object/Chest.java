@@ -103,17 +103,17 @@ public class Chest extends GameObject{
 
 	@Override
 	public Rectangle getBounds() {
-		return innerBounds; // Trả về vùng hiển thị nhỏ hơn        
+		return innerBounds; // Trả về vùng hiển thị nhỏ hơn
 	}
 
 	public void onPlayerCollision(Collidable other) {
-		
+
 		// Handle player collision with the chest
 		if (isOpened || animationFinished) {
 			return; // Chest is already opened or animation is finished
 		}
-		
-		
+
+
 		for (Item item : items) {
 	        ((Player) other).addItemToInventory(item);
 	        item.setActive(false);

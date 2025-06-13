@@ -293,7 +293,7 @@ public class GameScreen implements Screen {
 					    game.setScreen(new EndMap4(game)); // Reuse EndMap1 for Map 4 to Map 5 transition
 					}
 	        		if (mapManager.getCurrentMapIndex() == 3) {
-		                mapManager.switchToNextMap();	                
+		                mapManager.switchToNextMap();
 		                }
 
 	            } else {
