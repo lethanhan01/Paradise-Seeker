@@ -37,35 +37,31 @@ public abstract class GameMap implements Renderable {
     protected Texture backgroundTexture;
 
     public Player player;
+    public Monster monster;
     public Portal portal, startPortal;
     public Chest chest;
-    public Monster monster;
     public Book book;
 
     public List<Collidable> collidables = new ArrayList<>();
     public List<Gipsy> npcList = new ArrayList<>();
     public List<Monster> monsters = new ArrayList<>();
     public List<GameObject> gameObjects = new ArrayList<>();
-    public List<Rectangle> occupiedAreas = new ArrayList<>();
 
     // Items
-    private List<HPPotion> hpItems = new ArrayList<>();
-    private List<MPPotion> mpItems = new ArrayList<>();
-    private List<ATKPotion> atkItems = new ArrayList<>();
-    private List<Skill1Potion> skill1Items = new ArrayList<>();
-    private List<Skill2Potion> skill2Items = new ArrayList<>();
+    public List<HPPotion> hpItems = new ArrayList<>();
+    public List<MPPotion> mpItems = new ArrayList<>();
+    public List<ATKPotion> atkItems = new ArrayList<>();
+    public List<Skill1Potion> skill1Items = new ArrayList<>();
+    public List<Skill2Potion> skill2Items = new ArrayList<>();
 
-    private float itemSpawnTimer = 0f;
-    private static final float ITEM_SPAWN_INTERVAL = 120f;
-
-
+    public float itemSpawnTimer = 0f;
+    public static final float ITEM_SPAWN_INTERVAL = 120f;
 
     // Subclass must provide these
     protected abstract String getMapTmxPath();
     protected abstract String getMapBackgroundPath();
 
     public GameMap() {
-        // 1. Load map and background
         tiledMap = new TmxMapLoader().load(getMapTmxPath());
         backgroundTexture = new Texture(getMapBackgroundPath());
 
@@ -74,7 +70,6 @@ public abstract class GameMap implements Renderable {
         TILE_WIDTH = tiledMap.getProperties().get("tilewidth", Integer.class);
         TILE_HEIGHT = tiledMap.getProperties().get("tileheight", Integer.class);
 
-        // Do NOT call loadSpawnPoints here!
         loadCollidables(tiledMap);
     }
 
@@ -159,9 +154,8 @@ public abstract class GameMap implements Renderable {
                     break;
 
                 case "randomPotion":
-                	// Random potion spawn point, can be used for testing
 					Random rand = new Random();
-					int potionType = rand.nextInt(5); // 0 = HP, 1 = MP, 2 = ATK, 3 = Skill1, 4 = Skill2
+                    int potionType = rand.nextInt(5); // 0 = HP, 1 = MP, 2 = ATK, 3 = Skill1, 4 = Skill2
 					if (potionType == 0) {
 						hpItems.add(new HPPotion(worldX, worldY, 1, "items/potion/potion3.png", 100));
 					} else if (potionType == 1) {
@@ -174,7 +168,6 @@ public abstract class GameMap implements Renderable {
 						skill2Items.add(new Skill2Potion(worldX, worldY, 1, "items/buff/potion13.png"));
 					}
 					break;
-
                 case "npc":
                     String npcClass = (String) obj.getProperties().get("class");
                     Gipsy npc = new Gipsy(worldX, worldY); // Tạo NPC mặc định
@@ -183,10 +176,6 @@ public abstract class GameMap implements Renderable {
                     if (npcClass != null && npcClass.equals("Gipsy")) {
                         npc = new Gipsy(worldX, worldY);
                     }
-                    // Bạn có thể thêm các điều kiện khác cho các class NPC khác ở đây
-                    // else if (npcClass != null && npcClass.equals("OtherNPC")) {
-                    //     npc = new OtherNPC(worldX, worldY);
-                    // }
 
                     npcList.add(npc);
                     collidables.add(npc);
@@ -288,6 +277,7 @@ public abstract class GameMap implements Renderable {
         return false;
     }
     public boolean isBlocked(Rectangle nextBounds) {
+
         return isBlocked(nextBounds, null);
     }
 
@@ -304,53 +294,16 @@ public abstract class GameMap implements Renderable {
         // Extend for other item types as needed
     }
 
-    public void damageMonstersInRange(float x, float y, float radius, float damage) {
-        for (Monster m : monsters) {
-            if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeHit(damage);
-        }
-    }
-
-    private boolean isInRange(float x, float y, Rectangle bounds, float radius) {
-        float centerX = bounds.x + bounds.width / 2;
-        float centerY = bounds.y + bounds.height / 2;
-        float dx = centerX - x;
-        float dy = centerY - y;
-        return dx * dx + dy * dy <= radius * radius;
-    }
 
     public List<Gipsy> getNPCs() { return npcList; }
     public List<Monster> getMonsters() { return monsters; }
+    public Monster getMonster() { return monster; }
     public float getMapWidth() { return MAP_WIDTH; }
     public float getMapHeight() { return MAP_HEIGHT; }
     public Portal getStartPortal() { return startPortal; }
     public Portal getPortal() { return portal; }
     public Chest getChest() { return chest; }
     public Book getBook() {return book; }
-
-    // === Random item generator (if you want to keep it) ===
-    public void generateRandomItems(int hpCount, int mpCount) {
-        Random rand = new Random();
-        String[] hpTextures = {"items/potion/potion3.png", "items/potion/potion4.png", "items/potion/potion5.png"};
-        int[] hpValues = {100, 200, 300};
-        String[] mpTextures = {"items/potion/potion9.png", "items/potion/potion10.png", "items/potion/potion11.png"};
-        int[] mpValues = {15, 30, 50};
-        String[] atkTextures = {"items/atkbuff_potion/potion14.png", "items/atkbuff_potion/potion15.png", "items/atkbuff_potion/potion16.png"};
-        int[] atkValues = {5, 10, 15};
-        for (int i = 0; i < hpCount; i++) {
-            int idx = rand.nextInt(hpTextures.length);
-            hpItems.add(new HPPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, hpTextures[idx], hpValues[idx]));
-        }
-        for (int i = 0; i < mpCount; i++) {
-            int idx = rand.nextInt(mpTextures.length);
-            mpItems.add(new MPPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, mpTextures[idx], mpValues[idx]));
-        }
-        for (int i = 0; i < 3; i++) {
-            int idx = rand.nextInt(atkTextures.length);
-            atkItems.add(new ATKPotion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, atkTextures[idx], atkValues[idx]));
-            skill1Items.add(new Skill1Potion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion12.png"));
-            skill2Items.add(new Skill2Potion(rand.nextFloat() * MAP_WIDTH, rand.nextFloat() * MAP_HEIGHT, 1, "items/buff/potion13.png"));
-        }
-    }
 
     private void spawnRandomItem() {
         Random rand = new Random();

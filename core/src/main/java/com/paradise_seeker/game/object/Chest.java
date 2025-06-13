@@ -45,10 +45,6 @@ public class Chest extends GameObject{
         items.add(item);
     }
 
-    public boolean hasItems() {
-        return !items.isEmpty();
-    }
-
     private void loadAnimation() {
         chestSheet = new Texture(Gdx.files.internal("images/objects/chest/chest hit animation.png"));
         TextureRegion[][] tmp = TextureRegion.split(
@@ -109,7 +105,7 @@ public class Chest extends GameObject{
 
 	@Override
 	public Rectangle getBounds() {
-		return solidComponent.getBounds();  
+		return solidComponent.getBounds();
 	}
 
 	public void onPlayerCollision(Collidable other) {
@@ -131,11 +127,11 @@ public class Chest extends GameObject{
 	}
 	@Override
 	public boolean isSolid() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	public SolidObject getSolidComponent() {
-	    return solidComponent;
+
+        return solidComponent;
 	}
 
 }
