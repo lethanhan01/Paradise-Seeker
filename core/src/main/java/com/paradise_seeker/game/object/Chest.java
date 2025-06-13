@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.map.SolidObject;
 import com.paradise_seeker.game.object.item.ATKPotion;
 import com.paradise_seeker.game.object.item.Item;
 import com.paradise_seeker.game.object.item.Skill1Potion;
