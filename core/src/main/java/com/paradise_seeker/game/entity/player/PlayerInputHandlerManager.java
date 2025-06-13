@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.Collidable;
+import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.object.Book;
@@ -140,6 +141,20 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         }
     }
 
+    public void damageMonstersInRange(float x, float y, float radius, float damage, GameMap gameMap) {
+        for (Monster m : gameMap.getMonsters()) {
+            if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeHit(damage);
+        }
+    }
+
+    public boolean isInRange(float x, float y, Rectangle bounds, float radius) {
+        float centerX = bounds.x + bounds.width / 2;
+        float centerY = bounds.y + bounds.height / 2;
+        float dx = centerX - x;
+        float dy = centerY - y;
+        return dx * dx + dy * dy <= radius * radius;
+    }
+
     @Override
     public void handleAttack(Player player, GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -149,7 +164,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             if (gameMap != null) {
                 float centerX = player.getBounds().x + player.getBounds().width / 2;
                 float centerY = player.getBounds().y + player.getBounds().height / 2;
-                gameMap.damageMonstersInRange(centerX, centerY, 5f, player.getAtk());
+                damageMonstersInRange(centerX, centerY, 5f, player.getAtk(), gameMap);
             }
         }
     }
@@ -193,9 +208,6 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         }
     }
 
-    /**
-     * Tính khoảng cách giữa player và NPC
-     */
     private float calculateDistance(Player player, Gipsy npc) {
         return (float) Math.sqrt(
             Math.pow(player.getBounds().x + player.getBounds().width/2 - (npc.getBounds().x + npc.getBounds().width/2), 2) +

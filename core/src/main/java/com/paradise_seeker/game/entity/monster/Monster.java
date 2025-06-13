@@ -159,8 +159,6 @@ public abstract class Monster extends Character implements Collidable {
     public void onDeath() {
     	isDead = true;
 		bounds.set(0, 0, 0, 0); // Reset position on death
-
-
     }
 
     public abstract void hasAnimations();

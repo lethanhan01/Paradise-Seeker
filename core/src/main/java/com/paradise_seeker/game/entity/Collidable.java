@@ -7,6 +7,6 @@ public interface Collidable {
     public void onCollision(Collidable other);
 
 	public default boolean isSolid() {
-        return false; // Default implementation, can be overridden
-}
+        return false;
+	}
 }
