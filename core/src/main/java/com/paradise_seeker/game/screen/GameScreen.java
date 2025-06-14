@@ -1,11 +1,12 @@
 package com.paradise_seeker.game.screen;
 
+import java.util.List;
+import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.monster.boss.ParadiseKing;
@@ -23,55 +24,51 @@ import com.paradise_seeker.game.ui.HUD;
 import com.paradise_seeker.game.entity.skill.PlayerProjectile;
 import com.paradise_seeker.game.main.Main;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import java.util.ArrayList;
-import java.util.List;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.map.GameMapManager;
 import com.paradise_seeker.game.object.*;
-import com.paradise_seeker.game.object.item.ATKPotion;
-import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
 import com.paradise_seeker.game.screen.cutscene.EndGame;
 import com.paradise_seeker.game.screen.cutscene.EndMap1;
 import com.paradise_seeker.game.screen.cutscene.EndMap2;
 import com.paradise_seeker.game.screen.cutscene.EndMap3;
 import com.paradise_seeker.game.screen.cutscene.EndMap4;
-import com.paradise_seeker.game.object.item.MPPotion;
-
 
 public class GameScreen implements Screen {
+    private final float CAMERA_VIEW_WIDTH = 16f;
+    private final float CAMERA_VIEW_HEIGHT = 10f;
+
     final Main game;
     Player player = new Player();
     Music music;
-    private float cameraLerp = 0.1f;// Controls how fast the camera follows the player
-    private GameMapManager mapManager;// Manages the current map and transitions
-    private HUD hud;// Heads-Up Display for player stats, inventory, etc.
-    private DialogueBox dialogueBox;
-    private Texture dialogueBg;
-    private Gipsy currentTalkingNPC;
-    private OrthographicCamera gameCamera;// Camera for the game world
-    private OrthographicCamera hudCamera;// Camera for the HUD elements
+
+    public float cameraLerp = 0.1f;// Controls how fast the camera follows the player
+    public GameMapManager mapManager;// Manages the current map and transitions
+    public HUD hud;// Heads-Up Display for player stats, inventory, etc.
+    public DialogueBox dialogueBox;
+    public Texture dialogueBg;
+    public Gipsy currentTalkingNPC;
+    public OrthographicCamera gameCamera;// Camera for the game world
+    public OrthographicCamera hudCamera;// Camera for the HUD elements
     public ShapeRenderer shapeRenderer;
     public boolean isInGameMap = true;
-    private boolean winTriggered = false;
-    public static List<PlayerProjectile> activeProjectiles = new ArrayList<>();
+    public boolean winTriggered = false;
 
-    private final float CAMERA_VIEW_WIDTH = 16f;
-    private final float CAMERA_VIEW_HEIGHT = 10f;
-    private float zoom = 1.0f;
+    public static List<PlayerProjectile> activeProjectiles = new ArrayList<>();
+    public float zoom = 1.0f;
 
     private PlayerRenderer playerRenderer; // Nơi gọi hàm render player
     private MonsterRenderer monsterRenderer;
     private NPCRenderer npcRenderer;
 
     // Dialogue choices
-    private int selectedOptionIndex = 0;
-    private final String[] options = {"HP potion", "MP potion", "ATK potion"};
-    private boolean showDialogueOptions = false;
-    private String pendingPotionToDrop = null;
-    private boolean waitingForChestToOpen = false;
+    public int selectedOptionIndex = 0;
+    public final String[] options = {"HP potion", "MP potion", "ATK potion"};
+    public boolean showDialogueOptions = false;
+    public String pendingPotionToDrop = null;
+    public boolean isChestOpened = false;
 
-    private int[] mapcutsceneIndicesEnd = {0, 0, 0, 0, 0}; // Indices for cutscenes in the map
+    public int[] mapcutsceneIndicesEnd = {0, 0, 0, 0, 0}; // Indices for cutscenes in the map
 
     public GameScreen(final Main game) {
         this.game = game;
@@ -127,13 +124,13 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Dialogue logic (unchanged)
-        handleDialogue();
+    	handleDialogueEvent();
 
         // Zoom logic
-        handleZoomInput();
+        player.inputHandler.handleZoomInput(this);
 
         // Game update logic (outside dialogue)
-        if (!dialogueBox.isVisible() && !showDialogueOptions && !waitingForChestToOpen) {
+        if (!dialogueBox.isVisible() && !showDialogueOptions && !isChestOpened) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 game.setScreen(new PauseScreen(game));
                 music.pause();
@@ -154,10 +151,10 @@ public class GameScreen implements Screen {
 
             Chest chest = mapManager.getCurrentMap().getChest();
             if (chest != null) {
-				handleChest();
+            	player.inputHandler.handleChest(this, player);
 			}
 
-            handleBook();
+            player.inputHandler.handleBook(this, player);
 
             mapManager.getCurrentMap().checkCollisions(player, hud);
             float playerCenterX = player.getBounds().x + player.getBounds().width / 2f;
@@ -188,10 +185,10 @@ public class GameScreen implements Screen {
             mapManager.update(delta);
         }
 
-        if (waitingForChestToOpen && currentTalkingNPC != null) {
+        if (isChestOpened && currentTalkingNPC != null) {
             if (currentTalkingNPC.isChestOpenAndFinished()) {
-                waitingForChestToOpen = false;
-                finishNpcInteraction();
+            	isChestOpened = false;
+                player.inputHandler.finishNpcInteraction(this, player);
             }
         }
 
@@ -237,11 +234,11 @@ public class GameScreen implements Screen {
         //renderDialogueOptions(fontScale);
 
         // --- PORTAL & MAP SWITCH ---
-        handlePortals();
+        handlePortalsEvent();
     }
 
     /** All portal/map transition logic, always uses Tiled player spawn! */
-    private void handlePortals() {
+    public void handlePortalsEvent() {
         GameMap currentMap = mapManager.getCurrentMap();
         if (currentMap.portal != null && player.getBounds().overlaps(currentMap.portal.getBounds())) {
             currentMap.portal.onCollision(player);
@@ -319,6 +316,7 @@ public class GameScreen implements Screen {
         }
     }
 
+
     private void handleBook() {
         Book book = mapManager.getCurrentMap().getBook();
         if (book != null && book.isPlayerInRange(player)) {
@@ -369,7 +367,8 @@ public class GameScreen implements Screen {
 		}
 	}
 
-    private void handleDialogue() {
+
+    public void handleDialogueEvent() {
         // Handle F key for dialogue interaction
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
             if (showDialogueOptions) {
@@ -386,6 +385,7 @@ public class GameScreen implements Screen {
                         dialogueBox.hide();
                         currentTalkingNPC.setTalking(false);
 
+
                         // SỬA 1: chỉ mở rương nếu chưa mở và không đang mở
                         if (!currentTalkingNPC.isChestOpened() && !currentTalkingNPC.stateManager.isOpeningChest()) {
                             currentTalkingNPC.openChest();
@@ -393,6 +393,7 @@ public class GameScreen implements Screen {
                         }
 
                         finishNpcInteraction();
+
                     }
                 }
             } else if (currentTalkingNPC != null) {
@@ -409,9 +410,9 @@ public class GameScreen implements Screen {
                         // SỬA 2: chỉ mở rương nếu chưa mở và không đang mở
                         if (!currentTalkingNPC.isChestOpened() && !currentTalkingNPC.stateManager.isOpeningChest()) {
                             currentTalkingNPC.openChest();
-                            waitingForChestToOpen = true;
+                            isChestOpened = true;
                         }
-                        finishNpcInteraction();
+                        player.inputHandler.finishNpcInteraction(this, player);
                     }
                 }
             } else {
@@ -488,6 +489,7 @@ public class GameScreen implements Screen {
         else if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS) || Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
             zoom = Math.max(0.5f, zoom - 0.1f);
     }
+
 
     @Override public void resize(int width, int height) {
         game.viewport.update(width, height, true);

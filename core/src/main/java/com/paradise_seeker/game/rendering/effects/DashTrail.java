@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.player;
+package com.paradise_seeker.game.rendering.effects;
 
 public class DashTrail {
 	public float x, y, stateTime;

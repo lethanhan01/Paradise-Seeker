@@ -1,6 +1,8 @@
-package com.paradise_seeker.game.entity.player;
+package com.paradise_seeker.game.entity.player.input;
 
+import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.screen.GameScreen;
 
 public interface PlayerInputHandler {
 
@@ -28,13 +30,21 @@ public interface PlayerInputHandler {
      * Xử lý kỹ năng
      */
     void handleSkills(Player player);
-
     /**
      * Xử lý tương tác với NPC
      */
     void handleNPCInteraction(Player player, GameMap gameMap);
     /**
-     * Xử lý phím cheat (R - hồi máu mana)
+     * Xử lý phím zoom màn hình
      */
+    void handleZoomInput(GameScreen gameScreen);
+    /**
+	 * Xử lý tương tác với sách
+	 */
+    void handleBook(GameScreen gameScreen, Player player);
+    /**
+	 * Xử lý tương tác với rương
+	 */
+    void handleChest(GameScreen gameScreen, Player player);
 
 }
