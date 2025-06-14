@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.player.Player;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.map.GameMap;
 
 public class Nyx extends Monster {

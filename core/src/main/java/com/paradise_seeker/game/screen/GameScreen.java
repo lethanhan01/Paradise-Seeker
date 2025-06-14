@@ -33,12 +33,12 @@ import com.paradise_seeker.game.screen.cutscene.EndMap4;
 public class GameScreen implements Screen {
     private final float CAMERA_VIEW_WIDTH = 16f;
     private final float CAMERA_VIEW_HEIGHT = 10f;
-
-    final Main game;
-    Player player = new Player();
-    Music music;
+    public final Main game;
 
     public float cameraLerp = 0.1f;// Controls how fast the camera follows the player
+
+    public Music music;
+    public Player player;
     public GameMapManager mapManager;// Manages the current map and transitions
     public HUD hud;// Heads-Up Display for player stats, inventory, etc.
     public DialogueBox dialogueBox;
@@ -47,18 +47,10 @@ public class GameScreen implements Screen {
     public OrthographicCamera gameCamera;// Camera for the game world
     public OrthographicCamera hudCamera;// Camera for the HUD elements
     public ShapeRenderer shapeRenderer;
-    public boolean isInGameMap = true;
     public boolean winTriggered = false;
 
     public static List<PlayerProjectile> activeProjectiles = new ArrayList<>();
     public float zoom = 1.0f;
-
-    // Dialogue choices
-    public int selectedOptionIndex = 0;
-    public final String[] options = {"HP potion", "MP potion", "ATK potion"};
-    public boolean showDialogueOptions = false;
-    public String pendingPotionToDrop = null;
-    public boolean isChestOpened = false;
 
     public int[] mapcutsceneIndicesEnd = {0, 0, 0, 0, 0}; // Indices for cutscenes in the map
 
@@ -120,7 +112,7 @@ public class GameScreen implements Screen {
         player.inputHandler.handleZoomInput(this);
 
         // Game update logic (outside dialogue)
-        if (!dialogueBox.isVisible() && !showDialogueOptions && !isChestOpened) {
+        if (!dialogueBox.isVisible() && !player.inputHandler.showDialogueOptions && !currentTalkingNPC.stateManager.isChestOpened) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 game.setScreen(new PauseScreen(game));
                 music.pause();
@@ -147,6 +139,7 @@ public class GameScreen implements Screen {
             player.inputHandler.handleBook(this, player);
 
             mapManager.getCurrentMap().checkCollisions(player, hud);
+
             float playerCenterX = player.getBounds().x + player.getBounds().width / 2f;
             float playerCenterY = player.getBounds().y + player.getBounds().height / 2f;
             player.playerSkill2.updatePosition(playerCenterX, playerCenterY);
@@ -175,9 +168,9 @@ public class GameScreen implements Screen {
             mapManager.update(delta);
         }
 
-        if (isChestOpened && currentTalkingNPC != null) {
+        if (currentTalkingNPC.stateManager.isChestOpened && currentTalkingNPC != null) {
             if (currentTalkingNPC.isChestOpenAndFinished()) {
-            	isChestOpened = false;
+            	currentTalkingNPC.stateManager.isChestOpened = false;
                 player.inputHandler.finishNpcInteraction(this, player);
             }
         }
@@ -220,8 +213,6 @@ public class GameScreen implements Screen {
         hud.shapeRenderer.setProjectionMatrix(hudCamera.combined);
         hud.spriteBatch.setProjectionMatrix(hudCamera.combined);
         hud.render(hudCamera.viewportHeight);
-
-        //renderDialogueOptions(fontScale);
 
         // --- PORTAL & MAP SWITCH ---
         handlePortalsEvent();

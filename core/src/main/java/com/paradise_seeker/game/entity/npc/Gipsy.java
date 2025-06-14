@@ -103,7 +103,6 @@ public class Gipsy extends NPC {
         return !hasNextLine() && stateManager.isTalking() && !stateManager.isChestOpened();
     }
 
-    // -------------- State queries ---------------
     public boolean isChestOpened() {
         return stateManager.isChestOpened();
     }

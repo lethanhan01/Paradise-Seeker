@@ -7,8 +7,8 @@ import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
 
 public class MonsterRendererManager implements MonsterRenderer {
-    private MonsterAnimationManager animationManager;
-    private HPBarMonsterRenderer hpBarRenderer = new HPBarMonsterRenderer();
+    public MonsterAnimationManager animationManager;
+    public HPBarMonsterRenderer hpBarRenderer = new HPBarMonsterRenderer();
 
     public MonsterRendererManager(MonsterAnimationManager animationManager) {
         this.animationManager = animationManager;
@@ -31,7 +31,7 @@ public class MonsterRendererManager implements MonsterRenderer {
 
 
 
-    private void renderDeathAnimation(Monster monster, SpriteBatch batch) {
+    public void renderDeathAnimation(Monster monster, SpriteBatch batch) {
         TextureRegion currentFrame = animationManager.getCurrentFrame();
         if (currentFrame != null) {
             batch.draw(currentFrame, monster.getBounds().x, monster.getBounds().y,
@@ -39,7 +39,7 @@ public class MonsterRendererManager implements MonsterRenderer {
         }
     }
 
-    private void renderHitAnimation(Monster monster, SpriteBatch batch) {
+    public void renderHitAnimation(Monster monster, SpriteBatch batch) {
         TextureRegion currentFrame = animationManager.getCurrentFrame();
         if (currentFrame != null) {
             // Add hit flash effect
@@ -50,7 +50,7 @@ public class MonsterRendererManager implements MonsterRenderer {
         }
     }
 
-    private void renderCleaveAnimation(Monster monster, SpriteBatch batch) {
+    public void renderCleaveAnimation(Monster monster, SpriteBatch batch) {
         TextureRegion currentFrame = animationManager.getCurrentFrame();
         if (currentFrame != null) {
             batch.draw(currentFrame, monster.getBounds().x, monster.getBounds().y,
@@ -58,7 +58,7 @@ public class MonsterRendererManager implements MonsterRenderer {
         }
     }
 
-    private void renderMovementAnimation(Monster monster, SpriteBatch batch) {
+    public void renderMovementAnimation(Monster monster, SpriteBatch batch) {
         TextureRegion currentFrame = animationManager.getCurrentFrame();
         if (currentFrame != null) {
             batch.draw(currentFrame, monster.getBounds().x, monster.getBounds().y,
@@ -66,7 +66,7 @@ public class MonsterRendererManager implements MonsterRenderer {
         }
     }
 
-    private void renderIdleAnimation(Monster monster, SpriteBatch batch) {
+    public void renderIdleAnimation(Monster monster, SpriteBatch batch) {
         TextureRegion currentFrame = animationManager.getCurrentFrame();
         if (currentFrame != null) {
             batch.draw(currentFrame, monster.getBounds().x, monster.getBounds().y,
