@@ -5,13 +5,16 @@ package com.paradise_seeker.game.entity.npc;
  */
 public class NPCStateManager {
     // --- State flags ---
-    public boolean isChestOpened = false;
-    public boolean isOpeningChest = false;
-    public boolean isTalking = false;
-    public boolean hasTalked = false;
+    public boolean isChestOpened;
+    public boolean isOpeningChest;
+    public boolean isTalking;
+    public boolean hasTalked;
 
     public NPCStateManager() {
-        // Constructor mặc định
+        isChestOpened = false;
+        isOpeningChest = false;
+        isTalking = false;
+        hasTalked = false;
     }
 
     // Getters and setters for state
