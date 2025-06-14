@@ -15,6 +15,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.rendering.renderer.MonsterRenderer;
+import com.paradise_seeker.game.rendering.renderer.NPCRenderer;
+import com.paradise_seeker.game.rendering.renderer.PlayerRenderer;
+import com.paradise_seeker.game.rendering.renderer.PlayerRendererManager;
 import com.paradise_seeker.game.ui.DialogueBox;
 import com.paradise_seeker.game.ui.HUD;
 import com.paradise_seeker.game.entity.skill.PlayerProjectile;
@@ -53,6 +57,10 @@ public class GameScreen implements Screen {
     public static List<PlayerProjectile> activeProjectiles = new ArrayList<>();
     public float zoom = 1.0f;
 
+    private PlayerRenderer playerRenderer; // Nơi gọi hàm render player
+    private MonsterRenderer monsterRenderer;
+    private NPCRenderer npcRenderer;
+
     // Dialogue choices
     public int selectedOptionIndex = 0;
     public final String[] options = {"HP potion", "MP potion", "ATK potion"};
@@ -64,8 +72,9 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Main game) {
         this.game = game;
+        playerRenderer = new PlayerRendererManager(player.animationManager);
 
-        // Create player, initial position will be set from Tiled data by mapManager!
+        // Create player, initial position will come from Tiled data by mapManager
 		player = new Player();
         this.mapManager = new GameMapManager(player);
         this.hud = new HUD(player, game.font);
@@ -197,16 +206,17 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(gameCamera.combined);
         game.batch.begin();
         mapManager.render(game.batch);
-        // Render all monsters
-        for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
-            monster.isRendered(game.batch);
-        }
-        // Render player and skills
-        player.isRendered(game.batch);
+
+        // Render monsters, etc. from GameMap
+        mapManager.getCurrentMap().render(game.batch);
+        // Render player and skills (independent from map)
+        playerRenderer.render(player, game.batch);
         player.playerSkill1.render(game.batch);
         player.playerSkill2.render(game.batch);
-        for (PlayerProjectile projectile : activeProjectiles) projectile.isRendered(game.batch);
+        for (PlayerProjectile projectile : activeProjectiles)
+            projectile.isRendered(game.batch);
         game.batch.end();
+
         // Render dialogue box
         hudCamera.update();
         game.batch.setProjectionMatrix(hudCamera.combined);
@@ -215,6 +225,7 @@ public class GameScreen implements Screen {
         float fontScale = Math.max(Gdx.graphics.getHeight() / baseHeight, 0.05f);
         dialogueBox.render(game.batch, fontScale);
         game.batch.end();
+
         // Render HUD
         hud.shapeRenderer.setProjectionMatrix(hudCamera.combined);
         hud.spriteBatch.setProjectionMatrix(hudCamera.combined);
@@ -305,6 +316,58 @@ public class GameScreen implements Screen {
         }
     }
 
+
+    private void handleBook() {
+        Book book = mapManager.getCurrentMap().getBook();
+        if (book != null && book.isPlayerInRange(player)) {
+            // Show interaction message if book hasn't been opened yet
+
+
+            // Handle F key press for book interaction
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+                if (!book.isOpened()) {
+                    book.onCollision(player);
+                    // Show the book content with longer display time
+                    hud.showNotification(book.getContent());
+                } else {
+                    // If already opened, show a different message
+                    hud.showNotification("You have already read this book.");
+                }
+            }
+        }
+    }
+
+
+
+
+
+    private void handleChest() {
+		Chest chest = mapManager.getCurrentMap().getChest();
+		if (chest != null && player.getBounds().overlaps(chest.getBounds())) {
+
+	    	    player.blockMovement();
+
+			if (!chest.isOpened())
+				hud.showNotification("[F] Open Chest?");
+
+
+			if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+				if (!chest.isOpened()) {
+					chest.onPlayerCollision(player);
+					Array<Item> items = chest.getItems();
+
+			        StringBuilder itemListMessage = new StringBuilder("You received:\n");
+			        for (Item item : items) {
+			            itemListMessage.append("- ").append(item.getName()).append("\n");
+			        }
+
+			        hud.showNotification(itemListMessage.toString());
+				}
+			}
+		}
+	}
+
+
     public void handleDialogueEvent() {
         // Handle F key for dialogue interaction
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
@@ -321,9 +384,16 @@ public class GameScreen implements Screen {
                     } else {
                         dialogueBox.hide();
                         currentTalkingNPC.setTalking(false);
-                        currentTalkingNPC.openChest();
-                        isChestOpened = true;
-                        player.inputHandler.finishNpcInteraction(this, player);
+
+
+                        // SỬA 1: chỉ mở rương nếu chưa mở và không đang mở
+                        if (!currentTalkingNPC.isChestOpened() && !currentTalkingNPC.stateManager.isOpeningChest()) {
+                            currentTalkingNPC.openChest();
+                            waitingForChestToOpen = true;
+                        }
+
+                        finishNpcInteraction();
+
                     }
                 }
             } else if (currentTalkingNPC != null) {
@@ -336,7 +406,9 @@ public class GameScreen implements Screen {
                     } else {
                         dialogueBox.hide();
                         currentTalkingNPC.setTalking(false);
-                        if (!currentTalkingNPC.isChestOpened()) {
+
+                        // SỬA 2: chỉ mở rương nếu chưa mở và không đang mở
+                        if (!currentTalkingNPC.isChestOpened() && !currentTalkingNPC.stateManager.isOpeningChest()) {
                             currentTalkingNPC.openChest();
                             isChestOpened = true;
                         }
@@ -373,6 +445,51 @@ public class GameScreen implements Screen {
             }
         }
     }
+
+
+
+    private void finishNpcInteraction() {
+        if (pendingPotionToDrop != null) {
+            dropPotionNextToPlayer(pendingPotionToDrop);
+            pendingPotionToDrop = null;
+        }
+        if (currentTalkingNPC != null) {
+            currentTalkingNPC.setTalking(false);
+            currentTalkingNPC = null;
+        }
+        showDialogueOptions = false;
+        selectedOptionIndex = 0;
+        waitingForChestToOpen = false;
+    }
+
+    private void dropPotionNextToPlayer(String potionType) {
+        float dropX = player.getBounds().x + player.getBounds().width + 0.2f;
+        float dropY = player.getBounds().y;
+        Item dropped = null;
+
+        switch (potionType) {
+            case "HP potion":
+                dropped = new HPPotion(dropX, dropY, 1f, "items/potion/potion3.png", 100);
+                break;
+            case "MP potion":
+                dropped = new MPPotion(dropX, dropY, 1f, "items/potion/potion9.png", 15);
+                break;
+            case "ATK potion":
+                dropped = new ATKPotion(dropX, dropY, 1f, "items/atkbuff_potion/potion14.png", 10);
+                break;
+        }
+
+        if (dropped != null) {
+            mapManager.getCurrentMap().dropItem(dropped);
+        }
+    }
+
+    private void handleZoomInput() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) zoom = Math.min(3.0f, zoom + 0.1f);
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS) || Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
+            zoom = Math.max(0.5f, zoom - 0.1f);
+    }
+
 
     @Override public void resize(int width, int height) {
         game.viewport.update(width, height, true);

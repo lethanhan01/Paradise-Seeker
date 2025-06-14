@@ -91,6 +91,6 @@ public class PlayerRendererManager implements PlayerRenderer {
 
     @Override
     public void renderSmoke(Player player, SpriteBatch batch) {
-
+        player.smokeManager.render(batch, animationManager);
     }
 }

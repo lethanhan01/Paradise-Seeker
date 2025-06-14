@@ -131,11 +131,6 @@ public class Player extends Character {
     }
 
 
-    public void isRendered(SpriteBatch batch) {
-        playerRenderer.render(this, batch);
-        smokeManager.render(batch, animationManager);
-    }
-
     @Override
     public void takeHit(float damage) {
         if (isInvulnerable) return;

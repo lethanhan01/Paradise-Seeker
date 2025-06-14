@@ -163,16 +163,18 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
     @Override
     public void handleAttack(Player player, GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            player.setAttacking(true);
-    //        player.resetStateTime();
-
-            if (gameMap != null) {
-                float centerX = player.getBounds().x + player.getBounds().width / 2;
-                float centerY = player.getBounds().y + player.getBounds().height / 2;
-                damageMonstersInRange(centerX, centerY, 5f, player.getAtk(), gameMap);
+            if (!player.isAttacking && !player.isHit && !player.isDead()) {
+                player.setAttacking(true);
+                player.stateTime = 0f; // Reset lại thời gian để animation luôn chạy từ frame đầu
+                if (gameMap != null) {
+                    float centerX = player.getBounds().x + player.getBounds().width / 2;
+                    float centerY = player.getBounds().y + player.getBounds().height / 2;
+                    damageMonstersInRange(centerX, centerY, 5f, player.getAtk(), gameMap);
+                }
             }
         }
     }
+
 
 
     @Override

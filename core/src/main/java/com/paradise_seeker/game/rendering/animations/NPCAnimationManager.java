@@ -13,15 +13,9 @@ public class NPCAnimationManager implements AnimationManager {
     private Animation<TextureRegion> talkAnimation;
     private Animation<TextureRegion> openChestAnimation;
     private Animation<TextureRegion> chestOpenedAnimation;
-    private Animation<TextureRegion> currentAnimation;
-    private TextureRegion currentFrame;
-    private float stateTime;
 
     public NPCAnimationManager() {
         loadAnimations();
-        currentAnimation = idleAnimation;
-        currentFrame = currentAnimation.getKeyFrame(0f);
-        stateTime = 0f;
     }
 
     public void loadAnimations() {
@@ -39,9 +33,7 @@ public class NPCAnimationManager implements AnimationManager {
                 Texture texture = new Texture(Gdx.files.internal(path));
                 texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
                 frames.add(new TextureRegion(texture));
-            } catch (Exception e) {
-                // Handle missing textures silently
-            }
+            } catch (Exception e) {}
         }
         idleAnimation = new Animation<>(0.2f, frames.toArray(new TextureRegion[0]));
         idleAnimation.setPlayMode(Animation.PlayMode.LOOP);
@@ -55,9 +47,7 @@ public class NPCAnimationManager implements AnimationManager {
                 Texture texture = new Texture(Gdx.files.internal(path));
                 texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
                 frames.add(new TextureRegion(texture));
-            } catch (Exception e) {
-                // Handle missing textures silently
-            }
+            } catch (Exception e) {}
         }
         talkAnimation = new Animation<>(0.2f, frames.toArray(new TextureRegion[0]));
         talkAnimation.setPlayMode(Animation.PlayMode.LOOP);
@@ -71,9 +61,7 @@ public class NPCAnimationManager implements AnimationManager {
                 Texture texture = new Texture(Gdx.files.internal(path));
                 texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
                 frames.add(new TextureRegion(texture));
-            } catch (Exception e) {
-                // Handle missing textures silently
-            }
+            } catch (Exception e) {}
         }
         openChestAnimation = new Animation<>(0.2f, frames.toArray(new TextureRegion[0]));
         openChestAnimation.setPlayMode(Animation.PlayMode.NORMAL);
@@ -87,55 +75,10 @@ public class NPCAnimationManager implements AnimationManager {
                 Texture texture = new Texture(Gdx.files.internal(path));
                 texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
                 frames.add(new TextureRegion(texture));
-            } catch (Exception e) {
-                // Handle missing textures silently
-            }
+            } catch (Exception e) {}
         }
         chestOpenedAnimation = new Animation<>(0.2f, frames.toArray(new TextureRegion[0]));
         chestOpenedAnimation.setPlayMode(Animation.PlayMode.LOOP);
-    }
-
-    public void update(float deltaTime, boolean isTalking, boolean isChestOpened) {
-        stateTime += deltaTime;
-
-        // Update animation based on state
-        if (isTalking) {
-            setTalkingAnimation();
-        } else if (isChestOpened) {
-            setChestOpenedAnimation();
-        } else {
-            setIdleAnimation();
-        }
-
-        currentFrame = currentAnimation.getKeyFrame(stateTime);
-    }
-
-    public void setTalkingAnimation() {
-        currentAnimation = talkAnimation;
-        stateTime = 0f;
-    }
-
-    public void setIdleAnimation() {
-        currentAnimation = idleAnimation;
-        stateTime = 0f;
-    }
-
-    public void setOpenChestAnimation() {
-        currentAnimation = openChestAnimation;
-        stateTime = 0f;
-    }
-
-    public void setChestOpenedAnimation() {
-        currentAnimation = chestOpenedAnimation;
-        stateTime = 0f;
-    }
-
-    public TextureRegion getCurrentFrame() {
-        return currentFrame;
-    }
-
-    public boolean isAnimationFinished() {
-        return currentAnimation.isAnimationFinished(stateTime);
     }
 
     @Override
@@ -162,9 +105,20 @@ public class NPCAnimationManager implements AnimationManager {
     public Animation<TextureRegion> getDeathAnimation(String direction) {
         return idleAnimation;
     }
+    public boolean isAnimationFinished(Animation<TextureRegion> anim, float stateTime) {
+        if (anim == null) return true;
+        return anim.isAnimationFinished(stateTime);
+    }
+
+    public Animation<TextureRegion> getOpenChestAnimation() {
+        return openChestAnimation;
+    }
+
+    public void setOpenChestAnimation() {
+    }
 
     @Override
     public void dispose() {
-        // Dispose of any resources if needed
+        // Dispose textures if you manage them elsewhere
     }
 }

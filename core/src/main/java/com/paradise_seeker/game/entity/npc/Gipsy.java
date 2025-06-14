@@ -1,45 +1,27 @@
 package com.paradise_seeker.game.entity.npc;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.map.GameMap;
-import com.badlogic.gdx.graphics.Texture;
-import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
-// Add this import at the top
-import com.paradise_seeker.game.rendering.renderer.NPCRenderer;
-import com.paradise_seeker.game.rendering.renderer.NPCRendererManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Gipsy extends NPC {
-    public NPCAnimationManager animationManager;
     public NPCStateManager stateManager;
-    public DialogueManager dialogueManager;
-
-    // Add this field
-    private NPCRenderer renderer;
-
-    public float spriteWidth = 1.9f;
-    public float spriteHeight = 1.8f;
+    protected DialogueManager dialogueManager;
+    protected float spriteWidth = 1.9f;
+    protected float spriteHeight = 1.8f;
 
     public Gipsy(float x, float y) {
-        super(); // Gọi constructor của lớp cha NPC
+        super();
         this.x = x;
         this.y = y;
-        this.spriteWidth = 1.9f;
-        this.spriteHeight = 1.8f;
         this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
 
-        // Khởi tạo các manager
-        this.animationManager = new NPCAnimationManager();
         this.stateManager = new NPCStateManager();
         this.dialogueManager = new DialogueManager();
 
-        // Initialize the renderer
-        this.renderer = new NPCRendererManager(this.animationManager);
-
-        // Thiết lập câu thoại mặc định cho Gipsy
+        // Khởi tạo thoại mặc định
         List<String> defaultDialogue = new ArrayList<>();
         defaultDialogue.add("Hello, traveler!");
         defaultDialogue.add("I am Gipsy, a wandering merchant.");
@@ -65,58 +47,41 @@ public class Gipsy extends NPC {
 
     @Override
     public void act(float deltaTime, GameMap map) {
-        // Update renderer state time
-        if (renderer instanceof NPCRendererManager) {
-            ((NPCRendererManager) renderer).update(deltaTime);
+        // Nếu đang mở rương thì chỉ update animation cho openChest
+        if (stateManager.isOpeningChest()) {
+            this.stateTime += deltaTime;
+            if (animationManager.isAnimationFinished(animationManager.getOpenChestAnimation(), this.stateTime)) {
+                stateManager.completeChestOpening();
+            }
+        } else {
+            // Nếu không thì update animation cho idle hoặc talking (nếu có)
+            this.update(deltaTime);
         }
 
-        // Cập nhật animation dựa trên trạng thái hiện tại
-        animationManager.update(deltaTime, stateManager.isOpeningChest(), stateManager.isChestOpened());
-
-        // Xử lý hoàn thành animation mở rương
-        if (stateManager.isOpeningChest() && animationManager.isAnimationFinished()) {
-            stateManager.completeChestOpening();
-            animationManager.setChestOpenedAnimation();
-        }
-
-        // Cập nhật trạng thái NPC từ lớp cha
+        // Đồng bộ trạng thái cha
         super.isTalking = stateManager.isTalking();
         super.hasTalked = stateManager.hasTalked();
+
         updateBounds();
     }
 
     @Override
     public void setTalking(boolean talking) {
-        if (super.isTalking != talking) {
-            super.isTalking = talking;
-            stateManager.setTalking(talking);
-
-            // Không thay đổi animation nếu đang mở rương
-            if (!stateManager.isOpeningChest()) {
-                if (talking) {
-                    animationManager.setTalkingAnimation();
-                } else if (stateManager.isChestOpened()) {
-                    animationManager.setChestOpenedAnimation();
-                } else {
-                    animationManager.setIdleAnimation();
-                }
-            }
-        }
+        stateManager.setTalking(talking);
+        super.isTalking = talking;
     }
 
     public void openChest() {
-        if (stateManager.isChestOpened() || stateManager.isOpeningChest()) {
-            return;
-        }
-
-        animationManager.setOpenChestAnimation();
+        if (hasNextLine()) return;
+        if (stateManager.isChestOpened() || stateManager.isOpeningChest()) return;
+        if (stateManager.isTalking()) return; // Chưa kết thúc hội thoại, không mở
         stateManager.startChestOpening();
+        animationManager.setOpenChestAnimation();
+        this.stateTime = 0f; // Reset thời gian cho animation
     }
 
-    public boolean isChestOpenAndFinished() {
-        return stateManager.isChestOpenAndFinished();
-    }
 
+    // -------------- Dialogue management ---------------
     public boolean hasNextLine() {
         return dialogueManager.hasNextLine();
     }
@@ -134,36 +99,25 @@ public class Gipsy extends NPC {
     }
 
     public boolean shouldShowOptions() {
-        // Giả định rằng các tùy chọn nên hiển thị khi đã đến dòng đối thoại cuối cùng
-        // và NPC đang trong trạng thái nói chuyện và chưa mở rương
+        // Chỉ hiển thị tuỳ chọn khi đã nói xong và chưa mở rương
         return !hasNextLine() && stateManager.isTalking() && !stateManager.isChestOpened();
     }
 
-    /**
-     * Kiểm tra xem rương đã được mở chưa
-     */
+    // -------------- State queries ---------------
     public boolean isChestOpened() {
         return stateManager.isChestOpened();
     }
 
+    public boolean isChestOpenAndFinished() {
+        return stateManager.isChestOpenAndFinished();
+    }
+
     public boolean hasTalked() {
-    	return stateManager.hasTalked();
-	}
+        return stateManager.hasTalked();
+    }
 
-	@Override
-	protected void loadTexture() {
-		// Load default texture for Gipsy
-		texture = new Texture("images/Entity/characters/NPCs/npc1/act3/npc120.png");
-	}
-
-	@Override
-	public void render(SpriteBatch batch) {
-		// Use the renderer instead of calling animationManager.render()
-		if (renderer != null) {
-			renderer.render(this, batch);
-		} else if (texture != null) {
-			// Fallback to texture if renderer is not available
-			batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
-		}
-	}
+    @Override
+    protected void loadTexture() {
+        texture = new Texture("images/Entity/characters/NPCs/npc1/act3/npc120.png");
+    }
 }
