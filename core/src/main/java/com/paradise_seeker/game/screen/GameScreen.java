@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
     public HUD hud;// Heads-Up Display for player stats, inventory, etc.
     public DialogueBox dialogueBox;
     public Texture dialogueBg;
-    public Gipsy currentTalkingNPC;
+    public Gipsy currentTalkingNPC = new Gipsy(); // Current NPC the player is interacting with
     public OrthographicCamera gameCamera;// Camera for the game world
     public OrthographicCamera hudCamera;// Camera for the HUD elements
     public ShapeRenderer shapeRenderer;
@@ -58,6 +58,7 @@ public class GameScreen implements Screen {
         this.game = game;
         // Create player, initial position will come from Tiled data by mapManager
 		player = new Player();
+		currentTalkingNPC = new Gipsy(); // Initialize with a default NPC
         this.mapManager = new GameMapManager(player);
         this.hud = new HUD(player, game.font);
         this.shapeRenderer = new ShapeRenderer();
@@ -81,7 +82,6 @@ public class GameScreen implements Screen {
             dialogWidth,
             dialogHeight
         );
-        currentTalkingNPC = null;
 
         this.gameCamera = new OrthographicCamera(CAMERA_VIEW_WIDTH, CAMERA_VIEW_HEIGHT);
         // Initial camera will be positioned on first render/update

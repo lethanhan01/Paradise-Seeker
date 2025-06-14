@@ -30,7 +30,18 @@ public class Gipsy extends NPC {
     }
 
     public Gipsy() {
-        this(0, 0);
+    	super();
+        this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
+
+        this.stateManager = new NPCStateManager();
+        this.dialogueManager = new DialogueManager();
+
+        // Khởi tạo thoại mặc định
+        List<String> defaultDialogue = new ArrayList<>();
+        defaultDialogue.add("Hello, traveler!");
+        defaultDialogue.add("I am Gipsy, a wandering merchant.");
+        defaultDialogue.add("Would you like to open a chest?");
+        dialogueManager.setDialogue(defaultDialogue);
     }
 
     public void updateBounds() {

@@ -294,20 +294,6 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         }
     }
 
-    public void finishNpcInteraction(GameScreen gameScreen, Player player) {
-        if (this.pendingPotionToDrop != null) {
-            dropPotionNextToPlayer(gameScreen.mapManager, this.pendingPotionToDrop, player);
-            this.pendingPotionToDrop = null;
-        }
-        if (gameScreen.currentTalkingNPC != null) {
-        	gameScreen.currentTalkingNPC.setTalking(false);
-        	gameScreen.currentTalkingNPC = null;
-        }
-        this.showDialogueOptions = false;
-        this.selectedOptionIndex = 0;
-        gameScreen.currentTalkingNPC.stateManager.isChestOpened = false;
-    }
-
     public void dropPotionNextToPlayer(GameMapManager mapManager, String potionType, Player player) {
         float dropX = player.getBounds().x + player.getBounds().width + 0.2f;
         float dropY = player.getBounds().y;
@@ -329,6 +315,21 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             mapManager.getCurrentMap().dropItem(dropped);
         }
     }
+
+    public void finishNpcInteraction(GameScreen gameScreen, Player player) {
+        if (this.pendingPotionToDrop != null) {
+            dropPotionNextToPlayer(gameScreen.mapManager, this.pendingPotionToDrop, player);
+            this.pendingPotionToDrop = null;
+        }
+        if (gameScreen.currentTalkingNPC != null) {
+        	gameScreen.currentTalkingNPC.setTalking(false);
+        }
+        this.showDialogueOptions = false;
+        this.selectedOptionIndex = 0;
+        gameScreen.currentTalkingNPC.stateManager.isChestOpened = false;
+    }
+
+
 
 	@Override
     public void handleZoomInput(GameScreen gameScreen) {
