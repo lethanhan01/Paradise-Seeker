@@ -68,7 +68,6 @@ public abstract class GameMap implements Renderable {
     public GameMap() {
         tiledMap = new TmxMapLoader().load(getMapTmxPath());
         backgroundTexture = new Texture(getMapBackgroundPath());
-        this.npcRenderer = new NPCRendererManager();
 
         MAP_WIDTH = tiledMap.getProperties().get("width", Integer.class);
         MAP_HEIGHT = tiledMap.getProperties().get("height", Integer.class);
@@ -211,7 +210,7 @@ public abstract class GameMap implements Renderable {
     }
 
     @Override
-    public void render(SpriteBatch batch) { //render những đối tượng trong bản đồ, player được render riêng
+    public void render(SpriteBatch batch) { //render những đối tượng trong bản đồ, monster/npc phức tạp nên có hàm riêng
         batch.draw(backgroundTexture, 0, 0, MAP_WIDTH, MAP_HEIGHT);
         for (GameObject obj : gameObjects) obj.render(batch);
         for (HPPotion item : hpItems) item.render(batch);
@@ -219,9 +218,10 @@ public abstract class GameMap implements Renderable {
         for (ATKPotion item : atkItems) item.render(batch);
         for (Skill1Potion item : skill1Items) item.render(batch);
         for (Skill2Potion item : skill2Items) item.render(batch);
-        for (Monster m : monsters) m.isRendered(batch);
+        for (Monster m : monsters)
+            m.isRendered(batch);
         for (NPC npc : npcList) {
-            npcRenderer.render(npc, batch);
+            npc.npcRenderer.render(npc, batch);
         }
         if (portal != null) portal.render(batch);
         if (startPortal != null) startPortal.render(batch);

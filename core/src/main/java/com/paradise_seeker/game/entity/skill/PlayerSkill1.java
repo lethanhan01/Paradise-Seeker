@@ -105,7 +105,7 @@ public class PlayerSkill1 extends PlayerSkill implements PlayerProjectile {
     }
 
     @Override
-    public void isRendered(SpriteBatch batch) {
+    public void render(SpriteBatch batch) {
         if (!active) return;
 
         Animation<TextureRegion> animToDraw = animation;

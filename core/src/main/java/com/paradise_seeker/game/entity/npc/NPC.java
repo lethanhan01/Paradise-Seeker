@@ -5,19 +5,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.entity.player.input.PlayerInputHandlerManager;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
+import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
+import com.paradise_seeker.game.rendering.renderer.NPCRendererManager;
+import com.paradise_seeker.game.rendering.renderer.PlayerRendererManager;
 
 public abstract class NPC extends Character implements Collidable {
     public String dialogue;
     public boolean isTalking;
     public boolean hasTalked;
     protected Texture texture;
-    protected NPCAnimationManager animationManager = new NPCAnimationManager();
+    protected NPCAnimationManager animationManager;
     protected float stateTime = 0f;
-
-    public NPCAnimationManager getAnimationManager() { return animationManager; }
-    public float getStateTime() { return stateTime; }
+    public NPCRendererManager npcRenderer;
 
     public NPC() {
         super();
@@ -29,9 +31,14 @@ public abstract class NPC extends Character implements Collidable {
         this.dialogue = "";
         this.isTalking = false;
         this.hasTalked = false;
+        this.animationManager = new NPCAnimationManager();
+        this.animationManager.loadAnimations();
+        this.npcRenderer = new NPCRendererManager(this.animationManager);
+
         loadTexture();
-        // KHÔNG cần gán lại animationManager hay renderer ở đây!
     }
+    public NPCAnimationManager getAnimationManager() { return animationManager; }
+    public float getStateTime() { return stateTime; }
 
     protected abstract void loadTexture();
 
