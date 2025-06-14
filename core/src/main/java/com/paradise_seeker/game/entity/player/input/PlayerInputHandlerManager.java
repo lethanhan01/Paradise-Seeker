@@ -1,18 +1,23 @@
-package com.paradise_seeker.game.entity.player;
+package com.paradise_seeker.game.entity.player.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.npc.Gipsy;
+import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.map.GameMapManager;
 import com.paradise_seeker.game.object.Book;
+import com.paradise_seeker.game.object.Chest;
+import com.paradise_seeker.game.object.item.ATKPotion;
+import com.paradise_seeker.game.object.item.HPPotion;
+import com.paradise_seeker.game.object.item.Item;
+import com.paradise_seeker.game.object.item.MPPotion;
+import com.paradise_seeker.game.screen.GameScreen;
 
-/**
- * Implementation của PlayerInputHandler
- * Chuyên trách xử lý tất cả input của Player
- */
 public class PlayerInputHandlerManager implements PlayerInputHandler {
     public boolean showInteractMessage = false;
 
@@ -207,15 +212,100 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             }
         }
     }
+    public void finishNpcInteraction(GameScreen gameScreen, Player player) {
+        if (gameScreen.pendingPotionToDrop != null) {
+            dropPotionNextToPlayer(gameScreen.mapManager, gameScreen.pendingPotionToDrop, player);
+            gameScreen.pendingPotionToDrop = null;
+        }
+        if (gameScreen.currentTalkingNPC != null) {
+        	gameScreen.currentTalkingNPC.setTalking(false);
+        	gameScreen.currentTalkingNPC = null;
+        }
+        gameScreen.showDialogueOptions = false;
+        gameScreen.selectedOptionIndex = 0;
+        gameScreen.isChestOpened = false;
+    }
 
-    private float calculateDistance(Player player, Gipsy npc) {
+    public void dropPotionNextToPlayer(GameMapManager mapManager, String potionType, Player player) {
+        float dropX = player.getBounds().x + player.getBounds().width + 0.2f;
+        float dropY = player.getBounds().y;
+        Item dropped = null;
+
+        switch (potionType) {
+            case "HP potion":
+                dropped = new HPPotion(dropX, dropY, 1f, "items/potion/potion3.png", 100);
+                break;
+            case "MP potion":
+                dropped = new MPPotion(dropX, dropY, 1f, "items/potion/potion9.png", 15);
+                break;
+            case "ATK potion":
+                dropped = new ATKPotion(dropX, dropY, 1f, "items/atkbuff_potion/potion14.png", 10);
+                break;
+        }
+
+        if (dropped != null) {
+            mapManager.getCurrentMap().dropItem(dropped);
+        }
+    }
+
+	@Override
+    public void handleZoomInput(GameScreen gameScreen) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) gameScreen.zoom = Math.min(3.0f, gameScreen.zoom + 0.1f);
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS) || Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
+        	gameScreen.zoom = Math.max(0.5f, gameScreen.zoom - 0.1f);
+    }
+
+	@Override
+    public void handleChest(GameScreen gameScreen, Player player) {
+		Chest chest = gameScreen.mapManager.getCurrentMap().getChest();
+		if (chest != null && player.getBounds().overlaps(chest.getBounds())) {
+
+	    	    player.blockMovement();
+
+			if (!chest.isOpened())
+				gameScreen.hud.showNotification("[F] Open Chest?");
+
+			if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+				if (!chest.isOpened()) {
+					chest.onPlayerCollision(player);
+					Array<Item> items = chest.getItems();
+
+			        StringBuilder itemListMessage = new StringBuilder("You received:\n");
+			        for (Item item : items) {
+			            itemListMessage.append("- ").append(item.getName()).append("\n");
+			        }
+			        gameScreen.hud.showNotification(itemListMessage.toString());
+				}
+			}
+		}
+	}
+	@Override
+    public void handleBook(GameScreen gameScreen, Player player) {
+        Book book = gameScreen.mapManager.getCurrentMap().getBook();
+        if (book != null && book.isPlayerInRange(player)) {
+            // Handle F key press for book interaction
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+                if (!book.isOpened()) {
+                    book.onCollision(player);
+                    // Show the book content with longer display time
+                    gameScreen.hud.showNotification(book.getContent());
+                } else {
+                    // If already opened, show a different message
+                	gameScreen.hud.showNotification("You have already read this book.");
+                }
+            }
+        }
+    }
+
+    public float calculateDistance(Player player, Gipsy npc) {
         return (float) Math.sqrt(
             Math.pow(player.getBounds().x + player.getBounds().width/2 - (npc.getBounds().x + npc.getBounds().width/2), 2) +
             Math.pow(player.getBounds().y + player.getBounds().height/2 - (npc.getBounds().y + npc.getBounds().height/2), 2)
         );
     }
 
-    private void clampToMapBounds(Player player, GameMap gameMap) {
+
+    public void clampToMapBounds(Player player, GameMap gameMap) {
         if (gameMap == null) return;
 
         float minX = 0;
