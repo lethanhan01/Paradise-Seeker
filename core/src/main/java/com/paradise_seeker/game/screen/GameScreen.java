@@ -195,16 +195,16 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
         game.batch.setProjectionMatrix(gameCamera.combined);
         game.batch.begin();
-        mapManager.render(game.batch);
 
         // Render monsters, etc. from GameMap
-        mapManager.getCurrentMap().render(game.batch);
+        mapManager.render(game.batch); // gọi đến currentMap.render(batch);
+
         // Render player and skills (independent from map)
-        player.playerRenderer.render(player, game.batch);
-        player.playerSkill1.render(game.batch);
-        player.playerSkill2.render(game.batch);
-        for (PlayerProjectile projectile : activeProjectiles)
-            projectile.isRendered(game.batch);
+        player.playerRenderer.render(player, game.batch); // player không dùng interface Renderable, khác Skill
+        player.playerSkill1.render(game.batch); // gọi tới Renderable interface
+        player.playerSkill2.render(game.batch); // gọi tới Renderable interface
+        for (PlayerProjectile projectile : activeProjectiles) // gọi tới Renderable interface
+            projectile.render(game.batch);
         game.batch.end();
 
         // Render dialogue box

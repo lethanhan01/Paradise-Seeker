@@ -10,6 +10,11 @@ import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
 public class NPCRendererManager implements NPCRenderer {
     public float indicatorX;
     public float indicatorY;
+    public NPCAnimationManager animationManager;
+
+    public NPCRendererManager(NPCAnimationManager animationManager) {
+        this.animationManager = animationManager;
+    }
 
     @Override
     public void render(NPC npc, SpriteBatch batch) {
