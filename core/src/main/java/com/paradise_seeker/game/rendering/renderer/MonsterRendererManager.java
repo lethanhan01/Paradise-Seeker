@@ -8,6 +8,7 @@ import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
 
 public class MonsterRendererManager implements MonsterRenderer {
     private MonsterAnimationManager animationManager;
+    private HPBarMonsterRenderer hpBarRenderer = new HPBarMonsterRenderer();
 
     public MonsterRendererManager(MonsterAnimationManager animationManager) {
         this.animationManager = animationManager;
@@ -75,7 +76,6 @@ public class MonsterRendererManager implements MonsterRenderer {
 
     @Override
     public void dispose() {
-        // Dispose of any resources if needed
         if (animationManager != null) {
             animationManager.dispose();
         }

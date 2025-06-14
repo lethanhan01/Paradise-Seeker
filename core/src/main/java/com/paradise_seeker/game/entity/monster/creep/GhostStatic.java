@@ -63,11 +63,6 @@ public class GhostStatic extends Monster {
         // Optional implementation for death effects
     }
 
-    @Override
-    public void isRendered(SpriteBatch batch) {
-        // Use parent class's render method
-        super.isRendered(batch);
-    }
 
     @Override
     public void onCollision(Player player) {

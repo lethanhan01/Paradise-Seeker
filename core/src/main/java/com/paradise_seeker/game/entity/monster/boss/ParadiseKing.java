@@ -97,13 +97,6 @@ public class ParadiseKing extends Monster {
     }
 
     @Override
-    public void isRendered(SpriteBatch batch) {
-        // Use the renderer from parent class, which already handles drawing
-        // No need to manually draw currentFrame as it's handled by MonsterRenderer
-        super.isRendered(batch);
-    }
-
-    @Override
     public void onDeath() {
         super.onDeath();
         // Add Boss5-specific death behavior if needed

@@ -80,7 +80,7 @@ public abstract class Monster extends Character implements Collidable {
         // Update animation state
         animationManager.update(deltaTime, isMoving, isDead, false, player.getBounds().x, this);
         if (isDead && animationManager.isDeathAnimationFinished() && !hasSetBounds) {
-            bounds.set(0, 0, 0, 0); // ✅ Ẩn quái vật sau khi hoạt họa chết hoàn tất
+            bounds.set(0, 0, 0, 0); //  Ẩn quái vật sau khi hoạt họa chết hoàn tất
             hasSetBounds = true;
         }
     }
@@ -97,11 +97,6 @@ public abstract class Monster extends Character implements Collidable {
 	         collisionHandler.applyCleaveHitToPlayer(player, this);
 	     }
 	 }
-
-    public void isRendered(SpriteBatch batch) {
-        renderer.render(this, batch);
-        hpBarRenderer.render(batch, bounds, animationManager.getCurrentFrame(), hp, maxHp, isDead);
-    }
 
     public boolean isFacingRight() {
         return animationManager.isFacingRight();
@@ -188,4 +183,8 @@ public abstract class Monster extends Character implements Collidable {
     public boolean isSolid() {
         return true; // Monsters are solid by default
 }
+
+    public float getMaxHp() {
+        return maxHp;
+    }
 }

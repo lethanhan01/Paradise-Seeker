@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.CollisionSystem;
+import com.paradise_seeker.game.entity.monster.HasProjectiles;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.entity.npc.NPC;
@@ -218,8 +219,15 @@ public abstract class GameMap implements Renderable {
         for (ATKPotion item : atkItems) item.render(batch);
         for (Skill1Potion item : skill1Items) item.render(batch);
         for (Skill2Potion item : skill2Items) item.render(batch);
-        for (Monster m : monsters)
-            m.isRendered(batch);
+        for (Monster m : monsters) {
+            m.renderer.render(m, batch);
+            m.hpBarRenderer.render(batch, m.getBounds(), m.animationManager.getCurrentFrame(), m.getHp(), m.getMaxHp(), m.isDead());
+            if (m instanceof HasProjectiles) {
+                for (Renderable p : ((HasProjectiles)m).getProjectiles()) {
+                    p.render(batch);
+                }
+            }
+        }
         for (NPC npc : npcList) {
             npc.npcRenderer.render(npc, batch);
         }
