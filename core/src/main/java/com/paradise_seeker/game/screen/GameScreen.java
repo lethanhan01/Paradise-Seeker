@@ -15,10 +15,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.player.Player;
-import com.paradise_seeker.game.rendering.renderer.MonsterRenderer;
-import com.paradise_seeker.game.rendering.renderer.NPCRenderer;
-import com.paradise_seeker.game.rendering.renderer.PlayerRenderer;
-import com.paradise_seeker.game.rendering.renderer.PlayerRendererManager;
 import com.paradise_seeker.game.ui.DialogueBox;
 import com.paradise_seeker.game.ui.HUD;
 import com.paradise_seeker.game.entity.skill.PlayerProjectile;
@@ -27,7 +23,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.map.GameMapManager;
 import com.paradise_seeker.game.object.*;
+import com.paradise_seeker.game.object.item.ATKPotion;
+import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
+import com.paradise_seeker.game.object.item.MPPotion;
 import com.paradise_seeker.game.screen.cutscene.EndGame;
 import com.paradise_seeker.game.screen.cutscene.EndMap1;
 import com.paradise_seeker.game.screen.cutscene.EndMap2;
@@ -57,10 +56,6 @@ public class GameScreen implements Screen {
     public static List<PlayerProjectile> activeProjectiles = new ArrayList<>();
     public float zoom = 1.0f;
 
-    private PlayerRenderer playerRenderer; // Nơi gọi hàm render player
-    private MonsterRenderer monsterRenderer;
-    private NPCRenderer npcRenderer;
-
     // Dialogue choices
     public int selectedOptionIndex = 0;
     public final String[] options = {"HP potion", "MP potion", "ATK potion"};
@@ -72,8 +67,6 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Main game) {
         this.game = game;
-        playerRenderer = new PlayerRendererManager(player.animationManager);
-
         // Create player, initial position will come from Tiled data by mapManager
 		player = new Player();
         this.mapManager = new GameMapManager(player);
@@ -210,7 +203,7 @@ public class GameScreen implements Screen {
         // Render monsters, etc. from GameMap
         mapManager.getCurrentMap().render(game.batch);
         // Render player and skills (independent from map)
-        playerRenderer.render(player, game.batch);
+        player.playerRenderer.render(player, game.batch);
         player.playerSkill1.render(game.batch);
         player.playerSkill2.render(game.batch);
         for (PlayerProjectile projectile : activeProjectiles)
@@ -316,58 +309,6 @@ public class GameScreen implements Screen {
         }
     }
 
-
-    private void handleBook() {
-        Book book = mapManager.getCurrentMap().getBook();
-        if (book != null && book.isPlayerInRange(player)) {
-            // Show interaction message if book hasn't been opened yet
-
-
-            // Handle F key press for book interaction
-            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-                if (!book.isOpened()) {
-                    book.onCollision(player);
-                    // Show the book content with longer display time
-                    hud.showNotification(book.getContent());
-                } else {
-                    // If already opened, show a different message
-                    hud.showNotification("You have already read this book.");
-                }
-            }
-        }
-    }
-
-
-
-
-
-    private void handleChest() {
-		Chest chest = mapManager.getCurrentMap().getChest();
-		if (chest != null && player.getBounds().overlaps(chest.getBounds())) {
-
-	    	    player.blockMovement();
-
-			if (!chest.isOpened())
-				hud.showNotification("[F] Open Chest?");
-
-
-			if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-				if (!chest.isOpened()) {
-					chest.onPlayerCollision(player);
-					Array<Item> items = chest.getItems();
-
-			        StringBuilder itemListMessage = new StringBuilder("You received:\n");
-			        for (Item item : items) {
-			            itemListMessage.append("- ").append(item.getName()).append("\n");
-			        }
-
-			        hud.showNotification(itemListMessage.toString());
-				}
-			}
-		}
-	}
-
-
     public void handleDialogueEvent() {
         // Handle F key for dialogue interaction
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
@@ -389,7 +330,7 @@ public class GameScreen implements Screen {
                         // SỬA 1: chỉ mở rương nếu chưa mở và không đang mở
                         if (!currentTalkingNPC.isChestOpened() && !currentTalkingNPC.stateManager.isOpeningChest()) {
                             currentTalkingNPC.openChest();
-                            waitingForChestToOpen = true;
+                            isChestOpened = true;
                         }
 
                         finishNpcInteraction();
@@ -459,7 +400,7 @@ public class GameScreen implements Screen {
         }
         showDialogueOptions = false;
         selectedOptionIndex = 0;
-        waitingForChestToOpen = false;
+        isChestOpened = false;
     }
 
     private void dropPotionNextToPlayer(String potionType) {
@@ -482,12 +423,6 @@ public class GameScreen implements Screen {
         if (dropped != null) {
             mapManager.getCurrentMap().dropItem(dropped);
         }
-    }
-
-    private void handleZoomInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) zoom = Math.min(3.0f, zoom + 0.1f);
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS) || Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
-            zoom = Math.max(0.5f, zoom - 0.1f);
     }
 
 
