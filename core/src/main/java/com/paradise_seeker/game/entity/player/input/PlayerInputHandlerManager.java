@@ -214,6 +214,85 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             }
         }
     }
+
+    public void handleDialogue(GameScreen gameScreen, Player player) {
+        // Handle F key for dialogue interaction
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+            if (gameScreen.showDialogueOptions) {
+                if (gameScreen.currentTalkingNPC != null) {
+                	gameScreen.currentTalkingNPC.stateManager.setHasTalked(true);
+                	gameScreen.pendingPotionToDrop = gameScreen.options[gameScreen.selectedOptionIndex];
+                    gameScreen.showDialogueOptions = false;
+                    gameScreen.selectedOptionIndex = 0;
+
+                    if (gameScreen.currentTalkingNPC.hasNextLine()) {
+                    	gameScreen.currentTalkingNPC.nextLine();
+                    	gameScreen.dialogueBox.show(gameScreen.currentTalkingNPC.getCurrentLine());
+                    } else {
+                    	gameScreen.dialogueBox.hide();
+                    	gameScreen.currentTalkingNPC.setTalking(false);
+
+
+                        // SỬA 1: chỉ mở rương nếu chưa mở và không đang mở
+                        if (!gameScreen.currentTalkingNPC.isChestOpened() && !gameScreen.currentTalkingNPC.stateManager.isOpeningChest()) {
+                        	gameScreen.currentTalkingNPC.openChest();
+                        	gameScreen.isChestOpened = true;
+                        }
+
+                        finishNpcInteraction(gameScreen, player);
+
+                    }
+                }
+            } else if (gameScreen.currentTalkingNPC != null) {
+                if (gameScreen.currentTalkingNPC.shouldShowOptions() && !gameScreen.showDialogueOptions) {
+                	gameScreen.showDialogueOptions = true;
+                } else {
+                    if (gameScreen.currentTalkingNPC.hasNextLine()) {
+                    	gameScreen.currentTalkingNPC.nextLine();
+                    	gameScreen.dialogueBox.show(gameScreen.currentTalkingNPC.getCurrentLine());
+                    } else {
+                    	gameScreen.dialogueBox.hide();
+                    	gameScreen.currentTalkingNPC.setTalking(false);
+
+                        // SỬA 2: chỉ mở rương nếu chưa mở và không đang mở
+                        if (!gameScreen.currentTalkingNPC.isChestOpened() && !gameScreen.currentTalkingNPC.stateManager.isOpeningChest()) {
+                        	gameScreen.currentTalkingNPC.openChest();
+                        	gameScreen.isChestOpened = true;
+                        }
+                        finishNpcInteraction(gameScreen, player);
+                    }
+                }
+            } else {
+                for (Gipsy npc : gameScreen.mapManager.getCurrentMap().getNPCs()) {
+                    float dx = Math.abs(player.getBounds().x - npc.getBounds().x);
+                    float dy = Math.abs(player.getBounds().y - npc.getBounds().y);
+                    if (dx < 2.5f && dy < 2.5f) {
+                    	gameScreen.currentTalkingNPC = npc;
+                        if (!npc.hasTalked()) {
+                            npc.resetDialogue();
+                            npc.setTalking(true);
+                            gameScreen.dialogueBox.show(npc.getCurrentLine());
+                        } else if (npc.isChestOpened()) {
+                            npc.setTalking(true);
+                            gameScreen.dialogueBox.show("<You've already chosen a potion.>");
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Handle left/right input for options
+        if (gameScreen.showDialogueOptions) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+            	gameScreen.selectedOptionIndex = (gameScreen.selectedOptionIndex - 1 + gameScreen.options.length) % gameScreen.options.length;
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+            	gameScreen.selectedOptionIndex = (gameScreen.selectedOptionIndex + 1) % gameScreen.options.length;
+            }
+        }
+    }
+
     public void finishNpcInteraction(GameScreen gameScreen, Player player) {
         if (gameScreen.pendingPotionToDrop != null) {
             dropPotionNextToPlayer(gameScreen.mapManager, gameScreen.pendingPotionToDrop, player);
