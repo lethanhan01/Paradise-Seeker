@@ -14,6 +14,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.rendering.renderer.MonsterRenderer;
+import com.paradise_seeker.game.rendering.renderer.NPCRenderer;
+import com.paradise_seeker.game.rendering.renderer.PlayerRenderer;
+import com.paradise_seeker.game.rendering.renderer.PlayerRendererManager;
 import com.paradise_seeker.game.ui.DialogueBox;
 import com.paradise_seeker.game.ui.HUD;
 import com.paradise_seeker.game.entity.skill.PlayerProjectile;
@@ -50,12 +54,15 @@ public class GameScreen implements Screen {
     public ShapeRenderer shapeRenderer;
     public boolean isInGameMap = true;
     private boolean winTriggered = false;
-
     public static List<PlayerProjectile> activeProjectiles = new ArrayList<>();
 
     private final float CAMERA_VIEW_WIDTH = 16f;
     private final float CAMERA_VIEW_HEIGHT = 10f;
     private float zoom = 1.0f;
+
+    private PlayerRenderer playerRenderer; // Nơi gọi hàm render player
+    private MonsterRenderer monsterRenderer;
+    private NPCRenderer npcRenderer;
 
     // Dialogue choices
     private int selectedOptionIndex = 0;
@@ -68,8 +75,9 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Main game) {
         this.game = game;
+        playerRenderer = new PlayerRendererManager(player.animationManager);
 
-        // Create player, initial position will be set from Tiled data by mapManager!
+        // Create player, initial position will come from Tiled data by mapManager
 		player = new Player();
         this.mapManager = new GameMapManager(player);
         this.hud = new HUD(player, game.font);
@@ -201,16 +209,17 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(gameCamera.combined);
         game.batch.begin();
         mapManager.render(game.batch);
-        // Render all monsters
-        for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
-            monster.isRendered(game.batch);
-        }
-        // Render player and skills
-        player.isRendered(game.batch);
+
+        // Render monsters, etc. from GameMap
+        mapManager.getCurrentMap().render(game.batch);
+        // Render player and skills (independent from map)
+        playerRenderer.render(player, game.batch);
         player.playerSkill1.render(game.batch);
         player.playerSkill2.render(game.batch);
-        for (PlayerProjectile projectile : activeProjectiles) projectile.isRendered(game.batch);
+        for (PlayerProjectile projectile : activeProjectiles)
+            projectile.isRendered(game.batch);
         game.batch.end();
+
         // Render dialogue box
         hudCamera.update();
         game.batch.setProjectionMatrix(hudCamera.combined);
@@ -219,6 +228,7 @@ public class GameScreen implements Screen {
         float fontScale = Math.max(Gdx.graphics.getHeight() / baseHeight, 0.05f);
         dialogueBox.render(game.batch, fontScale);
         game.batch.end();
+
         // Render HUD
         hud.shapeRenderer.setProjectionMatrix(hudCamera.combined);
         hud.spriteBatch.setProjectionMatrix(hudCamera.combined);
@@ -336,7 +346,7 @@ public class GameScreen implements Screen {
     private void handleChest() {
 		Chest chest = mapManager.getCurrentMap().getChest();
 		if (chest != null && player.getBounds().overlaps(chest.getBounds())) {
-			
+
 	    	    player.blockMovement();
 
 			if (!chest.isOpened())
@@ -375,8 +385,13 @@ public class GameScreen implements Screen {
                     } else {
                         dialogueBox.hide();
                         currentTalkingNPC.setTalking(false);
-                        currentTalkingNPC.openChest();
-                        waitingForChestToOpen = true;
+
+                        // SỬA 1: chỉ mở rương nếu chưa mở và không đang mở
+                        if (!currentTalkingNPC.isChestOpened() && !currentTalkingNPC.stateManager.isOpeningChest()) {
+                            currentTalkingNPC.openChest();
+                            waitingForChestToOpen = true;
+                        }
+
                         finishNpcInteraction();
                     }
                 }
@@ -390,7 +405,9 @@ public class GameScreen implements Screen {
                     } else {
                         dialogueBox.hide();
                         currentTalkingNPC.setTalking(false);
-                        if (!currentTalkingNPC.isChestOpened()) {
+
+                        // SỬA 2: chỉ mở rương nếu chưa mở và không đang mở
+                        if (!currentTalkingNPC.isChestOpened() && !currentTalkingNPC.stateManager.isOpeningChest()) {
                             currentTalkingNPC.openChest();
                             waitingForChestToOpen = true;
                         }
@@ -427,6 +444,8 @@ public class GameScreen implements Screen {
             }
         }
     }
+
+
 
     private void finishNpcInteraction() {
         if (pendingPotionToDrop != null) {

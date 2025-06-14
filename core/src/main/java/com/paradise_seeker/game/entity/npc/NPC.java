@@ -1,14 +1,12 @@
 package com.paradise_seeker.game.entity.npc;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Collidable;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
-import com.paradise_seeker.game.rendering.renderer.NPCRenderer;
-import com.paradise_seeker.game.rendering.renderer.NPCRendererManager;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
 
 public abstract class NPC extends Character implements Collidable {
@@ -16,8 +14,11 @@ public abstract class NPC extends Character implements Collidable {
     public boolean isTalking;
     public boolean hasTalked;
     protected Texture texture;
-    private NPCRenderer renderer;
-    private NPCAnimationManager animationManager;
+    protected NPCAnimationManager animationManager = new NPCAnimationManager();
+    protected float stateTime = 0f;
+
+    public NPCAnimationManager getAnimationManager() { return animationManager; }
+    public float getStateTime() { return stateTime; }
 
     public NPC() {
         super();
@@ -30,8 +31,7 @@ public abstract class NPC extends Character implements Collidable {
         this.isTalking = false;
         this.hasTalked = false;
         loadTexture();
-        this.animationManager = new NPCAnimationManager();
-        this.renderer = new NPCRendererManager(animationManager);
+        // KHÔNG cần gán lại animationManager hay renderer ở đây!
     }
 
     protected abstract void loadTexture();
@@ -40,8 +40,8 @@ public abstract class NPC extends Character implements Collidable {
         if (texture != null) {
             texture.dispose();
         }
-        if (renderer != null) {
-            renderer.dispose();
+        if (animationManager != null) {
+            animationManager.dispose();
         }
     }
 
@@ -57,7 +57,11 @@ public abstract class NPC extends Character implements Collidable {
 
     @Override
     public void act(float deltaTime, GameMap map) {
-        // Cập nhật trạng thái NPC nếu cần
+        // Nếu cần update state, subclass sẽ override
+    }
+
+    public Texture getTexture() {
+        return this.texture;
     }
 
     public abstract void setTalking(boolean talking);
@@ -75,23 +79,19 @@ public abstract class NPC extends Character implements Collidable {
         // NPC không thể chết
     }
 
-
-    public void render(SpriteBatch batch) {
-        renderer.render(this, batch);
-    }
-
     @Override
     public Rectangle getBounds() {
         return super.getBounds();
     }
 
     public void update(float deltaTime) {
-        if (animationManager != null) {
-            animationManager.update(deltaTime, isTalking, false);
-        }
+        stateTime += deltaTime;
+        // Nếu muốn animationManager update thì gọi thêm ở subclass
+        // (Thường không cần nếu chỉ lấy animation khi render)
     }
+
     @Override
-    public  boolean isSolid() {
+    public boolean isSolid() {
         return true; // NPCs are solid by default
-   }
+    }
 }

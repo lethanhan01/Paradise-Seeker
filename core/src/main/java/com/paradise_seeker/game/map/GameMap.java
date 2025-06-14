@@ -12,6 +12,7 @@ import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.CollisionSystem;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.npc.Gipsy;
+import com.paradise_seeker.game.entity.npc.NPC;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.object.*;
 import com.paradise_seeker.game.object.item.ATKPotion;
@@ -22,6 +23,7 @@ import com.paradise_seeker.game.object.item.MPPotion;
 import com.paradise_seeker.game.object.item.Skill1Potion;
 import com.paradise_seeker.game.object.item.Skill2Potion;
 import com.paradise_seeker.game.rendering.Renderable;
+import com.paradise_seeker.game.rendering.renderer.NPCRendererManager;
 import com.paradise_seeker.game.ui.HUD;
 import java.util.*;
 
@@ -54,6 +56,8 @@ public abstract class GameMap implements Renderable {
     public List<Skill1Potion> skill1Items = new ArrayList<>();
     public List<Skill2Potion> skill2Items = new ArrayList<>();
 
+    private NPCRendererManager npcRenderer;
+
     public float itemSpawnTimer = 0f;
     public static final float ITEM_SPAWN_INTERVAL = 120f;
 
@@ -64,6 +68,7 @@ public abstract class GameMap implements Renderable {
     public GameMap() {
         tiledMap = new TmxMapLoader().load(getMapTmxPath());
         backgroundTexture = new Texture(getMapBackgroundPath());
+        this.npcRenderer = new NPCRendererManager();
 
         MAP_WIDTH = tiledMap.getProperties().get("width", Integer.class);
         MAP_HEIGHT = tiledMap.getProperties().get("height", Integer.class);
@@ -206,7 +211,7 @@ public abstract class GameMap implements Renderable {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch) { //render những đối tượng trong bản đồ, player được render riêng
         batch.draw(backgroundTexture, 0, 0, MAP_WIDTH, MAP_HEIGHT);
         for (GameObject obj : gameObjects) obj.render(batch);
         for (HPPotion item : hpItems) item.render(batch);
@@ -215,14 +220,16 @@ public abstract class GameMap implements Renderable {
         for (Skill1Potion item : skill1Items) item.render(batch);
         for (Skill2Potion item : skill2Items) item.render(batch);
         for (Monster m : monsters) m.isRendered(batch);
-        for (Gipsy npc : npcList) npc.render(batch);
+        for (NPC npc : npcList) {
+            npcRenderer.render(npc, batch);
+        }
         if (portal != null) portal.render(batch);
         if (startPortal != null) startPortal.render(batch);
         if (chest != null) chest.render(batch);
     }
 
     public void update(float deltaTime) {
-        for (Gipsy npc : npcList) npc.act(deltaTime, GameMap.this);
+        for (NPC npc : npcList) npc.act(deltaTime, GameMap.this);
         for (Monster m : monsters) m.act(deltaTime, player, this);
         hpItems.removeIf(item -> !item.isActive());
         mpItems.removeIf(item -> !item.isActive());

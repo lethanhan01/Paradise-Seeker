@@ -8,90 +8,51 @@ import com.paradise_seeker.game.entity.npc.NPC;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
 
 public class NPCRendererManager implements NPCRenderer {
-    private NPCAnimationManager animationManager;
-    private float stateTime = 0f; // Internal state time for animations
     public float indicatorX;
     public float indicatorY;
 
-    public NPCRendererManager(NPCAnimationManager animationManager) {
-        this.animationManager = animationManager;
-    }
-
     @Override
     public void render(NPC npc, SpriteBatch batch) {
+        NPCAnimationManager animationManager = npc.getAnimationManager();
+        float stateTime = npc.getStateTime();
+
+        Animation<TextureRegion> anim;
+        // Chọn animation dựa vào trạng thái
         if (npc.isTalking) {
-            renderTalkingAnimation(npc, batch);
+            anim = animationManager.getAttackAnimation("down");
         } else {
-            renderIdleAnimation(npc, batch);
+            anim = animationManager.getIdleAnimation("down");
         }
 
-        // Render dialogue indicator if talking
+        TextureRegion frame = (anim != null) ? anim.getKeyFrame(stateTime, true) : null;
+        if (frame != null) {
+            batch.draw(frame, npc.getBounds().x, npc.getBounds().y,
+                npc.getBounds().width, npc.getBounds().height);
+        } else {
+            renderTexture(npc, batch); // fallback nếu không có animation
+        }
+
         if (npc.isTalking) {
             renderDialogueIndicator(npc, batch);
         }
     }
 
-
-    public void update(float deltaTime) {
-        stateTime += deltaTime;
-    }
-
-    private void renderTalkingAnimation(NPC npc, SpriteBatch batch) {
-        // Use idle animation for talking (can be customized)
-        Animation<TextureRegion> idleAnimation = animationManager.getIdleAnimation("down");
-        if (idleAnimation != null) {
-            TextureRegion currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-            if (currentFrame != null) {
-                batch.draw(currentFrame, npc.getBounds().x, npc.getBounds().y,
-                    npc.getBounds().width, npc.getBounds().height);
-            }
-        } else {
-            // Fallback to texture if no animation
-            renderTexture(npc, batch);
-        }
-    }
-
-    private void renderIdleAnimation(NPC npc, SpriteBatch batch) {
-        Animation<TextureRegion> idleAnimation = animationManager.getIdleAnimation("down");
-        if (idleAnimation != null) {
-            TextureRegion currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-            if (currentFrame != null) {
-                batch.draw(currentFrame, npc.getBounds().x, npc.getBounds().y,
-                    npc.getBounds().width, npc.getBounds().height);
-            }
-        } else {
-            // Fallback to texture if no animation
-            renderTexture(npc, batch);
-        }
-    }
-
     private void renderTexture(NPC npc, SpriteBatch batch) {
-        // Access texture through reflection or getter method
-        // This is a fallback when no animation is available
-        try {
-            java.lang.reflect.Field textureField = npc.getClass().getDeclaredField("texture");
-            textureField.setAccessible(true);
-            Texture texture = (Texture) textureField.get(npc);
-            if (texture != null) {
-                batch.draw(texture, npc.getBounds().x, npc.getBounds().y,
-                    npc.getBounds().width, npc.getBounds().height);
-            }
-        } catch (Exception e) {
-
+        Texture texture = npc.getTexture();
+        if (texture != null) {
+            batch.draw(texture, npc.getBounds().x, npc.getBounds().y,
+                npc.getBounds().width, npc.getBounds().height);
         }
     }
 
     private void renderDialogueIndicator(NPC npc, SpriteBatch batch) {
-
         indicatorX = npc.getBounds().x + npc.getBounds().width / 2 - 0.1f;
         indicatorY = npc.getBounds().y + npc.getBounds().height + 0.1f;
+        // vẽ hiệu ứng chỉ báo tại đây nếu cần (icon, ...), ví dụ: batch.draw(indicatorTexture, indicatorX, indicatorY, ...);
     }
 
     @Override
     public void dispose() {
-        // Dispose of any resources if needed
-        if (animationManager != null) {
-            animationManager.dispose();
-        }
+        // Nếu có quản lý resource ở đây thì dispose
     }
 }
