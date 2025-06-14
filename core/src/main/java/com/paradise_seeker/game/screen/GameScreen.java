@@ -23,10 +23,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.map.GameMapManager;
 import com.paradise_seeker.game.object.*;
-import com.paradise_seeker.game.object.item.ATKPotion;
-import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
-import com.paradise_seeker.game.object.item.MPPotion;
 import com.paradise_seeker.game.screen.cutscene.EndGame;
 import com.paradise_seeker.game.screen.cutscene.EndMap1;
 import com.paradise_seeker.game.screen.cutscene.EndMap2;
@@ -117,7 +114,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Dialogue logic (unchanged)
-    	handleDialogueEvent();
+    	player.inputHandler.handleDialogue(this, player);
 
         // Zoom logic
         player.inputHandler.handleZoomInput(this);
@@ -308,123 +305,6 @@ public class GameScreen implements Screen {
             switchMusicAndShowMap();
         }
     }
-
-    public void handleDialogueEvent() {
-        // Handle F key for dialogue interaction
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-            if (showDialogueOptions) {
-                if (currentTalkingNPC != null) {
-                    currentTalkingNPC.stateManager.setHasTalked(true);
-                    pendingPotionToDrop = options[selectedOptionIndex];
-                    showDialogueOptions = false;
-                    selectedOptionIndex = 0;
-
-                    if (currentTalkingNPC.hasNextLine()) {
-                        currentTalkingNPC.nextLine();
-                        dialogueBox.show(currentTalkingNPC.getCurrentLine());
-                    } else {
-                        dialogueBox.hide();
-                        currentTalkingNPC.setTalking(false);
-
-
-                        // SỬA 1: chỉ mở rương nếu chưa mở và không đang mở
-                        if (!currentTalkingNPC.isChestOpened() && !currentTalkingNPC.stateManager.isOpeningChest()) {
-                            currentTalkingNPC.openChest();
-                            isChestOpened = true;
-                        }
-
-                        finishNpcInteraction();
-
-                    }
-                }
-            } else if (currentTalkingNPC != null) {
-                if (currentTalkingNPC.shouldShowOptions() && !showDialogueOptions) {
-                    showDialogueOptions = true;
-                } else {
-                    if (currentTalkingNPC.hasNextLine()) {
-                        currentTalkingNPC.nextLine();
-                        dialogueBox.show(currentTalkingNPC.getCurrentLine());
-                    } else {
-                        dialogueBox.hide();
-                        currentTalkingNPC.setTalking(false);
-
-                        // SỬA 2: chỉ mở rương nếu chưa mở và không đang mở
-                        if (!currentTalkingNPC.isChestOpened() && !currentTalkingNPC.stateManager.isOpeningChest()) {
-                            currentTalkingNPC.openChest();
-                            isChestOpened = true;
-                        }
-                        player.inputHandler.finishNpcInteraction(this, player);
-                    }
-                }
-            } else {
-                for (Gipsy npc : mapManager.getCurrentMap().getNPCs()) {
-                    float dx = Math.abs(player.getBounds().x - npc.getBounds().x);
-                    float dy = Math.abs(player.getBounds().y - npc.getBounds().y);
-                    if (dx < 2.5f && dy < 2.5f) {
-                        currentTalkingNPC = npc;
-                        if (!npc.hasTalked()) {
-                            npc.resetDialogue();
-                            npc.setTalking(true);
-                            dialogueBox.show(npc.getCurrentLine());
-                        } else if (npc.isChestOpened()) {
-                            npc.setTalking(true);
-                            dialogueBox.show("<You've already chosen a potion.>");
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Handle left/right input for options
-        if (showDialogueOptions) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-                selectedOptionIndex = (selectedOptionIndex - 1 + options.length) % options.length;
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-                selectedOptionIndex = (selectedOptionIndex + 1) % options.length;
-            }
-        }
-    }
-
-
-
-    private void finishNpcInteraction() {
-        if (pendingPotionToDrop != null) {
-            dropPotionNextToPlayer(pendingPotionToDrop);
-            pendingPotionToDrop = null;
-        }
-        if (currentTalkingNPC != null) {
-            currentTalkingNPC.setTalking(false);
-            currentTalkingNPC = null;
-        }
-        showDialogueOptions = false;
-        selectedOptionIndex = 0;
-        isChestOpened = false;
-    }
-
-    private void dropPotionNextToPlayer(String potionType) {
-        float dropX = player.getBounds().x + player.getBounds().width + 0.2f;
-        float dropY = player.getBounds().y;
-        Item dropped = null;
-
-        switch (potionType) {
-            case "HP potion":
-                dropped = new HPPotion(dropX, dropY, 1f, "items/potion/potion3.png", 100);
-                break;
-            case "MP potion":
-                dropped = new MPPotion(dropX, dropY, 1f, "items/potion/potion9.png", 15);
-                break;
-            case "ATK potion":
-                dropped = new ATKPotion(dropX, dropY, 1f, "items/atkbuff_potion/potion14.png", 10);
-                break;
-        }
-
-        if (dropped != null) {
-            mapManager.getCurrentMap().dropItem(dropped);
-        }
-    }
-
 
     @Override public void resize(int width, int height) {
         game.viewport.update(width, height, true);
