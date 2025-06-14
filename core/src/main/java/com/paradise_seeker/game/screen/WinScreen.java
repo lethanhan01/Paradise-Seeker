@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.Input;
 import com.paradise_seeker.game.main.Main;
+import com.paradise_seeker.game.screen.cutscene.IntroCutScene;
 
 public class WinScreen implements Screen {
 
@@ -26,7 +27,6 @@ public class WinScreen implements Screen {
         this.game = game;
         this.batch = new SpriteBatch();
         this.font = game.font;  // dùng font mặc định
-        this.font.getData().setScale(1.3f);
         this.font.setColor(Color.WHITE);
         this.background = new Texture("menu/win_menu/menu_end/win_menu.png");
         this.layout = new GlyphLayout();
@@ -95,10 +95,13 @@ public class WinScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             switch (selectedIndex) {
                 case 0:
-                    game.setScreen(new GameScreen(game)); // chơi lại
+                    game.currentGame = null;
+                    game.inventoryScreen = null; // Reset inventory screengam
+                    game.currentGame = new GameScreen(game);
+                    game.setScreen(new IntroCutScene(game));
                     break;
                 case 1:
-                    game.setScreen(new MainMenuScreen(game)); // quay lại menu
+                    game.setScreen(game.mainMenu); // quay lại menu
                     break;
             }
         }
@@ -106,7 +109,9 @@ public class WinScreen implements Screen {
 
     @Override public void resize(int width, int height) {}
     @Override public void show() {}
-    @Override public void hide() {}
+    @Override public void hide() {
+    	font.getData().setScale( Main.WORLD_HEIGHT / Gdx.graphics.getHeight());
+    }
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void dispose() {

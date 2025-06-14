@@ -11,6 +11,7 @@ import com.paradise_seeker.game.screen.GameScreen;
 import com.paradise_seeker.game.screen.InventoryScreen;
 import com.paradise_seeker.game.screen.MainMenuScreen;
 import com.paradise_seeker.game.screen.SettingScreen;
+import com.paradise_seeker.game.screen.WinScreen;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
@@ -28,7 +29,7 @@ public class Main extends Game {
     public SettingScreen settingMenu = null;
     public InventoryScreen inventoryScreen = null;
     public ControlScreen controlScreen = null;
-    public GameScreen WinScreen = null;
+    public WinScreen WinScreen = null;
     @Override
     public void create() {
         batch = new SpriteBatch();
