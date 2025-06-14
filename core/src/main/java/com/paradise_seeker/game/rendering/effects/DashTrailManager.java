@@ -3,7 +3,6 @@ package com.paradise_seeker.game.rendering.effects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.paradise_seeker.game.entity.player.DashTrail;
 import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 
 import java.util.Iterator;
