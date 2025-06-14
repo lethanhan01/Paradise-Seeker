@@ -72,12 +72,6 @@ public class MinotaurElite extends Monster {
     }
 
     @Override
-    public void isRendered(SpriteBatch batch) {
-        // Use parent class's render method
-        super.isRendered(batch);
-    }
-
-    @Override
     public void onCollision(Player player) {
         // Use parent class's collision handling
         super.onCollision(player);

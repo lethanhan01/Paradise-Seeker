@@ -73,11 +73,6 @@ public class FlyingCreep extends Monster {
         this.isDead = true;
     }
 
-    @Override
-    public void isRendered(SpriteBatch batch) {
-        // Use parent class's render method
-        super.isRendered(batch);
-    }
 
     @Override
     public void onCollision(Player player) {

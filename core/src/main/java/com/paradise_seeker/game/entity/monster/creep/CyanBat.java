@@ -69,11 +69,7 @@ public class CyanBat extends Monster {
         this.isDead = true;
     }
 
-    @Override
-    public void isRendered(SpriteBatch batch) {
-        // Use the parent class's render method
-        super.isRendered(batch);
-    }
+
 
     @Override
     public void onCollision(Player player) {

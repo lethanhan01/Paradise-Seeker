@@ -56,14 +56,6 @@ public class EvilPlant extends Monster {
         );
     }
 
-    @Override
-    public void isRendered(SpriteBatch batch) {
-        // Use the parent class's render method
-        super.isRendered(batch);
-    }
-
-    // Removing the render(SpriteBatch batch, Player player) method as it's not needed
-    // The parent class renderer will handle drawing
 
     private Animation<TextureRegion> loadAnimation(String folder, String prefix, int frameCount, String suffix, int startIndex) {
         TextureRegion[] frames = new TextureRegion[frameCount];

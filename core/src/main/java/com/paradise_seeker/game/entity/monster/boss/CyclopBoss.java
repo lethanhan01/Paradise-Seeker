@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.paradise_seeker.game.entity.monster.HasProjectiles;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.monster.MonsterProjectile;
 import com.paradise_seeker.game.entity.player.Player;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CyclopBoss extends Monster {
+public class CyclopBoss extends Monster implements HasProjectiles {
 
     private final float scaleMultiplier = 2.5f;
 
@@ -24,6 +25,10 @@ public class CyclopBoss extends Monster {
     public CyclopBoss(float x, float y) {
         super(new Rectangle(x, y, 2.0f, 2.0f), 1500f, 100f, 1500f, 100f, 100f, 1.5f, x, y);
         this.collisionHandler.setCleaveRange(8.0f);
+    }
+    @Override
+    public List<MonsterProjectile> getProjectiles() {
+        return projectiles;
     }
 
     public float getScaleMultiplier() { return scaleMultiplier; }
@@ -80,11 +85,6 @@ public class CyclopBoss extends Monster {
         }
     }
 
-    @Override
-    public void isRendered(SpriteBatch batch) {
-        super.isRendered(batch);
-        for (MonsterProjectile p : projectiles) p.render(batch);
-    }
 
     // -- Cơ chế cleave: override lại cleave để tạo skill projectile --
     @Override
