@@ -7,11 +7,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.player.Player;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.map.GameMap;
 
 public class ParadiseKing extends Monster {
-    // Boss-specific properties
     private float scaleMultiplier = 12f;
 
     public ParadiseKing(float x, float y) {

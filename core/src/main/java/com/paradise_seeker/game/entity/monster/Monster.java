@@ -3,7 +3,6 @@ package com.paradise_seeker.game.entity.monster;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Collidable;

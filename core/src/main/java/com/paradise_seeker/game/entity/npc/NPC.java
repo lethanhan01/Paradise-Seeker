@@ -5,12 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
-import com.paradise_seeker.game.entity.player.input.PlayerInputHandlerManager;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
-import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 import com.paradise_seeker.game.rendering.renderer.NPCRendererManager;
-import com.paradise_seeker.game.rendering.renderer.PlayerRendererManager;
 
 public abstract class NPC extends Character implements Collidable {
     public String dialogue;

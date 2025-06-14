@@ -57,7 +57,7 @@ public abstract class GameMap implements Renderable {
     public List<Skill1Potion> skill1Items = new ArrayList<>();
     public List<Skill2Potion> skill2Items = new ArrayList<>();
 
-    private NPCRendererManager npcRenderer;
+    public NPCRendererManager npcRenderer;
 
     public float itemSpawnTimer = 0f;
     public static final float ITEM_SPAWN_INTERVAL = 120f;

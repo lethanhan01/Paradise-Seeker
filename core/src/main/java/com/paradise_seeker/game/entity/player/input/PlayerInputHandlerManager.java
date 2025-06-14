@@ -20,6 +20,10 @@ import com.paradise_seeker.game.screen.GameScreen;
 
 public class PlayerInputHandlerManager implements PlayerInputHandler {
     public boolean showInteractMessage = false;
+    public String pendingPotionToDrop = null;
+    public boolean showDialogueOptions = false;
+    public final String[] options = {"HP potion", "MP potion", "ATK potion"};
+    public int selectedOptionIndex = 0;
 
     public boolean isShowInteractMessage() {
         return showInteractMessage;
@@ -146,20 +150,6 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         }
     }
 
-    public void damageMonstersInRange(float x, float y, float radius, float damage, GameMap gameMap) {
-        for (Monster m : gameMap.getMonsters()) {
-            if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeHit(damage);
-        }
-    }
-
-    public boolean isInRange(float x, float y, Rectangle bounds, float radius) {
-        float centerX = bounds.x + bounds.width / 2;
-        float centerY = bounds.y + bounds.height / 2;
-        float dx = centerX - x;
-        float dy = centerY - y;
-        return dx * dx + dy * dy <= radius * radius;
-    }
-
     @Override
     public void handleAttack(Player player, GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -174,8 +164,19 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             }
         }
     }
+    public void damageMonstersInRange(float x, float y, float radius, float damage, GameMap gameMap) {
+        for (Monster m : gameMap.getMonsters()) {
+            if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeHit(damage);
+        }
+    }
 
-
+    public boolean isInRange(float x, float y, Rectangle bounds, float radius) {
+        float centerX = bounds.x + bounds.width / 2;
+        float centerY = bounds.y + bounds.height / 2;
+        float dx = centerX - x;
+        float dy = centerY - y;
+        return dx * dx + dy * dy <= radius * radius;
+    }
 
     @Override
     public void handleSkills(Player player) {
@@ -218,12 +219,12 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
     public void handleDialogue(GameScreen gameScreen, Player player) {
         // Handle F key for dialogue interaction
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-            if (gameScreen.showDialogueOptions) {
+            if (this.showDialogueOptions) {
                 if (gameScreen.currentTalkingNPC != null) {
                 	gameScreen.currentTalkingNPC.stateManager.setHasTalked(true);
-                	gameScreen.pendingPotionToDrop = gameScreen.options[gameScreen.selectedOptionIndex];
-                    gameScreen.showDialogueOptions = false;
-                    gameScreen.selectedOptionIndex = 0;
+                	this.pendingPotionToDrop = this.options[this.selectedOptionIndex];
+                    this.showDialogueOptions = false;
+                    this.selectedOptionIndex = 0;
 
                     if (gameScreen.currentTalkingNPC.hasNextLine()) {
                     	gameScreen.currentTalkingNPC.nextLine();
@@ -236,7 +237,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                         // SỬA 1: chỉ mở rương nếu chưa mở và không đang mở
                         if (!gameScreen.currentTalkingNPC.isChestOpened() && !gameScreen.currentTalkingNPC.stateManager.isOpeningChest()) {
                         	gameScreen.currentTalkingNPC.openChest();
-                        	gameScreen.isChestOpened = true;
+                        	gameScreen.currentTalkingNPC.stateManager.isChestOpened = true;
                         }
 
                         finishNpcInteraction(gameScreen, player);
@@ -244,8 +245,8 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                     }
                 }
             } else if (gameScreen.currentTalkingNPC != null) {
-                if (gameScreen.currentTalkingNPC.shouldShowOptions() && !gameScreen.showDialogueOptions) {
-                	gameScreen.showDialogueOptions = true;
+                if (gameScreen.currentTalkingNPC.shouldShowOptions() && !this.showDialogueOptions) {
+                	this.showDialogueOptions = true;
                 } else {
                     if (gameScreen.currentTalkingNPC.hasNextLine()) {
                     	gameScreen.currentTalkingNPC.nextLine();
@@ -257,7 +258,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                         // SỬA 2: chỉ mở rương nếu chưa mở và không đang mở
                         if (!gameScreen.currentTalkingNPC.isChestOpened() && !gameScreen.currentTalkingNPC.stateManager.isOpeningChest()) {
                         	gameScreen.currentTalkingNPC.openChest();
-                        	gameScreen.isChestOpened = true;
+                        	gameScreen.currentTalkingNPC.stateManager.isChestOpened = true;
                         }
                         finishNpcInteraction(gameScreen, player);
                     }
@@ -283,28 +284,28 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         }
 
         // Handle left/right input for options
-        if (gameScreen.showDialogueOptions) {
+        if (this.showDialogueOptions) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-            	gameScreen.selectedOptionIndex = (gameScreen.selectedOptionIndex - 1 + gameScreen.options.length) % gameScreen.options.length;
+            	this.selectedOptionIndex = (this.selectedOptionIndex - 1 + this.options.length) % this.options.length;
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-            	gameScreen.selectedOptionIndex = (gameScreen.selectedOptionIndex + 1) % gameScreen.options.length;
+            	this.selectedOptionIndex = (this.selectedOptionIndex + 1) % this.options.length;
             }
         }
     }
 
     public void finishNpcInteraction(GameScreen gameScreen, Player player) {
-        if (gameScreen.pendingPotionToDrop != null) {
-            dropPotionNextToPlayer(gameScreen.mapManager, gameScreen.pendingPotionToDrop, player);
-            gameScreen.pendingPotionToDrop = null;
+        if (this.pendingPotionToDrop != null) {
+            dropPotionNextToPlayer(gameScreen.mapManager, this.pendingPotionToDrop, player);
+            this.pendingPotionToDrop = null;
         }
         if (gameScreen.currentTalkingNPC != null) {
         	gameScreen.currentTalkingNPC.setTalking(false);
         	gameScreen.currentTalkingNPC = null;
         }
-        gameScreen.showDialogueOptions = false;
-        gameScreen.selectedOptionIndex = 0;
-        gameScreen.isChestOpened = false;
+        this.showDialogueOptions = false;
+        this.selectedOptionIndex = 0;
+        gameScreen.currentTalkingNPC.stateManager.isChestOpened = false;
     }
 
     public void dropPotionNextToPlayer(GameMapManager mapManager, String potionType, Player player) {
@@ -384,7 +385,6 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             Math.pow(player.getBounds().y + player.getBounds().height/2 - (npc.getBounds().y + npc.getBounds().height/2), 2)
         );
     }
-
 
     public void clampToMapBounds(Player player, GameMap gameMap) {
         if (gameMap == null) return;
