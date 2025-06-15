@@ -16,6 +16,7 @@ import com.paradise_seeker.game.object.item.ATKPotion;
 import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
 import com.paradise_seeker.game.object.item.MPPotion;
+import com.paradise_seeker.game.screen.ControlScreen;
 import com.paradise_seeker.game.screen.GameScreen;
 
 public class PlayerInputHandlerManager implements PlayerInputHandler {
@@ -35,15 +36,14 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
 
         // Check for interaction opportunities and set showInteractMessage
         checkForInteractions(player, gameMap);
-
         handleMovement(player, deltaTime, gameMap);
         handleDash(player, gameMap);
         handleAttack(player, gameMap);
         handleSkills(player);
         handleNPCInteraction(player, gameMap);
     }
-    private void checkForInteractions(Player player, GameMap gameMap) {
-        showInteractMessage = false; // Reset first
+    public void checkForInteractions(Player player, GameMap gameMap) {
+      //  showInteractMessage = false; // Reset first
 
         if (gameMap == null) return;
 
@@ -52,15 +52,24 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             float distance = calculateDistance(player, npc);
             if (distance <= 2.5f) {
                 showInteractMessage = true;
+                if ( Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+					showDialogueOptions = true; // Reset options when interacting
+				}else {
+					showDialogueOptions = false; // No options available
+				}
                 return; // Found an interaction, no need to check further
-            }
+            }else {
+				showInteractMessage = false; // No interaction available
+			}
         }
 
         // Check for books
         Book book = gameMap.getBook();
         if (book != null && book.isPlayerInRange(player) && !book.isOpened()) {
-            showInteractMessage = true;
-        }
+        		showInteractMessage = true;
+        }else {
+			showInteractMessage = false; // No interaction available
+		}
     }
     @Override
     public void handleMovement(Player player, float deltaTime, GameMap gameMap) {
@@ -210,6 +219,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             }
 
             if (nearestNPC != null) {
+            	
                 nearestNPC.openChest();
                 // Có thể thêm các logic tương tác khác ở đây
             }
@@ -239,7 +249,6 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                         	gameScreen.currentTalkingNPC.openChest();
                         	gameScreen.currentTalkingNPC.stateManager.isChestOpened = true;
                         }
-
                         finishNpcInteraction(gameScreen, player);
 
                     }
@@ -291,7 +300,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             if (Gdx.input.isKeyJustPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
             	this.selectedOptionIndex = (this.selectedOptionIndex + 1) % this.options.length;
             }
-        }
+        } 
     }
 
     public void dropPotionNextToPlayer(GameMapManager mapManager, String potionType, Player player) {
@@ -327,7 +336,8 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         }
         this.showDialogueOptions = false;
         this.selectedOptionIndex = 0;
-        gameScreen.currentTalkingNPC.stateManager.isChestOpened = false;     
+        gameScreen.currentTalkingNPC.stateManager.isChestOpened = false; // Reset trạng thái mở rương
+
     }
 
 
@@ -366,18 +376,18 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
 	@Override
     public void handleBook(GameScreen gameScreen, Player player) {
         Book book = gameScreen.mapManager.getCurrentMap().getBook();
-        if (book != null && book.isPlayerInRange(player)) {
+        if (book != null && player.getBounds().overlaps(book.getBounds())) {
+        	player.blockMovement();
             // Handle F key press for book interaction
-            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+        	if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
                 if (!book.isOpened()) {
                     book.onCollision(player);
                     // Show the book content with longer display time
-                    gameScreen.hud.showNotification(book.getContent());
-                } else {
-                    // If already opened, show a different message
-                	gameScreen.hud.showNotification("You have already read this book.");
+                    if (gameScreen.game.controlScreen == null)
+                    	gameScreen.game.controlScreen = new ControlScreen(gameScreen.game);
+                    gameScreen.game.setScreen(gameScreen.game.controlScreen);
                 }
-            }
+        	}
         }
     }
 
