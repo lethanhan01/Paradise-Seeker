@@ -15,7 +15,7 @@ public class SettingScreen implements Screen {
     final Main game;
     GlyphLayout layout;
     // Menu items
-    String[] menuItems = {"Full Screen", "Music", "Control", "Back", "Return to Menu"};
+    String[] menuItems = {"Full Screen", "Music", "Control", "Back to the Game", "Return to Menu"};
     int selectedIndex = 0;
     // audio volume configuration
     public float setVolume = 0.5f;
