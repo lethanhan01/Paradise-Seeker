@@ -11,6 +11,7 @@ public class Gipsy extends NPC {
     protected DialogueManager dialogueManager;
     protected float spriteWidth = 1.9f;
     protected float spriteHeight = 1.8f;
+//    protected boolean HadTalked = false;
 
     public Gipsy(float x, float y) {
         super();

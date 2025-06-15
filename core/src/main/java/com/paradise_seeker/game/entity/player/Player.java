@@ -38,7 +38,7 @@ public class Player extends Character {
     public PlayerInventoryManager inventoryManager;
     public DashTrailManager smokeManager = new DashTrailManager();
     public PlayerAnimationManager animationManager;
-    public PlayerInputHandlerManager inputHandler;
+    public PlayerInputHandlerManager inputHandler;  
     public PlayerRendererManager playerRenderer;
     public PlayerSkill playerSkill1;
     public PlayerSkill playerSkill2 = new PlayerSkill2();

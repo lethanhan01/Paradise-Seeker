@@ -165,7 +165,7 @@ public abstract class GameMap implements Renderable {
 					} else if (potionType == 1) {
 						mpItems.add(new MPPotion(worldX, worldY, 1, "items/potion/potion9.png", 15));
 					} else if (potionType == 2) {
-						atkItems.add(new ATKPotion(worldX, worldY, 1, "items/atkbuff_potion/potion14.png", 5));
+						atkItems.add(new ATKPotion(worldX, worldY, 1, "items/atkbuff_potion/potion14.png",10));
 					} else if (potionType == 3) {
 						skill1Items.add(new Skill1Potion(worldX, worldY, 1, "items/buff/potion12.png"));
 					} else if (potionType == 4) {
@@ -257,11 +257,11 @@ public abstract class GameMap implements Renderable {
 
         // Liên kết trực tiếp
         system.collidables = this.collidables;
-        system.hpItems = new ArrayList<>(this.hpItems);
-        system.mpItems = new ArrayList<>(this.mpItems);
-        system.atkItems = new ArrayList<>(this.atkItems);
-        system.skill1Items = new ArrayList<>(this.skill1Items);
-        system.skill2Items = new ArrayList<>(this.skill2Items);
+        system.hpItems = this.hpItems;
+        system.mpItems = this.mpItems;
+        system.atkItems = this.atkItems;
+        system.skill1Items = this.skill1Items;
+        system.skill2Items = this.skill2Items;
     }
     public void dispose() {
         backgroundTexture.dispose();
