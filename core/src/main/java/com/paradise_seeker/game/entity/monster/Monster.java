@@ -70,7 +70,7 @@ public abstract class Monster extends Character implements Collidable {
         if (player == null || player.isDead) return;
 
         // Update AI first
-        ai.update(deltaTime, player, map, this);
+        ai.update(deltaTime, player, map.collisionSystem, this);
 
         // Track movement
         isMoving = lastPosition.dst(bounds.x, bounds.y) > 0.0001f;

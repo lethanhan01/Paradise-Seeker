@@ -35,7 +35,7 @@ public abstract class GameMap implements Renderable {
     protected int TILE_HEIGHT;
     protected String mapName = "Unknown Map";
     public String getMapName() { return mapName; }
-
+    public CollisionSystem collisionSystem;
     protected TiledMap tiledMap;
     protected Texture backgroundTexture;
 
@@ -252,50 +252,17 @@ public abstract class GameMap implements Renderable {
         if (chest != null) chest.update(deltaTime);
     }
 
-    public void checkCollisions(Player player, HUD hud) {
-        CollisionSystem.checkCollisions(player, collidables);
-        List<List<? extends Item>> allItemLists = Arrays.asList(
-            hpItems, mpItems, atkItems, skill1Items, skill2Items
-        );
-        for (List<? extends Item> itemList : allItemLists) {
-            for (Item item : itemList) {
-                if (item.isActive() && item.getBounds().overlaps(player.getBounds())) {
-                    boolean canStack = false;
-                    boolean hasStackWithSpace = false;
-                    if (item.isStackable()) {
-                        for (Item invItem : player.getInventory()) {
-                            if (invItem.canStackWith(item) && invItem.getCount() < invItem.getMaxStackSize()) {
-                                hasStackWithSpace = true;
-                                break;
-                            }
-                        }
-                        canStack = hasStackWithSpace;
-                    }
-                    boolean isFull = player.getInventory().size() >= player.getInventorySize();
-                    if (!canStack && isFull) {
-                        if (hud != null) hud.showNotification("> Inventory is full!");
-                    } else {
-                        item.onCollision(player);
-                        if (hud != null) hud.showNotification("> Picked up: " + item.getName());
-                    }
-                }
-            }
-        }
+    public void setCollisionSystem(CollisionSystem system) {
+        this.collisionSystem = system;
+
+        // Liên kết trực tiếp
+        system.collidables = this.collidables;
+        system.hpItems = new ArrayList<>(this.hpItems);
+        system.mpItems = new ArrayList<>(this.mpItems);
+        system.atkItems = new ArrayList<>(this.atkItems);
+        system.skill1Items = new ArrayList<>(this.skill1Items);
+        system.skill2Items = new ArrayList<>(this.skill2Items);
     }
-
-    public boolean isBlocked(Rectangle nextBounds, Collidable self) {
-        for (Collidable c : collidables) {
-            if (c == self) continue; // tránh kiểm tra chính mình
-            if (c.getBounds().overlaps(nextBounds)) return true;
-        }
-        return false;
-    }
-    public boolean isBlocked(Rectangle nextBounds) {
-
-        return isBlocked(nextBounds, null);
-    }
-
-
     public void dispose() {
         backgroundTexture.dispose();
         for (GameObject obj : gameObjects) obj.dispose();
