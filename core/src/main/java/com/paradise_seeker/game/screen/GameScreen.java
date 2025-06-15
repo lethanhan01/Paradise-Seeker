@@ -106,8 +106,14 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Dialogue logic (unchanged)
-    	player.inputHandler.handleDialogue(this, player);
+    	player.inputHandler.checkForInteractions(player, this.mapManager.getCurrentMap());
+    	System.out.println("Current Map: " + mapManager.getCurrentMap().getMapName() + "\n NPCInteraction: " + player.inputHandler.showDialogueOptions);
+	
 
+		// Handle NPC interaction
+    	if (player.inputHandler.showDialogueOptions) {
+			player.inputHandler.handleDialogue(this, player);
+		}
         // Zoom logic
         player.inputHandler.handleZoomInput(this);
 
@@ -267,10 +273,12 @@ public class GameScreen implements Screen {
             	mapManager.switchToNextMap();
                 switchMusicAndShowMap();
 			} else {
+				Item key = null;
 				boolean hasKey = false;
 	        	for (Item item : player.getInventory()) {
 					if (item.getName().equals("Fragment of the Lost Treasure")) {
 						hasKey = true;
+						key = item;
 						break;
 					}
 				}
@@ -281,6 +289,7 @@ public class GameScreen implements Screen {
 					    game.setScreen(new EndMap4(game)); // Reuse EndMap1 for Map 4 to Map 5 transition
 					}
 	        		if (mapManager.getCurrentMapIndex() == 3) {
+	        			player.inventoryManager.removeItem(key); 
 		                mapManager.switchToNextMap();
 		                }
 

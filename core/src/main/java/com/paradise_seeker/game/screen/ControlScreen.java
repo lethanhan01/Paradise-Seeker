@@ -23,8 +23,8 @@ public class ControlScreen implements Screen {
 			{"Skill 2", "I"},
 			{"Pause Game", "ESC"},
 			{"Inventory", "B"},
-			{"Use Item", "E"},
-			{"Drop Item", "Q"}
+			{"   - Use Item", "E"},
+			{"   - Drop Item", "Q"}
 	};
 
 	public ControlScreen(Main game) {
@@ -75,12 +75,12 @@ public class ControlScreen implements Screen {
 		// Hint để quay lại
 		font.setColor(Color.YELLOW);
 		font.draw(game.batch, "[ESC] Return", xLeft, 0.5f);
-
+		font.setColor(Color.WHITE);
 		game.batch.end();
 
 		// Quay lại SettingScreen
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-			game.setScreen(game.settingMenu);
+			game.setScreen(game.currentGame);
 		}
 	}
 
