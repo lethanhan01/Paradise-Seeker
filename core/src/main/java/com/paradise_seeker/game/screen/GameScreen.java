@@ -107,12 +107,13 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         // Dialogue logic (unchanged)
     	player.inputHandler.checkForInteractions(player, this.mapManager.getCurrentMap());
-    	System.out.println("Current Map: " + mapManager.getCurrentMap().getMapName() + "\n NPCInteraction: " + player.inputHandler.showDialogueOptions);
+  //  	System.out.println("Current Map: " + mapManager.getCurrentMap().getMapName() + "\n NPCInteraction: " + player.inputHandler.showDialogueOptions);
 	
 
 		// Handle NPC interaction
     	if (player.inputHandler.showDialogueOptions) {
 			player.inputHandler.handleDialogue(this, player);
+			
 		}
         // Zoom logic
         player.inputHandler.handleZoomInput(this);

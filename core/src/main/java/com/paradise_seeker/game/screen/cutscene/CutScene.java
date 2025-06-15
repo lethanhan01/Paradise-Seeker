@@ -128,10 +128,6 @@ public abstract class CutScene implements Screen {
     }
     
     protected void onCutsceneEnd() {
-        // Sau khi cutscene kết thúc, chuyển sang màn hình chơi game
-        if (game.currentGame == null) {
-            game.currentGame = new com.paradise_seeker.game.screen.GameScreen(game);
-        }
         game.setScreen(game.currentGame);
     }
 }
