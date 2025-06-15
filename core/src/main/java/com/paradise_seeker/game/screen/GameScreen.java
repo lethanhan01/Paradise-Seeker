@@ -55,7 +55,7 @@ public class GameScreen implements Screen {
     public GameScreen(final Main game) {
         this.game = game;
         // Create player, initial position will come from Tiled data by mapManager
-		player = new Player(this);
+		player = new Player();
 		currentTalkingNPC = new Gipsy(); // Initialize with a default NPC
         this.mapManager = new GameMapManager(player);
         this.hud = new HUD(player, game.font);

@@ -50,7 +50,7 @@ public class Player extends Character {
     public float invulnerabilityTimer = 0f;
     public static final float INVULNERABILITY_DURATION = 0.7f;
 
-    public Player(GameScreen gameScreen) {
+    public Player() {
         this.bounds = new Rectangle(0, 0, 1, 1);
         this.hp = MAX_HP;
         this.mp = MAX_MP;
