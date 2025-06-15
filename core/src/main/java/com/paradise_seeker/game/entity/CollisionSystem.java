@@ -5,16 +5,21 @@ import java.util.List;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.object.item.ATKPotion;
+import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
+import com.paradise_seeker.game.object.item.MPPotion;
+import com.paradise_seeker.game.object.item.Skill1Potion;
+import com.paradise_seeker.game.object.item.Skill2Potion;
 import com.paradise_seeker.game.ui.HUD;
 
 public class CollisionSystem {
     public List<Collidable> collidables;
-    public List<Item> hpItems;
-    public List<Item> mpItems;
-    public List<Item> atkItems;
-    public List<Item> skill1Items;
-    public List<Item> skill2Items;
+    public List<HPPotion> hpItems;
+    public List<MPPotion> mpItems;
+    public List<ATKPotion> atkItems;
+    public List<Skill1Potion> skill1Items;
+    public List<Skill2Potion> skill2Items;
     public static void checkCollisions(Player player, List<Collidable> collidables) {
         for (Collidable c : collidables) {
             if (player.getBounds().overlaps(c.getBounds())) {
