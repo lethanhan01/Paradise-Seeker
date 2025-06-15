@@ -41,7 +41,7 @@ public class Player extends Character {
     public PlayerInputHandlerManager inputHandler;  
     public PlayerRendererManager playerRenderer;
     public PlayerSkill playerSkill1;
-    public PlayerSkill playerSkill2 = new PlayerSkill2();
+    public PlayerSkill playerSkill2;
 
     public boolean isDead = false;
     public boolean isHit = false;
@@ -67,6 +67,7 @@ public class Player extends Character {
         this.inputHandler = new PlayerInputHandlerManager();
         this.playerRenderer = new PlayerRendererManager(this.animationManager);
         this.playerSkill1 = new PlayerSkill1();
+        this.playerSkill2 = new PlayerSkill2();
     }
 
     public Player(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y, PlayerSkill playerSkill1, PlayerSkill playerSkill2) {
