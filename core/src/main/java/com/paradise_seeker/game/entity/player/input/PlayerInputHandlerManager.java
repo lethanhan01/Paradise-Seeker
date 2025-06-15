@@ -332,11 +332,12 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         }
         if (gameScreen.currentTalkingNPC != null) {
         	gameScreen.currentTalkingNPC.setTalking(false);
+        	
         }
         this.showDialogueOptions = false;
         this.selectedOptionIndex = 0;
-
         gameScreen.currentTalkingNPC.stateManager.isChestOpened = false; // Reset trạng thái mở rương
+
     }
 
 

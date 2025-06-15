@@ -101,6 +101,7 @@ public class WinScreen implements Screen {
                     game.setScreen(new IntroCutScene(game));
                     break;
                 case 1:
+
                 	game.currentGame = null; // Reset current game
                 	game.inventoryScreen = null; // Reset inventory screen
                     game.setScreen(game.mainMenu); // quay lại menu
