@@ -1,6 +1,7 @@
 package com.paradise_seeker.game.entity.monster;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.paradise_seeker.game.entity.CollisionSystem;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 
@@ -34,7 +35,7 @@ public class MonsterAI {
         }
     }
 
-    public void update(float deltaTime, Player player, GameMap map, Monster monster) {
+    public void update(float deltaTime, Player player, CollisionSystem collision, Monster monster) {
         if (monster.isDead() || player == null || player.isDead()) return;
         float stopDisplayer = (float) Math.sqrt(player.getBounds().width * player.getBounds().width + player.getBounds().height * player.getBounds().height) / 2f;
         float stopDisMonster = (float) Math.sqrt(monster.getBounds().width * monster.getBounds().width + monster.getBounds().height * monster.getBounds().height) / 2f;
@@ -65,12 +66,12 @@ public class MonsterAI {
 
                 Rectangle testX = new Rectangle(bounds);
                 testX.x += moveX;
-                if (!map.isBlocked(testX, monster)) {
+                if (!collision.isBlocked(testX, monster)) {
                     bounds.x += moveX;
                 }
                 Rectangle testY = new Rectangle(bounds);
                 testY.y += moveY;
-                if (!map.isBlocked(testY, monster)) {
+                if (!collision.isBlocked(testY, monster)) {
                     bounds.y += moveY;
                 }
             }
@@ -100,12 +101,12 @@ public class MonsterAI {
 
                 Rectangle testX = new Rectangle(bounds);
                 testX.x += moveX;
-                if (!map.isBlocked(testX, monster)) {
+                if (!collision.isBlocked(testX, monster)) {
                     bounds.x += moveX;
                 }
                 Rectangle testY = new Rectangle(bounds);
                 testY.y += moveY;
-                if (!map.isBlocked(testY, monster)) {
+                if (!collision.isBlocked(testY, monster)) {
                     bounds.y += moveY;
                 }
             }

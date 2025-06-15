@@ -60,8 +60,10 @@ public class GameMapManager {
         currentMapIndex = index;
         currentMap = maps.get(currentMapIndex);
         currentMap.setPlayer(player);
-        // Now, and ONLY now, load the spawn for the current map:
+
         currentMap.loadSpawnPoints(player);
+        
+        currentMap.setCollisionSystem(new com.paradise_seeker.game.entity.CollisionSystem());
     }
 
 	public int getCurrentMapIndex() {

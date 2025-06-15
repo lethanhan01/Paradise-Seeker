@@ -135,7 +135,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                     float nextY = player.getBounds().y + (dy / len) * stepSize;
                     Rectangle nextBounds = new Rectangle(nextX, nextY, player.getBounds().width, player.getBounds().height);
 
-                    if (gameMap == null || !gameMap.isBlocked(nextBounds)) {
+                    if (gameMap == null || gameMap.collisionSystem == null || !gameMap.collisionSystem.isBlocked(nextBounds)) {
                         player.getBounds().x = nextX;
                         player.getBounds().y = nextY;
                         totalDash += stepSize;
@@ -323,11 +323,11 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         }
         if (gameScreen.currentTalkingNPC != null) {
         	gameScreen.currentTalkingNPC.setTalking(false);
-        	
+
         }
         this.showDialogueOptions = false;
         this.selectedOptionIndex = 0;
-        gameScreen.currentTalkingNPC.stateManager.isChestOpened = false;     
+        gameScreen.currentTalkingNPC.stateManager.isChestOpened = false;
     }
 
 

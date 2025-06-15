@@ -138,7 +138,7 @@ public class GameScreen implements Screen {
 
             player.inputHandler.handleBook(this, player);
 
-            mapManager.getCurrentMap().checkCollisions(player, hud);
+            mapManager.getCurrentMap().collisionSystem.checkCollisions(player, hud);
 
             float playerCenterX = player.getBounds().x + player.getBounds().width / 2f;
             float playerCenterY = player.getBounds().y + player.getBounds().height / 2f;
