@@ -2,8 +2,8 @@ package com.paradise_seeker.game.entity.npc;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
+import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.Character;
-import com.paradise_seeker.game.entity.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;

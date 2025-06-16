@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.paradise_seeker.game.entity.Collidable;
+import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.object.item.ATKPotion;
 import com.paradise_seeker.game.object.item.Item;

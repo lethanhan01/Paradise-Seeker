@@ -1,7 +1,5 @@
 package com.paradise_seeker.game.screen;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -17,7 +15,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.ui.DialogueBox;
 import com.paradise_seeker.game.ui.HUD;
-import com.paradise_seeker.game.entity.skill.PlayerProjectile;
 import com.paradise_seeker.game.main.Main;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.paradise_seeker.game.map.GameMap;
@@ -106,12 +103,12 @@ public class GameScreen implements Screen {
         // Dialogue logic (unchanged)
     	player.inputHandler.checkForInteractions(player, this.mapManager.getCurrentMap());
   //  	System.out.println("Current Map: " + mapManager.getCurrentMap().getMapName() + "\n NPCInteraction: " + player.inputHandler.showDialogueOptions);
-	
+
 
 		// Handle NPC interaction
     	if (player.inputHandler.showDialogueOptions) {
 			player.inputHandler.handleDialogue(this, player);
-			
+
 		}
         // Zoom logic
         player.inputHandler.handleZoomInput(this);
@@ -271,7 +268,7 @@ public class GameScreen implements Screen {
 					    game.setScreen(new EndMap4(game)); // Reuse EndMap1 for Map 4 to Map 5 transition
 					}
 	        		if (mapManager.getCurrentMapIndex() == 3) {
-	        			player.inventoryManager.removeItem(key); 
+	        			player.inventoryManager.removeItem(key);
 		                mapManager.switchToNextMap();
 		                }
 

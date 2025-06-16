@@ -8,8 +8,8 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.paradise_seeker.game.entity.Collidable;
-import com.paradise_seeker.game.entity.CollisionSystem;
+import com.paradise_seeker.game.collision.Collidable;
+import com.paradise_seeker.game.collision.CollisionSystem;
 import com.paradise_seeker.game.entity.monster.HasProjectiles;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.npc.Gipsy;
@@ -24,8 +24,6 @@ import com.paradise_seeker.game.object.item.MPPotion;
 import com.paradise_seeker.game.object.item.Skill1Potion;
 import com.paradise_seeker.game.object.item.Skill2Potion;
 import com.paradise_seeker.game.rendering.Renderable;
-import com.paradise_seeker.game.rendering.renderer.NPCRendererManager;
-import com.paradise_seeker.game.ui.HUD;
 import java.util.*;
 
 public abstract class GameMap implements Renderable {
@@ -34,7 +32,6 @@ public abstract class GameMap implements Renderable {
     protected int TILE_WIDTH;
     protected int TILE_HEIGHT;
     protected String mapName = "Unknown Map";
-    public String getMapName() { return mapName; }
     public CollisionSystem collisionSystem;
     protected TiledMap tiledMap;
     protected Texture backgroundTexture;
@@ -56,8 +53,6 @@ public abstract class GameMap implements Renderable {
     public List<ATKPotion> atkItems = new ArrayList<>();
     public List<Skill1Potion> skill1Items = new ArrayList<>();
     public List<Skill2Potion> skill2Items = new ArrayList<>();
-
-    public NPCRendererManager npcRenderer;
 
     public float itemSpawnTimer = 0f;
     public static final float ITEM_SPAWN_INTERVAL = 120f;
@@ -209,6 +204,8 @@ public abstract class GameMap implements Renderable {
             }
         }
     }
+
+    public String getMapName() { return mapName; }
 
     @Override
     public void render(SpriteBatch batch) { //render những đối tượng trong bản đồ, monster/npc phức tạp nên có hàm riêng

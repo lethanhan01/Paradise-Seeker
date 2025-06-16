@@ -63,7 +63,7 @@ public class GameMapManager {
 
         currentMap.loadSpawnPoints(player);
         
-        currentMap.setCollisionSystem(new com.paradise_seeker.game.entity.CollisionSystem());
+        currentMap.setCollisionSystem(new com.paradise_seeker.game.collision.CollisionSystem());
     }
 
 	public int getCurrentMapIndex() {

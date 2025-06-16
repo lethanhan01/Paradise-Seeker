@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.player;
+package com.paradise_seeker.game.entity.player.inventory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.object.item.Fragment;
 import com.paradise_seeker.game.object.item.Item;
 
-public class PlayerInventoryManager {
+public class PlayerInventoryManager implements Inventory {
     private ArrayList<Item> inventory;
     private int inventorySize;
     private int[] collectAllFragments = {0, 0, 0};
@@ -22,7 +22,7 @@ public class PlayerInventoryManager {
         this.inventorySize = inventorySize;
     }
 
-
+    @Override
     public void addItemToInventory(Item newItem, Rectangle playerBounds) {
         if (newItem == null || !newItem.isActive()) return;
 
@@ -68,8 +68,15 @@ public class PlayerInventoryManager {
             System.out.println("Inventory is full!");
         }
     }
-
-
+    /**
+     * Xóa một vật phẩm khỏi kho đồ
+     * @param item vật phẩm cần xóa
+     */
+    @Override
+    public void removeItem(Item item) {
+        inventory.remove(item);
+    }
+    @Override
     public int getItemCount(String itemId) {
         int count = 0;
         for (Item item : inventory) {
@@ -79,11 +86,11 @@ public class PlayerInventoryManager {
         }
         return count;
     }
-
     /**
      * Kiểm tra xem kho đồ có còn chỗ trống không
      * @return true nếu còn chỗ trống, false nếu đã đầy
      */
+    @Override
     public boolean hasSpaceLeft() {
         return inventory.size() < inventorySize;
     }
@@ -123,11 +130,5 @@ public class PlayerInventoryManager {
         }
     }
 
-    /**
-     * Xóa một vật phẩm khỏi kho đồ
-     * @param item vật phẩm cần xóa
-     */
-    public void removeItem(Item item) {
-        inventory.remove(item);
-    }
+
 }
