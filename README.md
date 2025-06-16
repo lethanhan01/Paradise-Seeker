@@ -1,5 +1,5 @@
-# Paradise_Seeker
-# SimpleRPG - Role-playing Game
+# Paradise Seeker 
+## Simple RPG - Role-playing Game
 
 **TOPIC 2**  
 **Exercise code:** OOP.002  
@@ -51,18 +51,10 @@ Players can move back and forth between different maps (for example when enterin
 
 ## Technology Stack
 
-This project is built with a focus on Object-Oriented Programming (OOP) with a difficulty level of 4/5.
-
-## Getting Started
-
-This is an educational project aimed at practicing Object-Oriented Programming concepts through building a simple RPG game.
-
----
-
+This project is built with a focus on Object-Oriented Programming (OOP)
 *This project serves as a practical implementation of OOP principles in game development.*
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
-This project was generated with a template including simple application launchers and a main class extending `Game` that sets the first screen.
+A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
 ## Platforms
 
