@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.paradise_seeker.game.entity.npc.Gipsy;
+import com.paradise_seeker.game.entity.npc.gipsy.Gipsy;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.map.GameMapManager;

@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.entity.monster.HasProjectiles;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.paradise_seeker.game.entity.monster.MonsterProjectile;
+import com.paradise_seeker.game.entity.monster.projectile.HasProjectiles;
+import com.paradise_seeker.game.entity.monster.projectile.MonsterProjectile;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 

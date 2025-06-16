@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.monster.boss.ParadiseKing;
-import com.paradise_seeker.game.entity.npc.Gipsy;
+import com.paradise_seeker.game.entity.npc.gipsy.Gipsy;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;

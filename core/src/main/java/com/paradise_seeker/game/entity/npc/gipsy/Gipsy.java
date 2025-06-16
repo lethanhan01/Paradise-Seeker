@@ -1,14 +1,16 @@
-package com.paradise_seeker.game.entity.npc;
+package com.paradise_seeker.game.entity.npc.gipsy;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.paradise_seeker.game.entity.npc.NPC;
+import com.paradise_seeker.game.entity.npc.dialogue.NPCDialogueManager;
 import com.paradise_seeker.game.map.GameMap;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Gipsy extends NPC {
-    public NPCStateManager stateManager;
-    protected DialogueManager dialogueManager;
+    public GipsyStateManager stateManager;
+    protected NPCDialogueManager dialogueManager;
     protected float spriteWidth = 1.9f;
     protected float spriteHeight = 1.8f;
 //    protected boolean HadTalked = false;
@@ -19,8 +21,8 @@ public class Gipsy extends NPC {
         this.y = y;
         this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
 
-        this.stateManager = new NPCStateManager();
-        this.dialogueManager = new DialogueManager();
+        this.stateManager = new GipsyStateManager();
+        this.dialogueManager = new NPCDialogueManager();
 
         // Khởi tạo thoại mặc định
         List<String> defaultDialogue = new ArrayList<>();
@@ -34,8 +36,8 @@ public class Gipsy extends NPC {
     	super();
         this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
 
-        this.stateManager = new NPCStateManager();
-        this.dialogueManager = new DialogueManager();
+        this.stateManager = new GipsyStateManager();
+        this.dialogueManager = new NPCDialogueManager();
 
         // Khởi tạo thoại mặc định
         List<String> defaultDialogue = new ArrayList<>();

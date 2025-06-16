@@ -1,16 +1,16 @@
-package com.paradise_seeker.game.entity.npc;
+package com.paradise_seeker.game.entity.npc.gipsy;
 
 /**
  * Class quản lý trạng thái của NPC
  */
-public class NPCStateManager {
+public class GipsyStateManager {
     // --- State flags ---
     public boolean isChestOpened;
     public boolean isOpeningChest;
     public boolean isTalking;
     public boolean hasTalked;
 
-    public NPCStateManager() {
+    public GipsyStateManager() {
         isChestOpened = false;
         isOpeningChest = false;
         isTalking = false;
