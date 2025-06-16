@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.monster;
+package com.paradise_seeker.game.entity.monster.projectile;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
