@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.skill;
+package com.paradise_seeker.game.entity.player.skill;
 
 import com.badlogic.gdx.math.Rectangle;
 

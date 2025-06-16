@@ -1,6 +1,6 @@
-package com.paradise_seeker.game.entity.monster;
+package com.paradise_seeker.game.collision;
 
-import com.paradise_seeker.game.entity.Collidable;
+import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.player.Player;
 
 /**

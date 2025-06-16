@@ -1,6 +1,7 @@
 package com.paradise_seeker.game.entity;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.map.GameMap;
 
 public abstract class Character implements Collidable {

@@ -1,11 +1,11 @@
-package com.paradise_seeker.game.entity.monster;
+package com.paradise_seeker.game.entity.monster.ai;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.paradise_seeker.game.entity.CollisionSystem;
+import com.paradise_seeker.game.collision.CollisionSystem;
+import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.player.Player;
-import com.paradise_seeker.game.map.GameMap;
 
-public class MonsterAI {
+public class MonsterAI implements AI {
     private boolean isAggro = false;
     private float aggroTimer = 0f;
     private Vector2 originalPosition;
@@ -19,12 +19,12 @@ public class MonsterAI {
     public MonsterAI(Monster monster) {
         this.originalPosition = new Vector2(monster.getBounds().x, monster.getBounds().y);
     }
-
+    @Override
     public void onAggro() {
         isAggro = true;
         aggroTimer = AGGRO_DURATION;
     }
-
+    @Override
     public void checkAggro(Player player, Monster monster) {
         if (player == null || player.isDead()) return;
         float dx = player.getBounds().x - monster.getBounds().x;

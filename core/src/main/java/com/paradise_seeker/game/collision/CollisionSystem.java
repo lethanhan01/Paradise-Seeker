@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity;
+package com.paradise_seeker.game.collision;
 
 import java.util.Arrays;
 import java.util.List;

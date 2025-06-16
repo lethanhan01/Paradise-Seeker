@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.paradise_seeker.game.entity.Collidable;
+import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.npc.Gipsy;
 import com.paradise_seeker.game.entity.player.Player;
@@ -25,9 +25,8 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
     public boolean showInteractMessage = false;
     public String pendingPotionToDrop = null;
     public boolean showDialogueOptions = false;
-    public Gipsy currentTalkingNPC = null;
     public final String[] options = {"HP potion", "MP potion", "ATK potion"};
-    public int selectedOptionIndex = 0; 
+    public int selectedOptionIndex = 0;
 
     public boolean isShowInteractMessage() {
         return showInteractMessage;
@@ -171,7 +170,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                 if (gameMap != null) {
                     float centerX = player.getBounds().x + player.getBounds().width / 2;
                     float centerY = player.getBounds().y + player.getBounds().height / 2;
-                    damageMonstersInRange(centerX, centerY, 5f, player.getAtk(), gameMap);
+                    damageMonstersInRange(centerX, centerY, 3f, player.getAtk(), gameMap);
                 }
             }
         }
@@ -208,7 +207,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
 
     @Override
     public void handleNPCInteraction(Player player, GameMap gameMap) {
-    	
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.F) && showInteractMessage && gameMap != null) {
             // Tìm NPC gần nhất để tương tác
             Gipsy nearestNPC = null;
@@ -223,7 +222,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             }
 
             if (nearestNPC != null) {
-            	
+
                 nearestNPC.openChest();
                 // Có thể thêm các logic tương tác khác ở đây
             }
@@ -264,15 +263,15 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                         	gameScreen.currentTalkingNPC.stateManager.isChestOpened = true;
                         	finishNpcInteraction(gameScreen, player);
                         }
-                        
+
 
                     }
                 }
-           
+
             }
         }
 
-      
+
     }
 
     public void dropPotionNextToPlayer(GameMapManager mapManager, String potionType, Player player) {
@@ -293,7 +292,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
 
         if (dropped != null) {
             mapManager.getCurrentMap().dropItem(dropped);
-            
+
         }
     }
 
@@ -305,7 +304,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         if (gameScreen.currentTalkingNPC != null) {
         	gameScreen.currentTalkingNPC.setTalking(true);
         	gameScreen.currentTalkingNPC.stateManager.setChestOpened(true);
-        	
+
         }
         this.showDialogueOptions = false;
         this.selectedOptionIndex = 0;

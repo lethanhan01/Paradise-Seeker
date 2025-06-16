@@ -8,13 +8,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.player.input.PlayerInputHandlerManager;
-import com.paradise_seeker.game.entity.skill.*;
+import com.paradise_seeker.game.entity.player.inventory.PlayerInventoryManager;
+import com.paradise_seeker.game.entity.player.skill.*;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.object.item.Item;
 import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 import com.paradise_seeker.game.rendering.effects.DashTrailManager;
 import com.paradise_seeker.game.rendering.renderer.PlayerRendererManager;
-import com.paradise_seeker.game.screen.GameScreen;
 
 public class Player extends Character {
     public static final float MAX_HP = 1000;
@@ -38,7 +38,7 @@ public class Player extends Character {
     public PlayerInventoryManager inventoryManager;
     public DashTrailManager smokeManager = new DashTrailManager();
     public PlayerAnimationManager animationManager;
-    public PlayerInputHandlerManager inputHandler;  
+    public PlayerInputHandlerManager inputHandler;
     public PlayerRendererManager playerRenderer;
     public PlayerSkill playerSkill1;
     public PlayerSkill playerSkill2;

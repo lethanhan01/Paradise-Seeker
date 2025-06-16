@@ -1,5 +1,7 @@
 package com.paradise_seeker.game.screen;
 
+import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -64,7 +66,7 @@ public class MainMenuScreen implements Screen {
 
 		// Clear the screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
     	// Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
         // Update camera and batch
