@@ -34,7 +34,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
 
     @Override
     public void handleInput(Player player, float deltaTime, GameMap gameMap) {
-        if (player.isPaused() || player.isAttacking || player.isDead) return;
+        if (player.statusManager.isDoNothing() || player.statusManager.isAttacking() || player.statusManager.isDead()) return;
 
         // Check for interaction opportunities and set showInteractMessage
         checkForInteractions(player, gameMap);
@@ -83,7 +83,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) dx += 1;
 
         float len = (float) Math.sqrt(dx * dx + dy * dy);
-        player.setMoving(len > 0);
+        player.statusManager.setMoving(len > 0);
         if (len > 0) {
             dx /= len;
             dy /= len;
@@ -110,19 +110,19 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                 player.getBounds().y = nextY;
                 // Cập nhật hướng di chuyển
                 if (Math.abs(dx) > Math.abs(dy)) {
-                    player.setDirection(dx > 0 ? "right" : "left");
+                    player.statusManager.setDirection(dx > 0 ? "right" : "left");
                 } else {
-                    player.setDirection(dy > 0 ? "up" : "down");
+                    player.statusManager.setDirection(dy > 0 ? "up" : "down");
                 }
             } else {
-                player.setMoving(false);
+                player.statusManager.setMoving(false);
             }
         }
         clampToMapBounds(player, gameMap);
     }
     @Override
     public void handleDash(Player player, GameMap gameMap) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) && player.getDashTimer() <= 0 && player.isMoving()) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) && player.smokeManager.getDashTimer() <= 0 && player.statusManager.isMoving()) {
             float dx = 0, dy = 0;
 
             // Xác định hướng dash
@@ -136,7 +136,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             if (len > 0) {
                 float stepSize = 0.1f;
                 float totalDash = 0f;
-                float maxDash = player.getDashDistance();
+                float maxDash = player.smokeManager.getDashDistance();
                 float prevX = player.getBounds().x;
                 float prevY = player.getBounds().y;
 
@@ -154,7 +154,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                         break;
                     }
                 }
-                player.setDashTimer(player.getDashCooldown());
+                player.smokeManager.setDashTimer(player.smokeManager.getDashCooldown());
                 player.addSmoke(prevX, prevY);
             }
             clampToMapBounds(player, gameMap);
@@ -164,9 +164,9 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
     @Override
     public void handleAttack(Player player, GameMap gameMap) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (!player.isAttacking && !player.isHit && !player.isDead()) {
-                player.setAttacking(true);
-                player.stateTime = 0f; // Reset lại thời gian để animation luôn chạy từ frame đầu
+            if (!player.statusManager.isAttacking() && !player.statusManager.isHit() && !player.statusManager.isDead()) {
+                player.statusManager.setAttacking(true);
+                player.statusManager.setStateTime(0f); // Reset lại thời gian để animation luôn chạy từ frame đầu
                 if (gameMap != null) {
                     float centerX = player.getBounds().x + player.getBounds().width / 2;
                     float centerY = player.getBounds().y + player.getBounds().height / 2;
@@ -194,13 +194,13 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
             if (player.getMp() >= 2 && player.getPlayerSkill1().canUse(System.currentTimeMillis())) {
                 player.setMp(player.getMp() - 2);
-                player.getPlayerSkill1().castSkill(player.getAtk(), player.getBounds(), player.getDirection());
+                player.getPlayerSkill1().castSkill(player.getAtk(), player.getBounds(), player.statusManager.getDirection());
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
             if (player.getMp() >= 2 && player.getPlayerSkill2().canUse(System.currentTimeMillis())) {
                 player.setMp(player.getMp() - 2);
-                player.getPlayerSkill2().castSkill(player.getAtk(), player.getBounds(), player.getDirection());
+                player.getPlayerSkill2().castSkill(player.getAtk(), player.getBounds(), player.statusManager.getDirection());
             }
         }
     }
