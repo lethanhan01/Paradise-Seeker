@@ -153,7 +153,7 @@ public class PlayerSkill2 extends PlayerSkill {
 
 		stateTime += Gdx.graphics.getDeltaTime();
 		Animation<TextureRegion> anim = skillAnimations.get(currentDirection);
-		
+
 		if (anim != null && anim.isAnimationFinished(stateTime)) {
 			isCasting = false;
 			return;
@@ -179,8 +179,8 @@ public class PlayerSkill2 extends PlayerSkill {
 	@Override
 	public void updatePosition(Player player) {
 		if (isCasting) {
-			this.currentX = player.lastPosition.x + offsetX;
-			this.currentY = player.lastPosition.y + offsetY;
+			this.currentX = player.statusManager.getLastPosition().x + offsetX;
+			this.currentY = player.statusManager.getLastPosition().y + offsetY;
 		}
 	}
 }

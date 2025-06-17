@@ -15,19 +15,19 @@ public class PlayerRendererManager implements PlayerRenderer {
 
     @Override
     public void render(Player player, SpriteBatch batch) {
-        if (player.isDead()) {
+        if (player.statusManager.isDead()) {
             renderDeath(player, batch);
             return;
         }
 
-        if (player.isHit) {
+        if (player.statusManager.isHit()) {
             renderHit(player, batch);
             return;
         }
 
-        if (player.isAttacking) {
+        if (player.statusManager.isAttacking()) {
             renderAttack(player, batch);
-        } else if (player.isMoving()) {
+        } else if (player.statusManager.isMoving()) {
             renderMovement(player, batch);
         } else {
             renderIdle(player, batch);
@@ -38,24 +38,24 @@ public class PlayerRendererManager implements PlayerRenderer {
 
     @Override
     public void renderMovement(Player player, SpriteBatch batch) {
-        Animation<TextureRegion> runAnimation = animationManager.getRunAnimation(player.getDirection());
-        TextureRegion currentFrame = runAnimation.getKeyFrame(player.getStateTime(), true);
+        Animation<TextureRegion> runAnimation = animationManager.getRunAnimation(player.statusManager.getDirection());
+        TextureRegion currentFrame = runAnimation.getKeyFrame(player.statusManager.getStateTime(), true);
         batch.draw(currentFrame, player.getBounds().x, player.getBounds().y,
             player.getBounds().width, player.getBounds().height);
     }
 
     @Override
     public void renderIdle(Player player, SpriteBatch batch) {
-        Animation<TextureRegion> idleAnimation = animationManager.getIdleAnimation(player.getDirection());
-        TextureRegion currentFrame = idleAnimation.getKeyFrame(player.getStateTime(), true);
+        Animation<TextureRegion> idleAnimation = animationManager.getIdleAnimation(player.statusManager.getDirection());
+        TextureRegion currentFrame = idleAnimation.getKeyFrame(player.statusManager.getStateTime(), true);
         batch.draw(currentFrame, player.getBounds().x, player.getBounds().y,
             player.getBounds().width, player.getBounds().height);
     }
 
     @Override
     public void renderAttack(Player player, SpriteBatch batch) {
-        Animation<TextureRegion> attackAnimation = animationManager.getAttackAnimation(player.getDirection());
-        TextureRegion currentFrame = attackAnimation.getKeyFrame(player.getStateTime(), false);
+        Animation<TextureRegion> attackAnimation = animationManager.getAttackAnimation(player.statusManager.getDirection());
+        TextureRegion currentFrame = attackAnimation.getKeyFrame(player.statusManager.getStateTime(), false);
 
         // Phóng to khi tấn công
         float scaledWidth = player.getBounds().width * 3.0f;
@@ -68,17 +68,17 @@ public class PlayerRendererManager implements PlayerRenderer {
 
     @Override
     public void renderHit(Player player, SpriteBatch batch) {
-        Animation<TextureRegion> hitAnimation = animationManager.getHitAnimation(player.getDirection());
+        Animation<TextureRegion> hitAnimation = animationManager.getHitAnimation(player.statusManager.getDirection());
         TextureRegion currentFrame = hitAnimation != null
-            ? hitAnimation.getKeyFrame(player.getStateTime(), false)
+            ? hitAnimation.getKeyFrame(player.statusManager.getStateTime(), false)
             : null;
 
-        if (hitAnimation != null && hitAnimation.isAnimationFinished(player.getStateTime())) {
-            player.isHit = false; // Reset trạng thái khi hoạt ảnh kết thúc
+        if (hitAnimation != null && hitAnimation.isAnimationFinished(player.statusManager.getStateTime())) {
+            player.statusManager.setHit(false) ; // Reset trạng thái khi hoạt ảnh kết thúc
         }
         if (currentFrame == null) {
             System.out.println("WARNING: Player renderHit frame NULL! Using idle frame.");
-            currentFrame = animationManager.getIdleAnimation(player.getDirection()).getKeyFrame(0, true);
+            currentFrame = animationManager.getIdleAnimation(player.statusManager.getDirection()).getKeyFrame(0, true);
         }
         batch.draw(currentFrame, player.getBounds().x, player.getBounds().y,
             player.getBounds().width, player.getBounds().height);

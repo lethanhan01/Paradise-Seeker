@@ -35,13 +35,8 @@ public class MonsterCollisionHandler {
         int damage = (int) monster.atk;
 
         // If player is shielding, reduce damage and handle shield effects
-        if (player.isShielding) {
-            player.isShieldedHit = true;
-            damage = Math.max(1, damage / 2); // Reduce damage if shielding
-        } else {
-            if (!player.isInvulnerable()) {
+        if (!player.isInvulnerable()) {
                 player.takeHit(damage);
-            }
         }
     }
 
@@ -66,8 +61,8 @@ public class MonsterCollisionHandler {
             // Apply damage if player is not invulnerable
             if (!player.isInvulnerable()) {
                 player.takeHit((int) cleaveDamage);
-                player.isHit = true;
-                player.stateTime = 0;
+                player.statusManager.setHit(true);
+                player.statusManager.setStateTime(0f);
             }
 
             cleaveDamageDealt = true;
@@ -91,31 +86,4 @@ public class MonsterCollisionHandler {
         }
     }
 
-    /**
-     * @return whether a cleave hit is pending
-     */
-    public boolean isPendingCleaveHit() {
-        return pendingCleaveHit;
-    }
-
-    /**
-     * @return whether cleave damage has been dealt
-     */
-    public boolean isCleaveDamageDealt() {
-        return cleaveDamageDealt;
-    }
-
-    /**
-     * Set whether cleave damage has been dealt
-     */
-    public void setCleaveDamageDealt(boolean dealt) {
-        this.cleaveDamageDealt = dealt;
-    }
-
-    /**
-     * @return the cleave range
-     */
-    public float getCleaveRange() {
-        return cleaveRange;
-    }
 }

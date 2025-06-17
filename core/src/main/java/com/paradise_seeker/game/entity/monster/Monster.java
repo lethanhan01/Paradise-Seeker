@@ -69,7 +69,7 @@ public abstract class Monster extends Character implements Collidable {
 	}
 
     public void act(float deltaTime, Player player, GameMap map) {
-        if (player == null || player.isDead) return;
+        if (player == null || player.statusManager.isDead()) return;
 
         // Update AI first
         ai.update(deltaTime, player, map.collisionSystem, this);

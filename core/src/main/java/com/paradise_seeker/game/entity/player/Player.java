@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.player.input.PlayerInputHandlerManager;
 import com.paradise_seeker.game.entity.player.inventory.PlayerInventoryManager;
@@ -15,40 +14,20 @@ import com.paradise_seeker.game.object.item.Item;
 import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 import com.paradise_seeker.game.rendering.effects.DashTrailManager;
 import com.paradise_seeker.game.rendering.renderer.PlayerRendererManager;
+import com.paradise_seeker.game.entity.player.status.PlayerStatusManager;
 
 public class Player extends Character {
     public static final float MAX_HP = 1000;
     public static final float MAX_MP = 100;
-    public final float dashCooldown = 0f;
-    public final float dashDistance = 2f;
 
-    public float speedMultiplier = 1f;
-    public final Vector2 lastPosition = new Vector2();
-
-    public float stateTime = 0f;
-    public String direction = "down";
-    public boolean isMoving = false;
-    public boolean isAttacking = false;
-
-    public float dashTimer = 0f;
-
-    public boolean isShielding = false;
-    public boolean isPaused = false;
-
+    public PlayerStatusManager statusManager = new PlayerStatusManager();
     public PlayerInventoryManager inventoryManager;
-    public DashTrailManager smokeManager = new DashTrailManager();
     public PlayerAnimationManager animationManager;
     public PlayerInputHandlerManager inputHandler;
     public PlayerRendererManager playerRenderer;
-    public PlayerSkill playerSkill1;
-    public PlayerSkill playerSkill2;
-
-    public boolean isDead = false;
-    public boolean isHit = false;
-    public boolean isShieldedHit = true;
-    public boolean isInvulnerable = false;
-    public float invulnerabilityTimer = 0f;
-    public static final float INVULNERABILITY_DURATION = 0.7f;
+    public DashTrailManager smokeManager = new DashTrailManager();
+    public PlayerSkill1 playerSkill1;
+    public PlayerSkill2 playerSkill2;
 
     public Player() {
         this.bounds = new Rectangle(0, 0, 1, 1);
@@ -70,15 +49,16 @@ public class Player extends Character {
         this.playerSkill2 = new PlayerSkill2();
     }
 
-    public Player(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y, PlayerSkill playerSkill1, PlayerSkill playerSkill2) {
+    public Player(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y, PlayerSkill1 playerSkill1, PlayerSkill2 playerSkill2) {
         super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
         this.playerSkill1 = playerSkill1;
         this.playerSkill2 = playerSkill2;
-
         this.inventoryManager = new PlayerInventoryManager();
         this.animationManager = new PlayerAnimationManager();
         this.animationManager.setAnimations();
         this.inputHandler = new PlayerInputHandlerManager();
+        this.smokeManager = new DashTrailManager();
+        this.statusManager = new PlayerStatusManager();
         this.playerRenderer = new PlayerRendererManager(this.animationManager);
     }
 
@@ -93,34 +73,34 @@ public class Player extends Character {
 
     @Override
     public void act(float deltaTime, GameMap gameMap) {
-        if (isDead) return;
+        if (statusManager.isDead()) return;
         Player player = gameMap.getPlayer();
-        lastPosition.set(bounds.x, bounds.y);
+        statusManager.setLastPosition(bounds.x, bounds.y);
 
         inputHandler.handleInput(this, deltaTime, gameMap);
 
-        if (isInvulnerable) {
-            invulnerabilityTimer -= deltaTime;
-            if (invulnerabilityTimer <= 0) {
-                isInvulnerable = false;
+        if (statusManager.isInvulnerable()) {
+            statusManager.setInvulnerabilityTimer(statusManager.getInvulnerabilityTimer() - deltaTime);
+            if (statusManager.getInvulnerabilityTimer() <= 0) {
+                statusManager.setInvulnerable(false);
             }
         }
 
         regenMana(deltaTime);
-        dashTimer -= deltaTime;
-        speedMultiplier = 1f;
+        smokeManager.dashTimer -= deltaTime;
+        smokeManager.speedMultiplier = 1f;
 
-        if (isHit || isShieldedHit || isMoving || isAttacking) {
-            stateTime += deltaTime;
+        if (statusManager.isHit() || statusManager.isMoving() || statusManager.isAttacking()) {
+            statusManager.addStateTime(deltaTime);
         } else {
-            stateTime = 0;
+            statusManager.resetStateTime();
         }
 
-        if (isAttacking) {
-            Animation<TextureRegion> currentAttack = animationManager.getAttackAnimation(direction);
-            if (currentAttack.isAnimationFinished(stateTime)) {
-                isAttacking = false;
-                stateTime = 0;
+        if (statusManager.isAttacking()) {
+            Animation<TextureRegion> currentAttack = animationManager.getAttackAnimation(statusManager.getDirection());
+            if (currentAttack.isAnimationFinished(statusManager.getStateTime())) {
+                statusManager.setAttacking(false);
+                statusManager.resetStateTime();
             }
         }
 
@@ -132,61 +112,31 @@ public class Player extends Character {
         smokeManager.addSmoke(x, y);
     }
 
-
     @Override
     public void takeHit(float damage) {
-        if (isInvulnerable) return;
-
-        if (isShielding) {
-            damage /= 2;
-        }
+        if (statusManager.isInvulnerable()) return;
 
         hp = Math.max(0, hp - damage);
 
         if (hp == 0) {
-            if (!isDead) {
+            if (!statusManager.isDead()) {
                 onDeath();
             }
         } else {
-            isHit = true;
-            stateTime = 0;
-            isInvulnerable = true;
-            invulnerabilityTimer = INVULNERABILITY_DURATION;
+            statusManager.setHit(true);
+            statusManager.resetStateTime();
+            statusManager.setInvulnerable(true);
+            statusManager.setInvulnerabilityTimer(PlayerStatusManager.INVULNERABILITY_DURATION);
         }
     }
 
     public void blockMovement() {
-        bounds.x = lastPosition.x;
-        bounds.y = lastPosition.y;
+        bounds.x = statusManager.getLastPosition().x;
+        bounds.y = statusManager.getLastPosition().y;
     }
 
     public void addItemToInventory(Item newItem) {
         inventoryManager.addItemToInventory(newItem, this.bounds);
-    }
-
-    public boolean isDead() {
-        return isDead;
-    }
-
-    public float getStateTime() {
-        return stateTime;
-    }
-
-
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
-
-    public boolean isMoving() {
-        return isMoving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.isMoving = moving;
     }
 
     public PlayerSkill getPlayerSkill1() {
@@ -195,30 +145,6 @@ public class Player extends Character {
 
     public PlayerSkill getPlayerSkill2() {
         return playerSkill2;
-    }
-
-    public float getDashTimer() {
-        return dashTimer;
-    }
-
-    public void setDashTimer(float timer) {
-        this.dashTimer = timer;
-    }
-
-    public float getDashDistance() {
-        return dashDistance;
-    }
-
-    public float getDashCooldown() {
-        return dashCooldown;
-    }
-
-    public boolean isPaused() {
-        return isPaused;
-    }
-
-    public void setAttacking(boolean attacking) {
-        this.isAttacking = attacking;
     }
 
     public int[] getCollectAllFragments() {
@@ -251,12 +177,12 @@ public class Player extends Character {
 
     @Override
     public void onDeath() {
-//        isDead = true;
-//        isInvulnerable = true;
-//        invulnerabilityTimer = Float.MAX_VALUE;
+        //isDead = true;
+        //isInvulnerable = true;
+        //invulnerabilityTimer = Float.MAX_VALUE;
     	hp=MAX_HP;
     }
     public boolean isInvulnerable() {
-        return isInvulnerable;
+        return statusManager.isInvulnerable();
     }
 }

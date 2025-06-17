@@ -10,6 +10,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DashTrailManager {
+    public float dashCooldown = 0f;
+    public float dashDistance = 2f;
+    public float speedMultiplier = 1f;
+    public float dashTimer = 0f;
+
     private final List<DashTrail> smokes = new LinkedList<>();
 
     public void addSmoke(float x, float y) {
@@ -34,5 +39,20 @@ public class DashTrailManager {
             batch.draw(frame, s.x, s.y, 1f, 1f);
         }
     }
+    public float getDashTimer() {
+        return dashTimer;
+    }
+    public void setDashTimer(float timer) {
+        this.dashTimer = timer;
+    }
+
+	public float getDashCooldown() {
+		return dashCooldown;
+	}
+
+	public float getDashDistance() {
+		return dashDistance;
+	}
+
 }
 
