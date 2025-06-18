@@ -30,7 +30,6 @@ public class MonsterRendererManager implements MonsterRenderer {
     }
 
 
-
     public void renderDeathAnimation(Monster monster, SpriteBatch batch) {
         TextureRegion currentFrame = animationManager.getCurrentFrame();
         if (currentFrame != null) {

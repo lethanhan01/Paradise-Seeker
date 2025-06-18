@@ -9,16 +9,11 @@ import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 
-
 public class SkeletonEnemy extends Monster {
     private float scaleMultiplier = 2.1f;
 
     public SkeletonEnemy(float x, float y) {
-    	super(new Rectangle(x, y, 1.2f, 1.2f), 100f, 50f, 100f, 50f, 50f, 1f, x, y); // HP, speed, cleaveDamage
-        // Note: spawnX and spawnY are now set in the parent constructor
-        // Note: loadAnimations is already called in Monster constructor
-
-        // Set cleave range through the collision handler
+        super(new Rectangle(x, y, 1.2f, 1.2f), 100f, 50f, 100f, 50f, 50f, 1f, x, y);
         this.collisionHandler.setCleaveRange(1.6f);
     }
 
@@ -28,89 +23,81 @@ public class SkeletonEnemy extends Monster {
 
     @Override
     public void hasAnimations() {
-        // Load all required animations
-        Animation<TextureRegion> walkRightAnim = loadRunAnimation();
-        Animation<TextureRegion> walkLeftAnim = walkRightAnim;  // Same animation for both directions
+        Animation<TextureRegion> walkLeftAnim  = loadRunAnimation("left");
+        Animation<TextureRegion> walkRightAnim = loadRunAnimation("right");
 
-        Animation<TextureRegion> idleRightAnim = loadIdleAnimation();
-        Animation<TextureRegion> idleLeftAnim = idleRightAnim;  // Same animation for both directions
+        Animation<TextureRegion> idleLeftAnim  = loadIdleAnimation("left");
+        Animation<TextureRegion> idleRightAnim = loadIdleAnimation("right");
 
-        Animation<TextureRegion> takeHitRightAnim = loadHitAnimation();
-        Animation<TextureRegion> takeHitLeftAnim = takeHitRightAnim;  // Same animation for both directions
+        Animation<TextureRegion> takeHitLeftAnim  = loadHitAnimation("left");
+        Animation<TextureRegion> takeHitRightAnim = loadHitAnimation("right");
 
-        Animation<TextureRegion> cleaveRightAnim = walkRightAnim;  // Using walk for cleave since cleave isn't available
-        Animation<TextureRegion> cleaveLeftAnim = walkLeftAnim;
+        Animation<TextureRegion> cleaveLeftAnim  = loadAttackAnimation("left");  // attack == cleave
+        Animation<TextureRegion> cleaveRightAnim = loadAttackAnimation("right");
 
-        Animation<TextureRegion> deathRightAnim = loadDeathAnimation();
-        Animation<TextureRegion> deathLeftAnim = deathRightAnim;  // Same animation for both directions
+        Animation<TextureRegion> deathLeftAnim  = loadDeathAnimation("left");
+        Animation<TextureRegion> deathRightAnim = loadDeathAnimation("right");
 
-        // Set all animations in the animation manager
-        // The order needs to match the parameter list in setupAnimations:
-        // idleLeft, idleRight, walkLeft, walkRight, takeHitLeft, takeHitRight, cleaveLeft, cleaveRight, deathLeft, deathRight
         setupAnimations(
-            idleLeftAnim, idleRightAnim,
-            walkLeftAnim, walkRightAnim,
-            takeHitLeftAnim, takeHitRightAnim,
-            cleaveLeftAnim, cleaveRightAnim,
-            deathLeftAnim, deathRightAnim
+                idleLeftAnim, idleRightAnim,
+                walkLeftAnim, walkRightAnim,
+                takeHitLeftAnim, takeHitRightAnim,
+                cleaveLeftAnim, cleaveRightAnim,
+                deathLeftAnim, deathRightAnim
         );
     }
 
-    // WALK (RUN) - 12 frames: skel_enemy_run1.png ... skel_enemy_run12.png
-    private Animation<TextureRegion> loadRunAnimation() {
+    private Animation<TextureRegion> loadRunAnimation(String dir) {
         int frameCount = 12;
         TextureRegion[] frames = new TextureRegion[frameCount];
         for (int i = 1; i <= frameCount; i++) {
-            String filename = "images/Entity/characters/monsters/creep/map3/skeleton_enemy/skel_enemy_run" + i + ".png";
-            Texture texture = new Texture(Gdx.files.internal(filename));
-            frames[i-1] = new TextureRegion(texture);
+            String filename = String.format(
+                "images/Entity/characters/monsters/creep/map3/skeleton_enemy/%s/run/skel_enemy_run%d.png", dir, i);
+            frames[i - 1] = new TextureRegion(new Texture(Gdx.files.internal(filename)));
         }
         return new Animation<>(0.12f, frames);
     }
 
-    // IDLE: skel_enemy1.png ... skel_enemy4.png (hoặc skel_enemy_1.png ... skel_enemy_4.png)
-    private Animation<TextureRegion> loadIdleAnimation() {
+    private Animation<TextureRegion> loadIdleAnimation(String dir) {
         int frameCount = 4;
         TextureRegion[] frames = new TextureRegion[frameCount];
         for (int i = 1; i <= frameCount; i++) {
-            String filename1 = "images/Entity/characters/monsters/creep/map3/skeleton_enemy/skel_enemy" + i + ".png";
-            String filename2 = "images/Entity/characters/monsters/creep/map3/skeleton_enemy/skel_enemy_" + i + ".png";
-            Texture texture = null;
-            if (Gdx.files.internal(filename1).exists()) {
-                texture = new Texture(Gdx.files.internal(filename1));
-            } else if (Gdx.files.internal(filename2).exists()) {
-                texture = new Texture(Gdx.files.internal(filename2));
-            }
-            if (texture != null) {
-                frames[i-1] = new TextureRegion(texture);
-            } else {
-                // Nếu không có ảnh, lặp lại frame đầu
-                frames[i-1] = frames[0];
-            }
+            String filename = String.format(
+                "images/Entity/characters/monsters/creep/map3/skeleton_enemy/%s/idle/skel_enemy%d.png", dir, i);
+            frames[i - 1] = new TextureRegion(new Texture(Gdx.files.internal(filename)));
         }
         return new Animation<>(0.14f, frames);
     }
 
-    // HIT: skel_enemy_hit1.png ... skel_enemy_hit3.png
-    private Animation<TextureRegion> loadHitAnimation() {
+    private Animation<TextureRegion> loadHitAnimation(String dir) {
         int frameCount = 3;
         TextureRegion[] frames = new TextureRegion[frameCount];
         for (int i = 1; i <= frameCount; i++) {
-            String filename = "images/Entity/characters/monsters/creep/map3/skeleton_enemy/skel_enemy_hit" + i + ".png";
-            Texture texture = new Texture(Gdx.files.internal(filename));
-            frames[i-1] = new TextureRegion(texture);
+            String filename = String.format(
+                "images/Entity/characters/monsters/creep/map3/skeleton_enemy/%s/takehit/skel_enemy_hit%d.png", dir, i);
+            frames[i - 1] = new TextureRegion(new Texture(Gdx.files.internal(filename)));
         }
         return new Animation<>(0.14f, frames);
     }
 
-    // DEATH: skel_enemy_death1.png ... skel_enemy_death13.png
-    private Animation<TextureRegion> loadDeathAnimation() {
+    private Animation<TextureRegion> loadAttackAnimation(String dir) {
+        int frameCount = 13; // Đủ 13 frame
+        TextureRegion[] frames = new TextureRegion[frameCount];
+        for (int i = 1; i <= frameCount; i++) {
+            String filename = String.format(
+                "images/Entity/characters/monsters/creep/map3/skeleton_enemy/%s/atk/skel_enemy_%d.png", dir, i);
+            frames[i - 1] = new TextureRegion(new Texture(Gdx.files.internal(filename)));
+        }
+        return new Animation<>(0.11f, frames);
+    }
+
+    private Animation<TextureRegion> loadDeathAnimation(String dir) {
         int frameCount = 13;
         TextureRegion[] frames = new TextureRegion[frameCount];
         for (int i = 1; i <= frameCount; i++) {
-            String filename = "images/Entity/characters/monsters/creep/map3/skeleton_enemy/skel_enemy_death" + i + ".png";
-            Texture texture = new Texture(Gdx.files.internal(filename));
-            frames[i-1] = new TextureRegion(texture);
+            String filename = String.format(
+                "images/Entity/characters/monsters/creep/map3/skeleton_enemy/%s/death/skel_enemy_death%d.png", dir, i);
+            frames[i - 1] = new TextureRegion(new Texture(Gdx.files.internal(filename)));
         }
         return new Animation<>(0.11f, frames);
     }
@@ -121,21 +108,17 @@ public class SkeletonEnemy extends Monster {
         this.isDead = true;
     }
 
-
     @Override
     public void onCollision(Player player) {
-        // Use parent class's collision handling
         super.onCollision(player);
-
-        // Add skeleton-specific collision behavior if needed
         if (!isDead) {
-            player.takeHit(6); // Apply small damage on collision
+            player.takeHit(6);
         }
     }
 
     @Override
     public void act(float deltaTime, Player player, GameMap map) {
         super.act(deltaTime, player, map);
-        // Add SkeletonEnemy-specific update behavior here if needed
+        // Bổ sung hành vi cho SkeletonEnemy nếu cần
     }
 }
