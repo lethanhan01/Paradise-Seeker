@@ -14,33 +14,26 @@ import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
 import com.paradise_seeker.game.rendering.renderer.HPBarMonsterRenderer;
 import com.paradise_seeker.game.rendering.renderer.MonsterRendererManager;
 
-public abstract class Monster extends Character implements Collidable {
+public abstract class Monster extends Character{
 
-    public boolean isDead = false;
     public float spawnX;
     public float spawnY;
-    private boolean hasSetBounds = false;
+    public boolean hasSetBounds = false;
+    public boolean isDead = false;
+
+    public float stateTime = 0f;
+    public boolean isTakingHit = false;
+    public boolean isCleaving = false;
+    public boolean isMoving = false;
+
+    public Vector2 lastPosition = new Vector2();
+
     public MonsterAnimationManager animationManager;
     public MonsterCollisionHandler collisionHandler;
     public MonsterRendererManager renderer;
     public HPBarMonsterRenderer hpBarRenderer;
     public MonsterAI ai;
-    public TextureRegion currentFrame;
 
-    public float stateTime = 0f;
-    public boolean facingRight = true;
-
-    public boolean isTakingHit = false;
-    public float takeHitTimer = 0f;
-    public float takeHitDuration = 0.5f;
-
-    public boolean isCleaving = false;
-    public float cleaveTimer = 0f;
-    public float cleaveDuration = 1.2f;
-    public boolean cleaveDamageApplied = false; // Đảm bảo chỉ trừ máu 1 lần/mỗi đòn chém
-
-    public Vector2 lastPosition = new Vector2();
-    public boolean isMoving = false;
 
     public Monster(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y) {
         super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
@@ -100,12 +93,8 @@ public abstract class Monster extends Character implements Collidable {
 	 }
 
     public boolean isFacingRight() {
-        return animationManager.isFacingRight();
-    }
 
-    @Override
-    public Rectangle getBounds() {
-        return bounds;
+        return animationManager.isFacingRight();
     }
 
     public boolean isDead() {
