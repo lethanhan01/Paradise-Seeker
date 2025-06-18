@@ -87,14 +87,14 @@ For example, `core:clean` removes `build` folder only from the `core` project.
 
 ## Contributors
 
-| Name                   | Role(s)                      | Main Contribution            |
-|------------------------|------------------------------|------------------------------|
-| Lê Thành An            | Project Leader, OOP Architect, QA, Story Writer | Idea direction, game design, OOP design, Docs, Storyline, dialogue  |
-| Nguyễn Hoàng Hiệp      | Gameplay Programmer, QA, DevOps        | Core gameplay, Screen Display, Core Engine, NPC interaction |
-| Phạm Yến Nhi           | UI/UX Designer, Map Designer,Sound Designer  | User interface, asset design, Map creation, Sound effects, background music|
-| Trịnh Văn Minh         | Gameplay Programmer,Tester, Story Writer | Battle logic, monster AI, monster gameplay    |
-| Nguyễn Hoàng Long      | Gameplay Programmer        | Player gameplay, NPC interaction   |
-| Bùi Tuấn Anh           | Gameplay Programmer, UI/UX Designer, Story Writer    | Storyline, dialogue, Cutscene  |
+| Name                   | Role(s)                      | Main Contribution                                                             |
+|------------------------|------------------------------|-------------------------------------------------------------------------------|
+| Lê Thành An            | Project Leader, OOP Architect, QA, Story Writer | Idea direction, game design, OOP design, Docs, Storyline, dialogue            |
+| Nguyễn Hoàng Hiệp      | Gameplay Programmer, QA, DevOps        | Core gameplay, Screen Display, Core Engine, NPC interaction, Player Inventory |
+| Phạm Yến Nhi           | UI/UX Designer, Map Designer,Sound Designer  | User interface, asset design, Map creation, Sound effects, background music   |
+| Trịnh Văn Minh         | Gameplay Programmer,Tester, Story Writer | Battle logic, monster AI, monster gameplay                                    |
+| Nguyễn Hoàng Long      | Gameplay Programmer        | Player gameplay, NPC interaction                                              |
+| Bùi Tuấn Anh           | Gameplay Programmer, UI/UX Designer, Story Writer    | Storyline, dialogue, Cutscene                                                 |
 
 ---
 
