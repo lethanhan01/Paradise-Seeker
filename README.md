@@ -6,7 +6,6 @@
 **Difficulty:** 4/5
 
 ## Project Description
-
 Build a SimpleRPG (Role-playing game).
 
 ## Core Features
@@ -83,3 +82,39 @@ Useful Gradle tasks and flags:
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
+
+---
+
+## Contributors
+
+| Name                   | Role(s)                      | Main Contribution            |
+|------------------------|------------------------------|------------------------------|
+| Lê Thành An            | Project Leader, OOP Architect, QA, Story Writer | Idea direction, game design, OOP design, Docs, Storyline, dialogue  |
+| Nguyễn Hoàng Hiệp      | Gameplay Programmer, QA, DevOps        | Core gameplay, Screen Display, Core Engine, NPC interaction |
+| Phạm Yến Nhi           | UI/UX Designer, Map Designer,Sound Designer  | User interface, asset design, Map creation, Sound effects, background music|
+| Trịnh Văn Minh         | Gameplay Programmer,Tester, Story Writer | Battle logic, monster AI, monster gameplay    |
+| Nguyễn Hoàng Long      | Gameplay Programmer        | Player gameplay, NPC interaction   |
+| Bùi Tuấn Anh           | Gameplay Programmer, UI/UX Designer, Story Writer    | Storyline, dialogue, Cutscene  |
+
+---
+
+## How to Run
+
+1. **Clone the repository:**  
+   ```bash
+   git clone https://github.com/lethanhan01/fix-prj.git
+   cd fix-prj
+2. **Build the project:**
+   ```bash
+   ./gradlew build
+3. **Run the game:**
+   ```bash
+   ./gradlew lwjgl3:run
+   
+  (Requires Java 8+ and Gradle Wrapper)
+## Contact
+**For questions or collaboration, please contact:**
+
+Lê Thành An (Project Leader) — [An.LT235631@sis.hust.edu.vn]
+
+Or open an issue on the project repository.
