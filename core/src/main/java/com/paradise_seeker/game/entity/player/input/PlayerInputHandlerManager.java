@@ -105,7 +105,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                     }
                 }
             }
-            if (!blocked) {
+            if (!blocked || player.statusManager.isInvulnerable()) {
                 player.getBounds().x = nextX;
                 player.getBounds().y = nextY;
                 // Cập nhật hướng di chuyển
