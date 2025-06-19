@@ -13,7 +13,7 @@ import com.badlogic.gdx.Input;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CutScene implements Screen {
+public class CutScene implements Screen {
     protected final Main game;
     protected List<Texture> backgrounds = new ArrayList<>();
     protected List<String> cutsceneTexts = new ArrayList<>();
