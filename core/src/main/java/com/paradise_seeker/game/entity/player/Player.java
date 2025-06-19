@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.player.input.PlayerInputHandlerManager;
 import com.paradise_seeker.game.entity.player.inventory.PlayerInventoryManager;
@@ -13,7 +14,7 @@ import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.object.item.Item;
 import com.paradise_seeker.game.rendering.animations.PlayerAnimationManager;
 import com.paradise_seeker.game.rendering.effects.DashTrailManager;
-import com.paradise_seeker.game.rendering.renderer.PlayerRendererManager;
+import com.paradise_seeker.game.rendering.renderer.playerrender.PlayerRendererManager;
 import com.paradise_seeker.game.entity.player.status.PlayerStatusManager;
 
 public class Player extends Character {
@@ -114,10 +115,6 @@ public class Player extends Character {
         inputHandler.handleNPCInteraction(player, gameMap);
     }
 
-    public void addSmoke(float x, float y) {
-        smokeManager.addSmoke(x, y);
-    }
-
     @Override
     public void takeHit(float damage) {
         if (statusManager.isInvulnerable()) return;
@@ -189,5 +186,13 @@ public class Player extends Character {
         //invulnerabilityTimer = Float.MAX_VALUE;
     	hp=MAX_HP;
     }
+
+	@Override
+	public void onCollision(Collidable other) {
+		if (other instanceof Player) {
+			Player player = (Player) other;
+			player.blockMovement();
+		}
+	}
 
 }

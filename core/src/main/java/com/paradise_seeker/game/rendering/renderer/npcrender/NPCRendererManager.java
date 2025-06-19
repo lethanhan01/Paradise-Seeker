@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.rendering.renderer;
+package com.paradise_seeker.game.rendering.renderer.npcrender;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
