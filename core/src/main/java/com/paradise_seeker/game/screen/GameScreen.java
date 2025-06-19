@@ -26,6 +26,7 @@ import com.paradise_seeker.game.screen.cutscene.EndMap1;
 import com.paradise_seeker.game.screen.cutscene.EndMap2;
 import com.paradise_seeker.game.screen.cutscene.EndMap3;
 import com.paradise_seeker.game.screen.cutscene.EndMap4;
+import com.paradise_seeker.game.entity.player.skill.*;;
 
 public class GameScreen implements Screen {
     private final float CAMERA_VIEW_WIDTH = 16f;
@@ -181,8 +182,8 @@ public class GameScreen implements Screen {
 
         // Render player and skills (independent from map)
         player.playerRenderer.render(player, game.batch); // player không dùng interface Renderable, khác Skill
-        player.playerSkill1.render(game.batch); // gọi tới Renderable interface
-        player.playerSkill2.render(game.batch); // gọi tới Renderable interface
+        player.playerSkill1.getSkill1render().render(game.batch, player.playerSkill1); // gọi tới Renderable interface
+        player.playerSkill2.getSkill2render().render(game.batch, player.playerSkill2); // gọi tới Renderable interface
         game.batch.end();
 
         // Render dialogue box
