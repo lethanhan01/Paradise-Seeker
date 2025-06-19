@@ -46,7 +46,6 @@ public abstract class Item implements Collidable, Renderable {
             texture.dispose();
         }
     }
-    public abstract void isUsed(Player player);
 
     public Texture getTexture() { return texture; }
     public String getName() { return name; }
@@ -55,8 +54,7 @@ public abstract class Item implements Collidable, Renderable {
 
     // Phương thức trừu tượng để các lớp con triển khai
     @Override
-    public void onCollision(Collidable other) {
-        //
+    public void onCollision(Collidable other) {   
     }
     public void onCollision(Player player) {
 		if (active) {
@@ -64,7 +62,9 @@ public abstract class Item implements Collidable, Renderable {
 			active = false; // Đánh dấu item đã được lấy
 		}
 	}
-
+    
+    public abstract void isUsed(Player player);
+    
 	public void setActive(boolean active) {
 		this.active = active;
 	}

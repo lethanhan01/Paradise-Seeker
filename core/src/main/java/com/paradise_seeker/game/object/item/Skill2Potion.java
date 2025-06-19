@@ -14,14 +14,8 @@ public class Skill2Potion extends Item  {
         this.maxStackSize = 5; // Giới hạn số lượng tối đa trong một stack
     }
 
-    @Override
-    public void onCollision(Player player) {
-        if (active) {
-            player.addItemToInventory(this);
-			active = false;
-        }
-    }
 
+    @Override
     public void isUsed(Player player) {
 		player.playerSkill2.setDamageMultiplier(this.damageMultiplier); // Nhân 2 damage skill2
 	}

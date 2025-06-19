@@ -13,14 +13,7 @@ public class HPPotion extends Item {
         this.stackable = true;
         this.maxStackSize = 5; // Giới hạn số lượng tối đa trong một stack
     }
-
     @Override
-    public void onCollision(Player player) {
-        if (active) {
-            player.addItemToInventory(this);
-            active = false;
-        }
-    }
     public void isUsed(Player player) {
         player.hp = Math.min(Player.MAX_HP, player.hp + healAmount);
     }
