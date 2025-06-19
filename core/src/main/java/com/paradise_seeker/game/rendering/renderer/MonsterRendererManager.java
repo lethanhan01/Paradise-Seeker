@@ -4,11 +4,12 @@ package com.paradise_seeker.game.rendering.renderer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.rendering.MonsterHPBarManager;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
 
 public class MonsterRendererManager implements MonsterRenderer {
     public MonsterAnimationManager animationManager;
-    public HPBarMonsterRenderer hpBarRenderer = new HPBarMonsterRenderer();
+    public MonsterHPBarManager hpBarRenderer = new MonsterHPBarManager();
 
     public MonsterRendererManager(MonsterAnimationManager animationManager) {
         this.animationManager = animationManager;

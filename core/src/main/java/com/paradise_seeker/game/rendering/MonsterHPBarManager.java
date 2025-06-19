@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.rendering.renderer;
+package com.paradise_seeker.game.rendering;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
  * Responsible for all rendering aspects of a monster.
  * This class handles drawing the monster sprite and its UI elements like health bars.
  */
-public class HPBarMonsterRenderer {
+public class MonsterHPBarManager {
     // Constants for HP bar rendering
     private static final float HP_BAR_WIDTH = 2.0f;
     private static final float HP_BAR_HEIGHT = 0.5f;
@@ -18,7 +18,7 @@ public class HPBarMonsterRenderer {
 
     private Texture[] hpBarFrames;
 
-    public HPBarMonsterRenderer() {
+    public MonsterHPBarManager() {
         // Initialize HP bar textures
         loadHpBarTextures();
     }

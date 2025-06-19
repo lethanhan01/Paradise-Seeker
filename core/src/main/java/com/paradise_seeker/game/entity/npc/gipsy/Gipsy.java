@@ -13,7 +13,6 @@ public class Gipsy extends NPC {
     protected NPCDialogueManager dialogueManager;
     protected float spriteWidth = 1.9f;
     protected float spriteHeight = 1.8f;
-//    protected boolean HadTalked = false;
 
     public Gipsy(float x, float y) {
         super();
@@ -33,7 +32,7 @@ public class Gipsy extends NPC {
     }
 
     public Gipsy() {
-    	super();
+        super();
         this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
 
         this.stateManager = new GipsyStateManager();
@@ -61,18 +60,17 @@ public class Gipsy extends NPC {
 
     @Override
     public void act(float deltaTime, GameMap map) {
-        // Nếu đang mở rương thì chỉ update animation cho openChest
         if (stateManager.isOpeningChest()) {
-            this.stateTime += deltaTime;
-            if (animationManager.isAnimationFinished(animationManager.getOpenChestAnimation(), this.stateTime)) {
+            stateManager.updateStateTime(deltaTime, "openChest");
+            if (animationManager.isAnimationFinished(animationManager.getOpenChestAnimation(), stateManager.getOpenChestStateTime())) {
                 stateManager.completeChestOpening();
             }
+        } else if (stateManager.isTalking()) {
+            stateManager.updateStateTime(deltaTime, "talking");
         } else {
-            // Nếu không thì update animation cho idle hoặc talking (nếu có)
-            this.update(deltaTime);
+            stateManager.updateStateTime(deltaTime, "idle");
         }
 
-        // Đồng bộ trạng thái cha
         super.isTalking = stateManager.isTalking();
         super.hasTalked = stateManager.hasTalked();
 
@@ -81,6 +79,9 @@ public class Gipsy extends NPC {
 
     @Override
     public void setTalking(boolean talking) {
+        if (talking && !stateManager.isTalking()) {
+            stateManager.resetStateTime("talking");
+        }
         stateManager.setTalking(talking);
         super.isTalking = talking;
     }
@@ -91,43 +92,23 @@ public class Gipsy extends NPC {
         if (stateManager.isTalking()) return; // Chưa kết thúc hội thoại, không mở
         stateManager.startChestOpening();
         animationManager.setOpenChestAnimation();
-        this.stateTime = 0f; // Reset thời gian cho animation
+        stateManager.resetStateTime("openChest");
     }
-
 
     // -------------- Dialogue management ---------------
-    public boolean hasNextLine() {
-        return dialogueManager.hasNextLine();
-    }
-
-    public void nextLine() {
-        dialogueManager.nextLine();
-    }
-
-    public String getCurrentLine() {
-        return dialogueManager.getCurrentLine();
-    }
-
-    public void resetDialogue() {
-        dialogueManager.resetDialogue();
-    }
+    public boolean hasNextLine() { return dialogueManager.hasNextLine(); }
+    public void nextLine() { dialogueManager.nextLine(); }
+    public String getCurrentLine() { return dialogueManager.getCurrentLine(); }
+    public void resetDialogue() { dialogueManager.resetDialogue(); }
 
     public boolean shouldShowOptions() {
         // Chỉ hiển thị tuỳ chọn khi đã nói xong và chưa mở rương
         return !hasNextLine() && stateManager.isTalking() && !stateManager.isChestOpened();
     }
 
-    public boolean isChestOpened() {
-        return stateManager.isChestOpened();
-    }
-
-    public boolean isChestOpenAndFinished() {
-        return stateManager.isChestOpenAndFinished();
-    }
-
-    public boolean hasTalked() {
-        return stateManager.hasTalked();
-    }
+    public boolean isChestOpened() { return stateManager.isChestOpened(); }
+    public boolean isChestOpenAndFinished() { return stateManager.isChestOpenAndFinished(); }
+    public boolean hasTalked() { return stateManager.hasTalked(); }
 
     @Override
     protected void loadTexture() {
