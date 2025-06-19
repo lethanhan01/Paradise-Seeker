@@ -11,16 +11,16 @@ import com.paradise_seeker.game.entity.player.*;
 import java.util.List;
 
 public class PlayerSkill2 extends PlayerSkill {
-	private float currentX, currentY;
+	private float posX, posY;
 	private float offsetX = 1f;
 	private float offsetY = 1f;
 	private float stateTime = 0f;
 	private boolean isCasting = false;
-	private String currentDirection;
+	private String direction;
 	private Rectangle hitbox;
 	private boolean hasDealtDamage = false;
 	private float scale = 0.02f;
-	private float currentAtk = 0f;
+	private float skillDamage = 0f;
 
 	public PlayerSkill2() {
 		super(20, 1000); // mana, cooldown
@@ -74,7 +74,7 @@ public class PlayerSkill2 extends PlayerSkill {
 	@Override
 	public void castSkill(float atk, Rectangle bounds, String direction) {
 		if (canUse(System.currentTimeMillis())) {
-			this.currentAtk = atk;
+			this.skillDamage = atk;
 			float centerX = bounds.x + bounds.width / 2f;
 			float centerY = bounds.y + bounds.height / 2f;
 			float offset = 2.0f;  // Khoảng cách offset chiêu so với trung tâm nhân vật
@@ -106,9 +106,9 @@ public class PlayerSkill2 extends PlayerSkill {
 			centerY += offsetY;
 
 			// Bắt đầu cast skill
-			this.currentX = centerX;
-			this.currentY = centerY;
-			this.currentDirection = direction;
+			this.posX = centerX;
+			this.posY = centerY;
+			this.direction = direction;
 			this.stateTime = 0f;
 			this.hasDealtDamage = false;
 			this.isCasting = true;
@@ -135,13 +135,13 @@ public class PlayerSkill2 extends PlayerSkill {
 	public void render(SpriteBatch batch) {
 		if (!isCasting) return;
 
-		Animation<TextureRegion> anim = skillAnimations.get(currentDirection);
+		Animation<TextureRegion> anim = skillAnimations.get(direction);
 		if (anim != null) {
 			TextureRegion frame = anim.getKeyFrame(stateTime, false);
 			float realWidth = frame.getRegionWidth() * scale;
 			float realHeight = frame.getRegionHeight() * scale;
-			float drawX = currentX - realWidth / 2f;
-			float drawY = currentY - realHeight / 2f;
+			float drawX = posX - realWidth / 2f;
+			float drawY = posY - realHeight / 2f;
 
 			batch.draw(frame, drawX, drawY, realWidth, realHeight);
 		}
@@ -152,7 +152,7 @@ public class PlayerSkill2 extends PlayerSkill {
 		if (!isCasting) return;
 
 		stateTime += Gdx.graphics.getDeltaTime();
-		Animation<TextureRegion> anim = skillAnimations.get(currentDirection);
+		Animation<TextureRegion> anim = skillAnimations.get(direction);
 
 		if (anim != null && anim.isAnimationFinished(stateTime)) {
 			isCasting = false;
@@ -161,14 +161,14 @@ public class PlayerSkill2 extends PlayerSkill {
 
 		// Cập nhật hitbox
 		if (hitbox != null) {
-			hitbox.setPosition(currentX - hitbox.getWidth() / 2f, currentY - hitbox.getHeight() / 2f);
+			hitbox.setPosition(posX - hitbox.getWidth() / 2f, posY - hitbox.getHeight() / 2f);
 		}
 
 		// Kiểm tra va chạm
 		if (!hasDealtDamage) {
 			for (Monster monster : monsters) {
 				if (!monster.isDead() && hitbox.overlaps(monster.getBounds())) {
-					monster.takeHit(currentAtk * 2 * damageMultiplier);
+					monster.takeHit(skillDamage * 2 * damageMultiplier);
 					hasDealtDamage = true;
 					break;
 				}
@@ -179,8 +179,8 @@ public class PlayerSkill2 extends PlayerSkill {
 	@Override
 	public void updatePosition(Player player) {
 		if (isCasting) {
-			this.currentX = player.statusManager.getLastPosition().x + offsetX;
-			this.currentY = player.statusManager.getLastPosition().y + offsetY;
+			this.posX = player.statusManager.getLastPosition().x + offsetX;
+			this.posY = player.statusManager.getLastPosition().y + offsetY;
 		}
 	}
 }
