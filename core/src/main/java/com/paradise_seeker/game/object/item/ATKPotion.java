@@ -14,15 +14,8 @@ public class ATKPotion extends Item {
         this.maxStackSize = 5; // Giới hạn số lượng tối đa trong một stack
     }
 
+
     @Override
-    public void onCollision(Player player) {
-        if (active) {
-            player.addItemToInventory(this);
-            active = false;
-        }
-    }
-
-
     public void isUsed(Player player) {
 		player.atk += atkBoost;
 
