@@ -36,7 +36,7 @@ public class MonsterAI implements AI {
     }
 
     public void update(float deltaTime, Player player, CollisionSystem collision, Monster monster) {
-        if (monster.isDead() || player == null || player.statusManager.isDead()) return;
+        if (monster.statusManager.isDead() || player == null || player.statusManager.isDead()) return;
         float stopDisplayer = (float) Math.sqrt(player.getBounds().width * player.getBounds().width + player.getBounds().height * player.getBounds().height) / 2f;
         float stopDisMonster = (float) Math.sqrt(monster.getBounds().width * monster.getBounds().width + monster.getBounds().height * monster.getBounds().height) / 2f;
         stopDistance = stopDisplayer + stopDisMonster + 0.1f;

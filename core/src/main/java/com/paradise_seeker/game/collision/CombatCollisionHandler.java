@@ -1,21 +1,18 @@
 package com.paradise_seeker.game.collision;
 
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.entity.monster.MonsterStatusManger;
 import com.paradise_seeker.game.entity.player.Player;
 
 /**
  * Responsible for handling all collision-related logic for monsters.
  * This class manages collision detection and response with other game entities.
  */
-public class MonsterCollisionHandler {
-    private float cleaveRange;
-    private boolean pendingCleaveHit;
-    private boolean cleaveDamageDealt;
+public class CombatCollisionHandler {
+	public MonsterStatusManger statusManager;
 
-    public MonsterCollisionHandler() {
-        this.cleaveRange = 2.5f; // Default cleave range
-        this.pendingCleaveHit = false;
-        this.cleaveDamageDealt = false;
+    public CombatCollisionHandler() {
+    	statusManager = new MonsterStatusManger();
     }
 
 
@@ -27,7 +24,7 @@ public class MonsterCollisionHandler {
 
 
     public void handlePlayerCollision(Player player, Monster monster) {
-        if (monster.isDead() || player.statusManager.isInvulnerable()) {
+        if (monster.statusManager.isDead() || player.statusManager.isInvulnerable()) {
             return;
         }
 
@@ -46,14 +43,14 @@ public class MonsterCollisionHandler {
         float distanceX = Math.abs(player.getBounds().x - monster.getBounds().x);
         float distanceY = Math.abs(player.getBounds().y - monster.getBounds().y);
 
-        return distanceX <= 5f+cleaveRange && distanceY <= 5f+cleaveRange / 2;
+        return distanceX <= 5f+statusManager.getCleaveRange() && distanceY <= 5f+statusManager.getCleaveRange() / 2;
     }
 
     /**
      * Apply cleave damage to a player
      */
     public void applyCleaveHitToPlayer(Player player, Monster monster) {
-        if (pendingCleaveHit && !cleaveDamageDealt) {
+        if (statusManager.isPendingCleaveHit() && !statusManager.isCleaveDamageDealt()) {
             // Apply damage if player is not invulnerable
             if (!player.statusManager.isInvulnerable()) {
                 player.takeHit((float) monster.atk);
@@ -61,7 +58,7 @@ public class MonsterCollisionHandler {
                 player.statusManager.setStateTime(0f);
             }
 
-            cleaveDamageDealt = true;
+            statusManager.setCleaveDamageDealt(true);
         }
     }
 
@@ -69,16 +66,16 @@ public class MonsterCollisionHandler {
      * Set the cleave range for this monster
      */
     public void setCleaveRange(float range) {
-        this.cleaveRange = range;
+        statusManager.setCleaveRange(range);
     }
 
     /**
      * Mark a cleave attack as pending
      */
     public void setPendingCleaveHit(boolean pending) {
-        this.pendingCleaveHit = pending;
+        statusManager.setPendingCleaveHit(pending);
         if (pending) {
-            this.cleaveDamageDealt = false;
+            statusManager.setCleaveDamageDealt(false);
         }
     }
 

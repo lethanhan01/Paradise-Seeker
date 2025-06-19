@@ -177,7 +177,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
     }
     public void damageMonstersInRange(float x, float y, float radius, float damage, GameMap gameMap) {
         for (Monster m : gameMap.getMonsters()) {
-            if (!m.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeHit(damage);
+            if (!m.statusManager.isDead() && isInRange(x, y, m.getBounds(), radius)) m.takeHit(damage);
         }
     }
 

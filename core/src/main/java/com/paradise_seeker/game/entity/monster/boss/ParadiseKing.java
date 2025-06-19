@@ -104,7 +104,7 @@ public class ParadiseKing extends Monster {
     public void onCollision(Player player) {
         super.onCollision(player);
         // Add Boss5-specific collision behavior
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             player.takeHit(25); // Deal damage to the player on collision
         }
     }

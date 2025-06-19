@@ -233,7 +233,7 @@ public class GameScreen implements Screen {
 				case 4: // Map 5 to Map 1 (loop back)
 					// Kiểm tra boss ParadiseKing đã chết chưa và chuyển sang màn hình chiến thắng
 		            for (Monster monster : mapManager.getCurrentMap().getMonsters()) {
-		            	if (monster instanceof ParadiseKing && monster.isDead() && !winTriggered){
+		            	if (monster instanceof ParadiseKing && monster.statusManager.isDead() && !winTriggered){
 		                    winTriggered = true;
 		                    Gdx.app.postRunnable(() -> {
 		                        music.stop(); // Dừng nhạc hiện tại

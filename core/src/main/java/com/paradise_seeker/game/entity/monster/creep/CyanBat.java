@@ -65,7 +65,7 @@ public class CyanBat extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true;
+        statusManager.setDead(true);
     }
 
 
@@ -76,7 +76,7 @@ public class CyanBat extends Monster {
         super.onCollision(player);
 
         // Add bat-specific collision behavior if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             // For example, apply some effect when bat touches player
             player.takeHit(5); // Apply small damage
         }

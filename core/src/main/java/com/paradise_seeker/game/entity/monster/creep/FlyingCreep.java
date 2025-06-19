@@ -69,7 +69,7 @@ public class FlyingCreep extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true;
+        statusManager.setDead(true);
     }
 
 
@@ -79,7 +79,7 @@ public class FlyingCreep extends Monster {
         super.onCollision(player);
 
         // Add flying-specific collision behavior if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             player.takeHit(8); // Apply additional damage on collision
         }
     }

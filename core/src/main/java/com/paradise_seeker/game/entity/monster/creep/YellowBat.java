@@ -58,7 +58,7 @@ public class YellowBat extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true;
+        statusManager.setDead(true);
     }
 
     private Animation<TextureRegion> loadAnimation(String folder, String prefix, int frameCount, String suffix, int startIndex) {
@@ -77,7 +77,7 @@ public class YellowBat extends Monster {
         super.onCollision(player);
 
         // Add bat-specific collision behavior if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             player.takeHit(5); // Apply small damage on collision
         }
     }

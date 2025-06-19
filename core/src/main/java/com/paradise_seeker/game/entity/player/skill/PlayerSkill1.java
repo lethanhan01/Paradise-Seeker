@@ -5,18 +5,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.Gdx;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.paradise_seeker.game.screen.GameScreen;
-
 import java.util.List;
-import java.util.ArrayList;
 
 public class PlayerSkill1 extends PlayerSkill {
-    private static final float MIN_X = 0f;
-    private static final float MAX_X = 100f;
-    private static final float MIN_Y = 0f;
-    private static final float MAX_Y = 100f;
+    public static final float MIN_X = 0f;
+    public static final float MAX_X = 100f;
+    public static final float MIN_Y = 0f;
+    public static final float MAX_Y = 100f;
 
     private float posX, posY;
     private float startX, startY;
@@ -109,7 +105,7 @@ public class PlayerSkill1 extends PlayerSkill {
             hitbox.setPosition(posX, posY);
         }
         for (Monster monster : monsters) {
-            if (isFlying && !monster.isDead() && hitbox != null && monster.getBounds().overlaps(hitbox)) {
+            if (isFlying && !monster.statusManager.isDead() && hitbox != null && monster.getBounds().overlaps(hitbox)) {
                 monster.takeHit(skillDamage);
                 isFlying = false;
                 break;

@@ -69,7 +69,7 @@ public class EvilPlant extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true;
+        statusManager.setDead(true);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class EvilPlant extends Monster {
         super.onCollision(player);
 
         // Add EvilPlant-specific collision behavior if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             // For example, apply some poison effect when plant touches player
             player.takeHit(5); // Apply small poison damage
         }

@@ -86,7 +86,7 @@ public class Nyx extends Monster {
     public void onDeath() {
         super.onDeath();
         // Add Boss3-specific death behavior if needed
-        isDead = true; // Set the isDead flag to true
+        statusManager.setDead(true);; // Set the isDead flag to true
 
         bounds.set(0, 0, 0, 0); // Reset position on death
 
@@ -97,7 +97,7 @@ public class Nyx extends Monster {
     public void onCollision(Player player) {
         super.onCollision(player);
         // Add Boss3-specific collision behavior
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             player.takeHit(20); // Assume 20 damage on collision
         }
     }

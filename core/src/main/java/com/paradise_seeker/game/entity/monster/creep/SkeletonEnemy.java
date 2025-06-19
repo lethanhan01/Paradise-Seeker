@@ -105,13 +105,13 @@ public class SkeletonEnemy extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true;
+        statusManager.setDead(true);
     }
 
     @Override
     public void onCollision(Player player) {
         super.onCollision(player);
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             player.takeHit(6);
         }
     }
