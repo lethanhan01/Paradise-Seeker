@@ -11,7 +11,7 @@ import com.paradise_seeker.game.entity.player.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class PlayerSkill implements Skill, Renderable {
+public abstract class PlayerSkill implements Skill{
     protected float manaCost;
     protected long cooldown;
     protected long lastUsedTime;
@@ -40,8 +40,6 @@ public abstract class PlayerSkill implements Skill, Renderable {
         return damageMultiplier;
     }
 
-    protected abstract void loadSkillAnimations();
-
     @Override
     public abstract void castSkill(float atk, float x, float y, String direction);
     @Override
@@ -50,9 +48,7 @@ public abstract class PlayerSkill implements Skill, Renderable {
     @Override
     public void update(long now) {
     }
-    @Override
-    public void render(SpriteBatch batch) {
-    }
+
     public void updatePosition(Player player) {
     }
 

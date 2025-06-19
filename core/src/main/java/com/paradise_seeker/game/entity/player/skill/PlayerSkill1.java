@@ -5,14 +5,19 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.Gdx;
 import com.paradise_seeker.game.entity.monster.Monster;
+import com.paradise_seeker.game.screen.GameScreen;
+import com.paradise_seeker.game.entity.player.skill.PlayerSkill1Animation;
+
 import java.util.List;
+import java.util.ArrayList;
 
 public class PlayerSkill1 extends PlayerSkill {
-    public static final float MIN_X = 0f;
-    public static final float MAX_X = 100f;
-    public static final float MIN_Y = 0f;
-    public static final float MAX_Y = 100f;
+    private static final float MIN_X = 0f;
+    private static final float MAX_X = 100f;
+    private static final float MIN_Y = 0f;
+    private static final float MAX_Y = 100f;
 
     private float posX, posY;
     private float startX, startY;
@@ -22,37 +27,15 @@ public class PlayerSkill1 extends PlayerSkill {
     private boolean isFlying = false;
     private Rectangle hitbox;
     private String direction;
-    private Animation<TextureRegion> animation;
     private float stateTime = 0f;
+    private PlayerSkill1Animation playerSkill1Animation;
+    private Skill1Renderer skill1Renderer;
+
 
     public PlayerSkill1() {
         super(10, 500); // mana, cooldown
-        loadSkillAnimations();
-    }
-
-    protected void loadSkillAnimations() {
-        String[] directions = {"up", "down", "left", "right"};
-        for (String dir : directions) {
-            try {
-                String path = "images/Entity/skills/PlayerSkills/Skill1/Skill1_" + dir + ".png";
-                Texture sheet = new Texture(path);
-                TextureRegion[] frames;
-
-                if (dir.equals("left") || dir.equals("right")) {
-                    TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth() / 4, sheet.getHeight());
-                    frames = new TextureRegion[4];
-                    for (int i = 0; i < 4; i++) frames[i] = tmp[0][i];
-                } else {
-                    TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth(), sheet.getHeight() / 4);
-                    frames = new TextureRegion[4];
-                    for (int i = 0; i < 4; i++) frames[i] = tmp[i][0];
-                }
-
-                skillAnimations.put(dir, new Animation<>(0.1f, frames));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        this.playerSkill1Animation = new PlayerSkill1Animation(null);
+        this.skill1Renderer = new Skill1Renderer();
     }
 
     @Override
@@ -63,7 +46,7 @@ public class PlayerSkill1 extends PlayerSkill {
             this.startX = x;
             this.startY = y;
             this.direction = direction;
-            this.animation = skillAnimations.get(direction);
+            this.playerSkill1Animation.loadAnimation(direction);
             this.isFlying = true;
             this.stateTime = 0f;
             this.skillDamage = atk * 2 * damageMultiplier;
@@ -104,21 +87,35 @@ public class PlayerSkill1 extends PlayerSkill {
         if (hitbox != null) {
             hitbox.setPosition(posX, posY);
         }
-        for (Monster monster : monsters) {
-            if (isFlying && !monster.statusManager.isDead() && hitbox != null && monster.getBounds().overlaps(hitbox)) {
-                monster.takeHit(skillDamage);
-                isFlying = false;
-                break;
+        if (isFlying && hitbox != null) {
+            for (Monster monster : monsters) {
+                if (!monster.statusManager.isDead() && monster.getBounds().overlaps(hitbox)) {
+                    monster.takeHit(skillDamage);
+                    isFlying = false;
+                    break;
+                }
             }
         }
     }
-
-    @Override
-    public void render(SpriteBatch batch) {
-        if (!isFlying) return;
-        if (animation != null) {
-            TextureRegion frame = animation.getKeyFrame(stateTime, false);
-            batch.draw(frame, posX, posY, 1f, 1f);
-        }
+    public boolean isFlying() {
+        return isFlying;
+    }
+    public PlayerSkill1Animation getPlayerSkill1Animation() {
+        return playerSkill1Animation;
+    }
+    public Skill1Renderer getSkill1render(){
+        return skill1Renderer;
+    }
+    public String getDirection() {
+        return direction;
+    }
+    public float getStateTime() {
+        return stateTime;
+    }
+    public float getPosX() {
+        return posX;
+    }
+    public float getPosY() {
+        return posY;
     }
 }
