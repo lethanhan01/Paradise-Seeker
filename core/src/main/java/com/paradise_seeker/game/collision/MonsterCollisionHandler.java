@@ -36,7 +36,7 @@ public class MonsterCollisionHandler {
 
         // If player is shielding, reduce damage and handle shield effects
         if (!player.isInvulnerable()) {
-                player.takeHit(damage);
+          //      player.takeHit(damage);
         }
     }
 

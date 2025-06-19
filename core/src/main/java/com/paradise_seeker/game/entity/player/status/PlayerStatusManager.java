@@ -23,7 +23,7 @@ public class PlayerStatusManager {
     	 this.isHit = false;
     	 this.isInvulnerable = false;
     	 this.doNothing = false;
-    	 this.invulnerabilityTimer = 0f;
+    	 this.invulnerabilityTimer = 2.5f;
     	 this.stateTime = 0f;
 	}
 
