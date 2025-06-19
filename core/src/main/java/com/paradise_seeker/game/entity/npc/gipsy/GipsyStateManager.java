@@ -15,6 +15,18 @@ public class GipsyStateManager {
     private float talkingStateTime = 0f;
     private float openChestStateTime = 0f;
 
+    public boolean showInteractMessage = false;
+    public String pendingPotionToDrop = null;
+    public boolean showDialogueOptions = false;
+
+    public final String[] options = {"HP potion", "MP potion", "ATK potion"};
+
+    public int selectedOptionIndex = 0;
+
+    public boolean isShowInteractMessage() {
+        return showInteractMessage;
+    }
+
     public GipsyStateManager() {
         isChestOpened = false;
         isOpeningChest = false;

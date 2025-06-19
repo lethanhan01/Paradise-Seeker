@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.monster;
+package com.paradise_seeker.game.entity.monster.status;
 
 import com.badlogic.gdx.math.Vector2;
 

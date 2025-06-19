@@ -22,15 +22,6 @@ import com.paradise_seeker.game.screen.ControlScreen;
 import com.paradise_seeker.game.screen.GameScreen;
 
 public class PlayerInputHandlerManager implements PlayerInputHandler {
-    public boolean showInteractMessage = false;
-    public String pendingPotionToDrop = null;
-    public boolean showDialogueOptions = false;
-    public final String[] options = {"HP potion", "MP potion", "ATK potion"};
-    public int selectedOptionIndex = 0;
-
-    public boolean isShowInteractMessage() {
-        return showInteractMessage;
-    }
 
     @Override
     public void handleInput(Player player, float deltaTime, GameMap gameMap) {
@@ -53,24 +44,24 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
         for (Gipsy npc : gameMap.getNPCs()) {
             float distance = calculateDistance(player, npc);
             if (distance <= 2.5f) {
-                showInteractMessage = true;
+                gameMap.gipsy.stateManager.showInteractMessage = true;
                 if ( Gdx.input.isKeyJustPressed(Input.Keys.F) && !npc.isTalking) {
-					showDialogueOptions = true; // Reset options when interacting
+                	gameMap.gipsy.stateManager.showDialogueOptions = true; // Reset options when interacting
 				}else {
-					showDialogueOptions = false; // No options available
+					gameMap.gipsy.stateManager.showDialogueOptions = false; // No options available
 				}
                 return; // Found an interaction, no need to check further
             }else {
-				showInteractMessage = false; // No interaction available
+            	gameMap.gipsy.stateManager.showInteractMessage = false; // No interaction available
 			}
         }
 
         // Check for books
         Book book = gameMap.getBook();
         if (book != null && book.isPlayerInRange(player) && !book.isOpened()) {
-        		showInteractMessage = true;
+        	gameMap.gipsy.stateManager.showInteractMessage = true;
         }else {
-			showInteractMessage = false; // No interaction available
+        	gameMap.gipsy.stateManager.showInteractMessage = false; // No interaction available
 		}
     }
     @Override
@@ -208,7 +199,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
     @Override
     public void handleNPCInteraction(Player player, GameMap gameMap) {
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F) && showInteractMessage && gameMap != null) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F) && gameMap.gipsy.stateManager.showInteractMessage && gameMap != null) {
             // Tìm NPC gần nhất để tương tác
             Gipsy nearestNPC = null;
             float minDistance = Float.MAX_VALUE;
@@ -240,14 +231,15 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
     	}
     	Random random = new Random();
     	int randomIndex = random.nextInt(3);
-    	this.selectedOptionIndex = randomIndex; // Chọn ngẫu nhiên một tùy chọn
+    	gameScreen.currentTalkingNPC.stateManager.selectedOptionIndex = randomIndex; // Chọn ngẫu nhiên một tùy chọn
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-            if (this.showDialogueOptions) {
+            if (gameScreen.currentTalkingNPC.stateManager.showDialogueOptions) {
                 if (gameScreen.currentTalkingNPC != null) {
                 	gameScreen.currentTalkingNPC.stateManager.setHasTalked(true);
-                	this.pendingPotionToDrop = this.options[this.selectedOptionIndex];
-                    this.showDialogueOptions = false;
-                    this.selectedOptionIndex = 0;
+                	gameScreen.currentTalkingNPC.stateManager.pendingPotionToDrop
+                	= gameScreen.currentTalkingNPC.stateManager.options[gameScreen.currentTalkingNPC.stateManager.selectedOptionIndex];
+                	gameScreen.currentTalkingNPC.stateManager.showDialogueOptions = false;
+                	gameScreen.currentTalkingNPC.stateManager.selectedOptionIndex = 0;
 
                     if (gameScreen.currentTalkingNPC.hasNextLine()) {
                     	gameScreen.currentTalkingNPC.nextLine();
@@ -297,17 +289,17 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
     }
 
     public void finishNpcInteraction(GameScreen gameScreen, Player player) {
-        if (this.pendingPotionToDrop != null ) {
-            dropPotionNextToPlayer(gameScreen.mapManager, this.pendingPotionToDrop, player);
-            this.pendingPotionToDrop = null;
+        if (gameScreen.currentTalkingNPC.stateManager.pendingPotionToDrop != null ) {
+            dropPotionNextToPlayer(gameScreen.mapManager, gameScreen.currentTalkingNPC.stateManager.pendingPotionToDrop, player);
+            gameScreen.currentTalkingNPC.stateManager.pendingPotionToDrop = null;
         }
         if (gameScreen.currentTalkingNPC != null) {
         	gameScreen.currentTalkingNPC.setTalking(true);
         	gameScreen.currentTalkingNPC.stateManager.setChestOpened(true);
 
         }
-        this.showDialogueOptions = false;
-        this.selectedOptionIndex = 0;
+        gameScreen.currentTalkingNPC.stateManager.showDialogueOptions = false;
+        gameScreen.currentTalkingNPC.stateManager.selectedOptionIndex = 0;
         gameScreen.currentTalkingNPC.stateManager.isChestOpened = false; // Reset trạng thái mở rương
 
 

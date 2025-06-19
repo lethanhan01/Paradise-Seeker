@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Gipsy extends NPC {
-    public GipsyStateManager stateManager;
+    public GipsyStateManager stateManager = new GipsyStateManager();
+
     protected NPCDialogueManager dialogueManager;
     protected float spriteWidth = 1.9f;
     protected float spriteHeight = 1.8f;
@@ -20,7 +21,6 @@ public class Gipsy extends NPC {
         this.y = y;
         this.bounds = new Rectangle(x, y, spriteWidth, spriteHeight);
 
-        this.stateManager = new GipsyStateManager();
         this.dialogueManager = new NPCDialogueManager();
 
         // Khởi tạo thoại mặc định

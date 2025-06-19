@@ -42,6 +42,7 @@ public abstract class GameMap implements Renderable {
     public Chest chest;
     public Book book;
 
+    public Gipsy gipsy = new Gipsy();
     public List<Collidable> collidables = new ArrayList<>();
     public List<Gipsy> npcList = new ArrayList<>();
     public List<Monster> monsters = new ArrayList<>();

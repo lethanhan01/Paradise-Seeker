@@ -55,7 +55,7 @@ public class GameScreen implements Screen {
 		player = new Player();
 		currentTalkingNPC = new Gipsy(); // Initialize with a default NPC
         this.mapManager = new GameMapManager(player);
-        this.hud = new HUD(player, game.font);
+        this.hud = new HUD(player, game.font, mapManager.getCurrentMap());
         this.shapeRenderer = new ShapeRenderer();
 
         // Reset font color to white when starting new game
@@ -106,7 +106,7 @@ public class GameScreen implements Screen {
 
 
 		// Handle NPC interaction
-    	if (player.inputHandler.showDialogueOptions) {
+    	if (this.currentTalkingNPC.stateManager.showDialogueOptions) {
 			player.inputHandler.handleDialogue(this, player);
 
 		}
@@ -114,7 +114,7 @@ public class GameScreen implements Screen {
         player.inputHandler.handleZoomInput(this);
 
         // Game update logic (outside dialogue)
-        if (!dialogueBox.isVisible() && !player.inputHandler.showDialogueOptions && !currentTalkingNPC.stateManager.isChestOpened) {
+        if (!dialogueBox.isVisible() && !this.currentTalkingNPC.stateManager.showDialogueOptions && !currentTalkingNPC.stateManager.isChestOpened) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 game.setScreen(new PauseScreen(game));
                 music.pause();

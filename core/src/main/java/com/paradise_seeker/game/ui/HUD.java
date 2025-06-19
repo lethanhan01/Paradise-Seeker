@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.map.GameMap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,16 +40,19 @@ public class HUD {
     private float mapNotificationTimer = 0f;
     private static final float MAP_NOTIFICATION_TIME = 2.2f; // seconds
 
+    public GameMap gameMap;
+
     public void showMapNotification(String message) {
         this.mapNotification = message;
         this.mapNotificationTimer = MAP_NOTIFICATION_TIME;
     }
 
-    public HUD(Player player, BitmapFont font) {
+    public HUD(Player player, BitmapFont font, GameMap gameMap) {
         this.player = player;
         this.font = font;
         this.shapeRenderer = new ShapeRenderer();
         this.spriteBatch = new SpriteBatch();
+        this.gameMap = gameMap;
 
         hpBarFrames = new Texture[74];
         for (int i = 0; i < 74; i++) {
@@ -168,9 +172,8 @@ public class HUD {
                     }
                 }
             }
-
             // Show interact message lower than notification
-            if (player.inputHandler.isShowInteractMessage()) {
+            if (gameMap.gipsy.stateManager.isShowInteractMessage()) {
                 float messageY = screenHeight - PADDING - (scaledBarHeight * 2.7f) - (screenHeight * 0.17f);
                 font.draw(spriteBatch, "> Press F to interact", PADDING, messageY);
             }

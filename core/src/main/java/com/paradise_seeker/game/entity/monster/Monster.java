@@ -7,6 +7,7 @@ import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.collision.CombatCollisionHandler;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.monster.ai.MonsterAI;
+import com.paradise_seeker.game.entity.monster.status.MonsterStatusManger;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
