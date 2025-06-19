@@ -47,7 +47,7 @@ public class MonsterProjectile implements Renderable {
         stateTime += dt;
         hitbox.setPosition(x, y);
         // Va chạm player
-        if (!hitDealt && hitbox.overlaps(player.getBounds()) && !player.isInvulnerable()) {
+        if (!hitDealt && hitbox.overlaps(player.getBounds()) && !player.statusManager.isInvulnerable()) {
             player.takeHit(38); // Damage skill
             hitDealt = true;
             finished = true;

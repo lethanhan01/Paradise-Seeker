@@ -60,7 +60,7 @@ public class MinotaurElite extends Monster {
             Texture texture = new Texture(Gdx.files.internal(filename));
             frames[i] = new TextureRegion(texture);
         }
-        return new Animation<>(0.12f, frames);
+        return new Animation<>(0.13f, frames);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class MinotaurElite extends Monster {
         // Add minotaur-specific collision behavior if needed
         if (!isDead) {
             // Additional damage when colliding with player
-            player.takeHit(20); // Example: strong minotaur charging damage
+            //player.takeHit(20); // Example: strong minotaur charging damage
         }
     }
 
