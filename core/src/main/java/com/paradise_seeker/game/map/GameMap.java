@@ -42,6 +42,7 @@ public abstract class GameMap implements Renderable {
     public Chest chest;
     public Book book;
 
+    public Gipsy gipsy = new Gipsy();
     public List<Collidable> collidables = new ArrayList<>();
     public List<Gipsy> npcList = new ArrayList<>();
     public List<Monster> monsters = new ArrayList<>();
@@ -218,7 +219,7 @@ public abstract class GameMap implements Renderable {
         for (Skill2Potion item : skill2Items) item.render(batch);
         for (Monster m : monsters) {
             m.renderer.render(m, batch);
-            m.hpBarRenderer.render(batch, m.getBounds(), m.animationManager.getCurrentFrame(), m.getHp(), m.getMaxHp(), m.isDead());
+            m.hpBarRenderer.render(batch, m.getBounds(), m.animationManager.getCurrentFrame(), m.getHp(), m.getMaxHp(), m.statusManager.isDead());
             if (m instanceof HasProjectiles) {
                 for (Renderable p : ((HasProjectiles)m).getProjectiles()) {
                     p.render(batch);

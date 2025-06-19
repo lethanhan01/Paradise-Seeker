@@ -72,7 +72,7 @@ public class Necromancer extends Monster {
     public void onCollision(Player player) {
         super.onCollision(player);
 
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             // For example, apply some slow effect to player when ice monster touches them
             // player.applyStatusEffect("slow", 3.0f);  // Uncomment if you have status effects
         }

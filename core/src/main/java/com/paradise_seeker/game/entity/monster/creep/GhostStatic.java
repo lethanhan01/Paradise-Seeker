@@ -58,8 +58,7 @@ public class GhostStatic extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true; // Set isDead to true when the ghost dies
-        // Optional implementation for death effects
+        statusManager.setDead(true);        // Optional implementation for death effects
     }
 
 
@@ -69,7 +68,7 @@ public class GhostStatic extends Monster {
         super.onCollision(player);
 
         // Add ghost-specific collision behavior if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             // For example, apply some special effect when ghost touches player
             player.takeHit(10); // Apply additional ghost damage
         }

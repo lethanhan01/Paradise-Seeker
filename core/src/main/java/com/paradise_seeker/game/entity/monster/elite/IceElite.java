@@ -69,7 +69,7 @@ public class IceElite extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true; // Set isDead to true when the monster dies
+        statusManager.setDead(true);
         // Optional implementation for death effects
     }
 
@@ -79,7 +79,7 @@ public class IceElite extends Monster {
         super.onCollision(player);
 
         // Add ice-specific collision behavior if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             // For example, apply some slow effect to player when ice monster touches them
             // player.applyStatusEffect("slow", 3.0f);  // Uncomment if you have status effects
         }

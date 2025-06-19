@@ -75,7 +75,7 @@ public class DevilCreep extends Monster {
     public void onDeath() {
         super.onDeath();
         // Mark as dead
-        this.isDead = true;
+        statusManager.setDead(true);
     }
 
 
@@ -85,7 +85,7 @@ public class DevilCreep extends Monster {
         super.onCollision(player);
 
         // Add devil-specific collision behavior if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             // For example, apply some effect when devil touches player
             player.takeHit(10); // Apply additional damage
         }

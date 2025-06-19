@@ -66,7 +66,7 @@ public class MinotaurElite extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true; // Set the monster as dead
+        statusManager.setDead(true);// Set the monster as dead
         // Optional implementation for death effects
     }
 
@@ -76,7 +76,7 @@ public class MinotaurElite extends Monster {
         super.onCollision(player);
 
         // Add minotaur-specific collision behavior if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             // Additional damage when colliding with player
             //player.takeHit(20); // Example: strong minotaur charging damage
         }

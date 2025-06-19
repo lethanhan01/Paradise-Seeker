@@ -70,7 +70,7 @@ public class FirewormElite extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true;
+        statusManager.setDead(true);
         // Death effect can be implemented here
     }
 
@@ -80,7 +80,7 @@ public class FirewormElite extends Monster {
         super.onCollision(player);
 
         // Add FirewormElite-specific collision behavior here if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             // Additional damage or effects when colliding with player
             player.takeHit(15); // Example: extra fire damage
         }

@@ -78,7 +78,7 @@ public class RatCreep extends Monster {
     @Override
     public void onDeath() {
         super.onDeath();
-        this.isDead = true;
+        statusManager.setDead(true);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class RatCreep extends Monster {
         super.onCollision(player);
 
         // Add rat-specific collision behavior if needed
-        if (!isDead) {
+        if (!statusManager.isDead()) {
             player.takeHit(7); // Apply small damage on collision
         }
     }

@@ -1,13 +1,13 @@
 package com.paradise_seeker.game.entity.monster;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.paradise_seeker.game.collision.Collidable;
-import com.paradise_seeker.game.collision.MonsterCollisionHandler;
+import com.paradise_seeker.game.collision.CombatCollisionHandler;
 import com.paradise_seeker.game.entity.Character;
 import com.paradise_seeker.game.entity.monster.ai.MonsterAI;
+import com.paradise_seeker.game.entity.monster.status.MonsterStatusManger;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
@@ -16,39 +16,28 @@ import com.paradise_seeker.game.rendering.MonsterHPBarManager;
 
 public abstract class Monster extends Character{
 
-    public float spawnX;
-    public float spawnY;
-    public boolean hasSetBounds = false;
-    public boolean isDead = false;
-
-    public float stateTime = 0f;
-    public boolean isTakingHit = false;
-    public boolean isCleaving = false;
-    public boolean isMoving = false;
-
-    public Vector2 lastPosition = new Vector2();
+    public MonsterStatusManger statusManager = new MonsterStatusManger();
 
     public MonsterAnimationManager animationManager;
-    public MonsterCollisionHandler collisionHandler;
+    public CombatCollisionHandler collisionHandler;
     public MonsterRendererManager renderer;
     public MonsterHPBarManager hpBarRenderer;
     public MonsterAI ai;
 
-
     public Monster(Rectangle bounds, float hp, float mp, float maxHp, float maxMp, float atk, float speed, float x, float y) {
         super(bounds, hp, mp, maxHp, maxMp, atk, speed, x, y);
-        this.spawnX = x;
-        this.spawnY = y;
+        statusManager.setSpawnX(x);
+        statusManager.setSpawnY(y);
 
         // Initialize managers
         this.hpBarRenderer = new MonsterHPBarManager();
         this.animationManager = new MonsterAnimationManager();
         this.renderer = new MonsterRendererManager(animationManager);
-        this.collisionHandler = new MonsterCollisionHandler();
+        this.collisionHandler = new CombatCollisionHandler();
         this.ai = new MonsterAI(this);
 
         // Set initial position
-        this.lastPosition.set(x, y);
+        statusManager.getLastPosition().set(x, y);
         this.bounds = new Rectangle(x, y, bounds.width, bounds.height);
 
         // Load animations (to be implemented by subclasses)
@@ -68,14 +57,14 @@ public abstract class Monster extends Character{
         ai.update(deltaTime, player, map.collisionSystem, this);
 
         // Track movement
-        isMoving = lastPosition.dst(bounds.x, bounds.y) > 0.0001f;
-        lastPosition.set(bounds.x, bounds.y);
+        statusManager.setMoving(statusManager.getLastPosition().dst(bounds.x, bounds.y) > 0.0001f);
+        statusManager.getLastPosition().set(bounds.x, bounds.y);
 
         // Update animation state
-        animationManager.update(deltaTime, isMoving, isDead, false, player.getBounds().x, this);
-        if (isDead && animationManager.isDeathAnimationFinished() && !hasSetBounds) {
+        animationManager.update(deltaTime, statusManager.isMoving(), statusManager.isDead(), false, player.getBounds().x, this);
+        if (statusManager.isDead() && animationManager.isDeathAnimationFinished() && !statusManager.isHasSetBounds()) {
             bounds.set(0, 0, 0, 0); //  Ẩn quái vật sau khi hoạt họa chết hoàn tất
-            hasSetBounds = true;
+            statusManager.setHasSetBounds(true);
         }
     }
 
@@ -97,10 +86,6 @@ public abstract class Monster extends Character{
         return animationManager.isFacingRight();
     }
 
-    public boolean isDead() {
-        return isDead;
-    }
-
     public float getHp() {
         return hp;
     }
@@ -114,7 +99,7 @@ public abstract class Monster extends Character{
     }
 
     public void takeHit(float damage) {
-        if (isDead) return;
+        if (statusManager.isDead()) return;
 
         this.hp = Math.max(0, this.hp - damage);
 
@@ -123,7 +108,7 @@ public abstract class Monster extends Character{
 
         // Check for death
         if (this.hp == 0) {
-            this.isDead = true;
+        	statusManager.setDead(true);
             onDeath();
         }
 
@@ -142,7 +127,7 @@ public abstract class Monster extends Character{
 
     @Override
     public void onDeath() {
-    	isDead = true;
+    	statusManager.setDead(true) ;
 		bounds.set(0, 0, 0, 0); // Reset position on death
     }
 

@@ -17,13 +17,13 @@ public class MonsterRendererManager implements MonsterRenderer {
 
     @Override
     public void render(Monster monster, SpriteBatch batch) {
-        if (monster.isDead()) {
+        if (monster.statusManager.isDead()) {
             renderDeathAnimation(monster, batch);
-        } else if (monster.isTakingHit) {
+        } else if (monster.statusManager.isTakingHit()) {
             renderHitAnimation(monster, batch);
-        } else if (monster.isCleaving) {
+        } else if (monster.statusManager.isCleaving()) {
             renderCleaveAnimation(monster, batch);
-        } else if (monster.isMoving) {
+        } else if (monster.statusManager.isMoving()) {
             renderMovementAnimation(monster, batch);
         } else {
             renderIdleAnimation(monster, batch);

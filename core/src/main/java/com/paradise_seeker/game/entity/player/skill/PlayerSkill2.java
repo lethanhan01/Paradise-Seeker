@@ -167,7 +167,7 @@ public class PlayerSkill2 extends PlayerSkill {
 		// Kiểm tra va chạm
 		if (!hasDealtDamage) {
 			for (Monster monster : monsters) {
-				if (!monster.isDead() && hitbox.overlaps(monster.getBounds())) {
+				if (!monster.statusManager.isDead() && hitbox.overlaps(monster.getBounds())) {
 					monster.takeHit(skillDamage * 2 * damageMultiplier);
 					hasDealtDamage = true;
 					break;
