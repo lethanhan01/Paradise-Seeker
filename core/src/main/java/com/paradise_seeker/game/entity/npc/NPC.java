@@ -15,7 +15,6 @@ public abstract class NPC extends Character implements Collidable {
     public boolean hasTalked;
     protected Texture texture;
     protected NPCAnimationManager animationManager;
-    protected float stateTime = 0f;
     public NPCRendererManager npcRenderer;
 
     public NPC() {
@@ -35,7 +34,6 @@ public abstract class NPC extends Character implements Collidable {
         loadTexture();
     }
     public NPCAnimationManager getAnimationManager() { return animationManager; }
-    public float getStateTime() { return stateTime; }
 
     protected abstract void loadTexture();
 
@@ -87,11 +85,6 @@ public abstract class NPC extends Character implements Collidable {
         return super.getBounds();
     }
 
-    public void update(float deltaTime) {
-        stateTime += deltaTime;
-        // Nếu muốn animationManager update thì gọi thêm ở subclass
-        // (Thường không cần nếu chỉ lấy animation khi render)
-    }
 
     @Override
     public boolean isSolid() {

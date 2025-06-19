@@ -11,7 +11,7 @@ import com.paradise_seeker.game.entity.monster.ai.MonsterAI;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.rendering.animations.MonsterAnimationManager;
-import com.paradise_seeker.game.rendering.renderer.HPBarMonsterRenderer;
+import com.paradise_seeker.game.rendering.MonsterHPBarManager;
 import com.paradise_seeker.game.rendering.renderer.MonsterRendererManager;
 
 public abstract class Monster extends Character{
@@ -31,7 +31,7 @@ public abstract class Monster extends Character{
     public MonsterAnimationManager animationManager;
     public MonsterCollisionHandler collisionHandler;
     public MonsterRendererManager renderer;
-    public HPBarMonsterRenderer hpBarRenderer;
+    public MonsterHPBarManager hpBarRenderer;
     public MonsterAI ai;
 
 
@@ -41,7 +41,7 @@ public abstract class Monster extends Character{
         this.spawnY = y;
 
         // Initialize managers
-        this.hpBarRenderer = new HPBarMonsterRenderer();
+        this.hpBarRenderer = new MonsterHPBarManager();
         this.animationManager = new MonsterAnimationManager();
         this.renderer = new MonsterRendererManager(animationManager);
         this.collisionHandler = new MonsterCollisionHandler();

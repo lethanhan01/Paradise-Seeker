@@ -3,7 +3,6 @@ package com.paradise_seeker.game.rendering.animations;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.paradise_seeker.game.entity.monster.Monster;
-import com.paradise_seeker.game.rendering.AnimationManager;
 
 /**
  * Responsible for managing all monster animations.

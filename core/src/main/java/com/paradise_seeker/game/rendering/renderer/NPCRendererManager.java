@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.Texture;
 import com.paradise_seeker.game.entity.npc.NPC;
+import com.paradise_seeker.game.entity.npc.gipsy.Gipsy;
+import com.paradise_seeker.game.entity.npc.gipsy.GipsyStateManager;
 import com.paradise_seeker.game.rendering.animations.NPCAnimationManager;
 
 public class NPCRendererManager implements NPCRenderer {
@@ -19,14 +21,28 @@ public class NPCRendererManager implements NPCRenderer {
     @Override
     public void render(NPC npc, SpriteBatch batch) {
         NPCAnimationManager animationManager = npc.getAnimationManager();
-        float stateTime = npc.getStateTime();
 
         Animation<TextureRegion> anim;
-        // Chọn animation dựa vào trạng thái
-        if (npc.isTalking) {
-            anim = animationManager.getAttackAnimation("down");
+        float stateTime = 0f;
+
+        // Chỉ ví dụ với Gipsy, nếu nhiều loại NPC thì dùng instance of kiểm tra
+        if (npc instanceof Gipsy) {
+            Gipsy gipsy = (Gipsy) npc;
+            GipsyStateManager stateManager = gipsy.stateManager;
+            if (stateManager.isOpeningChest()) {
+                anim = animationManager.getOpenChestAnimation();
+                stateTime = stateManager.getOpenChestStateTime();
+            } else if (stateManager.isTalking()) {
+                anim = animationManager.getAttackAnimation("down");
+                stateTime = stateManager.getTalkingStateTime();
+            } else {
+                anim = animationManager.getIdleAnimation("down");
+                stateTime = stateManager.getIdleStateTime();
+            }
         } else {
+            // fallback: dùng idle
             anim = animationManager.getIdleAnimation("down");
+            stateTime = 0f;
         }
 
         TextureRegion frame = (anim != null) ? anim.getKeyFrame(stateTime, true) : null;
