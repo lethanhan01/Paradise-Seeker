@@ -1,4 +1,4 @@
-package com.paradise_seeker.game.entity.player.skill;
+package com.paradise_seeker.game.entity.player.skill.skillanimation;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 
 public class PlayerSkill2Animation implements SkillAnimationManager {
     private Animation<TextureRegion> skillAnimation;
+    public String[] frames;
 
     public PlayerSkill2Animation(Animation<TextureRegion> skillAnimation) {
         this.skillAnimation = skillAnimation;
@@ -15,7 +16,7 @@ public class PlayerSkill2Animation implements SkillAnimationManager {
     public void loadAnimation(String direction) {
         try {
             String basePath = "images/Entity/skills/PlayerSkills/Skill2/";
-            String[] frames = new String[4];
+            frames = new String[4];
             if (direction.equals("up")) {
                 basePath += "len/lightning_skill1_frame";
             } else if (direction.equals("down")) {
@@ -45,4 +46,4 @@ public class PlayerSkill2Animation implements SkillAnimationManager {
     @Override
     public void dispose() {
     }
-} 
+}

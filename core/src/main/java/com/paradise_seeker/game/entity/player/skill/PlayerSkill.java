@@ -1,8 +1,6 @@
 package com.paradise_seeker.game.entity.player.skill;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.paradise_seeker.game.rendering.Renderable;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.List;

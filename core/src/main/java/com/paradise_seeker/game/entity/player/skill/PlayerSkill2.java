@@ -1,15 +1,15 @@
 package com.paradise_seeker.game.entity.player.skill;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.player.*;
+import com.paradise_seeker.game.entity.player.skill.skillanimation.PlayerSkill2Animation;
+import com.paradise_seeker.game.entity.player.skill.skillrender.Skill2Renderer;
+
 import java.util.List;
-import com.paradise_seeker.game.entity.player.skill.PlayerSkill2Animation;
 
 public class PlayerSkill2 extends PlayerSkill {
 	private float posX, posY;

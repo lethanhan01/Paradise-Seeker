@@ -1,8 +1,10 @@
-package com.paradise_seeker.game.entity.player.skill;
+package com.paradise_seeker.game.entity.player.skill.skillrender;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.paradise_seeker.game.entity.player.skill.PlayerSkill;
+import com.paradise_seeker.game.entity.player.skill.PlayerSkill1;
 
 public class Skill1Renderer implements SkillRenderer {
     @Override

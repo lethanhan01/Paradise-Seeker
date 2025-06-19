@@ -25,8 +25,7 @@ import com.paradise_seeker.game.screen.cutscene.EndGame;
 import com.paradise_seeker.game.screen.cutscene.EndMap1;
 import com.paradise_seeker.game.screen.cutscene.EndMap2;
 import com.paradise_seeker.game.screen.cutscene.EndMap3;
-import com.paradise_seeker.game.screen.cutscene.EndMap4;
-import com.paradise_seeker.game.entity.player.skill.*;;
+import com.paradise_seeker.game.screen.cutscene.EndMap4;;
 
 public class GameScreen implements Screen {
     private final float CAMERA_VIEW_WIDTH = 16f;
