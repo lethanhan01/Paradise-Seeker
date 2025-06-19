@@ -11,13 +11,9 @@ import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.npc.gipsy.Gipsy;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
-import com.paradise_seeker.game.map.GameMapManager;
 import com.paradise_seeker.game.object.Book;
 import com.paradise_seeker.game.object.Chest;
-import com.paradise_seeker.game.object.item.ATKPotion;
-import com.paradise_seeker.game.object.item.HPPotion;
 import com.paradise_seeker.game.object.item.Item;
-import com.paradise_seeker.game.object.item.MPPotion;
 import com.paradise_seeker.game.screen.ControlScreen;
 import com.paradise_seeker.game.screen.GameScreen;
 
@@ -263,34 +259,12 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
             }
         }
 
-
     }
 
-    public void dropPotionNextToPlayer(GameMapManager mapManager, String potionType, Player player) {
-        float dropX = player.getBounds().x - player.getBounds().width - 0.2f;
-        float dropY = player.getBounds().y;
-        Item dropped = null;
-        switch (potionType) {
-            case "HP potion":
-                dropped = new HPPotion(dropX, dropY, 1f, "items/potion/potion3.png", 100);
-                break;
-            case "MP potion":
-                dropped = new MPPotion(dropX, dropY, 1f, "items/potion/potion9.png", 15);
-                break;
-            case "ATK potion":
-                dropped = new ATKPotion(dropX, dropY, 1f, "items/atkbuff_potion/potion14.png", 10);
-                break;
-        }
-
-        if (dropped != null) {
-            mapManager.getCurrentMap().dropItem(dropped);
-
-        }
-    }
 
     public void finishNpcInteraction(GameScreen gameScreen, Player player) {
         if (gameScreen.currentTalkingNPC.stateManager.pendingPotionToDrop != null ) {
-            dropPotionNextToPlayer(gameScreen.mapManager, gameScreen.currentTalkingNPC.stateManager.pendingPotionToDrop, player);
+        	gameScreen.currentTalkingNPC.dropPotionNextToPlayer(gameScreen.mapManager, gameScreen.currentTalkingNPC.stateManager.pendingPotionToDrop, player);
             gameScreen.currentTalkingNPC.stateManager.pendingPotionToDrop = null;
         }
         if (gameScreen.currentTalkingNPC != null) {
