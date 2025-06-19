@@ -33,7 +33,7 @@ public class MonsterAnimationManager implements AnimationManager {
 
     public boolean isCleaving = false;
     public float cleaveTimer = 0f;
-    public float cleaveDuration = 1.2f;
+    public float cleaveDuration = 1f;
 
     public MonsterAnimationManager() {
         deathStarted = false;
@@ -45,7 +45,7 @@ public class MonsterAnimationManager implements AnimationManager {
         takeHitDuration = 0.5f;
         isCleaving = false;
         cleaveTimer = 0f;
-        cleaveDuration = 1.2f;
+        cleaveDuration = 1f;
     }
 
     public void setAnimations(Animation<TextureRegion> idleLeft, Animation<TextureRegion> idleRight,

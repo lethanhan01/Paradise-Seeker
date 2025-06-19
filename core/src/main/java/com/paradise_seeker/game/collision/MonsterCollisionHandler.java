@@ -27,16 +27,15 @@ public class MonsterCollisionHandler {
 
 
     public void handlePlayerCollision(Player player, Monster monster) {
-        if (monster.isDead() || player.isInvulnerable()) {
+        if (monster.isDead() || player.statusManager.isInvulnerable()) {
             return;
         }
 
         // Calculate damage based on monster's attack value
-        int damage = (int) monster.atk;
+        float damage = (float) monster.atk;
 
-        // If player is shielding, reduce damage and handle shield effects
-        if (!player.isInvulnerable()) {
-          //      player.takeHit(damage);
+        if (!player.statusManager.isInvulnerable()) {
+                player.takeHit(damage);
         }
     }
 
@@ -55,12 +54,9 @@ public class MonsterCollisionHandler {
      */
     public void applyCleaveHitToPlayer(Player player, Monster monster) {
         if (pendingCleaveHit && !cleaveDamageDealt) {
-            // Calculate cleave damage (could be higher than regular damage)
-            float cleaveDamage = monster.atk * 1.5f;
-
             // Apply damage if player is not invulnerable
-            if (!player.isInvulnerable()) {
-                player.takeHit((int) cleaveDamage);
+            if (!player.statusManager.isInvulnerable()) {
+                player.takeHit((float) monster.atk);
                 player.statusManager.setHit(true);
                 player.statusManager.setStateTime(0f);
             }

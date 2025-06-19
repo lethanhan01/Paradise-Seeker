@@ -96,6 +96,12 @@ public class Player extends Character {
             statusManager.resetStateTime();
         }
 
+        // Reset trạng thái hit sau 0.3 giây
+        if (statusManager.isHit() && statusManager.getStateTime() > 0.1f) {
+            statusManager.setHit(false);
+            statusManager.resetStateTime();
+        }
+
         if (statusManager.isAttacking()) {
             Animation<TextureRegion> currentAttack = animationManager.getAttackAnimation(statusManager.getDirection());
             if (currentAttack.isAnimationFinished(statusManager.getStateTime())) {
@@ -124,6 +130,7 @@ public class Player extends Character {
             }
         } else {
             statusManager.setHit(true);
+            statusManager.setMoving(true);
             statusManager.resetStateTime();
             statusManager.setInvulnerable(true);
             statusManager.setInvulnerabilityTimer(PlayerStatusManager.INVULNERABILITY_DURATION);
@@ -182,7 +189,5 @@ public class Player extends Character {
         //invulnerabilityTimer = Float.MAX_VALUE;
     	hp=MAX_HP;
     }
-    public boolean isInvulnerable() {
-        return statusManager.isInvulnerable();
-    }
+
 }
