@@ -31,11 +31,11 @@ public abstract class NPC extends Character implements Collidable {
         this.animationManager.loadAnimations();
         this.npcRenderer = new NPCRendererManager(this.animationManager);
 
-        loadTexture();
+        loadAnimation();
     }
     public NPCAnimationManager getAnimationManager() { return animationManager; }
 
-    protected abstract void loadTexture();
+    protected abstract void loadAnimation();
 
     public void dispose() {
         if (texture != null) {
