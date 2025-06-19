@@ -4,7 +4,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.paradise_seeker.game.entity.npc.NPC;
 import com.paradise_seeker.game.entity.npc.dialogue.NPCDialogueManager;
+import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.map.GameMap;
+import com.paradise_seeker.game.map.GameMapManager;
+import com.paradise_seeker.game.object.item.ATKPotion;
+import com.paradise_seeker.game.object.item.HPPotion;
+import com.paradise_seeker.game.object.item.Item;
+import com.paradise_seeker.game.object.item.MPPotion;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,4 +121,26 @@ public class Gipsy extends NPC {
     protected void loadTexture() {
         texture = new Texture("images/Entity/characters/NPCs/npc1/act3/npc120.png");
     }
+    public void dropPotionNextToPlayer(GameMapManager mapManager, String potionType, Player player) {
+        float dropX = player.getBounds().x - player.getBounds().width - 0.2f;
+        float dropY = player.getBounds().y;
+        Item dropped = null;
+        switch (potionType) {
+            case "HP potion":
+                dropped = new HPPotion(dropX, dropY, 1f, "items/potion/potion3.png", 100);
+                break;
+            case "MP potion":
+                dropped = new MPPotion(dropX, dropY, 1f, "items/potion/potion9.png", 15);
+                break;
+            case "ATK potion":
+                dropped = new ATKPotion(dropX, dropY, 1f, "items/atkbuff_potion/potion14.png", 10);
+                break;
+        }
+
+        if (dropped != null) {
+            mapManager.getCurrentMap().dropItem(dropped);
+
+        }
+    }
+
 }
