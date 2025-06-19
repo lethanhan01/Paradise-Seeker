@@ -1,5 +1,5 @@
 // MonsterRendererImpl.java
-package com.paradise_seeker.game.rendering.renderer;
+package com.paradise_seeker.game.rendering.renderer.monsterrender;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

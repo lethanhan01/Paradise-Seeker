@@ -155,7 +155,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                     }
                 }
                 player.smokeManager.setDashTimer(player.smokeManager.getDashCooldown());
-                player.addSmoke(prevX, prevY);
+                player.smokeManager.addSmoke(prevX, prevY);
             }
             clampToMapBounds(player, gameMap);
         }

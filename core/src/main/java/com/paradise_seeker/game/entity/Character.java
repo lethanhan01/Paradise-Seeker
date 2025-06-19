@@ -29,22 +29,18 @@ public abstract class Character implements Collidable {
         this.y = y;
     }
 
-    public void act(float deltaTime, GameMap map) {
-    }
+    public abstract void act(float deltaTime, GameMap map);
 
-    public void takeHit(float dmg) {
-        hp = Math.max(0, hp - dmg);
-        if (hp == 0) onDeath();
-    }
+    public abstract void takeHit(float dmg);
 
     @Override
-    public void onCollision(Collidable other) {
-    }
+    public abstract void onCollision(Collidable other);
+
+    public abstract void onDeath();
 
     @Override
     public Rectangle getBounds() {
         return bounds;
     }
 
-    public abstract void onDeath();
 }
