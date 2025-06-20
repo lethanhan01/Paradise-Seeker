@@ -4,15 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.paradise_seeker.game.main.Main;
 
 public class SettingScreen implements Screen {
 
-    final Main game;
+	public SpriteBatch batch;
+    public BitmapFont font;
+    public OrthographicCamera camera;
+    public FitViewport viewport;
     GlyphLayout layout;
     // Menu items
     String[] menuItems = {"Full Screen", "Music", "Control", "Back to the Game", "Return to Menu"};
@@ -36,8 +43,11 @@ public class SettingScreen implements Screen {
     public boolean showFullscreenToggle = false;
 
     public SettingScreen(Main game) {
-        this.game = game;
-        this.layout = new GlyphLayout();
+		this.batch = game.batch;
+		this.layout = new GlyphLayout();
+		this.font = game.font; // Use the default font from Main
+		this.camera = game.camera;
+		this.viewport = game.viewport; // Use the shared viewport
         background = new Texture("menu/settings_menu/setting_main/settings_scr2.png");
         shapeRenderer = new ShapeRenderer();
         updateFontScale();
@@ -48,7 +58,7 @@ public class SettingScreen implements Screen {
     float ratio	 = screenHeight / cd;
         this.fontScale = (screenHeight / (BASE_HEIGHT*ratio)) * 0.045f;
         menuItemSpacing = 0.95f * fontScale * 48f;
-        menuStartY = game.viewport.getWorldHeight() - 3f;
+        menuStartY = viewport.getWorldHeight() - 3f;
     }
 
     @Override
@@ -61,18 +71,18 @@ public class SettingScreen implements Screen {
         // Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
         // Update camera and batch projection matrix
-        game.camera.update();
-        game.batch.setProjectionMatrix(game.camera.combined);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
         // Set the viewport for the batch
-        float viewportWidth = game.viewport.getWorldWidth();
-        float viewportHeight = game.viewport.getWorldHeight();
+        float viewportWidth = viewport.getWorldWidth();
+        float viewportHeight = viewport.getWorldHeight();
 
-        float originalScaleX = game.font.getData().scaleX;
-        float originalScaleY = game.font.getData().scaleY;
-        game.font.getData().setScale(fontScale);
+        float originalScaleX = font.getData().scaleX;
+        float originalScaleY = font.getData().scaleY;
+        font.getData().setScale(fontScale);
 
-        game.batch.begin();
-        game.batch.draw(background, 0, 0, viewportWidth, viewportHeight);
+        batch.begin();
+        batch.draw(background, 0, 0, viewportWidth, viewportHeight);
 
         float xMenu = 3f; // X position for menu items
         float y = menuStartY;// Starting Y position for menu items
@@ -86,10 +96,10 @@ public class SettingScreen implements Screen {
             boolean isSelected = (i == selectedIndex);
 
             if (isSelected) {
-                game.font.setColor(Color.GOLD);
+                font.setColor(Color.GOLD);
                 drawText("> " + text, xMenu, y);
             } else {
-                game.font.setColor(Color.WHITE);
+            	font.setColor(Color.WHITE);
                 drawText("  " + text, xMenu, y);
             }
 
@@ -100,29 +110,29 @@ public class SettingScreen implements Screen {
                 barY = y - 0.25f;
                 musicBarFound = true;
 
-                game.batch.end();
+                batch.end();
                 // Draw the volume bar
-                shapeRenderer.setProjectionMatrix(game.camera.combined);
+                shapeRenderer.setProjectionMatrix(camera.combined);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(Color.GRAY);
                 shapeRenderer.rect(barX, barY, barWidth, barHeight * 0.45f);
                 shapeRenderer.setColor(Color.WHITE);
                 shapeRenderer.rect(barX, barY, barWidth * vol, barHeight * 0.45f);
                 shapeRenderer.end();
-                game.batch.begin();
+                batch.begin();
 
                 // Draw A/D and volume value
-                game.font.setColor(Color.LIGHT_GRAY);
-                game.font.draw(game.batch, "<A>", barX - 1.2f, barY + barHeight * 1.0f);
-                game.font.draw(game.batch, "<D>", barX + barWidth + 0.3f, barY + barHeight * 1.0f);
+                font.setColor(Color.LIGHT_GRAY);
+                font.draw(batch, "<A>", barX - 1.2f, barY + barHeight * 1.0f);
+                font.draw(batch, "<D>", barX + barWidth + 0.3f, barY + barHeight * 1.0f);
                 // Draw the volume value as text
                 int volumeValue = Math.round(vol * 10);
                 String volumeText = String.valueOf(volumeValue);
-                GlyphLayout volumeLayout = new GlyphLayout(game.font, volumeText);
+                GlyphLayout volumeLayout = new GlyphLayout(font, volumeText);
                 float volumeTextX = barX + (barWidth - volumeLayout.width) / 2;
                 float volumeTextY = barY + barHeight * -1.0f;
-                game.font.setColor(Color.GOLD);
-                game.font.draw(game.batch, volumeText, volumeTextX, volumeTextY);
+                font.setColor(Color.GOLD);
+                font.draw(batch, volumeText, volumeTextX, volumeTextY);
             }
 
             y -= menuItemSpacing;
@@ -137,24 +147,25 @@ public class SettingScreen implements Screen {
             float labelX = barX + barWidth / 2f;
             float labelY = barY + barHeight * 6.3f;
 
-            game.font.setColor(statusColor);
-            GlyphLayout statusLayout = new GlyphLayout(game.font, status);
+            font.setColor(statusColor);
+            GlyphLayout statusLayout = new GlyphLayout(font, status);
             // Centered above the bar
-            game.font.draw(game.batch, status, labelX - statusLayout.width / 2, labelY);
+            font.draw(batch, status, labelX - statusLayout.width / 2, labelY);
         }
 
-        game.batch.end();
-        game.font.getData().setScale(originalScaleX, originalScaleY);
+        batch.end();
+        font.getData().setScale(originalScaleX, originalScaleY);
 
         handleInput();// Handle user input for navigation and actions
     }
     // Draw text with the current font and position
     private void drawText(String text, float x, float y) {
-        layout.setText(game.font, text);
-        game.font.draw(game.batch, layout, x, y);
+        layout.setText(font, text);
+        font.draw(batch, layout, x, y);
     }
     // Handle user input for navigation and actions
     private void handleInput() {
+    	Main game = (Main) Gdx.app.getApplicationListener();
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selectedIndex--;
             if (selectedIndex < 0) selectedIndex = menuItems.length - 1;
@@ -168,20 +179,20 @@ public class SettingScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
             if (selectedIndex == 1) {
                 musicVolume = Math.max(0f, musicVolume - 0.1f);
+                game.setVolume = musicVolume; // Update the setVolume for consistency
                 if (game.currentGame != null)
-                    game.currentGame.music.setVolume(musicVolume);
-                else
-                    setVolume = Math.max(0f, musicVolume - 0.1f);
+                    game.currentGame.music.setVolume(game.setVolume);
+                
             }
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
             if (selectedIndex == 1) {
                 musicVolume = Math.min(1f, musicVolume + 0.1f);
+                game.setVolume = musicVolume; // Update the setVolume for consistency
                 if (game.currentGame != null)
-                    game.currentGame.music.setVolume(musicVolume);
-                else
-                    setVolume = Math.min(1f, musicVolume + 0.1f);
+                    game.currentGame.music.setVolume(game.setVolume);
+                
             }
         }
 
@@ -219,7 +230,7 @@ public class SettingScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
+        viewport.update(width, height, true);
         updateFontScale();
     }
     @Override public void pause() {}

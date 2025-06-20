@@ -10,6 +10,7 @@ import com.paradise_seeker.game.collision.Collidable;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.npc.gipsy.Gipsy;
 import com.paradise_seeker.game.entity.player.Player;
+import com.paradise_seeker.game.main.Main;
 import com.paradise_seeker.game.map.GameMap;
 import com.paradise_seeker.game.object.Book;
 import com.paradise_seeker.game.object.Chest;
@@ -315,6 +316,7 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
 	@Override
     public void handleBook(GameScreen gameScreen, Player player) {
         Book book = gameScreen.mapManager.getCurrentMap().getBook();
+        Main game = (Main) Gdx.app.getApplicationListener();
         if (book != null && player.getBounds().overlaps(book.getBounds())) {
         	player.blockMovement();
             // Handle F key press for book interaction
@@ -322,9 +324,9 @@ public class PlayerInputHandlerManager implements PlayerInputHandler {
                 if (!book.isOpened()) {
                     book.onCollision(player);
                     // Show the book content with longer display time
-                    if (gameScreen.game.controlScreen == null)
-                    	gameScreen.game.controlScreen = new ControlScreen(gameScreen.game);
-                    gameScreen.game.setScreen(gameScreen.game.controlScreen);
+                    if (game.controlScreen == null)
+                    	game.controlScreen = new ControlScreen(game);
+                    game.setScreen(game.controlScreen);
                 }
         	}
         }

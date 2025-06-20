@@ -4,14 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.paradise_seeker.game.main.Main;
 
 public class DeadScreen implements Screen{
 	
-	final Main game;
+	public SpriteBatch batch;
+    public BitmapFont font;
+    public OrthographicCamera camera;
+    public FitViewport viewport;
     GlyphLayout layout;
     
     int selectedIndex = 1; 
@@ -19,7 +26,6 @@ public class DeadScreen implements Screen{
     Texture[] buttonTextures;
     Texture[] selectedButtonTextures;
     public DeadScreen(Main game) {
-        this.game = game;
         this.layout = new GlyphLayout();
         background = new Texture("menu/end_menu/main_death/bgdeath3.png");
 
@@ -45,14 +51,14 @@ public class DeadScreen implements Screen{
     	// Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
         // Update camera and batch
-        game.camera.update();
-        game.batch.setProjectionMatrix(game.camera.combined);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
         // Set the viewport dimensions
-        float viewportWidth = game.viewport.getWorldWidth();
-        float viewportHeight = game.viewport.getWorldHeight();
+        float viewportWidth = viewport.getWorldWidth();
+        float viewportHeight = viewport.getWorldHeight();
 
-        game.batch.begin();
-        game.batch.draw(background, 0, 0, viewportWidth, viewportHeight);
+        batch.begin();
+        batch.draw(background, 0, 0, viewportWidth, viewportHeight);
         //Draw the title text
         float buttonWidth = 5f;
         float buttonHeight = 1f;
@@ -62,24 +68,26 @@ public class DeadScreen implements Screen{
         for (int i = 0; i < buttonTextures.length; i++) {
             float yButton = yStart - i * (buttonHeight + 0.1f);
             if (i == selectedIndex) {
-                game.font.setColor(Color.RED);
+                font.setColor(Color.RED);
                 // Draw ">" on the left
-                game.font.draw(game.batch, ">", xButton - 0.5f, yButton + buttonHeight * 0.7f);
+                font.draw(batch, ">", xButton - 0.5f, yButton + buttonHeight * 0.7f);
                 // Draw "<" on the right
-                game.font.draw(game.batch, "<", xButton + buttonWidth + 0.2f, yButton + buttonHeight * 0.7f);
+                font.draw(batch, "<", xButton + buttonWidth + 0.2f, yButton + buttonHeight * 0.7f);
             }
             // Draw the button texture
             Texture tex = (i == selectedIndex) ? selectedButtonTextures[i] : buttonTextures[i];
-            game.batch.draw(tex, xButton, yButton, buttonWidth, buttonHeight);
+            batch.draw(tex, xButton, yButton, buttonWidth, buttonHeight);
         }
 
 
-        game.batch.end();
+        batch.end();
 
         handleInput();// Handle user input for navigation and selection
     }
     // Handle user input for navigation and selection
     private void handleInput() {
+    	Main game = (Main) Gdx.app.getApplicationListener();
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selectedIndex--;
             if (selectedIndex < 0) selectedIndex = buttonTextures.length - 1;
@@ -103,7 +111,7 @@ public class DeadScreen implements Screen{
    
 
     @Override public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
+        viewport.update(width, height, true);
     }
 
     @Override public void pause() {}

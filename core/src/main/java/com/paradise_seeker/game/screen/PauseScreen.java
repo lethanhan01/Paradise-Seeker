@@ -4,18 +4,28 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.paradise_seeker.game.main.Main;
 
 public class PauseScreen implements Screen {
 
-    final Main game;
+	public SpriteBatch batch;
+    public BitmapFont font;
+    public OrthographicCamera camera;
+    public FitViewport viewport;
     GlyphLayout layout;
     String[] menuItems = {"- Pausing -", "Continue Game", "Settings", "Return to Main Menu"};
     int selectedIndex = 1;
     public PauseScreen(Main game) {
-        this.game = game;
+        this.batch = game.batch; // Use the shared batch
+        this.font = game.font; // Use the shared font
+        this.camera = game.camera; // Use the shared camera
+        this.viewport = game.viewport; // Use the shared viewport
         this.layout = new GlyphLayout();
     }
 
@@ -28,37 +38,38 @@ public class PauseScreen implements Screen {
     	// Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
         // Update camera and batch
-        game.camera.update();
-        game.batch.setProjectionMatrix(game.camera.combined);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
         // Set the viewport dimensions
-        float viewportWidth = game.viewport.getWorldWidth();
-        float viewportHeight = game.viewport.getWorldHeight();
+        float viewportWidth = viewport.getWorldWidth();
+        float viewportHeight = viewport.getWorldHeight();
 
-        game.batch.begin();
+        batch.begin();
 
-        game.font.setColor(Color.RED);
+        font.setColor(Color.RED);
         for (int i = 0; i < menuItems.length; i++) {
             String text = menuItems[i];
-            layout.setText(game.font, text);
+            layout.setText(font, text);
             float x = (viewportWidth - layout.width) / 2f;
             float y = viewportHeight - 2f - i * 1.5f;
 
 
-                game.font.setColor(Color.WHITE);
+                font.setColor(Color.WHITE);
                 if (i == selectedIndex) {
                 	//>
-                    game.font.draw(game.batch, ">", x - 1.2f, y);
+                    font.draw(batch, ">", x - 1.2f, y);
             }
 
-            game.font.draw(game.batch, layout, x, y);
+            font.draw(batch, layout, x, y);
         }
 
-        game.batch.end();
+        batch.end();
 
         handleInput();// Handle user input for menu navigation
     }
     // Handle user input for menu navigation
     private void handleInput() {
+    	Main game = (Main) Gdx.app.getApplicationListener();
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selectedIndex--;
             if (selectedIndex < 1) selectedIndex = menuItems.length - 1;
@@ -84,7 +95,7 @@ public class PauseScreen implements Screen {
 
 
     @Override public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
+        viewport.update(width, height, true);
     }
 
     @Override public void pause() {}

@@ -6,12 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.monster.boss.ParadiseKing;
 import com.paradise_seeker.game.entity.npc.gipsy.Gipsy;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.ui.DialogueBox;
 import com.paradise_seeker.game.ui.HUD;
@@ -30,7 +33,10 @@ import com.paradise_seeker.game.screen.cutscene.EndMap4;;
 public class GameScreen implements Screen {
     private final float CAMERA_VIEW_WIDTH = 16f;
     private final float CAMERA_VIEW_HEIGHT = 10f;
-    public final Main game;
+    public SpriteBatch batch;
+    public BitmapFont font;
+    public OrthographicCamera camera;
+    public FitViewport viewport;
 
     public float cameraLerp = 0.1f;// Controls how fast the camera follows the player
 
@@ -50,7 +56,10 @@ public class GameScreen implements Screen {
     public int[] mapcutsceneIndicesEnd = {0, 0, 0, 0, 0}; // Indices for cutscenes in the map
 
     public GameScreen(final Main game) {
-        this.game = game;
+        this.batch = game.batch; // Use the shared batch
+        this.font = game.font; // Use the shared font
+        this.camera = game.camera; // Use the shared camera
+        this.viewport = game.viewport; // Use the shared viewport
         // Create player, initial position will come from Tiled data by mapManager
 		player = new Player();
 		currentTalkingNPC = new Gipsy(); // Initialize with a default NPC
@@ -85,10 +94,11 @@ public class GameScreen implements Screen {
     }
 
     public void setmusic() {
+    	Main game = (Main) Gdx.app.getApplicationListener();
     	String musicPath = mapManager.getCurrentMapMusic();
     	music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
     	music.setLooping(true);
-    	music.setVolume(game.settingMenu.musicVolume);
+    	music.setVolume(game.setVolume); // Set volume from Main game settings);
     	music.play();
     	hud.showMapNotification(mapManager.getCurrentMap().getMapName());
 	}
@@ -101,6 +111,8 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Dialogue logic (unchanged)
+    	Main game = (Main) Gdx.app.getApplicationListener();
+		
     	player.inputHandler.checkForInteractions(player, this.mapManager.getCurrentMap());
   //  	System.out.println("Current Map: " + mapManager.getCurrentMap().getMapName() + "\n NPCInteraction: " + player.inputHandler.showDialogueOptions);
 
@@ -206,6 +218,7 @@ public class GameScreen implements Screen {
     /** All portal/map transition logic, always uses Tiled player spawn! */
     public void handlePortalsEvent() {
         GameMap currentMap = mapManager.getCurrentMap();
+        Main game = (Main) Gdx.app.getApplicationListener();
         if (currentMap.portal != null && player.getBounds().overlaps(currentMap.portal.getBounds())) {
             currentMap.portal.onCollision(player);
 
@@ -286,7 +299,7 @@ public class GameScreen implements Screen {
     }
 
     @Override public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
+        viewport.update(width, height, true);
         hudCamera.setToOrtho(false, width, height);
         hudCamera.update();
     }
