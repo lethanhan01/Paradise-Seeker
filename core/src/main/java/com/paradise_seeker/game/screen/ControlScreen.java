@@ -4,16 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.paradise_seeker.game.main.Main;
 
 public class ControlScreen implements Screen {
 
-	final Main game;
-	BitmapFont font;
-	GlyphLayout layout;
+	public SpriteBatch batch;
+    public BitmapFont font;
+    public OrthographicCamera camera;
+    public FitViewport viewport;
+	public GlyphLayout layout;
+	
  // he thong dieu khien
 	String[][] controls = {
 			{"Moving", "WASD / Arrow keys"},
@@ -28,8 +34,10 @@ public class ControlScreen implements Screen {
 	};
 
 	public ControlScreen(Main game) {
-		this.game = game;
 		this.font = game.font; // dùng font chung
+		this.batch = game.batch; // dùng batch chung
+		this.camera = game.camera; // dùng camera chung
+		this.viewport = game.viewport; // dùng viewport chung
 		this.layout = new GlyphLayout();
 	}
 
@@ -39,19 +47,21 @@ public class ControlScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		// Thiết lập camera và viewport
-		float viewportWidth = game.viewport.getWorldWidth();
-        float viewportHeight = game.viewport.getWorldHeight();
+    	com.paradise_seeker.game.main.Main game = (com.paradise_seeker.game.main.Main) Gdx.app.getApplicationListener();
+
+		float viewportWidth = viewport.getWorldWidth();
+        float viewportHeight = viewport.getWorldHeight();
         // xóa màn hình với màu nền
 		ScreenUtils.clear(Color.DARK_GRAY);
        // Cập nhật camera và vẽ lên batch
-		game.camera.update();
-		game.batch.setProjectionMatrix(game.camera.combined);
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
 		// Bắt đầu vẽ
-		game.batch.begin();
+		batch.begin();
 
 		float xLeft = 2f; // vị trí cột trái
 		float xRight = 10f;// vị trí cột phải
-		float yStart = game.viewport.getWorldHeight() - 2f;// vị trí bắt đầu vẽ từ trên xuống
+		float yStart = viewport.getWorldHeight() - 2f;// vị trí bắt đầu vẽ từ trên xuống
 		float lineHeight = 0.75f;//khoang gian giữa các dòng
 
 		font.setColor(Color.WHITE);//mau chữ trắng
@@ -63,20 +73,20 @@ public class ControlScreen implements Screen {
 
 			float y = yStart - i * lineHeight;// thay đối vi trí y theo dòng
           	// vẽ chữ
-			font.draw(game.batch, left, xLeft, y);
-			font.draw(game.batch, right, xRight, y);
+			font.draw(batch, left, xLeft, y);
+			font.draw(batch, right, xRight, y);
 		}
 		// Tiêu đề
 		font.setColor(Color.RED);
 		layout.setText(font, "- Controls -");
 		//lấy vị trí để căn giữa
         float x = (viewportWidth - layout.width) / 2f;
-		font.draw(game.batch, layout, x, viewportHeight);
+		font.draw(batch, layout, x, viewportHeight);
 		// Hint để quay lại
 		font.setColor(Color.YELLOW);
-		font.draw(game.batch, "[ESC] Return", xLeft, 0.5f);
+		font.draw(batch, "[ESC] Return", xLeft, 0.5f);
 		font.setColor(Color.WHITE);
-		game.batch.end();
+		batch.end();
 
 		// Quay lại SettingScreen
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -85,7 +95,7 @@ public class ControlScreen implements Screen {
 	}
 
 	@Override public void resize(int width, int height) {
-		game.viewport.update(width, height, true);
+		viewport.update(width, height, true);
 	}
 	@Override public void pause() {}
 	@Override public void resume() {}

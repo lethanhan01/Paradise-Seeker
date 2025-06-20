@@ -4,10 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.paradise_seeker.game.entity.player.Player;
 import com.paradise_seeker.game.entity.player.inventory.PlayerInventoryManager;
 import com.paradise_seeker.game.main.Main;
@@ -17,10 +21,13 @@ import com.paradise_seeker.game.object.item.Item;
 public class InventoryScreen implements Screen {
     private final Player player;
     private final PlayerInventoryManager inventoryManager;
-    private final Main game;
     private final GlyphLayout layout;
     private final ShapeRenderer shapeRenderer;
     private Texture backgroundTexture;
+    public SpriteBatch batch;
+    public BitmapFont font;
+    public OrthographicCamera camera;
+    public FitViewport viewport;
     // Flag to collect all fragments
 
     // Changed to use grid coordinates (0-2, 0-2) instead of screen coordinates
@@ -36,11 +43,14 @@ public class InventoryScreen implements Screen {
     private static final int GRID_COLS = 3;
 
     public InventoryScreen(Main game, Player player) {
-        this.game = game;
         this.player = player;
         this.inventoryManager = player.getInventoryManager();
         this.layout = new GlyphLayout();
         this.shapeRenderer = new ShapeRenderer();
+        this.batch = game.batch;
+        this.font = game.font;
+        this.camera = game.camera;
+        this.viewport = game.viewport;
         this.backgroundTexture = new Texture(Gdx.files.internal("menu/inventory_menu/inventoryscreen1.png"));
         updateFontScale();
     }
@@ -60,25 +70,26 @@ public class InventoryScreen implements Screen {
     @Override
     public void render(float delta) {
         updateFontScale();
+        Main game = (Main) Gdx.app.getApplicationListener();
 
-        float originalScaleX = game.font.getData().scaleX;
-        float originalScaleY = game.font.getData().scaleY;
-        game.font.getData().setScale(fontScale);
+        float originalScaleX = font.getData().scaleX;
+        float originalScaleY = font.getData().scaleY;
+        font.getData().setScale(fontScale);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
             game.setScreen(game.currentGame);
-            game.font.getData().setScale(originalScaleX, originalScaleY);
+            font.getData().setScale(originalScaleX, originalScaleY);
             return;
         }
         // Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
         // Update camera and batch projection matrix
-        game.camera.update();
+        camera.update();
 
-        game.batch.setProjectionMatrix(game.camera.combined);
-        game.batch.begin();
-        game.batch.draw(backgroundTexture, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());
-        game.batch.end();
+        batch.setProjectionMatrix(game.camera.combined);
+        batch.begin();
+        batch.draw(backgroundTexture, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        batch.end();
 
         drawUI();// Draw the inventory UI
         handleInput();// Handle user input for navigation and item actions
@@ -90,11 +101,11 @@ public class InventoryScreen implements Screen {
 
     private void drawUI() {
         // Draw text and items
-        game.batch.setProjectionMatrix(game.camera.combined);
-        game.batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
 
         // Draw player stats
-        game.font.setColor(Color.WHITE);
+        font.setColor(Color.WHITE);
         float startX = 3.2f;
         float startY = 7.5f;
         float lineSpacing = 0.8f;
@@ -120,7 +131,7 @@ public class InventoryScreen implements Screen {
 
                 if (index < inventoryManager.getInventory().size()) {
                     Item item = inventoryManager.getInventory().get(index);
-                    game.batch.draw(item.getTexture(), x, y, slotSize, slotSize);
+                    batch.draw(item.getTexture(), x, y, slotSize, slotSize);
 
                     // Draw stack count if applicable
                     if (item.isStackable() && item.getCount() > 1) {
@@ -130,15 +141,15 @@ public class InventoryScreen implements Screen {
 
                 // Highlight selected slot (draw on top of item)
                 if (selectedCol == col && selectedRow == row) {
-                    game.batch.end(); // End batch to draw shape
+                    batch.end(); // End batch to draw shape
 
-                    shapeRenderer.setProjectionMatrix(game.camera.combined);
+                    shapeRenderer.setProjectionMatrix(camera.combined);
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                     shapeRenderer.setColor(Color.WHITE);
                     shapeRenderer.rect(x, y, slotSize, slotSize);
                     shapeRenderer.end();
 
-                    game.batch.begin(); // Resume batch
+                    batch.begin(); // Resume batch
                 }
 
             }
@@ -147,18 +158,18 @@ public class InventoryScreen implements Screen {
         // Draw selected item description
         Item item = getSelectedItem();
         if (item != null) {
-            game.font.setColor(Color.WHITE);
+            font.setColor(Color.WHITE);
             drawText("Name: " + item.getName(), 9f, 2.4f);
             drawText(item.getDescription(), 9f, 1.7f);
             drawText("[E] Use", 3f, 1.65f);
             drawText("[Q] Drop", 5f, 1.65f);
         }
 
-        game.batch.end();
-        game.batch.begin();
-        game.font.setColor(Color.WHITE);
+        batch.end();
+        batch.begin();
+        font.setColor(Color.WHITE);
         drawCenteredText("[B] Exit Inventory", 0.4f); // Adjust Y-coordinate as needed
-        game.batch.end();
+        batch.end();
     }
     // Handle user input for navigation and item actions
     private void handleInput() {
@@ -230,21 +241,21 @@ public class InventoryScreen implements Screen {
     }
 
     private void drawText(String text, float x, float y) {
-        layout.setText(game.font, text);
-        game.font.draw(game.batch, layout, x, y);
+        layout.setText(font, text);
+        font.draw(batch, layout, x, y);
     }
 
     private void drawCenteredText(String text, float y) {
-        layout.setText(game.font, text);
-        float x = (game.viewport.getWorldWidth() - layout.width) / 2;
-        game.font.draw(game.batch, layout, x, y);
+        layout.setText(font, text);
+        float x = (viewport.getWorldWidth() - layout.width) / 2;
+        font.draw(batch, layout, x, y);
     }
 
 
 
     @Override
     public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
+        viewport.update(width, height, true);
         updateFontScale();
     }
 

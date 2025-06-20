@@ -24,6 +24,8 @@ public class Main extends Game {
     public BitmapFont font;
     public OrthographicCamera camera;
     public FitViewport viewport;
+    
+    public float setVolume = 0.5f; // Default music volume
     public GameScreen currentGame = null;//load screen
     public MainMenuScreen mainMenu = null;
     public SettingScreen settingMenu = null;

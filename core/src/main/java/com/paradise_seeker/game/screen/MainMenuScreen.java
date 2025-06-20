@@ -6,18 +6,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.paradise_seeker.game.main.Main;
 import com.paradise_seeker.game.screen.cutscene.IntroCutScene;
 import com.badlogic.gdx.audio.Music;
 public class MainMenuScreen implements Screen {
 
-    final Main game;
     Vector2 touchPos;
     Texture titleTexture;
     int selectedIndex = 0;
+    public SpriteBatch batch;
+    public BitmapFont font;
+    public OrthographicCamera camera;
+    public FitViewport viewport;
     Texture[] buttonTextures;
     Texture background;
     Texture[] selectedButtonTextures;
@@ -26,12 +33,16 @@ public class MainMenuScreen implements Screen {
 
     Music menuMusic;
     public MainMenuScreen(final Main game) {
-        this.game = game;
+    
+		this.batch = game.batch;
+		this.font = game.font;
+		this.camera = game.camera;
+		this.viewport = game.viewport;
         touchPos = new Vector2();
         //audio menu music
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menutheme.mp3"));
         menuMusic.setLooping(true);
-        menuMusic.setVolume(game.settingMenu.setVolume);
+        menuMusic.setVolume(game.setVolume);
         // Use your title PNG here
         titleTexture = new Texture(Gdx.files.internal("menu/start_menu/main_menu/psk2.png"));
         titleTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -57,7 +68,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-    	menuMusic.setVolume(game.settingMenu.musicVolume);
+    	menuMusic.setVolume(((Main) Gdx.app.getApplicationListener()).setVolume);
         menuMusic.play();
     }
 
@@ -70,23 +81,23 @@ public class MainMenuScreen implements Screen {
     	// Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
         // Update camera and batch
-        game.viewport.apply();
-        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+        viewport.apply();
+        batch.setProjectionMatrix(viewport.getCamera().combined);
          // Set the viewport dimensions
-        float viewportWidth = game.viewport.getWorldWidth();
-        float viewportHeight = game.viewport.getWorldHeight();
+        float viewportWidth = viewport.getWorldWidth();
+        float viewportHeight = viewport.getWorldHeight();
 
-        game.batch.begin();
+        batch.begin();
 
         // 1. Draw background
-        game.batch.draw(background, 0, 0, viewportWidth, viewportHeight);
+        batch.draw(background, 0, 0, viewportWidth, viewportHeight);
 
         // 2. Draw the title image at the top center
         float titleWidth = 11.7f;   // Adjust as needed for your image
         float titleHeight = 5.5f;  // Adjust as needed for your image
         float xTitle = (viewportWidth - titleWidth) / 2f;
         float yTitle = viewportHeight - titleHeight - 0.4f;
-        game.batch.draw(titleTexture, xTitle, yTitle, titleWidth, titleHeight);
+        batch.draw(titleTexture, xTitle, yTitle, titleWidth, titleHeight);
 
      // Draw left and right icons
         float iconWidth = 1.5f; // Adjust size as needed
@@ -94,8 +105,8 @@ public class MainMenuScreen implements Screen {
         float xLeftIcon = xTitle - iconWidth; // Add margin
         float xRightIcon = xTitle + titleWidth; // Add margin
         float yIcons = yTitle + (titleHeight - iconHeight) / 2f; // Center vertically
-        game.batch.draw(leftIcon, xLeftIcon, yIcons, iconWidth, iconHeight);
-        game.batch.draw(rightIcon, xRightIcon, yIcons, iconWidth, iconHeight);
+        batch.draw(leftIcon, xLeftIcon, yIcons, iconWidth, iconHeight);
+        batch.draw(rightIcon, xRightIcon, yIcons, iconWidth, iconHeight);
 
         // Draw the menu buttons
         float buttonWidth = viewportWidth * 0.23f * 0.8f;
@@ -109,19 +120,19 @@ public class MainMenuScreen implements Screen {
         for (int i = 0; i < buttonTextures.length; i++) {
             float yButton = yStart - i * (buttonHeight + 0.15f); // Space between buttons
             Texture buttonTex = (i == selectedIndex) ? selectedButtonTextures[i] : buttonTextures[i];
-            game.batch.draw(buttonTex, xButton, yButton, buttonWidth, buttonHeight);
+            batch.draw(buttonTex, xButton, yButton, buttonWidth, buttonHeight);
 
             // Draw selector arrow
             if (i == selectedIndex) {
-                game.font.setColor(Color.WHITE);
+                font.setColor(Color.WHITE);
                 // Draw ">" on the left
-                game.font.draw(game.batch, ">", xButton - 0.3f, yButton + buttonHeight * 0.7f);
+                font.draw(batch, ">", xButton - 0.3f, yButton + buttonHeight * 0.7f);
                 // Draw "<" on the right
-                game.font.draw(game.batch, "<", xButton + buttonWidth + 0.1f, yButton + buttonHeight * 0.7f);
+                font.draw(batch, "<", xButton + buttonWidth + 0.1f, yButton + buttonHeight * 0.7f);
             }
         }
 
-        game.batch.end();
+        batch.end();
 
         handleInput();// Handle user input for menu navigation
     }
@@ -141,9 +152,9 @@ public class MainMenuScreen implements Screen {
 
         if (Gdx.input.justTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
-            game.viewport.unproject(touchPos);
+            viewport.unproject(touchPos);
 
-            float viewportHeight = game.viewport.getWorldHeight();
+            float viewportHeight = viewport.getWorldHeight();
             float titleHeight = 2f; // Should match above
             float yTitle = viewportHeight - titleHeight - 0.4f;
             float buttonHeight = 0.9f;
@@ -160,7 +171,8 @@ public class MainMenuScreen implements Screen {
         }
     }
 
-    private void selectMenuItem() {
+    private void selectMenuItem( ) {
+    	com.paradise_seeker.game.main.Main game = (com.paradise_seeker.game.main.Main) Gdx.app.getApplicationListener();
         switch (selectedIndex) {
             case 0:
                 if (game.currentGame == null) {
@@ -190,7 +202,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
+        viewport.update(width, height, true);
     }
 
     @Override public void pause() {}
