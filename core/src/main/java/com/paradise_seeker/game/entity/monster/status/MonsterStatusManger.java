@@ -18,6 +18,7 @@ public class MonsterStatusManger {
     private boolean pendingCleaveHit;
     private boolean cleaveDamageDealt;
 
+
     public MonsterStatusManger() {
     	hasSetBounds = false;
         isDead = false;

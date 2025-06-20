@@ -92,12 +92,12 @@ public class FlyingDemon extends Monster implements HasProjectiles {
         float len = (float) Math.sqrt(dx * dx + dy * dy);
         dx /= len;
         dy /= len;
-        
+
         // --- Load TextureRegion thay vì Animation (vì chỉ có 1 frame) ---
         TextureRegion projTexture = isFacingRight()
             ? new TextureRegion(new Texture(Gdx.files.internal("images/Entity/characters/monsters/elite/map3/flying_demon/right/atk/projectile_right.png")))
             : new TextureRegion(new Texture(Gdx.files.internal("images/Entity/characters/monsters/elite/map3/flying_demon/left/atk/projectile.png")));
-        
+
         projectiles.add(new MonsterProjectile(cx, cy, dx, dy, projTexture));
     }
 

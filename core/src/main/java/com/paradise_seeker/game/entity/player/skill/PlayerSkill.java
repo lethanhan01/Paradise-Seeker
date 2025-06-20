@@ -1,19 +1,14 @@
 package com.paradise_seeker.game.entity.player.skill;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.List;
 import com.paradise_seeker.game.entity.monster.Monster;
 import com.paradise_seeker.game.entity.player.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class PlayerSkill implements Skill{
     protected float manaCost;
     protected long cooldown;
     protected long lastUsedTime;
-    protected Map<String, Animation<TextureRegion>> skillAnimations = new HashMap<>();
     protected float damageMultiplier = 1.0f;
 
     public PlayerSkill(float manaCost, long cooldown) {
