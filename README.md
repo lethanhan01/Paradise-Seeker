@@ -102,8 +102,8 @@ For example, `core:clean` removes `build` folder only from the `core` project.
 
 1. **Clone the repository:**  
    ```bash
-   git clone https://github.com/lethanhan01/fix-prj.git
-   cd fix-prj
+   git clone https://github.com/lethanhan01/Paradise-Seeker.git
+   cd Paradise-Seeker
 2. **Build the project:**
    ```bash
    ./gradlew build
